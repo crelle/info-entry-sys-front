@@ -1,7 +1,7 @@
 <template>
   <div>
     <div id="nav">
-      <span>家庭百科系统</span>
+      <span>家庭百科系统更改</span>
       <!-- <router-link to="/">家庭百科系统</router-link>|
       <router-link to="/about">About</router-link> -->
     </div>
