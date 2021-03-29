@@ -42,7 +42,7 @@ export default {
           { required: true, message: "请输入用户名", trigger: "blur" },
           {
             min: 3,
-            max: 5,
+            max: 10,
             message: "用户名长度在 3 到 10 个字符",
             trigger: "blur",
           },
@@ -65,7 +65,7 @@ export default {
         if (valid) {
           //   请求鉴权 返回 code
           if (true) {
-            this.$router.push("/");
+            this.$router.push("/sys");
           } else {
             this.$message.warning("用户名或密码不正确");
           }
