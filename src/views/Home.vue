@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <el-header><h1>家庭百科系统</h1></el-header>
+    <el-header><h1>家庭百科系统0323</h1></el-header>
     <el-container>
       <el-scrollbar style="height: 100%">
         <el-aside width="200px">
