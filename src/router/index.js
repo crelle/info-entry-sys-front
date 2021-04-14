@@ -30,6 +30,8 @@ const routes = [
   
 ]
 
+// 设置路由守卫，请求鉴权接口，设置放行和转跳的逻辑
+
 const router = new VueRouter({
   routes
 })
