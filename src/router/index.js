@@ -23,7 +23,18 @@ const routes = [
       {
         path: 'about',
         name: 'About',
-        component: () => import('../views/About.vue')
+        component: () => import('../views/About.vue'),
+        meta: {
+          title: "关于"
+        }
+      },
+      {
+        path: 'privilege',
+        name: 'About',
+        component: () => import('../views/About.vue'),
+        meta: {
+          title: "权限管理"
+        }
       }
     ]
   },

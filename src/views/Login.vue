@@ -1,12 +1,8 @@
 <template>
   <div id="login_content">
     <div class="login_form_main">
-      <span style="
-          display: block;
-          text-align: center;
-          font-size: 20px;
-          font-weight: 500;
-        ">家庭百科系统登录</span>
+      <span>家庭百科系统登录</span>
+      <div></div>
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -43,7 +39,7 @@
             ></el-image>
           </el-input>
         </el-form-item>
-        <el-form-item>
+        <el-form-item style="display: flex;justify-content: flex-end">
           <el-button
             @click="resetForm('ruleForm')"
             size="mini"
@@ -171,11 +167,47 @@ export default {
   .login_form_main {
     min-height: 24%;
     min-width: 30%;
+    position: relative;
+    border-top: 2px solid rgb(150, 250, 104);
     border-radius: 10px;
-    background-color: aliceblue;
-    box-shadow: 6px 6px 6px rgba(red, green, blue, 0.5);
+    background-color: #ffffff;
+    box-shadow:2px 2px 10px rgba(255, 255, 255, 0.5);
+    >span {
+      display: block;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 500;
+      padding-top: 20px;
+      color: #409EFF;
+      text-shadow: 0 1px -3px #409EFF;
+    }
     .el-form {
       padding: 30px 20px 10px 0;
+    }
+    >div {
+      display: block;
+      position: absolute;
+      background-color: #f83e3e;
+      height: 50px;
+      width: 50px;
+      left: 30%;
+      top: -95px;
+      transform: rotate(45deg);
+      &::before {
+        content: '||| 田 |||- --------- [|]-[|]-[|]';
+        overflow: hidden;
+        display: block;
+        position: absolute;
+        text-align: right;
+        background-color: rgb(238, 188, 24);
+        color: rgb(167, 161, 161);
+        border-top: 1px solid #333;
+        top: 16px;
+        left: 16px;
+        height: 66px;
+        width: 66px;
+        transform: rotate(-45deg);
+      }
     }
   }
 }
