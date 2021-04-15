@@ -31,16 +31,17 @@
       <el-scrollbar style="height: 100%;width:200px">
         <el-aside width="200px">
           <el-menu
-            default-active="2"
+            default-active="/sys/about"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
+            unique-opened
             router
           >
             <el-submenu
               index="1"
               v-for="item in userdetail.roles[0].menus"
-              :key="item.id"
+              :key="item.path"
             >
               <template slot="title">
                 <i class="el-icon-location"></i>
@@ -50,7 +51,7 @@
                 <el-menu-item
                   :index="subitem.path"
                   v-for="subitem in item.childrenMenus"
-                  :key="subitem.id"
+                  :key="subitem.path"
                 >{{subitem.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
@@ -84,7 +85,6 @@ export default {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
     }
-    console.log(this.userdetail);
     
   },
   methods: {
@@ -96,7 +96,10 @@ export default {
     },
     loginout() {
       logout().then((res) => {
-        console.log(res);
+        if(res && res.code && res.code === '00000') {
+          this.$router.push("/login");
+          window.localStorage.removeItem("userdetail");
+        }
       });
     },
     queryuser() {
