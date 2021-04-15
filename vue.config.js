@@ -5,6 +5,7 @@ const resolve = dir => path.join(__dirname, dir)
 module.exports = {
   lintOnSave: false, // 保存时不进行格式化
   publicPath: BASE_URL, // 项目打包发布线上后的根目录
+  outputDir:'doc',
   // 自定义webpack配置
   chainWebpack: config => {
     config.resolve.alias
