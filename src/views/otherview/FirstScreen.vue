@@ -1,6 +1,6 @@
 <template>
-  <div class="about">
-    <p></p>
+  <div class="firstscreen_content">
+    <p>当前是首屏展示页面</p>
   </div>
 </template>
 

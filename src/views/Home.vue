@@ -28,23 +28,23 @@
       </div>
     </el-header>
     <el-container>
-      <el-scrollbar style="height: 100%;width:200px">
-        <el-aside width="200px">
+      <el-aside width="200px">
+        <el-scrollbar style="height: 100%;width: 200px;">
           <el-menu
-            default-active="/sys/about"
+            :default-active="nowMenu"
             class="el-menu-vertical-demo"
             @open="handleOpen"
             @close="handleClose"
-            unique-opened
+            :unique-opened="true"
             router
           >
+          <div v-for="item in userdetail.roles[0].menus" :key="item.path">
             <el-submenu
-              index="1"
-              v-for="item in userdetail.roles[0].menus"
-              :key="item.path"
+              :index="item.path"
+              v-if="item.childrenMenus.length>0"
             >
               <template slot="title">
-                <i class="el-icon-location"></i>
+                <i :class="item.iconCls? item.iconCls : `el-icon-setting`"></i>
                 <span>{{item.name}}</span>
               </template>
               <el-menu-item-group>
@@ -55,12 +55,19 @@
                 >{{subitem.name}}</el-menu-item>
               </el-menu-item-group>
             </el-submenu>
+            <el-menu-item v-else :index="item.path" >
+              <i :class="item.iconCls? item.iconCls : `el-icon-setting`"></i>
+              <span slot="title">{{item.name}}</span>
+            </el-menu-item>
+          </div>
           </el-menu>
-        </el-aside>
-      </el-scrollbar>
+        </el-scrollbar>
+      </el-aside>
       <el-main>
         <router-view />
-        <el-button @click="queryuser">查询</el-button>
+        <div v-if="$route.path === '/sys'">
+          <el-button @click="queryuser">查询</el-button>
+        </div>
       </el-main>
     </el-container>
   </div>
@@ -68,14 +75,27 @@
 
 <script>
 import { Decrypt } from "@/util/crypto/secret";
-import { logout,queryUserAll } from "@/api/home/index";
+import { logout } from "@/api/login/index";
+import { queryUserAll } from "@/api/firstscreen/index";
 export default {
   components: {},
   data() {
     return {
       tableData: [],
       userdetail: {},
+      nowMenu: "/sys/firstscreen"
     };
+  },
+  computed: {
+    pathNow() {
+      return this.$route.path
+    }
+  },
+  watch: {
+    // 侦听路由 路由改变则联动菜单
+    pathNow(n) {
+      this.nowMenu = n;
+    }
   },
   created() {
     this.userdetail = window.localStorage.getItem("userdetail")
@@ -85,7 +105,6 @@ export default {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
     }
-    
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -96,17 +115,18 @@ export default {
     },
     loginout() {
       logout().then((res) => {
-        if(res && res.code && res.code === '00000') {
-          this.$router.push("/login");
+        if (res && res.code && res.code === "00000") {
           window.localStorage.removeItem("userdetail");
+          // 如果守卫中用到localstorage作为判断条件 则转跳在后面 注意先后顺序
+          this.$router.push("/login");
         }
       });
     },
     queryuser() {
-      queryUserAll().then(res=> {
+      queryUserAll().then((res) => {
         console.log(res);
-      })
-    }
+      });
+    },
   },
 };
 </script>
@@ -141,6 +161,7 @@ export default {
   height: calc(100vh - 60px);
   .el-menu {
     border-right: none;
+    height: calc(100vh - 58px);
   }
   /deep/.el-scrollbar__wrap {
     overflow-x: hidden !important;

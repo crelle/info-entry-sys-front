@@ -15,7 +15,15 @@ const login = (data)=>Request({
     data
 })
 
+// 登出
+const logout = (params)=>Request({
+    method: 'get',
+    url: BaseURL + '/logout',
+    params
+})
+
 export {
     login,
-    getVerifyCode
+    getVerifyCode,
+    logout
 }

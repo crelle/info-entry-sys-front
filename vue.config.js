@@ -12,7 +12,7 @@ module.exports = {
       .set('@', resolve('src'))
       .set('_c', resolve('src/components'))
   },
-  // 打包时不生成.map文件
+  // 打包时不生成.map文件 源文件
   productionSourceMap: false,
   devServer: {
     proxy: {
