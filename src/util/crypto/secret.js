@@ -1,3 +1,4 @@
+// 数据加解码
 import CryptoJS from 'crypto-js'  //引用AES源码js
    
 const key = CryptoJS.enc.Utf8.parse("GWHCODEROFRAT520");  //十六位十六进制数作为密钥

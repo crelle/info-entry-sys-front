@@ -2,7 +2,6 @@
   <div id="login_content">
     <div class="login_form_main">
       <span>家庭百科系统登录</span>
-      <div></div>
       <el-form
         :model="ruleForm"
         :rules="rules"
@@ -14,13 +13,13 @@
           label="用户名"
           prop="username"
         >
-          <el-input v-model="ruleForm.username"></el-input>
+          <el-input v-model="ruleForm.username"><i class="el-icon-user" slot="prepend"></i></el-input>
         </el-form-item>
         <el-form-item
           label="密码"
           prop="password"
         >
-          <el-input v-model="ruleForm.password"></el-input>
+          <el-input type="password" v-model="ruleForm.password"><i class="el-icon-lock" slot="prepend"></i></el-input>
         </el-form-item>
         <el-form-item
           label="验证码"
@@ -30,10 +29,11 @@
             v-model="ruleForm.code"
             maxlength="4"
           >
+          <i class="el-icon-key" slot="prepend"></i>
             <el-image
               @click="changecode"
               slot="append"
-              style="width: 80px; height: 23px"
+              style="width: 80px; height: 22px;margin-top: 1px"
               :src="codeurl"
               fit="fill"
             ></el-image>
@@ -112,16 +112,23 @@ export default {
   created() {
     this.changecode();
   },
+  mounted() {
+    // this.getBackImg();
+  },
   methods: {
+    // 表单提交 登录
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let formlogin = { ...this.ruleForm };
           login(formlogin).then((res) => {
             if (res && res.code && res.code === "00000") {
-              this.$router.push("/sys");
+              // 登录成功 转跳首屏
+              // 加密用户信息 用户信息包含菜单
               let multifyDetail = Encrypt(JSON.stringify(res.data));
+              // 保存已加密的用户信息到 localstorage 
               window.localStorage.setItem("userdetail", multifyDetail);
+              this.$router.push("/sys/firstscreen");
             } else {
               this.$message.warning(
                 res.message ? res.message : "请确保输入信息正确"
@@ -133,10 +140,11 @@ export default {
         }
       });
     },
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-
+    // 更改验证码
     changecode() {
       getVerifyCode().then((res) => {
         let blob = new Blob([res], { type: "image/jpeg" });
@@ -148,6 +156,21 @@ export default {
           this.codeurl = codeurl;
         }
       });
+    },
+    // bing每日一图 背景图片获取
+    getBackImg() {
+      let xhr = new XMLHttpRequest();
+      let picurl = "";
+      xhr.open("get", "https://api.no0a.cn/api/bing/0");
+      xhr.send();
+      xhr.onload = () => {
+        const res = JSON.parse(xhr.responseText);
+        picurl = res.bing["url"];
+        // 每天切换 banner 图.  Switch banner image every day.
+        document.querySelector(
+          "#login_content"
+        ).style.backgroundImage = `url(${picurl})`;
+      };
     },
   },
 };
@@ -164,6 +187,7 @@ export default {
     rgba(0, 255, 0, 0.2),
     rgba(255, 100, 50, 0.4)
   );
+  background-image: url(https://api.xygeng.cn/Bing/);
   .login_form_main {
     min-height: 24%;
     min-width: 30%;
@@ -171,43 +195,18 @@ export default {
     border-top: 2px solid rgb(150, 250, 104);
     border-radius: 10px;
     background-color: #ffffff;
-    box-shadow:2px 2px 10px rgba(255, 255, 255, 0.5);
-    >span {
+    box-shadow: 2px 2px 10px rgba(255, 255, 255, 0.5);
+    > span {
       display: block;
       text-align: center;
       font-size: 24px;
       font-weight: 500;
       padding-top: 20px;
-      color: #409EFF;
-      text-shadow: 0 1px -3px #409EFF;
+      color: #409eff;
+      text-shadow: 0 1px -3px #409eff;
     }
     .el-form {
       padding: 30px 20px 10px 0;
-    }
-    >div {
-      display: block;
-      position: absolute;
-      background-color: #f83e3e;
-      height: 50px;
-      width: 50px;
-      left: 30%;
-      top: -95px;
-      transform: rotate(45deg);
-      &::before {
-        content: '||| 田 |||- --------- [|]-[|]-[|]';
-        overflow: hidden;
-        display: block;
-        position: absolute;
-        text-align: right;
-        background-color: rgb(238, 188, 24);
-        color: rgb(167, 161, 161);
-        border-top: 1px solid #333;
-        top: 16px;
-        left: 16px;
-        height: 66px;
-        width: 66px;
-        transform: rotate(-45deg);
-      }
     }
   }
 }

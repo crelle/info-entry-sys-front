@@ -5,14 +5,14 @@ const resolve = dir => path.join(__dirname, dir)
 module.exports = {
   lintOnSave: false, // 保存时不进行格式化
   publicPath: BASE_URL, // 项目打包发布线上后的根目录
-  outputDir:'doc',
+  outputDir:'docs', // 配合github pages
   // 自定义webpack配置
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('_c', resolve('src/components'))
   },
-  // 打包时不生成.map文件
+  // 打包时不生成.map文件 源文件
   productionSourceMap: false,
   devServer: {
     proxy: {
