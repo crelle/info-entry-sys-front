@@ -6,9 +6,9 @@
         <div class="header_avatar">
           <el-avatar
             size="small"
-            src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
+            :src="userdetail.userAvatar"
           ></el-avatar>
-          <span>欢迎 {{userdetail.username}}</span>
+          <span>欢迎 {{userdetail.userNickName}}</span>
           <el-popconfirm
             confirm-button-text='确认'
             cancel-button-text='取消'

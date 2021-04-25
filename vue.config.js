@@ -23,7 +23,7 @@ module.exports = {
         pathRewrite: { // 路径重写
           '^/api': ''
         }
-      }
+      },
     },
     // contentBase: path.join(__dirname, 'src'),
     hot: true,
