@@ -1,0 +1,79 @@
+{
+  "id": "2506458",
+  "name": "info-entry-sys-front",
+  "font_family": "iconfont",
+  "css_prefix_text": "el-iconfont-",
+  "description": "",
+  "glyphs": [
+    {
+      "icon_id": "552771",
+      "name": "生物制药",
+      "font_class": "shengwuzhiyao",
+      "unicode": "e62f",
+      "unicode_decimal": 58927
+    },
+    {
+      "icon_id": "2959039",
+      "name": "角色管理",
+      "font_class": "jiaoseguanli",
+      "unicode": "e623",
+      "unicode_decimal": 58915
+    },
+    {
+      "icon_id": "7171167",
+      "name": "计划管理",
+      "font_class": "touzijihuaguanli",
+      "unicode": "e629",
+      "unicode_decimal": 58921
+    },
+    {
+      "icon_id": "7817228",
+      "name": "确认密码",
+      "font_class": "querenmima",
+      "unicode": "e613",
+      "unicode_decimal": 58899
+    },
+    {
+      "icon_id": "8286865",
+      "name": "菜单管理",
+      "font_class": "caidanguanli",
+      "unicode": "e686",
+      "unicode_decimal": 59014
+    },
+    {
+      "icon_id": "8594072",
+      "name": "验证码",
+      "font_class": "yanzhengma",
+      "unicode": "e624",
+      "unicode_decimal": 58916
+    },
+    {
+      "icon_id": "12952766",
+      "name": "用户管理",
+      "font_class": "yonghuguanli",
+      "unicode": "e609",
+      "unicode_decimal": 58889
+    },
+    {
+      "icon_id": "16399028",
+      "name": "权限管理",
+      "font_class": "quanxianguanli",
+      "unicode": "e860",
+      "unicode_decimal": 59488
+    },
+    {
+      "icon_id": "16746840",
+      "name": "系统管理",
+      "font_class": "xitongguanli",
+      "unicode": "e676",
+      "unicode_decimal": 58998
+    },
+    {
+      "icon_id": "20763981",
+      "name": "学科",
+      "font_class": "xueke",
+      "unicode": "e645",
+      "unicode_decimal": 58949
+    }
+  ]
+}

@@ -22,8 +22,16 @@ const logout = (params)=>Request({
     params
 })
 
+// 注册
+const register = (data)=>Request({
+    method: 'post',
+    url: BaseURL + '/user/create',
+    data
+})
+
 export {
     login,
     getVerifyCode,
-    logout
+    logout,
+    register
 }
