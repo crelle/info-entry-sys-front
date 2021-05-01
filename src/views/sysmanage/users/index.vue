@@ -1,15 +1,345 @@
 <template>
   <div class="users_content">
-      当前是用户配置页
+    <el-card>
+      <el-form
+        :inline="true"
+        :model="formOptions"
+        class="demo-form-inline"
+        size="mini"
+        ref="userQueryRef"
+        label-position="right"
+        label-width="120px"
+      >
+        <el-row>
+          <el-col :span="8">
+            <el-form-item label="用户名称">
+              <el-input
+                v-model="formOptions.username"
+                placeholder="用户名称"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="手机">
+              <el-input
+                v-model="formOptions.userPhone"
+                placeholder="手机号码"
+              ></el-input>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="是否可用" required>
+              <el-select
+                v-model="formOptions.enabled"
+                placeholder="请选择"
+              >
+                <el-option
+                  label="是"
+                  :value="true"
+                ></el-option>
+                <el-option
+                  label="否"
+                  :value="false"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="账号是否被锁定" required>
+              <el-select
+                v-model="formOptions.accountNonLocked"
+                placeholder="请选择"
+              >
+                <el-option
+                  label="是"
+                  :value="true"
+                ></el-option>
+                <el-option
+                  label="否"
+                  :value="false"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="账号是否过期" required>
+              <el-select
+                v-model="formOptions.accountNonExpired"
+                placeholder="请选择"
+              >
+                <el-option
+                  label="是"
+                  :value="true"
+                ></el-option>
+                <el-option
+                  label="否"
+                  :value="false"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :span="8"
+            :class="Object.keys(formOptions).length % 3 === 0 ? 'nextline_action_button_content': (Object.keys(formOptions).length % 3 === 1 ? 'inline2_action_button_content' : 'inline1_action_button_content')"
+          >
+            <el-form-item>
+              <el-button
+                type="primary"
+                @click="queryUserList"
+              >查询</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-card>
+
+    <el-card>
+      <el-table
+        ref="multipleTable"
+        :data="tableData"
+        tooltip-effect="dark"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+        border
+        stripe
+        size="mini"
+        height="570"
+      >
+        <el-table-column
+          type="selection"
+          width="55"
+          fixed
+        >
+        </el-table-column>
+        <el-table-column
+          label="序号"
+          type="index"
+          width="55"
+          fixed
+        >
+        </el-table-column>
+        <el-table-column
+          prop="id"
+          label="标识"
+          min-width="120"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="username"
+          label="用户名"
+          min-width="140"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userNickName"
+          label="昵称"
+          min-width="140"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userPhone"
+          label="手机号"
+          min-width="140"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="userEmail"
+          label="邮箱"
+          min-width="180"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="accountNonExpired"
+          label="账户是否过期"
+          min-width="120"
+          show-overflow-tooltip
+        >
+        <template slot-scope="scope">{{scope.row.accountNonExpired ? '是' : '否'}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="accountNonLocked"
+          label="账户是否被锁定"
+          min-width="120"
+          show-overflow-tooltip
+        >
+        <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="credentialsNonExpired"
+          label="账户是否过期"
+          min-width="120"
+          show-overflow-tooltip
+        >
+        <template slot-scope="scope">{{scope.row.credentialsNonExpired ? '是' : '否'}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="enabled"
+          label="账户是否可用"
+          min-width="120"
+          show-overflow-tooltip
+        >
+        <template slot-scope="scope">{{scope.row.enabled ? '是' : '否'}}</template>
+        </el-table-column>
+        <el-table-column
+          prop="role"
+          label="角色"
+          show-overflow-tooltip
+          min-width="120"
+        >
+          <template slot-scope="scope">
+            <el-tag
+              type="primary"
+              disable-transitions
+              v-for="item in scope.row.roles"
+              :key="item.id"
+            >{{item.nameZh}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column
+          fixed="right"
+          label="操作"
+          min-width="140"
+        >
+          <template slot-scope="scope">
+            <el-button
+              @click="handleClick(scope.row)"
+              type="text"
+              size="small"
+            >详情</el-button>
+            <el-button
+              type="text"
+              size="small"
+            >编辑</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="paginationOptions.pageNo"
+        :page-sizes="paginationOptions.pageSizes"
+        :page-size="paginationOptions.pageSize"
+        :layout="paginationOptions.loyout"
+        background
+        :total="paginationOptions.total"
+      >
+      </el-pagination>
+    </el-card>
+
   </div>
 </template>
 
 <script>
+import { queryUser } from "@/api/user";
 export default {
-
-}
+  data() {
+    return {
+      formOptions: {
+        accountNonExpired: true,
+        accountNonLocked: true,
+        enabled: true,
+        userPhone: "",
+        username: "",
+      },
+      paginationOptions: {
+        pageNo: 1,
+        pageSizes: [10, 20, 30, 50, 100],
+        pageSize: 10,
+        layout: "total, sizes, prev, pager, next, jumper",
+        total: 0,
+      },
+      tableData: [],
+      multipleSelection: [],
+    };
+  },
+  methods: {
+    // 查询用户列表
+    queryUserList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          let data = { condition: { ...this.formOptions } };
+          data.pageNo = this.paginationOptions.pageNo;
+          data.pageSize = this.paginationOptions.pageSize;
+          queryUser(data).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              this.resetForm("userQueryRef"); // 重置表单
+              this.tableData = res.data.content; // 表格数据赋值
+              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 重置表单
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+    // 表格复选动作
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
+    // 分页器 页容量变更行为
+    handleSizeChange(val) {
+      this.paginationOptions.pageSize = val;
+      this.queryUserList();
+    },
+    // 分页器 页码变更行为
+    handleCurrentChange(val) {
+      this.paginationOptions.pageNo = val;
+      this.queryUserList();
+    },
+  },
+};
 </script>
 
-<style>
-
+<style scoped lang="less">
+@deep: ~">>>";
+// 表单样式
+.el-col {
+  .el-form-item {
+    width: 100%;
+  }
+  @{deep} .el-form-item__label {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+  @{deep} .el-form-item__content {
+    width: calc(100% - 120px);
+    > div {
+      width: 100%;
+    }
+  }
+}
+// 表单操作按钮区域样式
+.inline1_action_button_content {
+  @{deep} .el-form-item__content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.inline2_action_button_content {
+  width: 66.6%;
+  @{deep} .el-form-item__content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
+.nextline_action_button_content {
+  width: 100%;
+  @{deep} .el-form-item__content {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+}
 </style>

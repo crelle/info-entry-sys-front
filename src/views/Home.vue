@@ -75,7 +75,6 @@
 
 <script>
 import { Decrypt } from "@/util/crypto/secret";
-import { logout } from "@/api/login/index";
 import { queryUserAll } from "@/api/firstscreen/index";
 export default {
   components: {},
@@ -83,7 +82,7 @@ export default {
     return {
       tableData: [],
       userdetail: {},
-      nowMenu: "/sys/firstscreen"
+      nowMenu: ""
     };
   },
   computed: {
@@ -105,6 +104,8 @@ export default {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
     }
+    // 刷新时 菜单定位到当前路由
+    this.nowMenu = this.$route.path;
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -114,13 +115,7 @@ export default {
       console.log(key, keyPath);
     },
     loginout() {
-      logout().then((res) => {
-        if (res && res.code && res.code === "00000") {
-          window.localStorage.removeItem("userdetail");
-          // 如果守卫中用到localstorage作为判断条件 则转跳在后面 注意先后顺序
-          this.$router.push("/login");
-        }
-      });
+      this.$loginout()
     },
     queryuser() {
       queryUserAll().then((res) => {
@@ -132,8 +127,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@deep: ~'>>>';
 .el-header {
   background-color: #383f49;
+  border-bottom:4px solid #eee;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -158,12 +155,12 @@ export default {
 }
 
 .el-container {
-  height: calc(100vh - 60px);
+  height: calc(100vh - 64px);
   .el-menu {
     border-right: none;
-    height: calc(100vh - 58px);
+    height: calc(100vh - 64px);
   }
-  /deep/.el-scrollbar__wrap {
+  @{deep} .el-scrollbar__wrap {
     overflow-x: hidden !important;
     border-right: 1px solid #eee;
   }

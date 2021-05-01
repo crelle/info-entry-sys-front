@@ -56,6 +56,8 @@
         <el-form-item
           label=""
           prop="code"
+            @keyup.enter="submitForm('ruleForm')"
+
         >
           <el-input
             v-model="ruleForm.code"
@@ -103,7 +105,9 @@
           <div class="grid-content-left">
             <el-upload
               class="avatar-uploader"
-              action="http://1.116.79.69:80/posts/"
+              :action="`${baseURL}/user/uploadAvatar`"
+              :data="fileType"
+              :with-credentials="true"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -257,10 +261,14 @@
 <script>
 import { login, getVerifyCode, register } from "@/api/login/index";
 import { Encrypt } from "@/util/crypto/secret";
+import { BaseURL } from '@/api/config'
 export default {
   data() {
     return {
       ifLogin: true,
+      fileType: {
+        fileType: 0
+      },
       ruleForm: {
         username: "",
         password: "",
@@ -278,16 +286,16 @@ export default {
       imageUrl: "",
       nowIndex: -1,
       defaultImgs: [
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
-        "https://avatars.githubusercontent.com/u/22161016?v=4",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-e9a33f87-ab85-464a-a4b4-5fcd196eea51.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-5da50eea-9146-40e5-836c-42ee5eb29092.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-137171c6-5a54-4025-8e84-877cbab6c355.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-d9b3fe51-6e70-4ffa-970d-2d517a7bdc7a.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-a16b1069-2665-4f4a-85b5-c9607f65a00a.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-90c64b39-d069-4644-8bef-3dc4e3e5ab55.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-905ea61e-dac4-472f-bce5-24a9bcedac66.png",
+        "http://1.116.79.69:80/fes/picture/2021-4-27-8c5ba8c3-bcfc-4d8b-9bac-6566d53d5173.png",
       ],
+      baseURL: BaseURL,
       rules: {
         username: [
           {
@@ -480,15 +488,27 @@ export default {
       console.log(this.imageUrl);
     },
     beforeAvatarUpload(file) {
-      console.log(file);
-      // const isJPG = file.type === "image/jpeg";
-      const isLt2M = file.size / 1024 / 1024 < 2;
+      // 判断上传文件的类型
+      if(/^image\/+?/.test(file.type)){
+        this.fileType.fileType = 0
+      }else if (/^video\/+?/.test(file.type)) {
+        this.fileType.fileType = 1
+      } else if (/^audio\/+?/.test(file.type)) {
+        this.fileType.fileType = 2
+      } else if(/^application\/vnd.ms-+?/.test(file.type)){
+        this.fileType.fileType = 3
+      } else {
+        this.$message.error("此文件类型不支持!");
+        return false
+      }
+
+      const isLt2M = file.size / 1024 / 1024 < 100;
 
       // if (!isJPG) {
       //   this.$message.error("上传头像图片只能是 JPG 格式!");
       // }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error("上传头像图片大小不能超过 100MB!");
       }
       // return isJPG && isLt2M;
       return isLt2M;
@@ -510,6 +530,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@deep: ~'>>>';
 #login_content {
   display: flex;
   height: 100vh;
@@ -521,6 +542,7 @@ export default {
     rgba(255, 100, 50, 0.4)
   );
   background-image: url(https://api.xygeng.cn/Bing/);
+  background-size: 100%;
   .sys_info {
     position: absolute;
     width: 100%;
@@ -577,17 +599,17 @@ export default {
       flex-direction: column;
       align-items: center;
       padding: 10px;
-      /deep/.avatar-uploader .el-upload {
+      @{deep} .avatar-uploader .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 50%;
         cursor: pointer;
         position: relative;
         overflow: hidden;
       }
-      /deep/.avatar-uploader .el-upload:hover {
+      @{deep} .avatar-uploader .el-upload:hover {
         border-color: #409eff;
       }
-      /deep/.avatar-uploader-icon {
+      @{deep} .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
         width: 178px;
@@ -595,12 +617,12 @@ export default {
         line-height: 178px;
         text-align: center;
       }
-      /deep/.avatar {
+      @{deep} .avatar {
         width: 178px;
         height: 178px;
         display: block;
       }
-      /deep/.el-scrollbar__wrap {
+      @{deep} .el-scrollbar__wrap {
         overflow-x: hidden !important;
       }
       .demo-image__lazy {
@@ -630,7 +652,7 @@ export default {
   }
   .el-form {
     padding: 10px 20px 10px 0;
-    /deep/.el-input-group__append {
+    @{deep} .el-input-group__append {
       padding: 0 2px;
     }
   }
