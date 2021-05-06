@@ -56,13 +56,12 @@
         <el-form-item
           label=""
           prop="code"
-            @keyup.enter="submitForm('ruleForm')"
-
         >
           <el-input
             v-model="ruleForm.code"
             maxlength="4"
             placeholder="验证码"
+            @keyup.enter="submitForm('ruleForm')"
           >
             <i
               class="el-iconfont-yanzhengma"
@@ -107,7 +106,6 @@
               class="avatar-uploader"
               :action="`${baseURL}/user/uploadAvatar`"
               :data="fileType"
-              :with-credentials="true"
               :show-file-list="false"
               :on-success="handleAvatarSuccess"
               :before-upload="beforeAvatarUpload"
@@ -459,7 +457,8 @@ export default {
           if (!this.imageUrl) {
             return this.$message.error("请上传头像或选择默认头像");
           }
-          register(this.registerRuleForm).then((res) => {
+          this.registerRuleForm.userAvatar = this.imageUrl;
+          register(this.registerRuleForm).then((res ) => {
             if(res && res.code && res.code === "00000") {
               this.resetForm("registerRuleForm"); // 重置表单
               this.imageUrl = ""; // 清空头像
@@ -488,6 +487,7 @@ export default {
       console.log(this.imageUrl);
     },
     beforeAvatarUpload(file) {
+      console.log(file.type)
       // 判断上传文件的类型
       if(/^image\/+?/.test(file.type)){
         this.fileType.fileType = 0

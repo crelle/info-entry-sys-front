@@ -21,10 +21,10 @@ export default {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
     }
-    window.addEventListener("resize", (e) => {
-      this.initEcharts();
-    });
     this.$nextTick(() => {
+      window.addEventListener("resize", (e) => {
+        this.initEcharts();
+      });
       this.initEcharts();
     });
   },
@@ -38,26 +38,24 @@ export default {
     initEcharts() {
       let echartsDom = document.querySelector(".first_screen_echarts");
       let main_echarts = this.$echarts.init(echartsDom);
-      main_echarts.resize();
-      main_echarts.setOption(
-        {
-          title: {
-            text: "目前注册人群画像",
+      // main_echarts.resize();
+      main_echarts.setOption({
+        title: {
+          text: "目前注册人群画像",
+        },
+        tooltip: {},
+        xAxis: {
+          data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
+        },
+        yAxis: {},
+        series: [
+          {
+            name: "销量",
+            type: "bar",
+            data: [5, 20, 36, 10, 10, 20],
           },
-          tooltip: {},
-          xAxis: {
-            data: ["衬衫", "羊毛衫", "雪纺衫", "裤子", "高跟鞋", "袜子"],
-          },
-          yAxis: {},
-          series: [
-            {
-              name: "销量",
-              type: "bar",
-              data: [5, 20, 36, 10, 10, 20],
-            },
-          ],
-        }
-      );
+        ],
+      });
     },
   },
 };

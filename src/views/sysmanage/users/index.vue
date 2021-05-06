@@ -45,7 +45,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="账号是否被锁定" required>
+            <el-form-item label="账号是否未被锁定" required>
               <el-select
                 v-model="formOptions.accountNonLocked"
                 placeholder="请选择"
@@ -62,7 +62,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="账号是否过期" required>
+            <el-form-item label="账号是否未过期" required>
               <el-select
                 v-model="formOptions.accountNonExpired"
                 placeholder="请选择"
@@ -155,7 +155,7 @@
         </el-table-column>
         <el-table-column
           prop="accountNonExpired"
-          label="账户是否过期"
+          label="账户是否未过期"
           min-width="120"
           show-overflow-tooltip
         >
@@ -163,19 +163,11 @@
         </el-table-column>
         <el-table-column
           prop="accountNonLocked"
-          label="账户是否被锁定"
+          label="账户是否未被锁定"
           min-width="120"
           show-overflow-tooltip
         >
         <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
-        </el-table-column>
-        <el-table-column
-          prop="credentialsNonExpired"
-          label="账户是否过期"
-          min-width="120"
-          show-overflow-tooltip
-        >
-        <template slot-scope="scope">{{scope.row.credentialsNonExpired ? '是' : '否'}}</template>
         </el-table-column>
         <el-table-column
           prop="enabled"
