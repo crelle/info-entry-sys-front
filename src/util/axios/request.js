@@ -1,13 +1,13 @@
 // axios封装
 import axios from "axios";
-import {Message, Loading, MessageBox} from "element-ui";
+import { Message, Loading, MessageBox } from "element-ui";
 
 const dev = process.env.NODE_ENV === "development";
 
 // 创建axios实例
 const Request = axios.create({
     timeout: 60000, // 请求超时时间
-    headers:{
+    headers: {
         'Cache-Control': 'no-cache'
     }
 });
@@ -22,7 +22,7 @@ Request.interceptors.request.use(
             console.log("--- 入参数据 ---", config.params);
             _url += "?";
             let keys = Object.keys(config.params);
-            for (let key of  keys) {
+            for (let key of keys) {
                 _url += `${key}=${encodeURIComponent(config.params[key])}&`
             }
             _url = _url.substring(0, _url.length - 1)
@@ -43,16 +43,15 @@ Request.interceptors.response.use(
         if (response.status == "200") {
             console.log("--- 结束请求接口 ---" + response.config.url);
             console.log(response);
-            console.log("--- 出参为 ---" + JSON.stringify(response.data ? response.data:""));
-            console.log("--- 出参数据为 ---", response.data ? response.data:"");
-            let res = response.data ? response.data:"";
-            console.log(res);
-            if (res.code ? res.code == "00000" : res) {
+            console.log("--- 出参为 ---" + JSON.stringify(response.data ? response.data : ""));
+            console.log("--- 出参数据为 ---", response.data ? response.data : "");
+            let res = response.data ? response.data : "";
+            if (res.code == "00000") {
                 return res;
-            } else if (res.code ? res.code == "-2" : res) {
-                if (res.data ? res.data && res.data.detailMsg && res.data.detailMsg.length > 0 : res) {
+            } else if (res.code == "-2") {
+                if (res.data && res.data.detailMsg && res.data.detailMsg.length > 0) {
                     let message = "<div>";
-                    if(res.data) {
+                    if (res.data) {
                         for (let i = 0; i < res.data.detailMsg.length; i++) {
                             message += res.data.detailMsg[i].msg;
                             message += "<br/>";
@@ -79,11 +78,12 @@ Request.interceptors.response.use(
                 });
                 if (!dev) {
                     sessionClear();
-                    window.emss.logout();
-
+                    window.$loginout();
                 }
                 return res;
-            } else {
+            } else if (res && !res.code) { // status200 且有返回，但无返回码
+                return res;
+            } else { // 又返回码 且不是上述所有情况 如 -1
                 Message({
                     message: res.message || res.msg || "请求错误，请稍后重试",
                     type: "error",
@@ -100,6 +100,14 @@ Request.interceptors.response.use(
             return;
         }
     },
+    error => {
+        if (error.response) {
+            switch (error.response.status) {
+                case 401: window.$loginout();
+            }
+        }
+        return Promise.reject(error.response.data)   // 返回接口返回的错误信息
+    }
 );
 
 export default Request;
