@@ -56,6 +56,7 @@
         size="mini"
         height="570"
       >
+        <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column
           label="序号"
           type="index"
@@ -133,7 +134,7 @@ export default {
         }
       });
     },
-        // 重置表单
+    // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
@@ -144,12 +145,12 @@ export default {
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
-      this.queryUserList();
+      this.queryRoles();
     },
     // 分页器 页码变更行为
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
-      this.queryUserList();
+      this.queryRoles();
     },
   },
 };
