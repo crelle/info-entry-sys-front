@@ -103,7 +103,7 @@
         border
         stripe
         size="mini"
-        height="570"
+        height="380"
       >
         <el-table-column
           type="selection"

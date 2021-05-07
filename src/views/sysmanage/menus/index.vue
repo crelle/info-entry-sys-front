@@ -47,7 +47,7 @@
         border
         stripe
         size="mini"
-        height="570"
+        height="380"
       >
         <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column
