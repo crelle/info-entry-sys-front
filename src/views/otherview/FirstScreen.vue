@@ -1,6 +1,16 @@
 <template>
   <div class="firstscreen_content">
-    <el-card class="first_screen_echarts"></el-card>
+    <el-row :gutter="20">
+      <el-col :span="8">
+        <el-card class="first_screen_echarts"></el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="echarts_maptwo"></el-card>
+      </el-col>
+      <el-col :span="8">
+        <el-card class="echarts_mapthree"></el-card>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -21,10 +31,10 @@ export default {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
     }
+    window.addEventListener("resize", (e) => {
+      this.initEcharts();
+    });
     this.$nextTick(() => {
-      window.addEventListener("resize", (e) => {
-        this.initEcharts();
-      });
       this.initEcharts();
     });
   },
@@ -38,7 +48,7 @@ export default {
     initEcharts() {
       let echartsDom = document.querySelector(".first_screen_echarts");
       let main_echarts = this.$echarts.init(echartsDom);
-      // main_echarts.resize();
+      main_echarts.resize();
       main_echarts.setOption({
         title: {
           text: "目前注册人群画像",
@@ -62,6 +72,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.el-card {
+  background-color: rgb(48, 57, 73,.1)
+}
 .first_screen_echarts {
   height: 500px;
 }
