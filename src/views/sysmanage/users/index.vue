@@ -28,7 +28,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="是否可用" required>
+            <el-form-item
+              label="是否可用"
+              required
+            >
               <el-select
                 v-model="formOptions.enabled"
                 placeholder="请选择"
@@ -45,7 +48,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="账号是否未被锁定" required>
+            <el-form-item
+              label="账号是否未被锁定"
+              required
+            >
               <el-select
                 v-model="formOptions.accountNonLocked"
                 placeholder="请选择"
@@ -62,7 +68,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="账号是否未过期" required>
+            <el-form-item
+              label="账号是否未过期"
+              required
+            >
               <el-select
                 v-model="formOptions.accountNonExpired"
                 placeholder="请选择"
@@ -159,7 +168,7 @@
           min-width="120"
           show-overflow-tooltip
         >
-        <template slot-scope="scope">{{scope.row.accountNonExpired ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{scope.row.accountNonExpired ? '是' : '否'}}</template>
         </el-table-column>
         <el-table-column
           prop="accountNonLocked"
@@ -167,7 +176,7 @@
           min-width="120"
           show-overflow-tooltip
         >
-        <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
         </el-table-column>
         <el-table-column
           prop="enabled"
@@ -175,7 +184,7 @@
           min-width="120"
           show-overflow-tooltip
         >
-        <template slot-scope="scope">{{scope.row.enabled ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{scope.row.enabled ? '是' : '否'}}</template>
         </el-table-column>
         <el-table-column
           prop="role"
@@ -201,11 +210,7 @@
             <el-button
               @click="handleClick(scope.row)"
               type="text"
-              size="small"
-            >详情</el-button>
-            <el-button
-              type="text"
-              size="small"
+              size="mini"
             >编辑</el-button>
           </template>
         </el-table-column>
@@ -222,13 +227,18 @@
       >
       </el-pagination>
     </el-card>
+    <user-edit-dialog ref="userEditDialogRef"></user-edit-dialog>
 
   </div>
 </template>
 
 <script>
 import { queryUser } from "@/api/user";
+import UserEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
 export default {
+  components: {
+    UserEditDialog
+  },
   data() {
     return {
       formOptions: {
@@ -268,6 +278,9 @@ export default {
           return false;
         }
       });
+    },
+    handleClick(row) {
+      this.$refs.userEditDialogRef.openDialog(row)
     },
     // 重置表单
     resetForm(formName) {
