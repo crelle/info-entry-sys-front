@@ -88,6 +88,16 @@
           min-width="120"
         ></el-table-column>
         <el-table-column
+          label="菜单类型"
+          prop="menuType"
+          min-width="120"
+        ></el-table-column>
+        <el-table-column
+          label="菜单顺序"
+          prop="sort"
+          min-width="120"
+        ></el-table-column>
+        <el-table-column
           label="是否可用"
           prop="enabled"
           min-width="120"
@@ -95,11 +105,6 @@
         <el-table-column
           label="是否需要鉴权"
           prop="requireAuth"
-          min-width="120"
-        ></el-table-column>
-        <el-table-column
-          label="父菜单标识"
-          prop="name"
           min-width="120"
         ></el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
