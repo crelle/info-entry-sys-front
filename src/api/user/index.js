@@ -8,11 +8,17 @@ import Request from '@/util/axios/request'
 //     params
 // })
 
-// 注册
+// 分页查询用户
 const queryUser = (data) => Request({
     method: 'post',
     url: BaseURL + '/user/page',
     data
 })
 
-export { queryUser }
+// 更新用户（编辑）
+const updateUser = (data,id) => Request({
+    method: 'put',
+    url: `${BaseURL}/user/update/${id}`,
+    data
+})
+export { queryUser,updateUser }

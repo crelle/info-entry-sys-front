@@ -29,7 +29,7 @@
                   class="el-icon-plus avatar-uploader-icon"
                 ></i>
               </el-upload>
-              <span style="font-size: small;color: red;">* 请上传头像或选择默认头像</span>
+              <span style="font-size: small;color: red;padding: 10px 0">* 请上传头像或选择默认头像</span>
               <el-scrollbar style="height: 90px;width: 200px;">
                 <div
                   class="demo-image__lazy"
@@ -111,20 +111,6 @@
                     ></i></el-input>
                 </el-form-item>
                 <el-form-item
-                  label=""
-                  prop="password"
-                >
-                  <el-input
-                    type="password"
-                    v-model="userEditForm.password"
-                    placeholder="密码"
-                    show-password
-                  ><i
-                      class="el-icon-lock"
-                      slot="prepend"
-                    ></i></el-input>
-                </el-form-item>
-                <el-form-item
                   label="是否可用"
                   label-width="100px"
                   prop="enabled"
@@ -187,6 +173,7 @@
 
 <script>
 import { BaseURL } from "@/api/config";
+import { updateUser } from "@/api/user";
 
 export default {
   data() {
@@ -209,6 +196,7 @@ export default {
         userPhone: "",
         username: "",
       },
+      initFormData: {},
       defaultImgs: [
         "http://1.116.79.69:80/fes/picture/2021-4-27-e9a33f87-ab85-464a-a4b4-5fcd196eea51.png",
         "http://1.116.79.69:80/fes/picture/2021-4-27-5da50eea-9146-40e5-836c-42ee5eb29092.png",
@@ -233,32 +221,7 @@ export default {
             trigger: "blur",
           },
         ],
-        password: [
-          {
-            required: true,
-            message: "请填写密码",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 5,
-            max: 16,
-            message: "密码长度在 6 到 16 位之间",
-            trigger: "blur",
-          },
-        ],
-        confirmPwd: [
-          {
-            required: true,
-            message: "请确认密码",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 5,
-            max: 16,
-            message: "密码长度在 6 到 16 位之间",
-            trigger: "blur",
-          },
-        ],
+      
         userEmail: [
           {
             required: true,
@@ -285,17 +248,20 @@ export default {
   },
   methods: {
     openDialog(row) {
+      this.initFormData = row;
       this.dialogFormVisible = true; // 让弹窗显示
-      this.initForm(row); // 为表单赋值
+      this.$nextTick(() => { // 这个要加上
+        this.initForm(row); // 为表单赋值
+      });
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        if(item === "userAvatar") {
-            // 最终保存的时候 此字段（头像地址）才是最终会
-            // 赋值给this.userEditForm.userAvatar的值，
-            // 所以要初始化的时候也要赋值一次 
-            this.imageUrl = data[item]; 
+        if (item === "userAvatar") {
+          // 最终保存的时候 此字段（头像地址）才是最终会
+          // 赋值给this.userEditForm.userAvatar的值，
+          // 所以要初始化的时候也要赋值一次
+          this.imageUrl = data[item];
         }
       });
     },
@@ -310,6 +276,8 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
+      this.initForm(this.initFormData)
+      this.resetFormData();
     },
 
     // 初始化页面数据 重置
@@ -317,7 +285,6 @@ export default {
       this.ifLogin = true;
       this.imageUrl = ""; // 清空头像
       this.nowIndex = -1; // 重置选中
-      this.resetForm("userEditRef");
     },
     // 头像上传相关
     handleAvatarSuccess(res, file) {
@@ -370,14 +337,14 @@ export default {
           if (!this.imageUrl) {
             return this.$message.error("请上传头像或选择默认头像");
           }
-          this.userEditRef.userAvatar = this.imageUrl;
-          register(this.userEditRef).then((res) => {
+          this.userEditForm.userAvatar = this.imageUrl;
+          updateUser(this.userEditForm,this.initFormData.id).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.resetForm("userEditRef"); // 重置表单
               this.imageUrl = ""; // 清空头像
               this.nowIndex = -1; // 重置选中
-              this.$message.success("恭喜您，注册成功！");
-              this.ifLogin = true;
+              this.$message.success("修改成功！");
+              this.dialogClose();
             }
           });
         } else {

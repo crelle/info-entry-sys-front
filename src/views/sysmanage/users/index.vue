@@ -224,6 +224,7 @@
         :layout="paginationOptions.loyout"
         background
         :total="paginationOptions.total"
+        size="mini"
       >
       </el-pagination>
     </el-card>
@@ -346,5 +347,8 @@ export default {
     display: flex;
     justify-content: flex-end;
   }
+}
+@{deep} .el-pagination {
+  margin: 10px 0;
 }
 </style>
