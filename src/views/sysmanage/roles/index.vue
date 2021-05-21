@@ -44,6 +44,7 @@
         </el-row>
       </el-form>
     </el-card>
+
     <el-card>
       <el-table
         ref="multipleTable"
@@ -81,6 +82,13 @@
           min-width="120"
           fixed
         ></el-table-column>
+        <el-table-column label="操作" min-width="120" fixed>
+          <template slot-scope="scope">
+            <el-button @click="onEditRole(scope.row)" type="text" size="mini"
+              >编辑</el-button
+            >
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         @size-change="handleSizeChange"
@@ -94,12 +102,17 @@
       >
       </el-pagination>
     </el-card>
+    <role-edit-dialog ref="roleEditDialogRef"></role-edit-dialog>
   </div>
 </template>
 
 <script>
 import { queryRole } from "@/api/role";
+import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
 export default {
+  components: {
+    RoleEditDialog,
+  },
   data() {
     return {
       formOptions: {
@@ -134,6 +147,11 @@ export default {
         }
       });
     },
+
+    onEditRole(row) {
+      console.log("onEditRole,req="+row.tableData);
+      this.$refs.roleEditDialogRef.openDialog(row);
+    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -156,4 +174,5 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+</style>
