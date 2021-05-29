@@ -64,7 +64,9 @@
         </el-scrollbar>
       </el-aside>
       <el-main>
-        <router-view />
+        <el-scrollbar style="height: 100%;">
+          <router-view />
+        </el-scrollbar>
         <div v-if="$route.path === '/sys'">
           <el-button @click="queryuser">查询</el-button>
         </div>

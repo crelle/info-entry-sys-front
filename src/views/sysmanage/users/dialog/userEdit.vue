@@ -189,7 +189,6 @@ export default {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        password: "",
         userAvatar: "",
         userEmail: "",
         userNickName: "",
