@@ -5,24 +5,26 @@ const resolve = dir => path.join(__dirname, dir)
 module.exports = {
   lintOnSave: false, // 保存时不进行格式化
   publicPath: BASE_URL, // 项目打包发布线上后的根目录
+  outputDir:'docs', // 配合github pages
   // 自定义webpack配置
   chainWebpack: config => {
     config.resolve.alias
       .set('@', resolve('src'))
       .set('_c', resolve('src/components'))
   },
-  // 打包时不生成.map文件
+  // 打包时不生成.map文件 源文件
   productionSourceMap: false,
   devServer: {
     proxy: {
       '/api': {
-        target: 'http://192.168.106.195:18090',
+        target: 'http://1.116.79.69:8080',
+        // target: 'http://localhost:8080',
         changeOrigin: true, // 是否允许跨域
         ws: true, // webSocket全双工通信
         pathRewrite: { // 路径重写
           '^/api': ''
         }
-      }
+      },
     },
     // contentBase: path.join(__dirname, 'src'),
     hot: true,
