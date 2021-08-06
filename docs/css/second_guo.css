@@ -1,0 +1,470 @@
+.box_view1,.box_view2,.box_view3 {
+    background: url(../images/项目数统计.png);
+    background-repeat: no-repeat;
+    
+}
+.box_view1 {
+    width: 42%;
+    height: 100%;
+    position: relative;
+    background-image: url(../images/电能替代项目数电能替代项目数.png);
+    background-size: 70%;
+    background-position: center 6em;
+}
+
+.box_view2 {
+    width: 28%;
+    height: 100%;
+    position: relative;
+    background-image: url(../images/节能改造项目数.png);
+    background-size: 90%;
+    background-position: right 2em;
+}
+
+.box_view3 {
+    width: 30%;
+    height: 100%;
+    background-image: url(../images/能源托管项目数.png);
+    position: relative;
+    background-size: 90%;
+    background-position: left 6.6em;
+}
+
+.box_view1 span:first-child {
+    font-size: 1.4em;
+    position: absolute;
+    top: 4.4em;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+}
+/* .box_view1 span:last-child {
+    font-size: 1em;
+    width: 5em;
+    color: #90bfd4;
+    line-height: 1.2;
+    letter-spacing: .2em;
+    position: absolute;
+    text-align: center;
+    top: 184px;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+} */
+
+.box_view2 span:first-child {
+    font-size: 1.2em;
+    position: absolute;
+    top: 1.8em;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+}
+/* .box_view2 span:last-child {
+    font-size: .8em;
+    color: #90bfd4;
+    line-height: 1.2;
+    letter-spacing: .2em;
+    position: absolute;
+    text-align: center;
+    top: 110px;
+    right: 0;
+    transform: translateX(-25%);
+    -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+} */
+
+.box_view3 span:first-child {
+    font-size: 1.3em;
+    position: absolute;
+    top: 5.2em;
+    left: 50%;
+    transform: translateX(-75%);
+    -webkit-box-reflect: below 0 -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+}
+/* .box_view3 span:last-child {
+    font-size: .9em;
+    color: #90bfd4;
+    line-height: 1.2;
+    letter-spacing: .2em;
+    position: absolute;
+    text-align: center;
+    top: 198px;
+    left: 0;
+    transform: translateX(25%);
+    -webkit-box-reflect: below 6px -webkit-gradient(linear, left top, left bottom, from(transparent), to(rgba(255, 255, 255, 0.51))); 
+} */
+
+
+/* 左上样式 */
+.top_half {
+    flex: .5!important;
+}
+.left .item .first_window {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.left .item .first_window_top {
+    display: flex;
+    width: 80%;
+    height: 50%;
+    margin-top: 10%;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 1em;
+    border-bottom: 1px dashed #016575;
+}
+.left .item .first_window_bottom {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 80%;
+    height: 50%;
+    padding-top: 1em;
+}
+
+.left .item .first_window_top>div {
+    height: 60%;
+    width: 100%;
+    display: flex;
+}
+.left .item .first_window_top>div .icon{
+    width: 24%;
+    height: 100%;
+}
+.left .item .first_window_top>div .desc,
+.left .item .first_window_bottom>div .desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.desc span:first-child {
+    padding: .2em .3em;
+}
+.desc span:last-child {
+    color: #0BF8EF;
+    font-size: .5em;
+    padding: 4px;
+}
+.desc span:last-child b {
+    font-size: 3em;
+    font-weight: 500;
+}
+.left .item .first_window_bottom>div {
+    height: 60%;
+    width: 100%;
+    display: flex;
+}
+.left .item .first_window_bottom>div .icon{
+    width: 24%;
+    height: 100%;
+}
+
+/* 左下进度条效果样式表 */
+.left_bottom_tubiao_top {
+    width: 100%;
+    height: 40%;
+    margin: 4em auto 0;
+    color: #fff;
+}
+/* 每块进度条占比33%高度 */
+.common_loader_content {
+    height: 25%;
+}
+
+/* 每块进度条整体样式 */
+.common_loader_content .loaders {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    padding-left: 30px;
+    justify-content: space-between;
+}
+/* 承载每行进度条的容器样式 */
+.common_loader_content .loaders>div {
+    width: 100%;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column; 
+}
+/* 进度条及进度条描述样式 */
+.common_loader_content .loaders>div>div {
+    margin: 0 0 .5em 0;
+    padding: 0 .6em;
+    font-size: .8em!important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.common_loader_content .loaders>div>div>span:last-child b {
+    font-size: 3em!important;
+    font-weight: 500;
+}
+.common_loader_content .loaders>div>div>span:last-child {
+    font-size: .5em!important;
+}
+/* 进度条本身额外样式 */
+.common_loader_content .loaders div .loader {
+    height: .7em!important;
+    width: 100%;
+    position: relative; /* 子绝父相，作为进度条进度部分的父 */
+    background-color: #103A53;
+    border-radius: .35em;
+}
+
+.item .big_frame1 {
+    flex: 1;
+    width: 100%;
+    background: url("../images/frame_big1.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-flow: column;
+}
+/* --右侧中部图表-- */
+.right_mid_tubiao {
+    height: 100%;
+    width: 100%;
+    padding: 3em 1em 1em;
+}
+.loaders_shaped {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+.loaders_shaped>div {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+.loaders_shaped>div>div:first-child {
+    height: 80%;
+    width: 65%;
+    display: flex;
+    justify-content: space-between;
+}
+.loaders_shaped>div>div:first-child>span:first-child {
+    flex: 1;
+    margin-right: 2px;
+    height: 100%;
+}
+.loaders_shaped>div>div:first-child>span:last-child {
+    flex: 6;
+    background-color: #0A1E37;
+}
+
+.loaders_shaped>div>div:last-child {
+    color: #FFF;
+    width: 35%;
+    height: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: url(../images/main_btn2.png) no-repeat center;
+    background-size: 100% 100%;
+}
+
+.loaders_shaped>div>div:last-child>span:first-child {
+    font-size: .7em;
+    margin-top: .3em;
+    padding-right: .1em;
+}
+.loaders_shaped>div>div:last-child>span:last-child {
+    font-size: 1.1em;
+}
+.loaders_shaped>div>div:last-child>span:last-child b{
+    font-size: .2em;
+    font-weight: 400;
+}
+
+.map_hot {
+    flex: 1;
+    background-image: url(../images/maphot.png);
+    background-position: center center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    position: relative;
+}
+
+.map_hot .areas {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background-size: 70%;
+}
+
+.area_xuzhou {
+    background: url(../images/redMarker.png) no-repeat center center;
+    top: 5em;
+    left: 16em;
+}
+.area_lianyungang {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 4em;
+    left: 24em;
+}
+.area_suqian {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 7em;
+    left: 19em;
+}
+.area_huaian {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 12em;
+    left: 22em;
+}
+.area_yancheng {
+    background: url(../images/redMarker.png) no-repeat center center;
+    top: 10em;
+    left: 25em;
+}
+.area_yangzhou {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 15em;
+    left: 24em;
+}
+.area_taizhou {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 17em;
+    left: 28em;
+}
+.area_nanjing {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 20em;
+    left: 21em;
+}
+.area_nantong {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 19em;
+    left: 32em;
+}
+.area_zhenjiang {
+    background: url(../images/redMarker.png) no-repeat center center;
+    top: 20em;
+    left: 25em;
+}
+.area_changzhou {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 22em;
+    left: 25em;
+}
+.area_wuxi {
+    background: url(../images/yq.png) no-repeat center center;
+    top: 23em;
+    left: 29em;
+}
+.area_suzhou {
+    background: url(../images/redMarker.png) no-repeat center center;
+    top: 24em;
+    left: 32em;
+}
+
+.caozuo_btns {
+    width: 3em;
+    color: #fff;
+    position: absolute;
+    padding-left: 4em;
+    bottom: 5.5em;
+    left: 2em;
+    background: url(../images/loadershu.png) no-repeat center center;
+    background-size: contain;
+}
+.caozuo_btns .top {
+    width: 3em;
+    height: 1.5em;
+    position: relative;
+    line-height: 1.5em;
+    padding-left: 2em;
+    border-radius: .2em;
+    background: url(../images/红.png) no-repeat left center;
+    background-size: cover;
+}
+.caozuo_btns .top:hover {
+    border: rgb(243, 95, 95) solid 1px;
+    cursor: pointer;
+}
+.caozuo_btns .mid {
+    width: 3em;
+    position: relative;
+    height: 1.5em;
+    margin-top: 4em;
+    line-height: 1.5em;
+    border-radius: .2em;
+    padding-left: 2em;
+    background: url(../images/橙.png) no-repeat left center;
+    background-size: cover;
+}
+.caozuo_btns .low {
+    width: 3em;
+    position: relative;
+    height: 1.5em;
+    margin-top: 4em;
+    border-radius: .2em;
+    line-height: 1.5em;
+    padding-left: 2em;
+    background: url(../images/黄.png) no-repeat left center;
+    background-size: cover;
+}
+
+.map_bottom {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: url(../images/mapdp.png) no-repeat bottom center;
+    background-size: contain;
+    z-index: -1;
+    bottom: -2em;
+}
+
+.hover_content {
+    position: absolute;
+    width: 185px;
+    height: 81px;
+    background: url(../images/yqmc.png) no-repeat center center;
+    background-size: contain;
+    top: -5em;
+    left: -1.5em;
+    color: #FFF;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 .4em;
+}
+
+.hover_content>span {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    
+}
+.hover_content>span:first-child {
+    /* border-bottom: 1px dashed #eee; */
+    font-size: 12px;
+}
+
+.hover_content>span:nth-child(2) {
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.hover_content>span:nth-child(2) {
+    justify-content: space-around;
+    flex: 1.5;
+}
+
+.hover_content>span:nth-child(2)>span>span {
+    margin: 0 .2em;
+}
+.hover_content>span:nth-child(2)>span>span:last-child {
+    font-size: 12px;
+    font-weight: 400;
+}
+

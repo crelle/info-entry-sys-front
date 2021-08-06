@@ -1,0 +1,365 @@
+* {
+    box-sizing: border-box;
+  }
+
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin:0px;
+}
+ 
+
+/* 背景大图 */
+
+#body_bg{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+#body_bg img{
+    width: 100%;
+    height: 100%;
+}
+
+
+/* 背景大图 */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 3% 2% 2.5% 2%;
+}
+.container .left,.container .right{
+    width: 24%;
+    height: 100%;
+    padding-bottom: 0;
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+}
+.left {
+    /* background-color: #f00; */
+}
+.right {
+    /* background-color: #00f; */
+}
+.main {
+    display: flex;
+    flex-flow: column;
+    flex: 2;
+    height: 100%;
+    width: 100%;
+    padding: 0.6%;
+}
+.item{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+}
+.main .main_bottom{
+  flex: 1;
+  width:100%;
+}
+.img_title{
+    width: 100%;
+    height: auto;
+}
+.img_title img{
+    width: 100%;
+    /* height: 2rem; */
+}
+.item .top_content{
+    flex:1;
+    width: 100%;
+    background: url("../images/frame_small.png") no-repeat;
+    background-size:cover;
+    display: flex;
+}
+#left_mid_charts1,#left_mid_charts2{
+  flex: 1;
+}
+#left_bottom_charts1,#left_bottom_charts2,#right_mid_tubiao1,#right_mid_tubiao2,#right_bottom_tubiao1,#right_bottom_tubiao2{
+  flex: 1;
+}
+.top_content .top_content_top{
+    width: 100%;
+    height: auto;
+    padding: 1.5% 6%;
+}
+.top_content_top img{
+    width: 100%;
+    height: auto;
+    text-align: center;
+    display: block;
+    margin: 0 auto;
+}
+.top_content_bottom{
+    width: 100%;
+    flex:1;
+    padding: 3%;
+    display: flex;
+}
+#top_contentone,#top_contentone_two{
+    display: flex;
+    flex-flow: column;
+}
+#top_content_bottom_tubiao1{
+    flex:1;
+   display: flex;
+   flex-flow: column;
+   padding-top: 5.8rem;
+   align-items: center;
+}
+/* #top_content_bottom_tubiao1 div{
+    flex:1;
+    margin: 0 auto;
+    position: relative;
+    left: 0;
+    top: 0;
+} */
+#top_content_bottom_tubiao1 div .dingweishuz{
+    position: absolute;
+    right: 1%0;
+    right: 0;
+    top: 0.6rem;
+    text-align: right;
+    font-size: 1rem;
+    color: #14f1ea;
+    width: 100%;
+    padding: 0 1rem;
+}
+
+#top_content_bottom_tubiao2{
+    flex:1;
+
+}
+
+.main_top{
+    display: flex;
+    flex-flow: column;
+    height: auto;
+    width: 100%;
+}
+.main_top_top{
+    position: relative;
+    left:0;
+    top: 0;
+    padding: 2% 0;
+}
+.main_top_top_img,.main_top_top_content{
+    width: 100%;
+    height: auto;
+}
+.main_top_top_img img{
+    width: 100%;
+    height:auto;
+}
+.main_top_top_content{
+    position:absolute;   
+    top:50%;  
+    left: 0;
+    transform: translate(0,-50%);
+    width: 100%;
+    text-align: center;
+    font-size: 3rem;
+    color: #14f1ea;
+    font-weight: 700;
+    letter-spacing: 0.5rem;
+    padding: 0.5rem 2rem;
+    background: url("../images/表盘.png") no-repeat;
+    background-size:cover;
+}
+.main_top_bottom{
+    flex: 1;
+    display: flex;
+    width: 100%;
+    height: auto;
+}
+.main_top_bottom_img{
+    flex: 1;
+    padding:1%;
+
+}
+.main_top_bottom_box{
+    text-align: center;
+    vertical-align:middle;
+    position: relative;
+    left: 0;
+    top: 23px;
+    width: 100%;
+    height: 100%;
+}
+.main_top_bottom_box img{
+    width: 100%;
+    vertical-align: middle;
+}
+.fudong_suzhi{
+    position: absolute;
+    left: 0;
+    right: 3%;
+    top: 36%;
+    color: #ffffff8c;
+    font-size: 0.5rem;
+    color: #fff;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+.ditu_img{
+    width: 100%;
+    height: 101%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 999;
+    pointer-events: none;
+    margin: 0 auto;
+    background: url(../images/map_mask2.png) no-repeat;
+    background-size: 100% 100%;
+}
+.paomadeng{
+    width: 100%;
+    pointer-events: none;
+    height: 1.5rem;
+    overflow: hidden;
+    text-align: center;
+    color: #407de2;
+    line-height: 1.5rem;
+    font-size: 1rem;
+}
+.ditu_img img{
+    width: 100%;
+    height: auto;
+}
+.ditu_box{
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+.item .top_content_flex{
+    display: flex;
+    flex-flow: column;
+    width: 100%;   
+}
+.right_one_top{
+    padding: 0 1%;
+}
+.right_one_bottom{
+    flex: 1;  
+    display: flex;
+}
+#bg_right_left{
+    flex: 1;
+    padding-left: 8%;
+    padding-top: 2%;
+}
+#right_top_tubiao{
+    flex: 1;
+}
+.right_one_top_text1,.right_one_top_text2{
+    width: 50%;
+    float: left;
+    font-size: 1rem;
+    color: #5B95D7;
+    line-height: 1.38rem;
+    text-align: center;
+    padding: 1% 0;
+    font-size: 0.9rem;
+}
+.right_one_top_text1 div{
+    text-align: left;
+    float: left;
+}
+.text_img{
+    display: block;
+    min-height:1.25rem;
+    float: left;
+    margin-right: 0.2rem;
+}
+.right_one_top_text1{
+    padding-left: 3%
+}
+.right_one_top_text1 .text_ziti{
+  font-size: 1.75rem;
+  padding: 0 0.4rem;
+  color: #1389FF;
+}
+
+.bg_right_left_img{
+  float: left;
+  width: 100%;
+  position:relative;
+  left: 0;
+  top: 0;
+  margin-bottom: 0.8rem;
+}
+.bg_right_left_img img{
+    margin-top: -3px;
+    width: 10rem;
+    height: 2rem;
+}
+.bg_right_left_img span{
+    position: absolute;
+    right: 7rem;
+    top: 0.3rem;
+    text-align: center;
+    height: auto;
+    font-size: 1.2rem;
+    color: #00FBFF;
+}
+.right_one_tubiaowenzi{
+    display: flex;
+    height: 2rem;
+    padding: 0.2rem 1rem;
+    margin-top: 0.3rem;
+}
+.right_one_tubiaowenzi_one{
+    flex: 1;
+    position: relative;
+    left: 0;
+    top: 0;
+    padding-left: 2.2rem;
+    text-align: left;
+}
+.right_one_tubiaowenzi_one img{
+    position: absolute;
+    left:0;
+    top: 0;
+}
+.shudian_ones{
+    color: #00FBFF;
+    
+    font-size: 0.9rem;
+    display: block;
+}
+.shudian_ones2{
+    color:  #5B95D7;
+    text-align: center;
+    font-size: 0.6rem;
+}
+
+
+.left1-item{
+    display: inline;
+}
+
+
+
+

@@ -1,0 +1,32 @@
+/* 中间翻数牌样式 */
+.count_trans_content {
+    height: 110px;
+    width: 290px;
+    display: flex;
+    margin: auto;
+    justify-content: space-around;
+    align-items: center;
+}
+.count_trans_content .count_item {
+    width: 50px;
+    height: 65px;
+    position: relative;
+    border-radius: 4px;
+    border: 1px solid #1BCEFF;
+    background: url(../images/main_flipper1.png) no-repeat center center;
+    background-size: cover;
+    font-size: 50px;
+    color: #fff;
+    line-height: 65px;
+}
+
+.title_total {
+    color: #fff;
+    letter-spacing: .2em;
+    font-size: 1.1em;
+    padding: 1.5em 0 0;
+    background: url(/images/园区碳排放总量.png) no-repeat bottom center;
+}
+.title_total span:first-child {
+    font-size: .5em;
+}

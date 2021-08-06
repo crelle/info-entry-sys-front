@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="./css/reset.css">
+  <link rel="stylesheet" href="./css/second.css">
+  <link rel="stylesheet" href="./css/second_guo.css">
+  <link rel="stylesheet" href="./css/flipper.css">
+  <link rel="stylesheet" href="./css/flip_guo.css">
+
+  <style>
+    #map {
+      width: 800px;
+      height: 800px;
+      margin-top: -125px;
+      position: relative;
+    }
+
+    .testBtnBox {
+      position: absolute;
+      left: 139px;
+      top: 355px;
+      font-size: 16px;
+      color: #fff;
+      z-index: 999;
+      width: 80px;
+    }
+
+    .testBtnBox>div {
+      margin-bottom: 10px;
+    }
+  </style>
+  <title>江苏电网</title>
+  <script>
+    // 自适应代码
+    (function (win) {
+      var doc = win.document;
+      var docEl = doc.documentElement;
+      var tid;
+
+      function refreshRem() {
+        var width = docEl.getBoundingClientRect().width;
+        if (width > 1920) { // 最大宽度
+          width = 1920;
+        }
+        var rem = width / 100;
+        docEl.style.fontSize = rem + 'px';
+      }
+
+      win.addEventListener('resize', function () {
+        clearTimeout(tid);
+        tid = setTimeout(refreshRem, 300);
+      }, false);
+      win.addEventListener('pageshow', function (e) {
+        if (e.persisted) {
+          clearTimeout(tid);
+          tid = setTimeout(refreshRem, 300);
+        }
+      }, false);
+      refreshRem();
+    })(window);
+
+    window.addEventListener("resize", function () {
+      // 图表重新加载
+      myChart2.resize()
+      mybar.resize()
+    });
+  </script>
+</head>
+
+<body id='app'>
+  <!-- 背景图片 -->
+  <div id='body_bg'>
+    <img src="./images/twoscreen.png" alt="">
+  </div>
+  <!-- 背景图片 -->
+  <!-- 整体内容盒子 -->
+  <div class="container">
+    <!-- 左边整体 -->
+    <div class="left">
+      <!-- 左边上面 - 地市各行业统计-->
+      <div class="left_top left_item item top_half">
+        <div class="item-title" style="color: #BFE4FE;font-size: 1.3em;">地市各行业统计</div>
+        <div class="small_frame first_window">
+          <div class="first_window_top">
+            <div>
+              <div class="icon"
+                style="background: url(images/icon_shui.png) no-repeat center center;background-size: 60%;"></div>
+              <div class="desc"><span>电</span><span><b>0</b>亿kw.h</span></div>
+            </div>
+            <div>
+              <div class="icon"
+                style="background: url(images/icon_dian.png) no-repeat center center;background-size: 60%;"></div>
+              <div class="desc"><span>热</span><span><b>0</b>TJ</span></div>
+            </div>
+
+          </div>
+          <div class="first_window_bottom">
+            <div>
+              <div class="icon"
+                style="background: url(images/icon_qi.png) no-repeat center center;background-size: 60%;"></div>
+              <div class="desc"><span>气</span><span><b>0</b>亿m³</span></div>
+            </div>
+            <div>
+              <div class="icon"
+                style="background: url(images/icon_mei.png) no-repeat center center;background-size: 60%;"></div>
+              <div class="desc"><span>煤</span><span><b>0</b>万吨</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+
+      <!-- 左边下面-->
+      <div class="left_mid left_item item">
+        <div class="item-title" style="top: 5%;">碳排放<span
+            style="color: red; font-weight: bold;padding-left: 5px;">TOP4</span></div>
+        <div class="big_frame1 top_content_bottom">
+          <div class="left_bottom_tubiao_top">
+            <div style="background: url(/images/leftchart.jpg) no-repeat center center;background-size: contain;height: 100%;width: 100;"></div>
+            <!-- <div class="common_loader_content">
+              <div class="loaders">
+                <div>
+                  <div><span>用户1</span><span><b>270</b>万吨</span></div>
+                  <span class="loader"></span>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders">
+                <div>
+                  <div><span>用户2</span><span><b>270</b>万吨</span></div>
+                  <span class="loader"></span>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders">
+                <div>
+                  <div><span>用户3</span><span><b>270</b>万吨</span></div>
+                  <span class="loader"></span>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders">
+                <div>
+                  <div><span>用户4</span><span><b>270</b>万吨</span></div>
+                  <span class="loader"></span>
+                </div>
+              </div>
+            </div> -->
+          </div>
+          <div style="flex: 1;
+          width: 100%;
+          background-size: 100% 100%;
+          display: flex;
+          padding: 0 10px;
+          flex-flow: column;">
+            <!-- <div style="color: #7c9ab2; font-size: 16px;    color: #7c9ab2;
+              font-size: 16px;
+              /* position: absolute; */
+              /* bottom: 0; */
+              display: flex;
+              justify-content: center;">园区/用户近3年碳排放情况统计</div> -->
+
+              <div style="background: url(/images/leftmidchart.jpg) no-repeat center center;background-size: contain;height: 100%;width: 100;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中间整体 -->
+    <div class="main">
+      <!-- 中间上面 -->
+      <div class="main_top main_item">
+        <div class="main_top_bottom">
+          <div class="clock" id="clock">
+            <div class="title_total" style="font-size: 15px;">能源碳排放总量/<span>万吨</span></div>
+            <div class="count_trans_content">
+              <div class="count_item">0</div>
+              <div class="count_item">0</div>
+              <div class="count_item">0</div>
+              <div class="count_item">0</div>
+              <div class="count_item">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--中间地图-->
+      <div class="map_hot">
+        <div class="areas area_xuzhou">
+          <div class="hover_content" style="display: none;">
+            <span>徐州市</span><span><span><span>47</span><br><span>企业数</span></span><span><span>1135.70</span><br><span>碳排放量</span></span></span>
+          </div>
+        </div>
+        <div class="areas area_lianyungang"></div>
+        <div class="areas area_suqian"></div>
+        <div class="areas area_huaian"></div>
+        <div class="areas area_yancheng">
+          <div class="hover_content" style="display: none;">
+            <span>盐城市</span><span><span><span>65</span><br><span>企业数</span></span><span><span>2136.17</span><br><span>碳排放量</span></span></span>
+          </div>
+        </div>
+        <div class="areas area_yangzhou"></div>
+        <div class="areas area_taizhou"></div>
+        <div class="areas area_nanjing"></div>
+        <div class="areas area_nantong"></div>
+        <div class="areas area_zhenjiang">
+          <div class="hover_content" style="display: none;">
+            <span>镇江市</span><span><span><span>62</span><br><span>企业数</span></span><span><span>1265.01</span><br><span>碳排放量</span></span></span>
+          </div>
+        </div>
+        <div class="areas area_changzhou"></div>
+        <div class="areas area_wuxi"></div>
+        <div class="areas area_suzhou">
+          <div class="hover_content" style="display: none;">
+            <span>苏州市</span><span><span><span>266</span><br><span>企业数</span></span><span><span>8767.38</span><br><span>碳排放量</span></span></span>
+          </div>
+        </div>
+        <div class="mapbtn">
+          <div class="btnitem" class="cla1" id="zong">
+            <div style="display: flex;">
+              <div style="position: absolute;
+                right: 0;">
+                <div style="    display: flex;
+                  flex-direction: column;">
+                  <div style="    display: flex;
+                    justify-content: left;color: #00d6d6;
+                ">973</div>
+                  <div style="width: 80px;    font-size: 14px;
+                    margin-top: -21px;
+                    margin-left: -11px;">接入企业数</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="btnitem2" class="cla1" id="zong">
+            <div style="display: flex;">
+              <div style="position: absolute;
+              right: 0;">
+                <div style="    display: flex;
+                flex-direction: column;">
+                  <div style="    display: flex;
+                  justify-content: left;color: #00d6d6;
+              ">4663</div>
+                  <div style="width: 80px;    font-size: 14px;
+                  margin-top: -21px;
+                  margin-left: -11px;">电碳排放量</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        <div class="map_bottom"></div>
+        <div class="caozuo_btns">
+          <div class="top">4<span
+              style="position: absolute;top: 1.5em;left: 0;width: 6em;font-size: 1em;">>1000万吨</span></div>
+          <div class="mid">6<span style="position: absolute;top: 1.5em;left: 0;width: 6em;font-size: 1em;">>500万吨</span>
+          </div>
+          <div class="low">3<span style="position: absolute;top: 1.5em;left: 0;width: 6em;font-size: 1em;">>0万吨</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右边整体 -->
+    <div class="right">
+      <!-- 右边上面 -->
+      <div class="right_top right_item item">
+        <div class="item-title" style="color: #BFE4FE;font-size: 1.3em;">项目数统计</div>
+        <div class="big_frame top_content_bottom">
+          <div class="right_top_tubiao_top" style="display: flex;height: 100%;color: #FEFEFC;">
+            <div class="box_view1"><span>0</span></div>
+            <div class="box_view2"><span>0</span></div>
+            <div class="box_view3"><span>0</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- 右边中部-->
+      <div class="right_bottom right_item item">
+        <div class="item-title">地市碳排放量</div>
+        <!-- <div class="small_frame top_content_bottom">
+          <div class="right_mid_tubiao">
+            <div class="common_loader_content">
+              <div class="loaders_shaped">
+                <div>
+                  <div><span
+                      style="background: rgba(255,64,12, .2) url(/images/icon_hong.png) no-repeat center center;"></span><span
+                      class="loader_shaped"></span></div>
+                  <div><span>用户1</span><span>270<b>万吨</b></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders_shaped">
+                <div>
+                  <div><span
+                      style="background: rgba(255,177,41, .2) url(/images/icon_huang.png) no-repeat center center;"></span><span
+                      class="loader_shaped"></span></div>
+                  <div><span>用户2</span><span>270<b>万吨</b></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders_shaped">
+                <div>
+                  <div><span
+                      style="background: rgba(231,121,252, .2) url(/images/icon_zi.png) no-repeat center center;"></span><span
+                      class="loader_shaped"></span></div>
+                  <div><span>用户3</span><span>270<b>万吨</b></span></div>
+                </div>
+              </div>
+            </div>
+            <div class="common_loader_content">
+              <div class="loaders_shaped">
+                <div>
+                  <div><span
+                      style="background: rgba(90,136,255, .2) url(/images/icon_lan.png) no-repeat center center;"></span><span
+                      class="loader_shaped"></span></div>
+                  <div><span>用户4</span><span>270<b>万吨</b></span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div> -->
+        <div class="small_frame top_content_bottom">
+          <div id='right_mid_charts1' style="height: 100%;"></div>
+        </div>
+      </div>
+      <!-- 右边底部-->
+      <div class="right_bottom right_item item">
+        <div class="item-title">最具电能替代潜力用户</div>
+        <div class="small_frame top_content_bottom">
+          <div id='right_bottom_charts1'></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- 整体内容盒子结束 -->
+
+
+</body>
+<script type="text/javascript" src="./js/jquery.min.js"></script>
+<script type="text/javascript" src="./js/echarts.min.js"></script>
+<script src="./js/province/jiangsu.js"></script>
+<script type="text/javascript" src="./js/towscreen/right_bottom_charts.js"></script>
+<!--右边底部图表-->
+<script type="text/javascript" src="./js/towscreen/flipnumtwo.js"></script>
+<script type="text/javascript" src="./js/towscreen/loadertwo.js"></script>
+<script type="text/javascript" src="./js/right_mid_charts1.js"></script>
+<script type="text/javascript" src="./js/right_mid_charts2.js"></script>
+<script type="text/javascript" src="./js/towscreen/right_mid_charts.js"></script>
+<script type="text/javascript" src="./js/towscreen/left_bottom_charts.js"></script>
+<script type="text/javascript" src="./js/towscreen/mapData.js"></script>
+<script type="text/javascript" src="./js/towscreen/echarts5.js"></script>
+<!--地图 map-->
+<!-- <script>
+  let myChart = echarts.init(document.getElementById('map'));
+  echarts.registerMap('maps', jiangsu);
+  // 提取geojson中心点及名称
+
+
+  // 随机生成热力点
+  var heatData = [
+    [118.65572, 33.135246, 415],
+    [119.023666, 33.104282, 1544],
+    [119.888339, 32.264109, 987],
+    [118.876487, 32.107648, 546],
+    [118.85809, 32.060657, 123],
+    [119.005268, 31.950916, 456],
+    [119.189241, 32.37347, 789],
+    [119.06046, 31.856747, 1234],
+    [119.410009, 32.685193, 1438],
+    [119.06046, 32.949297, 1600],
+  ];
+  // 根据热力点位获取最大值
+  let maxHeat=Math.max(...(heatData.map(item=>item[2])))
+  // 创建点位数据
+  let centerPoints = jiangsu.features.map(item => {
+      return {
+          name: item.properties.name,
+          center: item.properties.center,
+          reqData: { yhs: parseInt(Math.random()*maxHeat), tpfl: parseInt(Math.random()*maxHeat) } // 根据当前最大热力点位生存随机碳排放量
+      }
+  })
+
+  // 创建左下角统计数量的按钮数据
+  let btnArr=[]
+  for(let k=3;k>0;k--){ // 倒序
+      // 获取当前区间
+      let section=maxHeat*(k/4)
+      // 获取处于当前区间的点位
+     let markerList = centerPoints.filter(v=>{ //大于当前 小于下一个点
+         return (btnArr[btnArr.length-1]?.section||maxHeat)>v.reqData.tpfl&&(v.reqData.tpfl>section)
+      })
+      btnArr.push(
+          {
+              subtitle:">"+section,
+              section:section,
+              markerList,
+              imgLevel:k,
+              total:markerList.length
+          }
+      )
+  }
+  let markerData = []
+  let images=[
+      './images/yq.png',
+      './images/yellowMarker.png',
+      './images/redMarker.png',
+  ]
+  function initMarkerData(item,imageIndex){
+
+      return {
+          name: item.name,
+          value: [item.center[0], item.center[1]], // 点坐标位置
+          reqData: item.reqData, // 随便命名的 反正在tooltip里都能拿到数据
+          symbol: 'image://'+images[imageIndex-1],//坐标图片
+          symbolSize:40,
+          itemStyle: {
+              normal: {
+                  color: '#fff',
+                  shadowBlur: 5,
+                  shadowColor: '#235987'
+              }
+          }
+      }
+  }
+  btnArr.forEach((item, index) => {
+      for(let k in item.markerList){
+          markerData.push(initMarkerData(item.markerList[k],item.imgLevel));
+      }
+
+  })
+
+  // 创建左下角统计数量的按钮节点
+  initDomBtn()
+  function initDomBtn (){
+
+      btnArr.forEach(item=>{
+          let dom =`
+        <div style="display: flex;    height: 48px;">
+ 
+          <div >
+               <img src="${images[item.imgLevel-1]}" alt="" style="display: flex; width: 61px;" >
+                </div>
+            <div class="markerBtn"  style="flex: 1;     margin-top: 20px;
+    font-size: 19px;"  attrData='${JSON.stringify(item.markerList)}'>
+                ${item.total}
+            </div>
+
+        </div>
+               
+        <div style="flex: 1;margin-left:20px">
+                ${item.subtitle}
+            </div>
+      `
+          $('.testBtnBox').append(dom)
+
+      })
+
+  }
+
+  // for (var i = 0; i < 10000; ++i) {//调接口需要遍历返回热力如数据，找出最大值
+  //   heatData.push([
+  //     118 + Math.random() * 4,
+  //     31 + Math.random() * 4,
+  //     Math.random() * maxHeat
+  //   ]);
+  // }
+  let option = {
+    title: {
+      // text: '热力图',
+      x: 'center',
+      textStyle: {
+        color: 'white'
+      }
+    },
+    grid: {
+      left: 0,
+      top: 0,
+      right: 0,
+      bottom: 0,
+
+    },
+    tooltip: {
+      borderWidth: 0,
+      shadow: false,
+      position: 'top',
+      padding: 0,
+      backgroundColor: false,
+      trigger: 'item',
+      formatter(e) {
+        return `
+        <div>
+        <image src="./images/yqmc.png"></image>
+        <div style="width: 300px;text-align: center; position:absolute;top:20px;left:-35px">
+        
+  <p style="text-align: center;color:#fff">
+    ${e.data.name}
+    </p>
+  <div style="display: flex; align-items: center;">
+      <div style="flex: 1;color:#fff;margin-top:10px">
+          <p>
+              用户数
+          </p>
+          <p >
+${e.data.reqData.yhs}
+          </p>
+      </div>
+      <div style="flex: 1;color:#fff;margin-top:10px">
+          <p>
+              碳排放量
+          </p>
+          <p>
+${e.data.reqData.tpfl}
+
+          </p>
+      </div>
+  </div>
+</div>
+</div>
+`
+      }
+    },
+    visualMap: {
+      min: 0,
+      max: maxHeat,
+      type: 'piecewise',
+      splitNumber: 8,
+      seriesIndex: 1,
+      showLabel:false,
+      calculable: true,
+      itemWidth: 15,
+        itemHeight: 8,
+        left: 98,
+        bottom: 90,
+      inRange: {
+                color: ['#ff4601', '#fffc00', '#87cffa'].reverse()
+            },
+      textStyle: {
+        color: '#FFF'
+      }
+    },
+    geo: {
+      map: 'maps',
+      aspectScale: 0.75, //长宽比
+      zoom: 1.1,
+      roam: false,
+      silent: true, //禁用地图的hover事件
+      label: {
+        normal: {
+          show: false,
+          textStyle: {
+            color: '#fff'
+          }
+        },
+        emphasis: {
+          show: false,
+          textStyle: {
+            color: '#fff'
+          }
+        }
+      },
+      itemStyle: {
+        normal: {
+          show: false,
+          areaColor: '#013C62',
+          borderWidth: 1,
+          shadowColor: '#235987',
+          shadowOffsetX: 0,
+          shadowOffsetY:10,
+          
+        },
+        emphasis: {
+          show: false,
+          areaColor: '#fff',
+          borderWidth: 1,
+          color: 'green',
+          label: {
+            show: false
+          }
+        }
+      }
+    },
+    series: [
+      {
+        type: 'map',
+        zoom: 1.1,
+        roam: false,
+        map: 'maps', //使用
+        label: {
+          normal: {
+            show: false,
+            textStyle: {
+              color: '#fff'
+            }
+          },
+          emphasis: {
+            show: false,
+            textStyle: {
+              color: '#fff'
+            }
+          }
+        },
+        silent: true, //禁用地图的hover事件
+        itemStyle: {
+          normal: {
+            borderColor: '#6da1b7',
+            borderWidth: 1.5,
+            areaColor: '#0c4d9d'
+          },
+          emphasis: {
+            show: false,
+
+            label: {
+              show: false
+            },
+            areaColor: '#2AB8FF',
+            borderWidth: 0,
+          }
+        }
+      },
+      {
+        type: 'heatmap',
+        coordinateSystem: 'geo',
+        data: heatData
+
+      },
+      {
+        name: 'marker',
+        type: 'scatter',
+        coordinateSystem: 'geo',
+        data: markerData,
+        symbolSize: 20,
+        hoverAnimation: true,
+        label: {
+          normal: {
+            formatter: '{b}',
+            position: 'right',
+            show: false
+          },
+          emphasis: {
+            formatter: '{b}',
+            position: 'right',
+            show: true
+          }
+        },
+        zlevel: 1
+      },
+        {
+            type: 'effectScatter',
+            coordinateSystem: 'geo',
+            z: 1,
+            data: [],
+            symbolSize: 14,
+            label: {
+                normal: {
+                    show: true,
+                    formatter: function(params) {
+                        return '客户客户客户';
+                    },
+                    position: 'top',
+                    backgroundColor: 'rgba(254,174,33,.8)',
+                    padding: [0, 0],
+                    borderRadius: 3,
+                    lineHeight: 32,
+                    color: '#f7fafb',
+                    rich:{
+                        fline:{
+                            padding: [0, 10, 10, 10],
+                            color:'#ffffff'
+                        },
+                        tline:{
+                            padding: [10, 10, 0, 10],
+                            color:'#ffffff'
+                        }
+                    }
+                },
+                emphasis: {
+                    show: true
+                }
+            },
+            itemStyle: {
+                color: '#feae21',
+            }
+        },
+    ]
+  };
+  myChart.setOption(option);
+  let popTimer=''
+  $('.testBtnBox').on('click','.markerBtn',function(){
+      clearPop()
+      let markerPopList=$(this).attr('attrData')
+      markerPopList?(markerPopList=JSON.parse(markerPopList)):''
+      markerPopList.forEach(item=>{
+         let ofsetPosition= myChart.convertToPixel({geoIndex: 0}, item.center)
+          let dom=   `
+        <div class="popItem" style="position: absolute;z-index:9;left: ${ofsetPosition[0]}px;top: ${ofsetPosition[1]}px;transform: translate(-50%,-250%)">
+        <image src="./images/yqmc.png"></image>
+        <div style="width: 300px;text-align: center; position:absolute;top:20px;left:-35px">
+
+  <p style="text-align: center;color:#fff">
+    ${item.name}
+    </p>
+  <div style="display: flex; align-items: center;">
+      <div style="flex: 1;color:#fff;margin-top:10px">
+          <p>
+              用户数
+          </p>
+          <p >
+${item.reqData.yhs}
+          </p>
+      </div>
+      <div style="flex: 1;color:#fff;margin-top:10px">
+          <p>
+              碳排放量
+          </p>
+          <p>
+${item.reqData.tpfl}
+
+          </p>
+      </div>
+  </div>
+</div>
+</div>
+`
+          $('.PopBox').append(dom)
+
+      })
+      popTimer=setTimeout(function () {
+          clearPop()
+      },5000)
+
+      // [118.65572, 33.135246, 415],
+      //     [119.023666, 33.104282, 1544],
+  })
+  function clearPop () {
+      // 防止第一次没清定时器 第二次点击后 定时器还在 提前清除dom
+      clearTimeout(popTimer)
+      $('.PopBox').empty()
+  }
+  myChart.on('click', function (e) {
+    console.log(e.event.target._rectWithStroke);
+  })
+</script> -->
+<!-- <scrip type="text/javascript" src="./js/echarts_GL.js"></scrip> -->
+<!--<scrip type="text/javascript" src="./js/left_top_charts.js"></scrip>-->
+
+<!--<script type="text/javascript" src="./js/right_top_charts.js"></script>-->
+<!--<script type="text/javascript" src="./js/right_mid_charts.js"></script>-->
+<script type="text/javascript" src="./js/flipper.js"></script>
+
+
+<script type="text/javascript">
+  $("#u139").click(function () {
+    $("#u329").css("left", "439px");
+    $("#u329").css("top", "410px");
+    if ($("#u329").css("display") == "none") {
+      $("#u329").css("display", "block");
+      $("#u329").css("visibility", "inherit");
+    } else {
+      $("#u329").css("display", "none");
+      $("#u329").css("visibility", "hidden");
+    }
+
+  });
+
+  $("#u140").click(function () {
+    $("#u329").css("left", "439px");
+    $("#u329").css("top", "410px");
+    if ($("#u329").css("display") == "none") {
+      $("#u329").css("display", "block");
+      $("#u329").css("visibility", "inherit");
+    } else {
+      $("#u329").css("display", "none");
+      $("#u329").css("visibility", "hidden");
+    }
+  });
+
+</script>
+
+
+<!-- 请求 -->
+<!-- <script type="text/javascript" src="./js/ajax.js"></script> -->
+<!-- 请求 -->
+<script>
+
+  function AutoScroll(obj) {
+    $(obj).find("ul:first").animate({
+      marginTop: "-1.5rem"
+    }, 3000, function () {
+      $(this).css({
+        marginTop: "0px"
+      }).find("li:first").appendTo(this);
+    });
+  }
+
+  $(document).ready(function () {
+    setInterval('AutoScroll(".str_wrap")', 5000);
+  });
+
+</script>
+
+</html>

@@ -1,0 +1,145 @@
+/* 右上进度条效果样式表 */
+.right_top_tubiao_top {
+    width: 90%;
+    height: 50%;
+    margin: 60px auto 0;
+    color: #fff;
+}
+/* 每块进度条占比33%高度 */
+.common_loader_content {
+    height: 33%;
+}
+/* 进度条大标题样式 */
+.common_loader_content .title {
+    background-image: url(../images/right_icon1.png); 
+    background-position: left 0;
+    background-repeat: no-repeat;
+    padding-left: 30px;
+    height: 30%;
+}
+/* 每块进度条整体样式 */
+.common_loader_content .loaders {
+    height: 70%;
+    display: flex;
+    flex-direction: row;
+    padding-left: 30px;
+    justify-content: space-between;
+}
+/* 承载每行进度条的容器样式 */
+.common_loader_content .loaders div {
+    width: 50%;
+    margin-right: 10px;
+    display: flex;
+    flex-direction: column; 
+}
+/* 进度条及进度条描述样式 */
+.common_loader_content .loaders div>span {
+    margin-top: 6px;
+}
+/* 进度条本身额外样式 */
+.common_loader_content .loaders div .loader {
+    height: 6px;
+    width: 100%;
+    position: relative; /* 子绝父相，作为进度条进度部分的父 */
+    background-color: #103A53;
+    border-radius: 3px;
+}
+/* 可通过两种样式的背景图片平移控制进度条值 */
+.left .item .first_window {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+}
+.left .item .first_window_top {
+    display: flex;
+    width: 80%;
+    height: 50%;
+    margin-top: 10%;
+    justify-content: center;
+    align-items: flex-end;
+}
+.left .item .first_window_bottom {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    width: 80%;
+    height: 50%;
+}
+
+.left .item .first_window_top>div {
+    height: 60%;
+    width: 100%;
+    display: flex;
+}
+.left .item .first_window_top>div .icon{
+    width: 20%;
+    height: 100%;
+}
+.left .item .first_window_top>div .desc,
+.left .item .first_window_bottom>div .desc {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.desc span:last-child {
+    color: #0BF8EF;
+    font-size: xx-small;
+    padding: 4px;
+}
+.desc span:last-child b {
+    font-size: 20px;
+}
+.left .item .first_window_bottom>div {
+    height: 60%;
+    width: 100%;
+    display: flex;
+}
+.left .item .first_window_bottom>div .icon{
+    width: 20%;
+    height: 100%;
+}
+.left .item .first_window_top>div:first-child {
+    border-right: 1px dashed #555;
+}
+.left .item .first_window_bottom>div:first-child {
+    border-top: 1px dashed #555;
+    border-right: 1px dashed #555;
+}
+.left .item .first_window_bottom>div:last-child {
+    border-top: 1px dashed #555;
+}
+
+/* 中间翻数牌样式 */
+.count_trans_content {
+    height: 110px;
+    width: 290px;
+    display: flex;
+    margin: auto;
+    justify-content: space-around;
+    align-items: center;
+}
+.count_trans_content .count_item {
+    width: 50px;
+    height: 65px;
+    position: relative;
+    border-radius: 4px;
+    border: 1px solid #1BCEFF;
+    background: url(../images/main_flipper1.png) no-repeat center center;
+    background-size: cover;
+    font-size: 50px;
+    color: #fff;
+    line-height: 65px;
+}
+.count_trans_content .count_item:last-child::after {
+    content: "万吨";
+    position: absolute;
+    right: -50px;
+    bottom: 34px;
+    height: 20px;
+    width: 46px;
+    font-size: 18px;
+    font-weight: 500;
+    color: #fff;
+}

@@ -1,0 +1,347 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+}
+
+body {
+    height: 100%;
+    width: 100%;
+    margin: 0px;
+}
+
+
+/* 背景大图 */
+
+#body_bg {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#body_bg img {
+    width: 100%;
+    height: 100%;
+}
+
+/* 背景大图 */
+.container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    padding: 3% 2% 2.5% 2%;
+}
+
+.container .left, .container .right {
+    width: 24%;
+    height: 100%;
+    padding-bottom: 0;
+    flex: 1;
+    display: flex;
+    flex-flow: column;
+}
+
+.main {
+    display: flex;
+    flex-flow: column;
+    flex: 2;
+    height: 100%;
+    width: 100%;
+    padding: 0.6%;
+}
+.main .main_bottom {
+    flex: 1;
+    width: 100%;
+}
+
+.img_title {
+    width: 100%;
+    height: auto;
+}
+
+.img_title img {
+    width: 100%;
+    /* height: 2rem; */
+}
+/*内容框*/
+.item {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+}
+.item .small_frame {
+    flex: 1;
+    width: 100%;
+    background: url("../images/frame_small.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-flow: column;
+}
+.item .big_frame {
+    flex: 1;
+    width: 100%;
+    background: url("../images/frame_big.png") no-repeat;
+    background-size: 100% 100%;
+    display: flex;
+    flex-flow: column;
+}
+
+.item .item-title {
+    position: relative;
+    color: #fff;
+    margin: 0 auto;
+    top: 11.5%;
+}
+
+
+
+/*左上，4个格子*/
+.left1-item{
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#left_mid_charts1,#left_bottom_charts1,#right_bottom_charts1 {
+    flex: 1;
+}
+
+.top_content_bottom {
+    width: 100%;
+    flex: 1;
+    padding: 3%;
+    display: flex;
+}
+
+.main_top {
+    display: flex;
+    flex-flow: column;
+    height: auto;
+    width: 100%;
+}
+
+
+.main_top_bottom {
+    width: 100%;
+    height: auto;
+}
+
+.ditu_box {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    padding-left: 1%;
+    padding-right: 1%;
+    padding-top: 1%;
+    position: relative;
+    left: 0;
+    top: 0;
+}
+
+
+
+
+
+
+.map{
+    position: relative;
+}
+.map .mapimg{
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    -moz-transform: translateX(-50%);
+    -ms-transform: translateX(-50%);
+    -o-transform: translateX(-50%);
+    z-index: -1;
+}
+.map .mapyear{
+    width: 24px;
+    height: 24px;
+    background-color: #040927;
+    border: 2px solid #00F8F6;
+    border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+
+}
+.map .point {
+    width: 50px;
+    height: 50px;
+    background-color: #00F8F6;
+    position: relative;
+    border-radius: 50%;
+  }
+  .map  .point-flicker{
+    position: absolute;
+    bottom: 10px;
+    left: 75%;
+  }
+  /* 设置动画前颜色 */
+  .point-flicker:after {
+    background-color: #2ea598;
+  }
+  .map .point .year{
+    position: relative;
+    top: 150%;
+    left: -100%;
+    white-space: nowrap;
+}
+.map .point .year .num{
+    font-size: 24px;
+    color: #fff;
+}
+.map .point .year .text{
+    font-size: 14px;
+    color: #fff;
+}
+  /* 设置动画后颜色 */
+  .point-flicker:before {
+    background-color: rgba(0, 168, 253, 0.2);
+  }
+ 
+  /* 设置动画 */
+  .point-flicker:before,
+  .point-flicker:after {
+    content: '';
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin-left: -40px;
+    margin-top: -40px;
+    border-radius: 50%;
+
+    animation: warn 1.5s ease-out 0s infinite;
+  }
+ 
+  /* @keyframes 规则用于创建动画。在 @keyframes 中规定某项 CSS 样式，就能创建由当前样式逐渐改为新样式的动画效果。 */
+  @keyframes warn {
+    0% {
+      transform: scale(0.5);
+      opacity: 1;
+    }
+ 
+    30% {
+      opacity: 1;
+    }
+ 
+    100% {
+      transform: scale(1.4);
+      opacity: 0;
+    }
+  }
+
+
+
+.map .mapyear_1{
+    position: absolute;
+    bottom: 10px;
+    left: 25%;
+}
+.map .mapyear_2{
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+}
+.map .mapyear_3{
+    position: absolute;
+    bottom: 10px;
+    left: 75%;
+}
+.map .mapyear .year{
+    position: relative;
+    top: 150%;
+    left: -100%;
+    white-space: nowrap;
+}
+.map .mapyear .year .num{
+    font-size: 24px;
+    color: #fff;
+}
+.map .mapyear .year .text{
+    font-size: 14px;
+    color: #fff;
+}
+.map .mapbtn{
+    position: absolute;
+    right: 10%;
+    top: 0;
+}
+.map .mapbtn .btnitem{
+    color: #fff;
+    text-align: center;
+    line-height: 40px;
+    height: 40px;
+    width: 120px;
+    background-color: #021837;
+    margin: 30px 0;
+    font-size: 20px;
+    position: relative;
+}
+.map .mapbtn .btnitem:hover{
+background: rgb(2, 30, 62);
+opacity: 0.8;
+color: rgb(0, 240, 255);
+}
+.map .mapbtn .btnitem .top-left{
+    position: absolute;
+    left: 0;
+    top: 0;
+    border-top: 1px solid #00BCCD;
+    border-left: 1px solid #00BCCD;
+    width: 5px;
+    height: 5px;
+}
+.map .mapbtn .btnitem .top-right{
+    position: absolute;
+    right: 0;
+    top: 0;
+    border-top: 1px solid #00BCCD;
+    border-right: 1px solid #00BCCD;
+    width: 5px;
+    height: 5px;
+}
+.map .mapbtn .btnitem .bottom-left{
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    border-bottom: 1px solid #00BCCD;
+    border-left: 1px solid #00BCCD;
+    width: 5px;
+    height: 5px;
+}
+.map .mapbtn .btnitem .bottom-right{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-bottom: 1px solid #00BCCD;
+    border-right: 1px solid #00BCCD;
+    width: 5px;
+    height: 5px;
+}
+
+.item-top-left {
+    position: relative;
+    color: #fff;
+    /* margin: 0 auto; */
+    top: 11.5%;
+    margin-left: 3%;
+    font-size: 14px;
+}
