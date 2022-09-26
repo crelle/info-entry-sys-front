@@ -128,6 +128,9 @@ export default {
       },
     };
   },
+    mounted() {
+    this.queryRoles();
+  },
   methods: {
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {

@@ -2,7 +2,7 @@
   <div class="home">
     <el-header>
       <div class="header_main">
-        <h1>家庭百科系统</h1>
+        <h1>诚迈员工管理系统</h1>
         <div class="header_avatar">
           <el-avatar
             size="small"

@@ -8,7 +8,6 @@
         size="mini"
         ref="userQueryRef"
         label-position="right"
-        label-width="120px"
       >
         <el-row>
           <el-col :span="8">
@@ -47,7 +46,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item
               label="账号是否未被锁定"
               required
@@ -67,7 +66,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-form-item
               label="账号是否未过期"
               required
@@ -87,8 +86,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col
-            :span="8"
+          <el-col :span="24"
             :class="Object.keys(formOptions).length % 3 === 0 ? 'nextline_action_button_content': (Object.keys(formOptions).length % 3 === 1 ? 'inline2_action_button_content' : 'inline1_action_button_content')"
           >
             <el-form-item>
@@ -165,7 +163,7 @@
         <el-table-column
           prop="accountNonExpired"
           label="账户是否未过期"
-          min-width="120"
+          min-width="135"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.accountNonExpired ? '是' : '否'}}</template>
@@ -173,7 +171,7 @@
         <el-table-column
           prop="accountNonLocked"
           label="账户是否未被锁定"
-          min-width="120"
+          min-width="140"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
@@ -260,6 +258,9 @@ export default {
       multipleSelection: [],
     };
   },
+    mounted() {
+    this.queryUserList();
+  },
   methods: {
     // 查询用户列表
     queryUserList() {
@@ -280,6 +281,7 @@ export default {
         }
       });
     },
+    // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row)
     },
@@ -351,4 +353,11 @@ export default {
 @{deep} .el-pagination {
   margin: 10px 0;
 }
+@{deep} .el-form-item--mini {
+  display: flex;
+}
+@{deep} .el-form-item__label {
+  width: 140px;
+}
+
 </style>
