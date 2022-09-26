@@ -13,7 +13,7 @@
       class="login_form_main"
       v-show="ifLogin"
     >
-      <span>家庭百科系统登录</span>
+      <span>诚迈员工管理系统</span>
       <el-form
         :model="ruleForm"
         :rules="rules"

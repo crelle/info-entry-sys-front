@@ -32,6 +32,15 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="queryMenus">查询</el-button>
+              <el-button
+                class="filter-item"
+                style="margin-left: 10px"
+                type="primary"
+                icon="el-icon-edit"
+                @click="handleCreate"
+              >
+                添加
+              </el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -109,10 +118,10 @@
         ></el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small"
-              >详情</el-button
-            >
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button type="text" size="small">详情</el-button>
+            <el-button type="text" size="mini" @click="handleClick(scope.row)">
+              编辑
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -128,6 +137,7 @@
       >
       </el-pagination>
     </el-card>
+    <user-edit-dialog ref="userEditDialogRef"></user-edit-dialog>
   </div>
 </template>
 
@@ -136,6 +146,7 @@ import { queryMenu } from "@/api/menu";
 export default {
   data() {
     return {
+      dialogStatus: "",
       formOptions: {
         name: "",
         requireAuth: true,
@@ -149,6 +160,9 @@ export default {
         total: 0,
       },
     };
+  },
+  mounted() {
+    this.queryMenus();
   },
   methods: {
     queryMenus() {
@@ -169,6 +183,11 @@ export default {
         }
       });
     },
+    // 编辑
+    handleClick(row) {
+      console.log("编辑");
+      // this.$refs.userEditDialogRef.openDialog(row);
+    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
@@ -186,6 +205,10 @@ export default {
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
       this.queryMenus();
+    },
+    // 添加
+    handleCreate() {
+      console.log("添加");
     },
   },
 };

@@ -4,7 +4,7 @@ let BaseURL = '';
 if(dev) {
     BaseURL = '/api'; // 本地webpack本地代理
 } else {
-    BaseURL = 'http://1.116.79.69:8080'; // 服务器ngix反向代理 
+    BaseURL = 'http://10.10.10.32:8080'; // 服务器ngix反向代理 
 }
 
 export { BaseURL };
