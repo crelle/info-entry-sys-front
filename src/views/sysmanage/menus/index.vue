@@ -37,7 +37,7 @@
                 style="margin-left: 10px"
                 type="primary"
                 icon="el-icon-edit"
-                @click="handleCreate"
+                @click="addClick()"
               >
                 添加
               </el-button>
@@ -137,15 +137,23 @@
       >
       </el-pagination>
     </el-card>
-    <user-edit-dialog ref="userEditDialogRef"></user-edit-dialog>
+    <user-edit-dialog
+      :toChild="list"
+      ref="menusEditDialogRef"
+    ></user-edit-dialog>
   </div>
 </template>
 
 <script>
 import { queryMenu } from "@/api/menu";
+import UserEditDialog from "@/views/sysmanage/menus/dialog/menusEdit.vue";
 export default {
+  components: {
+    UserEditDialog,
+  },
   data() {
     return {
+      list: "",
       dialogStatus: "",
       formOptions: {
         name: "",
@@ -183,10 +191,17 @@ export default {
         }
       });
     },
-    // 编辑
+    // 添加
+    addClick() {
+      this.$refs.menusEditDialogRef.openDialog();
+      this.list = "添加";
+      console.log("我要添加");
+    },
+    // 编辑&
     handleClick(row) {
-      console.log("编辑");
-      // this.$refs.userEditDialogRef.openDialog(row);
+      this.$refs.menusEditDialogRef.openDialog(row);
+      this.list = "编辑";
+      console.log("编辑",row);
     },
     // 重置表单
     resetForm(formName) {
@@ -205,10 +220,6 @@ export default {
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
       this.queryMenus();
-    },
-    // 添加
-    handleCreate() {
-      console.log("添加111111");
     },
   },
 };

@@ -308,6 +308,7 @@ export default {
           }
           this.userEditForm.userAvatar = this.imageUrl;
           updateUser(this.userEditForm, this.initFormData.id).then((res) => {
+            console.log(res,11111111);
             if (res && res.code && res.code === "00000") {
               this.resetForm("userEditRef"); // 重置表单
               this.imageUrl = ""; // 清空头像

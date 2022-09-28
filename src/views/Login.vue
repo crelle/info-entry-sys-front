@@ -34,6 +34,7 @@
           <el-input
             v-model="ruleForm.username"
             placeholder="用户名"
+            
           ><i
               class="el-icon-user"
               slot="prepend"

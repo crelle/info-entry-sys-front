@@ -284,6 +284,7 @@ export default {
     // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row)
+      console.log(row);
     },
     // 重置表单
     resetForm(formName) {
