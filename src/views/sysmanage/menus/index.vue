@@ -116,11 +116,28 @@
           prop="requireAuth"
           min-width="120"
         ></el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="140">
-          <template slot-scope="scope">
-            <el-button type="text" size="small">详情</el-button>
-            <el-button type="text" size="mini" @click="handleClick(scope.row)">
+        <el-table-column fixed="right" label="操作" min-width="280">
+          <template slot-scope="{ row, $index }">
+            <el-button type="primary" size="small" icon="el-icon-share" plain
+              >详情</el-button
+            >
+            <el-button
+              type="primary"
+              icon="el-icon-edit"
+              size="mini"
+              plain
+              @click="handleClick(row)"
+            >
               编辑
+            </el-button>
+            <el-button
+              type="warning"
+              icon="el-icon-edit"
+              size="mini"
+              plain
+              @click="deleteMenu(row, $index)"
+            >
+              删除
             </el-button>
           </template>
         </el-table-column>
@@ -145,7 +162,7 @@
 </template>
 
 <script>
-import { queryMenu } from "@/api/menu";
+import { queryMenu, deleteMenu } from "@/api/menu";
 import UserEditDialog from "@/views/sysmanage/menus/dialog/menusEdit.vue";
 export default {
   components: {
@@ -191,6 +208,43 @@ export default {
         }
       });
     },
+    // 删除弹框
+    deleteMenu(row, index) {
+      this.$confirm("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.tableData.splice(index, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          // 点击确认，发起后台请求，删除该用户
+          // deleteMenu(row.id).then((res) => {
+          //   console.log(res, "点击确认，发起后台请求，删除该用户");
+          //   if (res.data.meta.status == 200) {
+          //     return this.$message({
+          //       type: "success",
+          //       message: "删除成功!",
+          //     });
+          //   } else {
+          //     this.$message({
+          //       type: "success",
+          //       message: "删除失败!",
+          //     });
+          //   }
+          // });
+        })
+        .catch(() => {
+          // 点击取消，取消该操作
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
     // 添加
     addClick() {
       this.$refs.menusEditDialogRef.openDialog();
@@ -201,7 +255,7 @@ export default {
     handleClick(row) {
       this.$refs.menusEditDialogRef.openDialog(row);
       this.list = "编辑";
-      console.log("编辑",row);
+      console.log("编辑", row, row.id);
     },
     // 重置表单
     resetForm(formName) {
