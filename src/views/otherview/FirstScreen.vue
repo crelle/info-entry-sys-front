@@ -32,43 +32,36 @@
         </el-card>
       </el-col>
     </el-row>
+    <!-- 各区域人员总况 -->
+    <el-col class="topname"> 各区域人员总况 </el-col>
+    <el-col :span="24" class="regions">
+      <el-card
+        class="block"
+        v-for="(item, index) in getRandomDatabt()"
+        :key="index"
+      >
+        <el-col
+          ><span style="font-size: 18px; font-weight: bold">地域 : </span
+          >{{ item.name }}
+        </el-col>
+        <el-col
+          ><span style="font-size: 18px; font-weight: bold">人员 : </span
+          >{{ item.value }} /人</el-col
+        >
+      </el-card>
+    </el-col>
 
-    <el-header class="topname"> 各区域人员总况 </el-header>
-    <el-header class="toptime"> {{ itemlis.time }} </el-header>
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <el-card class="">
-          <!-- 表格 -->
-          <el-card class="lis">
-            <p>各区域人员总数</p>
-            <el-table :data="projectSum" stripe style="width: 100%">
-              <el-table-column prop="name" label="区域"> </el-table-column>
-              <el-table-column prop="projectNumber" label="人员总数/个">
-              </el-table-column>
-            </el-table>
-          </el-card>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-header class="topname"> 各区域项目总况 </el-header>
-    <el-header class="toptime"> {{ itemlis.time }} </el-header>
-    <el-row :gutter="20">
-      <el-col :span="24">
-        <!-- 表格 -->
-        <el-card class="lis" v-for="(item, index) in projectArea" :key="index">
-          <p>{{ item.name }}</p>
-          <el-table :data="item.list" height="250" stripe style="width: 100%">
-            <el-table-column prop="date" label="日期" width="180">
-            </el-table-column>
-            <el-table-column prop="name" label="项目名称" width="180">
-            </el-table-column>
-            <el-table-column prop="personnel" label="人员数量" width="180">
-            </el-table-column>
-            <el-table-column prop="address" label="项目详情"> </el-table-column>
-          </el-table>
-        </el-card>
-      </el-col>
-    </el-row>
+    <el-col class="topname"> 各区域项目总况 </el-col>
+    <el-col :span="24" class="regions">
+      <el-card
+        class="itemsblock"
+        v-for="(item, index) in getRandomData()"
+        :key="index"
+      >
+        <el-col>{{ item.time }}</el-col>
+        <el-col>{{ item.value }}</el-col>
+      </el-card>
+    </el-col>
   </div>
 </template>
 
@@ -241,9 +234,9 @@ export default {
     //   this.initEcharts();
     // });
     setInterval(() => {
-      // this.datasbt = this.getRandomDatabt();
-      // this.datas = this.getRandomData();
-    }, 1000);
+      this.datasbt = this.getRandomDatabt();
+      this.datas = this.getRandomData();
+    }, 3000);
   },
   methods: {
     handleOpen(key, keyPath) {
@@ -364,6 +357,10 @@ export default {
           name: "湖南地区",
           value: Math.round(Math.random() * 1000),
         },
+        {
+          name: "宁波地区",
+          value: Math.round(Math.random() * 1000),
+        },
       ];
     },
     // 图表 //随机数据
@@ -378,19 +375,7 @@ export default {
           value: Math.round(Math.random() * 1000),
         },
         {
-          time: "上海项目",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "四川项目",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "厦门项目",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "成都项目",
+          time: "宁波项目",
           value: Math.round(Math.random() * 1000),
         },
         {
@@ -519,80 +504,69 @@ export default {
     //图表
     optiontb() {
       return {
+        title: {
+          text: "各地区项目总数展示",
+          subtext: "地域/数据",
+        },
         tooltip: {
           trigger: "axis",
-
           axisPointer: {
             type: "shadow",
-            label: {
-              show: true,
+          },
+        },
+        legend: {
+          data: ["2022年"],
+        },
+        grid: {
+          left: "3%",
+          right: "4%",
+          bottom: "3%",
+          containLabel: true,
+        },
+        xAxis: {
+          type: "value",
+          boundaryGap: [0, 0.01],
+          splitLine: {
+            // 网格线
+            show: true,
+          },
+        },
+        yAxis: {
+          type: "category",
+          data: this.datas.map((d) => d.time),
+          axisLabel: {
+            // y轴文字的配置
+            show: true,
+            interval: 0,
+            textStyle: {
+              align: "right",
             },
           },
         },
-        toolbox: {
-          show: true,
-          feature: {
-            mark: { show: true },
-            dataView: { show: true, readOnly: false },
-            magicType: { show: true, type: ["line", "bar"] },
-            restore: { show: true },
-            saveAsImage: { show: true },
-          },
-        },
-        calculable: true,
-        legend: {
-          data: ["Growth", "项目总人数"],
-          itemGap: 5,
-          textStyle: {
-            fontSize: 18,
-            fontWeight: "bolder",
-          },
-        },
-        grid: {
-          top: "12%",
-          left: "1%",
-          right: "10%",
-          containLabel: true,
-        },
-        xAxis: [
-          {
-            type: "category",
-            data: this.datas.map((d) => d.time),
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-            name: "数/人",
-            axisLabel: {},
-          },
-        ],
-        dataZoom: [
-          {
-            show: true,
-            start: 0,
-            end: 100,
-          },
-          {
-            type: "inside",
-            start: 94,
-            end: 100,
-          },
-          {
-            show: true,
-            yAxisIndex: 0,
-            filterMode: "empty",
-            width: 30,
-            height: "80%",
-            showDataShadow: false,
-            left: "93%",
-          },
-        ],
         series: [
           {
-            name: "项目总人数",
+            name: "2022年",
             type: "bar",
             data: this.datas.map((d) => d.value),
+            label: {
+              show: true, // 开启显示
+              position: "right", // 在上方显示
+              textStyle: {
+                fontSize: 15,
+              },
+            },
+            itemStyle: {
+              normal: {
+                //这里是颜色
+                color: function () {
+                  //注意，颜色
+                  const colors =
+                    "#" + parseInt(Math.random() * 0xffffff).toString(16);
+                  // console.log(colors, "我是颜色");
+                  return colors;
+                },
+              },
+            },
           },
         ],
       };
@@ -728,5 +702,44 @@ export default {
 }
 .chart {
   height: 500px;
+}
+.regions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+}
+.block {
+  margin: 10px 20px;
+  width: 20%;
+  text-align: center;
+  ::v-deep .el-card__body {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    cursor: pointer;
+    .el-col-24 {
+      line-height: 42px;
+    }
+  }
+}
+.itemsblock {
+  margin: 10px 20px;
+  width: 8%;
+  border-radius: 50%;
+  text-align: center;
+  ::v-deep .el-card__body {
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: #f1f1f1;
+    border-radius: 50%;
+    cursor: pointer;
+    .el-col-24 {
+      line-height: 42px;
+      font-weight: bold;
+    }
+  }
 }
 </style>
