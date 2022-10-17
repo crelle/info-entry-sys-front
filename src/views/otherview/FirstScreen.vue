@@ -486,9 +486,9 @@ export default {
           {
             name: "区域人数",
             type: "pie",
-            top: 60,
-            left: 50,
-            radius: ["30%", "80%"],
+            top: 0,
+            left: 80,
+            radius: ["30%", "70%"],
             data: this.datasbt,
             emphasis: {
               itemStyle: {
@@ -639,7 +639,7 @@ export default {
     margin-bottom: 10px;
   }
   span:nth-child(2) {
-    font-size: 26px;
+    font-size: 24px;
     color: #b7b7b7;
     // width: 210px;
     overflow: hidden; //超出的文本隐藏

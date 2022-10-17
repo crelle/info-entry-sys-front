@@ -1,18 +1,19 @@
 <template>
   <div id="login_content">
-    <span class="sys_info">© {{new Date().getFullYear()}} - author <el-link
-        type="primary"
-        href="https://github.com/Crelle"
-        target="_blank"
-      >crell</el-link> & <el-link
+    <span class="sys_info"
+      >© {{ new Date().getFullYear() }} - author
+      <el-link type="primary" href="https://github.com/Crelle" target="_blank"
+        >crell</el-link
+      >
+      &
+      <el-link
         type="primary"
         href="https://github.com/CoderOfRat"
         target="_blank"
-      >CoderOfRat</el-link></span>
-    <div
-      class="login_form_main"
-      v-show="ifLogin"
+        >CoderOfRat</el-link
+      ></span
     >
+    <div class="login_form_main" v-show="ifLogin">
       <span>诚迈员工管理系统</span>
       <el-form
         :model="ruleForm"
@@ -21,84 +22,56 @@
         label-width="20px"
         size="mini"
       >
-        <el-form-item style="display: flex;justify-content: flex-end;">
-          <el-button
-            type="text"
-            @click="goRegister"
-          >还没有账号？注册一个</el-button>
+        <el-form-item style="display: flex; justify-content: flex-end">
+          <el-button type="primary" @click="goRegister"
+            >还没有账号？注册一个</el-button
+          >
         </el-form-item>
-        <el-form-item
-          label=""
-          prop="username"
-        >
-          <el-input
-            v-model="ruleForm.username"
-            placeholder="用户名"
-            
-          ><i
-              class="el-icon-user"
-              slot="prepend"
-            ></i></el-input>
+        <el-form-item label="" prop="username">
+          <el-input v-model="ruleForm.username" placeholder="用户名"
+            ><i class="el-icon-user" slot="prepend"></i
+          ></el-input>
         </el-form-item>
-        <el-form-item
-          label=""
-          prop="password"
-        >
+        <el-form-item label="" prop="password">
           <el-input
             type="password"
             v-model="ruleForm.password"
             placeholder="密码"
             show-password
-          ><i
-              class="el-icon-lock"
-              slot="prepend"
-            ></i></el-input>
+            ><i class="el-icon-lock" slot="prepend"></i
+          ></el-input>
         </el-form-item>
-        <el-form-item
-          label=""
-          prop="code"
-        >
+        <el-form-item label="" prop="code">
           <el-input
             v-model="ruleForm.code"
             maxlength="4"
             placeholder="验证码"
             @keyup.enter="submitForm('ruleForm')"
           >
-            <i
-              class="el-iconfont-yanzhengma"
-              slot="prepend"
-            ></i>
+            <i class="el-iconfont-yanzhengma" slot="prepend"></i>
             <el-image
               @click="changecode"
               slot="append"
-              style="width: 80px; height: 26px; display: block;"
+              style="width: 80px; height: 26px; display: block"
               :src="codeurl"
               fit="fill"
             ></el-image>
           </el-input>
         </el-form-item>
-        <el-form-item style="display: flex;justify-content: flex-end">
-          <el-button
-            @click="resetForm('ruleForm')"
-            size="mini"
-          >重置</el-button>
-          <el-button
-            type="primary"
-            size="mini"
-            @click="submitForm('ruleForm')"
-          >登录</el-button>
-          <el-button
-            @click="submitForm('ruleForm')"
-            size="mini"
-            type="text"
-          >忘记密码？</el-button>
+        <el-form-item style="display: flex; justify-content: flex-end">
+          <el-button @click="resetForm('ruleForm')" size="mini" type="primary"
+            >重置</el-button
+          >
+          <el-button type="primary" size="mini" @click="submitForm('ruleForm')"
+            >登录</el-button
+          >
+          <el-button @click="submitForm('ruleForm')" size="mini" type="text"
+            >忘记密码？</el-button
+          >
         </el-form-item>
       </el-form>
     </div>
-    <div
-      class="register_form_main"
-      v-show="!ifLogin"
-    >
+    <div class="register_form_main" v-show="!ifLogin">
       <span>账号注册</span>
       <el-row style="height: 100%">
         <el-col :span="12">
@@ -116,22 +89,21 @@
                 :src="imageUrl"
                 class="avatar"
                 draggable="false"
-              >
-              <i
-                v-else
-                class="el-icon-plus avatar-uploader-icon"
-              ></i>
+              />
+              <i v-else class="el-icon-plus avatar-uploader-icon"></i>
             </el-upload>
-            <span style="font-size: small;color: red;">* 请上传头像或选择默认头像</span>
-            <el-scrollbar style="height: 90px;width: 200px;">
+            <span style="font-size: small; color: red"
+              >* 请上传头像或选择默认头像</span
+            >
+            <el-scrollbar style="height: 90px; width: 200px">
               <div
                 class="demo-image__lazy"
-                :style="`width: ${defaultImgs.length*88}px`"
+                :style="`width: ${defaultImgs.length * 88}px`"
               >
                 <div
-                  v-for="(url,index) in defaultImgs"
+                  v-for="(url, index) in defaultImgs"
                   :key="index"
-                  @click="choosedefaultImg(index,url)"
+                  @click="choosedefaultImg(index, url)"
                   style="display: inline-block"
                 >
                   <el-image
@@ -153,106 +125,73 @@
               label-width="20px"
               size="mini"
             >
-              <el-form-item
-                label=""
-                prop="username"
-              >
+              <el-form-item label="" prop="username">
                 <el-input
                   v-model="registerRuleForm.username"
                   placeholder="用户名"
-                ><i
-                    class="el-icon-user"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-icon-user" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item
-                label=""
-                prop="userNickName"
-              >
+              <el-form-item label="" prop="userNickName">
                 <el-input
                   type="text"
                   v-model="registerRuleForm.userNickName"
                   placeholder="昵称"
-                ><i
-                    class="el-icon-magic-stick"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-icon-magic-stick" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item
-                label=""
-                prop="userPhone"
-              >
+              <el-form-item label="" prop="userPhone">
                 <el-input
                   type="tel"
                   v-model="registerRuleForm.userPhone"
                   placeholder="手机号"
-                ><i
-                    class="el-icon-mobile-phone"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-icon-mobile-phone" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item
-                label=""
-                prop="userEmail"
-              >
+              <el-form-item label="" prop="userEmail">
                 <el-input
                   type="email"
                   v-model="registerRuleForm.userEmail"
                   placeholder="邮箱"
-                ><i
-                    class="el-icon-message"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-icon-message" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item
-                label=""
-                prop="password"
-              >
+              <el-form-item label="" prop="password">
                 <el-input
                   type="password"
                   v-model="registerRuleForm.password"
                   placeholder="密码"
                   show-password
-                ><i
-                    class="el-icon-lock"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-icon-lock" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item
-                label=""
-                prop="confirmPwd"
-              >
+              <el-form-item label="" prop="confirmPwd">
                 <el-input
                   type="password"
                   show-password
                   v-model="registerRuleForm.confirmPwd"
                   placeholder="确认密码"
-                ><i
-                    class="el-iconfont-querenmima"
-                    slot="prepend"
-                  ></i></el-input>
+                  ><i class="el-iconfont-querenmima" slot="prepend"></i
+                ></el-input>
               </el-form-item>
-              <el-form-item style="display: flex;justify-content: flex-end">
+              <el-form-item style="display: flex; justify-content: flex-end">
                 <el-button
                   @click="resetForm('registerRuleForm')"
                   size="mini"
-                >重置</el-button>
-                <el-button
                   type="primary"
-                  size="mini"
-                  @click="register"
-                >确认</el-button>
-                <el-button
-                  @click="backLogin"
-                  size="mini"
-                  type="text"
-                >已有账号</el-button>
+                  >重置</el-button
+                >
+                <el-button type="primary" size="mini" @click="register"
+                  >确认</el-button
+                >
+                <el-button @click="backLogin" size="mini" type="primary"
+                  >已有账号</el-button
+                >
               </el-form-item>
             </el-form>
           </div>
         </el-col>
       </el-row>
-
     </div>
   </div>
 </template>
@@ -260,13 +199,13 @@
 <script>
 import { login, getVerifyCode, register } from "@/api/login/index";
 import { Encrypt } from "@/util/crypto/secret";
-import { BaseURL } from '@/api/config'
+import { BaseURL } from "@/api/config";
 export default {
   data() {
     return {
       ifLogin: true,
       fileType: {
-        fileType: 0
+        fileType: 0,
       },
       ruleForm: {
         username: "",
@@ -459,14 +398,13 @@ export default {
             return this.$message.error("请上传头像或选择默认头像");
           }
           this.registerRuleForm.userAvatar = this.imageUrl;
-          register(this.registerRuleForm).then((res ) => {
-            if(res && res.code && res.code === "00000") {
+          register(this.registerRuleForm).then((res) => {
+            if (res && res.code && res.code === "00000") {
               this.resetForm("registerRuleForm"); // 重置表单
               this.imageUrl = ""; // 清空头像
               this.nowIndex = -1; // 重置选中
-              this.$message.success("恭喜您，注册成功！")
+              this.$message.success("恭喜您，注册成功！");
               this.ifLogin = true;
-
             }
           });
         } else {
@@ -488,19 +426,19 @@ export default {
       console.log(this.imageUrl);
     },
     beforeAvatarUpload(file) {
-      console.log(file.type)
+      console.log(file.type);
       // 判断上传文件的类型
-      if(/^image\/+?/.test(file.type)){
-        this.fileType.fileType = 0
-      }else if (/^video\/+?/.test(file.type)) {
-        this.fileType.fileType = 1
+      if (/^image\/+?/.test(file.type)) {
+        this.fileType.fileType = 0;
+      } else if (/^video\/+?/.test(file.type)) {
+        this.fileType.fileType = 1;
       } else if (/^audio\/+?/.test(file.type)) {
-        this.fileType.fileType = 2
-      } else if(/^application\/vnd.ms-+?/.test(file.type)){
-        this.fileType.fileType = 3
+        this.fileType.fileType = 2;
+      } else if (/^application\/vnd.ms-+?/.test(file.type)) {
+        this.fileType.fileType = 3;
       } else {
         this.$message.error("此文件类型不支持!");
-        return false
+        return false;
       }
 
       const isLt2M = file.size / 1024 / 1024 < 100;
@@ -531,7 +469,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@deep: ~'>>>';
+@deep: ~">>>";
 #login_content {
   display: flex;
   height: 100vh;

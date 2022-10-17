@@ -100,8 +100,8 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose" size="mini">取 消</el-button>
-        <el-button @click="resetForm('userEditRef')" size="mini"
+        <el-button type="primary" @click="dialogClose" size="mini">取 消</el-button>
+        <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
           >重置</el-button
         >
         <el-button type="primary" size="mini" @click="onCertain"
@@ -246,8 +246,6 @@ export default {
                   this.$message.success("修改成功！");
                   this.dialogClose();
                 }
-
-                
               }
             );
           } else {

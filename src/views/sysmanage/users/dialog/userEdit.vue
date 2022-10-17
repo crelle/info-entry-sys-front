@@ -1,14 +1,14 @@
 <template>
   <div>
     <el-dialog
-      title="用户设置"
+      :title="toChild"
       :visible.sync="dialogFormVisible"
       lock-scroll
       @close="closeDialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <div class="grid-content-left">
               <el-upload
                 class="avatar-uploader"
@@ -49,7 +49,7 @@
                 </div>
               </el-scrollbar>
             </div>
-          </el-col>
+          </el-col> -->
           <el-col :span="12">
             <div class="grid-content-right">
               <el-form
@@ -127,10 +127,12 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogClose" size="mini">取 消</el-button>
-        <el-button @click="resetForm('userEditRef')" size="mini"
-          >重置</el-button
+        <el-button type="primary" @click="dialogClose" size="mini"
+          >取 消</el-button
         >
+        <!-- <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
+          >重置</el-button
+        > -->
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
         >
@@ -140,10 +142,13 @@
 </template>
 
 <script>
-import { BaseURL } from "@/api/config";
+// import { BaseURL } from "@/api/config";
 import { updateUser } from "@/api/user";
 
 export default {
+  props: {
+    toChild: String,
+  },
   data() {
     return {
       dialogFormVisible: false,
@@ -152,7 +157,7 @@ export default {
       },
       imageUrl: "",
       nowIndex: -1,
-      baseURL: BaseURL,
+      // baseURL: BaseURL,
       userEditForm: {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -166,7 +171,7 @@ export default {
       },
       initFormData: {},
       defaultImgs: [
-        "https://img0.baidu.com/it/u=1735274212,3352382534&fm=253&app=138&size=w931&n=0&f=JPG&fmt=auto?sec=1664298000&t=d809891ec3771145c813cf90875fc576",
+        // "https://img0.baidu.com/it/u=1735274212,3352382534&fm=253&app=138&size=w931&n=0&f=JPG&fmt=auto?sec=1664298000&t=d809891ec3771145c813cf90875fc576",
         // "http://1.116.79.69:80/fes/picture/2021-4-27-5da50eea-9146-40e5-836c-42ee5eb29092.png",
         // "http://1.116.79.69:80/fes/picture/2021-4-27-137171c6-5a54-4025-8e84-877cbab6c355.png",
         // "http://1.116.79.69:80/fes/picture/2021-4-27-d9b3fe51-6e70-4ffa-970d-2d517a7bdc7a.png",
@@ -216,22 +221,27 @@ export default {
   },
   methods: {
     openDialog(row) {
-      this.initFormData = row;
       this.dialogFormVisible = true; // 让弹窗显示
-      this.$nextTick(() => {
-        // 这个要加上
-        this.initForm(row); // 为表单赋值
-      });
+      if (row) {
+        this.initFormData = row;
+        this.$nextTick(() => {
+          // 这个要加上
+          this.initForm(row); // 为表单赋值
+        });
+      } else {
+        console.log("我是新增");
+        this.initForm("");
+      }
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        if (item === "userAvatar") {
-          // 最终保存的时候 此字段（头像地址）才是最终会
-          // 赋值给this.userEditForm.userAvatar的值，
-          // 所以要初始化的时候也要赋值一次
-          this.imageUrl = data[item];
-        }
+        // if (item === "userAvatar") {
+        //   // 最终保存的时候 此字段（头像地址）才是最终会
+        //   // 赋值给this.userEditForm.userAvatar的值，
+        //   // 所以要初始化的时候也要赋值一次
+        //   this.imageUrl = data[item];
+        // }
       });
     },
     closeDialog() {
@@ -252,75 +262,95 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-      this.imageUrl = ""; // 清空头像
+      // this.imageUrl = ""; // 清空头像
       this.nowIndex = -1; // 重置选中
     },
-    // 头像上传相关
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-      this.nowIndex = -1; // 取消默认头像选中样式
-      console.log(this.imageUrl);
-    },
-    beforeAvatarUpload(file) {
-      console.log(file.type);
-      // 判断上传文件的类型
-      if (/^image\/+?/.test(file.type)) {
-        this.fileType.fileType = 0;
-      } else if (/^video\/+?/.test(file.type)) {
-        this.fileType.fileType = 1;
-      } else if (/^audio\/+?/.test(file.type)) {
-        this.fileType.fileType = 2;
-      } else if (/^application\/vnd.ms-+?/.test(file.type)) {
-        this.fileType.fileType = 3;
-      } else {
-        this.$message.error("此文件类型不支持!");
-        return false;
-      }
+    // // 头像上传相关
+    // handleAvatarSuccess(res, file) {
+    //   this.imageUrl = URL.createObjectURL(file.raw);
+    //   this.nowIndex = -1; // 取消默认头像选中样式
+    //   console.log(this.imageUrl);
+    // },
+    // beforeAvatarUpload(file) {
+    //   console.log(file.type);
+    //   // 判断上传文件的类型
+    //   if (/^image\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 0;
+    //   } else if (/^video\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 1;
+    //   } else if (/^audio\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 2;
+    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
+    //     this.fileType.fileType = 3;
+    //   } else {
+    //     this.$message.error("此文件类型不支持!");
+    //     return false;
+    //   }
 
-      const isLt2M = file.size / 1024 / 1024 < 100;
+    //   const isLt2M = file.size / 1024 / 1024 < 100;
 
-      // if (!isJPG) {
-      //   this.$message.error("上传头像图片只能是 JPG 格式!");
-      // }
-      if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 100MB!");
-      }
-      // return isJPG && isLt2M;
-      return isLt2M;
-    },
-    // 选择默认头像
-    choosedefaultImg(index, url) {
-      if (index !== this.nowIndex) {
-        console.log(this.nowIndex);
-        this.nowIndex = index;
-        this.imageUrl = url;
-      } else {
-        console.log(this.nowIndex, -1);
-        this.nowIndex = -1;
-        this.imageUrl = "";
-      }
-    },
+    //   // if (!isJPG) {
+    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
+    //   // }
+    //   if (!isLt2M) {
+    //     this.$message.error("上传头像图片大小不能超过 100MB!");
+    //   }
+    //   // return isJPG && isLt2M;
+    //   return isLt2M;
+    // },
+    // // 选择默认头像
+    // choosedefaultImg(index, url) {
+    //   if (index !== this.nowIndex) {
+    //     console.log(this.nowIndex);
+    //     this.nowIndex = index;
+    //     this.imageUrl = url;
+    //   } else {
+    //     console.log(this.nowIndex, -1);
+    //     this.nowIndex = -1;
+    //     this.imageUrl = "";
+    //   }
+    // },
+
+    /* 保存  */
     onCertain() {
-      this.$refs["userEditRef"].validate((valid) => {
-        if (valid) {
-          if (!this.imageUrl) {
-            return this.$message.error("请上传头像或选择默认头像");
+      if (this.initFormData.id) {
+        console.log(this.initFormData.id, "this.initFormData.id");
+        // 修改
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log(valid, "修改的valid");
+          if (valid) {
+            updateUser(this.initFormData, this.initFormData.id).then((res) => {
+              console.log(res, "res11111");
+              if (res && res.code && res.code === "00000") {
+                this.resetForm("userEditRef"); // 重置表单
+                this.nowIndex = -1; // 重置选中
+                this.$message.success("修改成功！");
+                this.dialogClose();
+              }
+            });
+          } else {
+            return false;
           }
-          this.userEditForm.userAvatar = this.imageUrl;
-          updateUser(this.userEditForm, this.initFormData.id).then((res) => {
-            console.log(res,11111111);
-            if (res && res.code && res.code === "00000") {
-              this.resetForm("userEditRef"); // 重置表单
-              this.imageUrl = ""; // 清空头像
-              this.nowIndex = -1; // 重置选中
-              this.$message.success("修改成功！");
-              this.dialogClose();
-            }
-          });
-        } else {
-          return false;
-        }
-      });
+        });
+      } else {
+        console.log("增加了...");
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log(valid, "增加了的valid");
+          if (valid) {
+            addUser(this.initFormData, this.initFormData.id).then((res) => {
+              console.log(res, "res11111");
+              if (res && res.code && res.code === "00000") {
+                this.resetForm("userEditRef"); // 重置表单
+                this.nowIndex = -1; // 重置选中
+                this.$message.success("创建成功！");
+                this.dialogClose();
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+      }
     },
   },
 };
