@@ -12,10 +12,10 @@
       >
         <el-row>
           <el-col>
-            <el-form-item label="角色编码">
+            <el-form-item label="地域名称">
               <el-input
                 v-model="formOptions.name"
-                placeholder="请输入角色编码"
+                placeholder="请输入地域名称"
               ></el-input>
             </el-form-item>
             <el-form-item label="角色名称">

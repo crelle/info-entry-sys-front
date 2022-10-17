@@ -11,7 +11,7 @@ const Request = axios.create({
         'Cache-Control': 'no-cache'
     }
 });
-// request拦截器
+// request 拦截器
 Request.interceptors.request.use(
     config => {
         console.log("--- 开始请求接口 ---" + config.url);

@@ -38,6 +38,7 @@
             :unique-opened="true"
             router
           >
+          <!-- 侧边栏 -->
           <div v-for="item in userdetail.roles[0].menus" :key="item.path">
             <el-submenu
               :index="item.path"
@@ -52,7 +53,8 @@
                   :index="subitem.path"
                   v-for="subitem in item.childrenMenus"
                   :key="subitem.path"
-                >{{subitem.name}}</el-menu-item>
+                >{{subitem.name}}
+                </el-menu-item>
               </el-menu-item-group>
             </el-submenu>
             <el-menu-item v-else :index="item.path" >
@@ -100,6 +102,8 @@ export default {
     this.userdetail = window.localStorage.getItem("userdetail")
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
+      console.log(window.localStorage.getItem("userdetail"));
+      console.log( this.userdetail,"我是 this.userdetail");
     if (Object.keys(this.userdetail).length === 0) {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");

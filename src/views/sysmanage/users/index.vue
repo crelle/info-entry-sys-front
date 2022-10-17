@@ -27,73 +27,50 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item
-              label="是否可用"
-              required
-            >
-              <el-select
-                v-model="formOptions.enabled"
-                placeholder="请选择"
-              >
-                <el-option
-                  label="是"
-                  :value="true"
-                ></el-option>
-                <el-option
-                  label="否"
-                  :value="false"
-                ></el-option>
+            <el-form-item label="是否可用" required>
+              <el-select v-model="formOptions.enabled" placeholder="请选择">
+                <el-option label="是" :value="true"></el-option>
+                <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              label="账号是否未被锁定"
-              required
-            >
+            <el-form-item label="账号是否未被锁定" required>
               <el-select
                 v-model="formOptions.accountNonLocked"
                 placeholder="请选择"
               >
-                <el-option
-                  label="是"
-                  :value="true"
-                ></el-option>
-                <el-option
-                  label="否"
-                  :value="false"
-                ></el-option>
+                <el-option label="是" :value="true"></el-option>
+                <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="12">
-            <el-form-item
-              label="账号是否未过期"
-              required
-            >
+            <el-form-item label="账号是否未过期" required>
               <el-select
                 v-model="formOptions.accountNonExpired"
                 placeholder="请选择"
               >
-                <el-option
-                  label="是"
-                  :value="true"
-                ></el-option>
-                <el-option
-                  label="否"
-                  :value="false"
-                ></el-option>
+                <el-option label="是" :value="true"></el-option>
+                <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="24"
-            :class="Object.keys(formOptions).length % 3 === 0 ? 'nextline_action_button_content': (Object.keys(formOptions).length % 3 === 1 ? 'inline2_action_button_content' : 'inline1_action_button_content')"
+          <el-col
+            :span="24"
+            :class="
+              Object.keys(formOptions).length % 3 === 0
+                ? 'nextline_action_button_content'
+                : Object.keys(formOptions).length % 3 === 1
+                ? 'inline2_action_button_content'
+                : 'inline1_action_button_content'
+            "
           >
             <el-form-item>
-              <el-button
-                type="primary"
-                @click="queryUserList"
-              >查询</el-button>
+              <el-button type="primary" @click="queryUserList">查询</el-button>
+              <el-button type="primary" icon="el-icon-edit" @click="addClick"
+                >新增</el-button
+              >
             </el-form-item>
           </el-col>
         </el-row>
@@ -112,18 +89,8 @@
         size="mini"
         height="380"
       >
-        <el-table-column
-          type="selection"
-          width="55"
-          fixed
-        >
-        </el-table-column>
-        <el-table-column
-          label="序号"
-          type="index"
-          width="55"
-          fixed
-        >
+        <el-table-column type="selection" width="55" fixed> </el-table-column>
+        <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
           prop="id"
@@ -166,7 +133,9 @@
           min-width="135"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.accountNonExpired ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{
+            scope.row.accountNonExpired ? "是" : "否"
+          }}</template>
         </el-table-column>
         <el-table-column
           prop="accountNonLocked"
@@ -174,7 +143,9 @@
           min-width="140"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.accountNonLocked ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{
+            scope.row.accountNonLocked ? "是" : "否"
+          }}</template>
         </el-table-column>
         <el-table-column
           prop="enabled"
@@ -182,7 +153,9 @@
           min-width="120"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{scope.row.enabled ? '是' : '否'}}</template>
+          <template slot-scope="scope">{{
+            scope.row.enabled ? "是" : "否"
+          }}</template>
         </el-table-column>
         <el-table-column
           prop="role"
@@ -196,20 +169,22 @@
               disable-transitions
               v-for="item in scope.row.roles"
               :key="item.id"
-            >{{item.nameZh}}</el-tag>
+              >{{ item.nameZh }}</el-tag
+            >
           </template>
         </el-table-column>
-        <el-table-column
-          fixed="right"
-          label="操作"
-          min-width="140"
-        >
-          <template slot-scope="scope">
+        <el-table-column fixed="right" label="操作" min-width="140">
+          <template slot-scope="{ row, $index }">
+            <el-button @click="handleClick(row)" type="primary" size="mini"
+              >编辑</el-button
+            >
             <el-button
-              @click="handleClick(scope.row)"
-              type="text"
+              type="primary"
               size="mini"
-            >编辑</el-button>
+              @click="deleteMenu(row, $index)"
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -226,20 +201,23 @@
       >
       </el-pagination>
     </el-card>
-    <user-edit-dialog ref="userEditDialogRef"></user-edit-dialog>
-
+    <user-edit-dialog
+      :toChild="list"
+      ref="userEditDialogRef"
+    ></user-edit-dialog>
   </div>
 </template>
 
 <script>
-import { queryUser } from "@/api/user";
+import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
 export default {
   components: {
-    UserEditDialog
+    UserEditDialog,
   },
   data() {
     return {
+      list: "",
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -258,7 +236,7 @@ export default {
       multipleSelection: [],
     };
   },
-    mounted() {
+  mounted() {
     this.queryUserList();
   },
   methods: {
@@ -266,14 +244,18 @@ export default {
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          let data = { condition: { ...this.formOptions } };
-          data.pageNo = this.paginationOptions.pageNo;
-          data.pageSize = this.paginationOptions.pageSize;
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "datadatadatadata");
           queryUser(data).then((res) => {
+            console.log(res, "resresresres");
             if (res && res.code && res.code === "00000") {
               this.resetForm("userQueryRef"); // 重置表单
-              this.tableData = res.data.content; // 表格数据赋值
-              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+              this.tableData = res.data.records; // 表格数据赋值
+              this.paginationOptions.total = res.data.pages; // 分页器赋值
+              console.log(res.data, "0000");
             }
           });
         } else {
@@ -281,9 +263,53 @@ export default {
         }
       });
     },
+    // 删除弹框
+    deleteMenu(row, index) {
+      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+        .then(() => {
+          this.tableData.splice(index, 1);
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+          // 点击确认，发起后台请求，删除该用户
+          deleteMenu(row.id).then((res) => {
+            console.log(res, "点击确认，发起后台请求，删除该用户");
+            // if (res.data.meta.status == 200) {
+            //   return this.$message({
+            //     type: "success",
+            //     message: "删除成功!",
+            //   });
+            // } else {
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
+          });
+        })
+        .catch(() => {
+          // 点击取消，取消该操作
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 添加
+    addClick() {
+      this.$refs.userEditDialogRef.openDialog();
+      this.list = "添加";
+      console.log("我要添加");
+    },
     // 编辑
     handleClick(row) {
-      this.$refs.userEditDialogRef.openDialog(row)
+      this.$refs.userEditDialogRef.openDialog(row);
+      this.list = "编辑";
+      console.log("编辑", row, row.id);
     },
     // 重置表单
     resetForm(formName) {
@@ -359,5 +385,7 @@ export default {
 @{deep} .el-form-item__label {
   width: 140px;
 }
-
+::v-deep .el-message-box__btns .el-button{
+  background-color: black!important;
+}
 </style>

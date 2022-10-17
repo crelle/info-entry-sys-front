@@ -11,18 +11,18 @@
         :model="formOptions"
       >
         <el-row>
+          <div class="toptitle">员工</div>
           <el-col>
-            <el-form-item label="菜单名称">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="菜单名称"
-              ></el-input>
-            </el-form-item>
-            <el-form-item label="是否需要鉴权">
-              <el-select v-model="formOptions.requireAuth" placeholder="请选择">
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
+            <el-form-item>
+              <el-button
+                class="filter-item"
+                style="margin-left: 10px"
+                type="primary"
+                icon="el-icon-plus"
+                @click="addClick()"
+              >
+                添加
+              </el-button>
             </el-form-item>
             <el-form-item label="是否可用">
               <el-select v-model="formOptions.enabled" placeholder="请选择">
@@ -32,15 +32,6 @@
             </el-form-item>
             <el-form-item>
               <el-button type="primary" @click="queryMenus">查询</el-button>
-              <el-button
-                class="filter-item"
-                style="margin-left: 10px"
-                type="primary"
-                icon="el-icon-edit"
-                @click="addClick()"
-              >
-                添加
-              </el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -66,43 +57,43 @@
           fixed
         ></el-table-column>
         <el-table-column
-          label="菜单标识"
+          label="员工工号"
           prop="id"
           min-width="120"
           fixed
         ></el-table-column>
         <el-table-column
-          label="菜单名称"
+          label="员工姓名"
           prop="name"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="后台资源地址"
+          label="员工性别"
           prop="url"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="前台页面路径"
+          label="员工部门"
           prop="path"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="前台组件名称"
+          label="直属上级"
           prop="component"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="菜单图标"
+          label="所在项目"
           prop="iconCls"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="菜单类型"
+          label="入职时间"
           prop="menuType"
           min-width="120"
         ></el-table-column>
         <el-table-column
-          label="菜单顺序"
+          label="员工状态"
           prop="sort"
           min-width="120"
         ></el-table-column>
@@ -118,7 +109,11 @@
         ></el-table-column>
         <el-table-column fixed="right" label="操作" min-width="280">
           <template slot-scope="{ row, $index }">
-            <el-button type="primary" size="small" icon="el-icon-share"
+            <el-button
+              type="primary"
+              size="small"
+              icon="el-icon-share"
+              @click="jumpDetails(row, $index)"
               >详情</el-button
             >
             <el-button
@@ -161,7 +156,7 @@
 
 <script>
 import { queryMenu, deleteMenu } from "@/api/menu";
-import UserEditDialog from "@/views/sysmanage/menus/dialog/menusEdit.vue";
+import UserEditDialog from "@/views/discipline/maths/newly_build/build.vue";
 export default {
   components: {
     UserEditDialog,
@@ -210,7 +205,7 @@ export default {
       });
     },
     // 删除弹框
-    deleteMenu(row, index) {
+    deleteMenu(index) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "删除菜单", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -276,9 +271,22 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryMenus();
     },
+    // 跳转详情页面
+    jumpDetails(row) {
+      console.log("详情页面", row);
+      this.$router.push({ name: "details", query: { id: row.id } });
+
+      window.sessionStorage.setItem("id", JSON.stringify(row));
+    },
   },
 };
 </script>
 
-<style>
-</style>
+<style lang="less" scoped>
+.toptitle {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+</style>>
+

@@ -4,7 +4,7 @@ import Request from '@/util/axios/request'
 //
 const queryRole = (data) => Request({
     method: 'post',
-    url: BaseURL + '/role/page',
+    url: BaseURL + '/sysmgmt/role/page',
     data
 })
 

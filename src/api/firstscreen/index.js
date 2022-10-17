@@ -5,7 +5,7 @@ import Request from '@/util/axios/request'
 // 查询所有用户
 const queryUserAll = (params)=>Request({
     method: 'get',
-    url: BaseURL + '/user/all',
+    url: BaseURL + '/sysmgmt/user/all',
     params
 })
 export {

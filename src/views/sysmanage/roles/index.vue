@@ -84,7 +84,7 @@
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="scope">
-            <el-button @click="onEditRole(scope.row)" type="text" size="mini"
+            <el-button @click="onEditRole(scope.row)" type="primary" size="mini"
               >编辑</el-button
             >
           </template>
