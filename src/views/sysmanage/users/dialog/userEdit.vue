@@ -87,6 +87,15 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
+                <el-form-item label="" prop="password">
+                  <el-input
+                    type="email"
+                    v-model="userEditForm.password"
+                    placeholder="密码"
+                    :disabled="true"
+                    ><i class="el-icon-message" slot="prepend"></i
+                  ></el-input>
+                </el-form-item>
                 <el-form-item
                   label="是否可用"
                   label-width="100px"
@@ -142,8 +151,7 @@
 </template>
 
 <script>
-// import { BaseURL } from "@/api/config";
-import { updateUser } from "@/api/user";
+import { updateUser, addUser } from "@/api/user";
 
 export default {
   props: {
@@ -162,7 +170,7 @@ export default {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        password: "",
+        password: "123456",
         userAvatar: "",
         userEmail: "",
         userNickName: "",
@@ -191,6 +199,19 @@ export default {
             min: 3,
             max: 10,
             message: "用户名长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
+        ],
+        password: [
+          {
+            required: true,
+            message: "请输入密码",
+            trigger: ["blur", "change"],
+          },
+          {
+            min: 1,
+            max: 16,
+            message: "用户名长度在1-16 个字符",
             trigger: "blur",
           },
         ],
@@ -230,7 +251,7 @@ export default {
         });
       } else {
         console.log("我是新增");
-        this.initForm("");
+        // this.initForm("");
       }
     },
     initForm(data) {
@@ -314,16 +335,22 @@ export default {
     /* 保存  */
     onCertain() {
       if (this.initFormData.id) {
-        console.log(this.initFormData.id, "this.initFormData.id");
+        this.userEditForm.id = this.initFormData.id;
+        this.initFormData = this.userEditForm;
+        console.log(this.userEditForm, "userEditFormuserEditForm123");
+        console.log(
+          this.userEditForm.id,
+          this.userEditForm,
+          "this.initFormData.id"
+        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateUser(this.initFormData, this.initFormData.id).then((res) => {
+            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
-                this.resetForm("userEditRef"); // 重置表单
-                this.nowIndex = -1; // 重置选中
+                this.$parent.resetForm();
                 this.$message.success("修改成功！");
                 this.dialogClose();
               }
@@ -337,10 +364,10 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.initFormData, this.initFormData.id).then((res) => {
-              console.log(res, "res11111");
+            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                this.resetForm("userEditRef"); // 重置表单
+                this.$parent.resetForm();
                 this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
