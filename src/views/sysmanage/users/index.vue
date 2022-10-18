@@ -128,6 +128,13 @@
         >
         </el-table-column>
         <el-table-column
+          prop="password"
+          label="密码"
+          min-width="80"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
           prop="accountNonExpired"
           label="账户是否未过期"
           min-width="135"
@@ -252,10 +259,9 @@ export default {
           queryUser(data).then((res) => {
             console.log(res, "resresresres");
             if (res && res.code && res.code === "00000") {
-              this.resetForm("userQueryRef"); // 重置表单
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.pages; // 分页器赋值
-              console.log(res.data, "0000");
+              console.log(res.data, "20220000");
             }
           });
         } else {
@@ -278,17 +284,17 @@ export default {
           // 点击确认，发起后台请求，删除该用户
           deleteMenu(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该用户");
-            // if (res.data.meta.status == 200) {
-            //   return this.$message({
-            //     type: "success",
-            //     message: "删除成功!",
-            //   });
-            // } else {
-            //   this.$message({
-            //     type: "success",
-            //     message: "删除失败!",
-            //   });
-            // }
+            if (res.data.meta.status == 200) {
+              return this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "success",
+                message: "删除失败!",
+              });
+            }
           });
         })
         .catch(() => {
@@ -312,8 +318,8 @@ export default {
       console.log("编辑", row, row.id);
     },
     // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
+    resetForm() {
+      this.queryUserList();
     },
     // 表格复选动作
     handleSelectionChange(val) {
@@ -385,7 +391,7 @@ export default {
 @{deep} .el-form-item__label {
   width: 140px;
 }
-::v-deep .el-message-box__btns .el-button{
-  background-color: black!important;
+::v-deep .el-message-box__btns .el-button {
+  background-color: black !important;
 }
 </style>

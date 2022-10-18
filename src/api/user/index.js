@@ -21,7 +21,6 @@ const updateUser = (data, id) =>
   Request({
     method: "put",
     url: `${BaseURL}/sysmgmt/user/update/${id}`,
-    // url: BaseURL + '/sysmgmt/user/update/{id}',
     data,
   });
 
@@ -37,7 +36,7 @@ const addUser = (data) =>
 const deleteMenu = (data) =>
   Request({
     method: "DELETE",
-    url: BaseURL + "/sysmgmt/user/delete/{id}",
+    url: BaseURL + "/sysmgmt/user/delete/" + data,
     data,
   });
 export { queryUser, updateUser, addUser, deleteMenu };
