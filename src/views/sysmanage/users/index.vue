@@ -34,7 +34,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="12">
+          <!-- <el-col :span="12">
             <el-form-item label="账号是否未被锁定" required>
               <el-select
                 v-model="formOptions.accountNonLocked"
@@ -55,7 +55,7 @@
                 <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
           <el-col
             :span="24"
             :class="
@@ -93,51 +93,46 @@
         <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
-          prop="id"
-          label="标识"
-          min-width="120"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
           prop="username"
           label="用户名"
-          min-width="140"
+          min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
           prop="userNickName"
           label="昵称"
-          min-width="140"
+          min-width="80"
           show-overflow-tooltip
         >
+        </el-table-column>
+        <el-table-column label="工号" min-width="100" show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="userPhone"
           label="手机号"
-          min-width="140"
+          min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
           prop="userEmail"
           label="邮箱"
-          min-width="180"
+          min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="password"
           label="密码"
           min-width="80"
           show-overflow-tooltip
         >
-        </el-table-column>
-        <el-table-column
+        </el-table-column> -->
+        <!-- <el-table-column
           prop="accountNonExpired"
           label="账户是否未过期"
-          min-width="135"
+          min-width="80"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{
@@ -147,17 +142,17 @@
         <el-table-column
           prop="accountNonLocked"
           label="账户是否未被锁定"
-          min-width="140"
+          min-width="90"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{
             scope.row.accountNonLocked ? "是" : "否"
           }}</template>
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="enabled"
           label="账户是否可用"
-          min-width="120"
+          min-width="80"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{
@@ -168,7 +163,7 @@
           prop="role"
           label="角色"
           show-overflow-tooltip
-          min-width="120"
+          min-width="80"
         >
           <template slot-scope="scope">
             <el-tag
@@ -182,6 +177,9 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
+            <el-button @click="detailsClick(row)" type="primary" size="small"
+              >详情</el-button
+            >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button
             >
@@ -195,32 +193,40 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="paginationOptions.pageNo"
-        :page-sizes="paginationOptions.pageSizes"
-        :page-size="paginationOptions.pageSize"
-        :layout="paginationOptions.loyout"
-        background
-        :total="paginationOptions.total"
-        size="mini"
-      >
-      </el-pagination>
+      <div class="block">
+        <!-- <span class="demonstration">完整功能</span> -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="paginationOptions.pageNo"
+          :page-sizes="paginationOptions.pageSizes"
+          :page-size="paginationOptions.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="paginationOptions.total"
+          size="mini"
+        >
+        </el-pagination>
+      </div>
     </el-card>
     <user-edit-dialog
       :toChild="list"
       ref="userEditDialogRef"
     ></user-edit-dialog>
+    <user-dait-dialog
+      :toChild="list"
+      ref="userDaitDialogRef"
+    ></user-dait-dialog>
   </div>
 </template>
 
 <script>
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,
+    UserDaitDialog,
   },
   data() {
     return {
@@ -231,6 +237,7 @@ export default {
         enabled: true,
         userPhone: "",
         username: "",
+        jobNo: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -241,6 +248,18 @@ export default {
       },
       tableData: [],
       multipleSelection: [],
+      userEditForm: {
+        accountNonExpired: true,
+        accountNonLocked: true,
+        enabled: true,
+        password: "123456",
+        userAvatar: "",
+        userEmail: "",
+        userNickName: "",
+        userPhone: "",
+        username: "",
+        roles: "",
+      },
     };
   },
   mounted() {
@@ -255,13 +274,13 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "datadatadatadata");
+          console.log(data, "data---------");
           queryUser(data).then((res) => {
-            console.log(res, "resresresres");
+            console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              this.paginationOptions.total = res.data.pages; // 分页器赋值
-              console.log(res.data, "20220000");
+              console.log(this.tableData);
+              this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
         } else {
@@ -276,15 +295,11 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
           // 点击确认，发起后台请求，删除该用户
           deleteMenu(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该用户");
-            if (res.data.meta.status == 200) {
+            if (res.code == "00000") {
+              this.tableData.splice(index, 1);
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -315,11 +330,16 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑";
-      console.log("编辑", row, row.id);
+      console.log("编辑----", row, row.id);
+    },
+    // 详情
+    detailsClick(row) {
+      console.log("详情", row, row.id);
+      this.$refs.userDaitDialogRef.openDialog(row);
     },
     // 重置表单
-    resetForm() {
-      this.queryUserList();
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
     },
     // 表格复选动作
     handleSelectionChange(val) {

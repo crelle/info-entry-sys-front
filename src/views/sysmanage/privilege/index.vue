@@ -114,7 +114,7 @@ export default {
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryRoleRef"); // 重置表单
               this.tableData = res.data.content; // 表格数据赋值
-              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
         } else {

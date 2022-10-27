@@ -11,27 +11,30 @@
       >
         <el-row>
           <el-col :span="8">
-            <el-form-item label="客户名称">
+            <el-form-item label="部门名称">
               <el-input
                 v-model="formOptions.username"
-                placeholder="客户名称"
+                placeholder="部门名称"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="接口人">
+            <el-form-item label="负责人">
               <el-input
                 v-model="formOptions.userNickName"
-                placeholder="接口人姓名"
+                placeholder="负责人姓名"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="地域">
-              <el-input placeholder="地域名称"></el-input>
+          <!-- <el-col :span="8">
+            <el-form-item label="是否可用" required>
+              <el-select v-model="formOptions.enabled" placeholder="请选择">
+                <el-option label="是" :value="true"></el-option>
+                <el-option label="否" :value="false"></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12">
+          <el-col :span="12">
             <el-form-item label="账号是否未被锁定" required>
               <el-select
                 v-model="formOptions.accountNonLocked"
@@ -92,28 +95,14 @@
         </el-table-column>
         <el-table-column
           prop="username"
-          label="客户名"
+          label="部门名"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop=""
-          label="地域"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop=""
-          label="办公地点"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
           prop="userNickName"
-          label="接口人"
+          label="负责人"
           min-width="80"
           show-overflow-tooltip
         >
@@ -132,7 +121,13 @@
           show-overflow-tooltip
         >
         </el-table-column>
-
+        <el-table-column
+          prop=""
+          label="部门总部地址"
+          min-width="100"
+          show-overflow-tooltip
+        >
+        </el-table-column>
         <!-- <el-table-column
           prop="password"
           label="密码"
@@ -232,8 +227,8 @@
 
 <script>
 import { queryUser, deleteMenu } from "@/api/user";
-import UserEditDialog from "@/views/discipline/maths/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/discipline/maths/dialog/userDetails.vue";
+import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/sysmanage/department/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,
@@ -275,7 +270,7 @@ export default {
     this.queryUserList();
   },
   methods: {
-    // 查询客户列表
+    // 查询部门列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -288,7 +283,9 @@ export default {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData);
+              console.log(
+                this.tableData,
+              );
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
@@ -309,9 +306,9 @@ export default {
             type: "success",
             message: "删除成功!",
           });
-          // 点击确认，发起后台请求，删除该客户
+          // 点击确认，发起后台请求，删除该部门
           deleteMenu(row.id).then((res) => {
-            console.log(res, "点击确认，发起后台请求，删除该客户");
+            console.log(res, "点击确认，发起后台请求，删除该部门");
             if (res.data.meta.status == 200) {
               return this.$message({
                 type: "success",

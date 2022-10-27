@@ -8,7 +8,7 @@
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -16,73 +16,66 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="菜单名称" prop="name">
-                  <el-input v-model="userEditForm.name" placeholder="菜单名称"
+                <el-form-item label="客户名称" prop="username">
+                  <el-input
+                    v-model="userEditForm.username"
+                    placeholder="客户名称"
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="后台资源地址" prop="url">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.url"
-                    placeholder="后台资源地址"
+                <el-form-item label="地域" prop="address">
+                  <el-input type="email" placeholder="地域"
                     ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="前台资源地址" prop="path">
+                <el-form-item label="办公地点" prop="addplace">
+                  <el-input type="email" placeholder="办公地点"
+                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="接口人" prop="userNickName">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.userNickName"
+                    placeholder="接口人"
+                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="userPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.path"
-                    placeholder="前台资源地址"
+                    v-model="userEditForm.userPhone"
+                    placeholder="手机号"
                     ><i class="el-icon-mobile-phone" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="菜单图标" prop="iconLs">
+                <el-form-item label="邮箱" prop="userEmail">
                   <el-input
                     type="email"
-                    v-model="userEditForm.iconLs"
-                    placeholder="菜单图标"
+                    v-model="userEditForm.userEmail"
+                    placeholder="邮箱"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="菜单类型">
+
+                <el-form-item label="介绍" prop="">
                   <el-input
-                    type="text"
-                    v-model="userEditForm.parentId"
-                    placeholder="菜单类型"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="菜单顺序">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.menuSort"
-                    placeholder="菜单顺序"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item
-                  label="是否可用"
-                  label-width="100px"
-                  prop="enabled"
-                >
-                  <el-switch
-                    v-model="userEditForm.enabled"
-                    active-text="可用"
-                    inactive-text="不可用"
+                    type="textarea"
+                    :rows="2"
+                    placeholder="请输入内容"
+                    v-model="textarea"
                   >
-                  </el-switch>
+                  </el-input>
                 </el-form-item>
-                <el-form-item
-                  label="是否鉴权"
-                  label-width="100px"
-                  prop="requireAuth"
-                >
-                  <el-switch
-                    v-model="userEditForm.requireAuth"
-                    active-text="未鉴权"
-                    inactive-text="鉴权"
-                  ></el-switch>
+                <el-form-item label="" prop="password">
+                  <el-input
+                    class="passwordat"
+                    type="email"
+                    v-model="userEditForm.password"
+                    placeholder="密码"
+                    :disabled="true"
+                    ><i class="el-icon-message" slot="prepend"></i
+                  ></el-input>
                 </el-form-item>
               </el-form>
             </div>
@@ -93,9 +86,6 @@
         <el-button type="primary" @click="dialogClose" size="mini"
           >取 消</el-button
         >
-        <!-- <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
-          >重置</el-button
-        > -->
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
         >
@@ -105,7 +95,7 @@
 </template>
 
 <script>
-import { modifyTheMenu, createMenu } from "@/api/menu";
+import { updateUser, addUser } from "@/api/user";
 
 export default {
   props: {
@@ -113,6 +103,7 @@ export default {
   },
   data() {
     return {
+      textarea: "",
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -121,36 +112,35 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        component: "",
+        accountNonExpired: true,
+        accountNonLocked: true,
         enabled: true,
-        iconLs: "",
-        menuType: "",
-        name: "",
-        path: "",
-        requireAuth: true,
-        url: "",
-        menuSort:"",
-        parentId:""
+        password: "123456",
+        userAvatar: "",
+        userEmail: "",
+        userNickName: "",
+        userPhone: "",
+        username: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
+        username: [
           {
             required: true,
-            message: "请输入菜单名称",
+            message: "请输入用户名",
             trigger: ["blur", "change"],
           },
-          // {
-          //   min: 3,
-          //   max: 10,
-          //   message: "用户名长度在 3 到 10 个字符",
-          //   trigger: "blur",
-          // },
+          {
+            min: 3,
+            max: 10,
+            message: "用户名长度在 3 到 10 个字符",
+            trigger: "blur",
+          },
         ],
-        url: [
+        password: [
           {
             required: true,
-            message: "请输入后台资源地址",
+            message: "请输入密码",
             trigger: ["blur", "change"],
           },
           // {
@@ -161,17 +151,38 @@ export default {
           // },
         ],
 
-        path: [
+        userEmail: [
           {
             required: true,
-            message: "请填写前台资源地址",
+            message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        iconLs: [
+        userNickName: [
           {
-            required: false,
-            message: "请填写菜单图标",
+            required: true,
+            message: "请填写昵称",
+            trigger: ["blur", "change"],
+          },
+        ],
+        userPhone: [
+          {
+            required: true,
+            message: "请填写手机号码",
+            trigger: ["blur", "change"],
+          },
+        ],
+        address: [
+          {
+            required: true,
+            message: "请填写地域",
+            trigger: ["blur", "change"],
+          },
+        ],
+        addplace: [
+          {
+            required: true,
+            message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
         ],
@@ -190,16 +201,19 @@ export default {
         });
       } else {
         console.log("我是新增");
+        // this.initForm("");
       }
     },
     initForm(data) {
-     
       Object.keys(this.userEditForm).forEach((item) => {
-        // console.log(Object.keys(this.userEditForm),'------------1');
         this.userEditForm[item] = data[item] ? data[item] : null;
-        
+        // if (item === "userAvatar") {
+        //   // 最终保存的时候 此字段（头像地址）才是最终会
+        //   // 赋值给this.userEditForm.userAvatar的值，
+        //   // 所以要初始化的时候也要赋值一次
+        //   this.imageUrl = data[item];
+        // }
       });
-      // console.log(this.userEditForm, '------------');
     },
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
@@ -213,14 +227,62 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.initForm(this.userEditForm);
-      // this.resetFormData();
+      // this.initForm(this.initFormData);
+      this.initForm(this.userEditForm);
+      this.resetFormData();
     },
 
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
+      // // this.imageUrl = ""; // 清空头像
+      // this.nowIndex = -1; // 重置选中
     },
+    // // 头像上传相关
+    // handleAvatarSuccess(res, file) {
+    //   this.imageUrl = URL.createObjectURL(file.raw);
+    //   this.nowIndex = -1; // 取消默认头像选中样式
+    //   console.log(this.imageUrl);
+    // },
+    // beforeAvatarUpload(file) {
+    //   console.log(file.type);
+    //   // 判断上传文件的类型
+    //   if (/^image\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 0;
+    //   } else if (/^video\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 1;
+    //   } else if (/^audio\/+?/.test(file.type)) {
+    //     this.fileType.fileType = 2;
+    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
+    //     this.fileType.fileType = 3;
+    //   } else {
+    //     this.$message.error("此文件类型不支持!");
+    //     return false;
+    //   }
+
+    //   const isLt2M = file.size / 1024 / 1024 < 100;
+
+    //   // if (!isJPG) {
+    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
+    //   // }
+    //   if (!isLt2M) {
+    //     this.$message.error("上传头像图片大小不能超过 100MB!");
+    //   }
+    //   // return isJPG && isLt2M;
+    //   return isLt2M;
+    // },
+    // // 选择默认头像
+    // choosedefaultImg(index, url) {
+    //   if (index !== this.nowIndex) {
+    //     console.log(this.nowIndex);
+    //     this.nowIndex = index;
+    //     this.imageUrl = url;
+    //   } else {
+    //     console.log(this.nowIndex, -1);
+    //     this.nowIndex = -1;
+    //     this.imageUrl = "";
+    //   }
+    // },
 
     /* 保存  */
     onCertain() {
@@ -238,18 +300,16 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm, "----传的内容");
-            modifyTheMenu(this.userEditForm, this.userEditForm.id).then(
-              (res) => {
-                console.log(res, "---接口后的res");
-                if (res && res.code && res.code === "00000") {
-                  this.$message.success("修改成功！");
-                  // this.dialogClose();
-                  this.$parent.queryMenus();
-                  this.dialogFormVisible = false; // 让弹窗隐藏
-                }
+            console.log(this.userEditForm.password, "密码未空");
+            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "res11111");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                // this.dialogClose();
+                this.$parent.resetForm();
+                this.dialogFormVisible = false; // 让弹窗显
               }
-            );
+            });
           } else {
             return false;
           }
@@ -259,14 +319,14 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           if (valid) {
-            createMenu(this.userEditForm).then((res) => {
+            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
                 // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
-                this.$parent.queryMenus();
-                this.dialogFormVisible = false; // 让弹窗隐藏
+                this.dialogClose();
+                this.$parent.resetForm();
               }
             });
           } else {
@@ -283,7 +343,7 @@ export default {
 @deep: ~">>>";
 @{deep} .register_form_main {
   position: relative;
-  min-width: 40%;
+  min-width: 30%;
   overflow: hidden;
   > span {
     display: block;
@@ -357,5 +417,11 @@ export default {
   .el-input-group__append {
     padding: 0 2px;
   }
+}
+.passwordat {
+  display: none;
+}
+::v-deep .el-form-item__content {
+  width: 650px;
 }
 </style>

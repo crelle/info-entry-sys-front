@@ -1,5 +1,10 @@
 <template>
   <div class="menus_content">
+     <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
@@ -65,12 +70,12 @@
           width="55"
           fixed
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="菜单标识"
           prop="id"
           min-width="120"
           fixed
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           label="菜单名称"
           prop="name"
@@ -93,29 +98,40 @@
         ></el-table-column>
         <el-table-column
           label="菜单图标"
-          prop="iconCls"
+          prop="iconLs"
           min-width="120"
         ></el-table-column>
         <el-table-column
           label="菜单类型"
-          prop="menuType"
-          min-width="120"
+          prop="parentId"
+          min-width="80"
         ></el-table-column>
         <el-table-column
           label="菜单顺序"
-          prop="sort"
+          prop="menuSort"
           min-width="120"
         ></el-table-column>
+
         <el-table-column
-          label="是否可用"
           prop="enabled"
-          min-width="120"
-        ></el-table-column>
+          label="是否可用"
+          min-width="80"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{
+            scope.row.enabled ? "是" : "否"
+          }}</template>
+        </el-table-column>
         <el-table-column
-          label="是否需要鉴权"
           prop="requireAuth"
-          min-width="120"
-        ></el-table-column>
+          label="是否需要鉴权"
+          min-width="90"
+          show-overflow-tooltip
+        >
+          <template slot-scope="scope">{{
+            scope.row.requireAuth ? "是" : "否"
+          }}</template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="280">
           <template slot-scope="{ row, $index }">
             <el-button type="primary" size="small" icon="el-icon-share"
@@ -129,9 +145,8 @@
             >
               编辑
             </el-button>
-            <el-button
+             <el-button
               type="primary"
-              icon="el-icon-edit"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
@@ -140,17 +155,20 @@
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="paginationOptions.pageNo"
-        :page-sizes="paginationOptions.pageSizes"
-        :page-size="paginationOptions.pageSize"
-        :layout="paginationOptions.loyout"
-        background
-        :total="paginationOptions.total"
-      >
-      </el-pagination>
+      <div class="block">
+        <!-- <span class="demonstration">完整功能</span> -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="paginationOptions.pageNo"
+          :page-sizes="paginationOptions.pageSizes"
+          :page-size="paginationOptions.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="paginationOptions.total"
+          size="mini"
+        >
+        </el-pagination>
+      </div>
     </el-card>
     <user-edit-dialog
       :toChild="list"
@@ -178,10 +196,10 @@ export default {
       },
       paginationOptions: {
         pageNo: 1,
-        pageSizes: [10, 20, 30, 50, 100],
+        pageSizes: [10, 20, 30, 40],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        total: 40,
       },
     };
   },
@@ -192,16 +210,19 @@ export default {
     queryMenus() {
       this.$refs["queryMenuRef"].validate((valid) => {
         if (valid) {
-          let data = { condition: { ...this.formOptions } };
-          data.pageNo = this.paginationOptions.pageNo;
-          data.pageSize = this.paginationOptions.pageSize;
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log("data---------", data);
           queryMenu(data).then((res) => {
-            console.log(res, "我是res");
+            console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryMenuRef"); // 重置表单
-              this.tableData = res.data.content; // 表格数据赋值
+              this.tableData = res.data.records; // 表格数据赋值
               console.log(this.tableData, "我是tableData");
-              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+              console.log(res.data, " res.data.totalElements");
+              this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
         } else {
@@ -211,32 +232,27 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$confirm("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
           // 点击确认，发起后台请求，删除该用户
-          // deleteMenu(row.id).then((res) => {
-          //   console.log(res, "点击确认，发起后台请求，删除该用户");
-          //   if (res.data.meta.status == 200) {
-          //     return this.$message({
-          //       type: "success",
-          //       message: "删除成功!",
-          //     });
-          //   } else {
-          //     this.$message({
-          //       type: "success",
-          //       message: "删除失败!",
-          //     });
-          //   }
-          // });
+          deleteMenu(row.id).then((res) => {
+            console.log(res, "点击确认，发起后台请求，删除该用户");
+            if (res.code == "00000") {
+              return this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "success",
+                message: "删除失败!",
+              });
+            }
+          });
         })
         .catch(() => {
           // 点击取消，取消该操作
@@ -246,6 +262,7 @@ export default {
           });
         });
     },
+
     // 添加
     addClick() {
       this.$refs.menusEditDialogRef.openDialog();
@@ -268,6 +285,7 @@ export default {
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
+      console.log(val, "分页的val");
       this.paginationOptions.pageSize = val;
       this.queryMenus();
     },
@@ -280,5 +298,14 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+@deep: ~">>>";
+@{deep}.el-message-box__btns{ 
+  .el-button--small {
+  background-color: aqua!important
+  }
+}
+.el-card{
+  margin-top: 25px;
+}
 </style>

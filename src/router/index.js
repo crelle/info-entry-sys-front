@@ -54,6 +54,22 @@ const routes = [
         },
       },
       {
+        path: "region",
+        name: "regions",
+        component: () => import("@/views/sysmanage/region/index.vue"),
+        meta: {
+          title: "地域管理",
+        },
+      },
+      {
+        path: "department",
+        name: "departments",
+        component: () => import("@/views/sysmanage/department/index.vue"),
+        meta: {
+          title: "部门管理",
+        },
+      },
+      {
         path: "menu",
         name: "menus",
         component: () => import("@/views/sysmanage/menus/index.vue"),
@@ -62,11 +78,11 @@ const routes = [
         },
       },
       {
-        path: "math",
-        name: "maths",
+        path: "customer",
+        name: "customers",
         component: () => import("@/views/discipline/maths/index.vue"),
         meta: {
-          title: "数学",
+          title: "用户管理",
         },
         // children: [
         //   {
@@ -80,8 +96,8 @@ const routes = [
         // ]
       },
       {
-        path: "chinese",
-        name: "chineses",
+        path: "Interface",
+        name: "Interfaces",
         component: () => import("@/views/discipline/chineses/index.vue"),
         meta: {
           title: "语文",
@@ -109,16 +125,6 @@ const routes = [
         component: () => import("@/views/plans/index.vue"),
         meta: {
           title: "计划",
-        },
-      },
-      // 员工详情
-      {
-        path: "details",
-        name: "details",
-        component: () =>
-          import("@/views/discipline/maths/newly_build/details.vue"),
-        meta: {
-          title: "详情",
         },
       },
     ],

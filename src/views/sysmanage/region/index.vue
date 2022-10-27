@@ -12,18 +12,18 @@
       >
         <el-row>
           <el-col :span="8">
-            <el-form-item label="角色编码">
+            <el-form-item label="地域编码">
               <el-input
                 v-model="formOptions.name"
-                placeholder="角色编码"
+                placeholder="地域编码"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="角色名称">
+            <el-form-item label="地域名称">
               <el-input
                 v-model="formOptions.nameZh"
-                placeholder="角色名称"
+                placeholder="地域名称"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -67,26 +67,23 @@
           width="55"
           fixed
         ></el-table-column>
-        <!-- <el-table-column
-          label="角色标识"
-          prop="id"
-          min-width="120"
-          fixed
-        ></el-table-column> -->
         <el-table-column
-          label="角色编码"
-          prop="name"
-          min-width="120"
+          label="地域名称"
+          prop="nameZh"
+          min-width="100"
           fixed
         ></el-table-column>
         <el-table-column
-          label="角色名称"
-          prop="nameZh"
+          label="地域编码"
+          prop="name"
           min-width="120"
           fixed
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="{ row, $index }">
+            <el-button @click="lookClick(row)" type="primary" size="mini"
+              >查看</el-button
+            >
             <el-button @click="onEditRole(row)" type="primary" size="mini"
               >编辑</el-button
             >
@@ -119,15 +116,21 @@
       :toChild="list"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
+    <role-data-dialog
+      :toChild="list"
+      ref="roleDataDialogRef"
+    ></role-data-dialog>
   </div>
 </template>
 
 <script>
-import { queryRole,deleteRole } from "@/api/role";
-import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
+import { queryRole, deleteRole } from "@/api/role";
+import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
+import RoleDataDialog from "@/views/sysmanage/region/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleEditDialog,
+    RoleDataDialog
   },
   data() {
     return {
@@ -202,6 +205,12 @@ export default {
             message: "已取消删除",
           });
         });
+    },
+    // 查看
+    lookClick(row) {
+      this.$refs.roleDataDialogRef.openDialog(row);
+      this.list = "查看";
+      console.log("我要查看",row);
     },
     // 添加
     addClick() {
