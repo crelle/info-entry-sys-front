@@ -132,11 +132,11 @@
             scope.row.requireAuth ? "是" : "否"
           }}</template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="280">
+        <el-table-column fixed="right" label="操作" min-width="180">
           <template slot-scope="{ row, $index }">
-            <el-button type="primary" size="small" icon="el-icon-share"
+            <!-- <el-button type="primary" size="small" icon="el-icon-share"
               >详情</el-button
-            >
+            > -->
             <el-button
               type="primary"
               icon="el-icon-edit"
@@ -307,5 +307,8 @@ export default {
 }
 .el-card{
   margin-top: 25px;
+}
+::v-deep .cell {
+  text-align: center;
 }
 </style>

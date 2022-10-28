@@ -426,4 +426,7 @@ export default {
 ::v-deep .el-message-box__btns .el-button {
   background-color: black !important;
 }
+::v-deep .cell {
+  text-align: center;
+}
 </style>

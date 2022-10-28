@@ -237,5 +237,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+::v-deep .cell {
+  text-align: center;
+}
 </style>

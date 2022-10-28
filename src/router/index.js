@@ -80,9 +80,9 @@ const routes = [
       {
         path: "customer",
         name: "customers",
-        component: () => import("@/views/discipline/maths/index.vue"),
+        component: () => import("@/views/discipline/customer/index.vue"),
         meta: {
-          title: "用户管理",
+          title: "客户管理",
         },
         // children: [
         //   {
@@ -96,11 +96,27 @@ const routes = [
         // ]
       },
       {
-        path: "Interface",
-        name: "Interfaces",
-        component: () => import("@/views/discipline/chineses/index.vue"),
+        path: "interface",
+        name: "interfaces",
+        component: () => import("@/views/discipline/interface/index.vue"),
         meta: {
-          title: "语文",
+          title: "接口人管理",
+        },
+      },
+      {
+        path: "project",
+        name: "projects",
+        component: () => import("@/views/discipline/project/index.vue"),
+        meta: {
+          title: "项目管理",
+        },
+      },
+      {
+        path: "post",
+        name: "posts",
+        component: () => import("@/views/discipline/post/index.vue"),
+        meta: {
+          title: "项目管理",
         },
       },
       {

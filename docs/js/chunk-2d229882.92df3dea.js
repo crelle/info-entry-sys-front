@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d229882"],{de9d:function(n,e,t){"use strict";t.r(e);var s=function(){var n=this,e=n.$createElement,t=n._self._c||e;return t("div",{staticClass:"roles_content"},[n._v(" 当前是角色配置页 ")])},c=[],l={},u=l,a=t("2877"),o=Object(a["a"])(u,s,c,!1,null,null,null);e["default"]=o.exports}}]);

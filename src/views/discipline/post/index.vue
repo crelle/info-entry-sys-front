@@ -12,18 +12,18 @@
       >
         <el-row>
           <el-col :span="8">
-            <el-form-item label="地域编码">
+            <el-form-item label="岗位编码">
               <el-input
                 v-model="formOptions.name"
-                placeholder="地域编码"
+                placeholder="岗位编码"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="地域名称">
+            <el-form-item label="岗位名称">
               <el-input
                 v-model="formOptions.nameZh"
-                placeholder="地域名称"
+                placeholder="岗位名称"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -68,13 +68,13 @@
           fixed
         ></el-table-column>
         <el-table-column
-          label="地域名称"
+          label="岗位名称"
           prop="nameZh"
           min-width="100"
           fixed
         ></el-table-column>
         <el-table-column
-          label="地域编码"
+          label="岗位编码"
           prop="name"
           min-width="120"
           fixed
@@ -125,8 +125,8 @@
 
 <script>
 import { queryRole, deleteRole } from "@/api/role";
-import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
-import RoleDataDialog from "@/views/sysmanage/region/dialog/dialogDetails.vue";
+import RoleEditDialog from "@/views/discipline/post/dialog/dialogEdit.vue";
+import RoleDataDialog from "@/views/discipline/post/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleEditDialog,

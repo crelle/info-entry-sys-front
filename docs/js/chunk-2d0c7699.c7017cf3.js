@@ -1,1 +1,0 @@
-(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0c7699"],{5107:function(n,t,e){"use strict";e.r(t);var c=function(){var n=this,t=n.$createElement,e=n._self._c||t;return e("div",{staticClass:"menus_content"},[n._v(" 当前是菜单配置页 ")])},s=[],u={},l=u,a=e("2877"),i=Object(a["a"])(l,c,s,!1,null,null,null);t["default"]=i.exports}}]);
