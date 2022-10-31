@@ -34,14 +34,14 @@
                     ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="客户" prop="userNickName">
+                <!-- <el-form-item label="客户" prop="userNickName">
                   <el-input
                     type="text"
                     v-model="userEditForm.userNickName"
                     placeholder="客户"
                     ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="手机号" prop="userPhone">
                   <el-input
                     type="tel"
@@ -63,10 +63,10 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item> -->
-                <el-form-item label="负责项目" prop="userNickName">
+                <el-form-item label="客户" prop="userNickName">
                   <el-select
                     v-model="userEditForm.userNickName"
-                    placeholder="请选择负责项目"
+                    placeholder="请选择客户"
                     filterable
                     @change="queryson"
                   >

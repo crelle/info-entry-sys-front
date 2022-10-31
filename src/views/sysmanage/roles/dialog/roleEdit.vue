@@ -16,7 +16,7 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="角色编码" prop="name">
+                <el-form-item label="角色编码">
                   <el-input v-model="userEditForm.name" placeholder="角色编码"
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
@@ -37,7 +37,7 @@
                       :data="data1"
                       show-checkbox
                       node-key="id"
-                     :default-expanded-keys="[1, 2, 3]"
+                      :default-expanded-keys="[1]"
                       :default-checked-keys="[0]"
                       :props="defaultProps"
                     >
@@ -50,7 +50,7 @@
                         :data="data2"
                         show-checkbox
                         node-key="id"
-                    :default-expanded-keys="[1, 2, 3,4]"
+                        :default-expanded-keys="[1]"
                         :default-checked-keys="[0]"
                         :props="defaultProps"
                       >
@@ -59,7 +59,7 @@
                         :data="data3"
                         show-checkbox
                         node-key="id"
-                    :default-expanded-keys="[1, 2, 3,4]"
+                        :default-expanded-keys="[1]"
                         :default-checked-keys="[0]"
                         :props="defaultProps"
                       >
@@ -68,7 +68,7 @@
                         :data="data4"
                         show-checkbox
                         node-key="id"
-                        :default-expanded-keys="[1, 2, 3,4]"
+                        :default-expanded-keys="[1]"
                         :default-checked-keys="[0]"
                         :props="defaultProps"
                       >
@@ -338,10 +338,6 @@ export default {
                 },
               ],
             },
-            {
-              id: 3,
-              label: "ALL",
-            },
           ],
         },
       ],
@@ -362,19 +358,19 @@ export default {
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
-          {
-            required: true,
-            message: "请输入角色编码",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 1,
-            max: 100,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
+        // name: [
+        //   {
+        //     required: true,
+        //     message: "请输入角色编码",
+        //     trigger: ["blur", "change"],
+        //   },
+        //   {
+        //     min: 1,
+        //     max: 100,
+        //     message: "用户名长度在 3 到 10 个字符",
+        //     trigger: "blur",
+        //   },
+        // ],
         nameZh: [
           {
             required: true,
@@ -562,8 +558,9 @@ export default {
   }
 }
 .configuration {
-  display: flex;
-  justify-content: space-around;
+  // display: flex;
+  // justify-content: space-around;
+  padding: 15px 20px 0;
   margin-top: 15px;
   border: 1px solid #eee;
   .sbox {
@@ -572,17 +569,17 @@ export default {
       display: block;
       margin: 10px 0;
     }
-    .menubox {
-      display: flex;
-      justify-content: space-around;
-    }
+    // .menubox {
+    //   // display: flex;
+    //   // justify-content: space-around;
+    // }
   }
 }
 ::v-deep .el-dialog__body {
   padding: 10px;
 }
 ::v-deep .el-row {
-  padding-left:130px;
+  padding-left: 130px;
 }
 ::v-deep .el-dialog {
   margin-top: 4vh !important;

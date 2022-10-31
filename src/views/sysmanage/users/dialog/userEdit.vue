@@ -21,11 +21,11 @@
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="昵称" prop="userNickName">
+                <el-form-item label="工号" prop="userNickName">
                   <el-input
                     type="text"
                     v-model="userEditForm.userNickName"
-                    placeholder="昵称"
+                    placeholder="工号"
                     ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>

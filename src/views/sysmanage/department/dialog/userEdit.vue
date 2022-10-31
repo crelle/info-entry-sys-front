@@ -17,13 +17,6 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="上级部门">
-                  <el-input
-                    v-model="userEditForm.username"
-                    placeholder="上级部门"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
                 <el-form-item label="部门名" prop="username">
                   <el-input v-model="userEditForm.username" placeholder="部门名"
                     ><i class="el-icon-user" slot="prepend"></i
@@ -45,7 +38,7 @@
                   </el-select>
                 </el-form-item>
                 <el-form-item label="工号" prop="">
-                  <el-input  placeholder="工号"
+                  <el-input placeholder="工号"
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
@@ -64,6 +57,19 @@
                     placeholder="邮箱"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
+                </el-form-item>
+                <el-form-item label="上级部门">
+                  <el-select
+                    v-model="userEditForm.userNickName"
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.userNickName"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="部门总部地址" prop="address">
                   <el-input type="email" placeholder="部门总部地址"

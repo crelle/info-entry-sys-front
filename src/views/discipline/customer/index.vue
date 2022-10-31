@@ -19,10 +19,10 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="接口人">
+            <el-form-item label="负责人">
               <el-input
                 v-model="formOptions.userNickName"
-                placeholder="接口人姓名"
+                placeholder="负责人姓名"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -91,7 +91,7 @@
         </el-table-column>
         <el-table-column
           prop="userNickName"
-          label="接口人"
+          label="(客户)负责人"
           min-width="80"
           show-overflow-tooltip
         >

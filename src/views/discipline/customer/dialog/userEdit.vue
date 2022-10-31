@@ -33,10 +33,10 @@
                     ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="接口人" prop="userNickName">
+                <el-form-item label="(客户)负责人" prop="userNickName">
                   <el-select
                     v-model="userEditForm.userNickName"
-                    placeholder="请选择接口人"
+                    placeholder="(客户)负责人"
                     filterable
                     @change="queryson"
                   >

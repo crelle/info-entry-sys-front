@@ -25,7 +25,7 @@
                     <li><span>地域:</span><span>zzqqqzz</span></li>
                     <li><span>办公地点:</span><span>xxyyx</span></li>
                     <li>
-                      <span>接口人:</span
+                      <span>(客户)负责人:</span
                       ><span>{{ userEditForm.userNickName }}</span>
                     </li>
                     <li>
