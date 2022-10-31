@@ -161,6 +161,7 @@
     </el-card>
     <user-edit-dialog
       :toChild="list"
+      :tableData="tableData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog

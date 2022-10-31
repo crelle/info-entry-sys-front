@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+      :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       lock-scroll
@@ -17,7 +18,9 @@
                 size="mini"
               >
                 <el-form-item label="上级部门">
-                  <el-input v-model="userEditForm.username" placeholder="上级部门"
+                  <el-input
+                    v-model="userEditForm.username"
+                    placeholder="上级部门"
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
@@ -27,11 +30,23 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人" prop="userNickName">
-                  <el-input
-                    type="text"
+                  <el-select
                     v-model="userEditForm.userNickName"
-                    placeholder="负责人"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                    placeholder="请选择负责人"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.userNickName"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="工号" prop="">
+                  <el-input  placeholder="工号"
+                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="userPhone">
@@ -97,9 +112,11 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    tableData: "",
   },
   data() {
     return {
+      tableDatasan: [],
       textarea: "",
       dialogFormVisible: false,
       fileType: {
@@ -124,7 +141,7 @@ export default {
         username: [
           {
             required: true,
-            message: "请输入用户名",
+            message: "请输部门名",
             trigger: ["blur", "change"],
           },
           {
@@ -158,7 +175,7 @@ export default {
         userNickName: [
           {
             required: true,
-            message: "请填写昵称",
+            message: "请选择负责人",
             trigger: ["blur", "change"],
           },
         ],
@@ -179,10 +196,26 @@ export default {
       },
     };
   },
+  mounted() {},
   methods: {
+    //自动选择
+    queryson(e) {
+      // console.log("选择的触发///////////");
+      // console.log(e, "----------------");
+      // console.log(this.tableData[e], "+++++++++++++++");
+      // this.userEditForm = this.tableData[e];
+      this.userEditForm.userNickName = this.tableData[e].userNickName;
+      this.userEditForm.userPhone = this.tableData[e].userPhone;
+      this.userEditForm.userEmail = this.tableData[e].userEmail;
+      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+    },
+    //
+    // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      // 查询部门列表
+      console.log(this.tableData, "------父亲传来的");
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -197,12 +230,6 @@ export default {
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        // if (item === "userAvatar") {
-        //   // 最终保存的时候 此字段（头像地址）才是最终会
-        //   // 赋值给this.userEditForm.userAvatar的值，
-        //   // 所以要初始化的时候也要赋值一次
-        //   this.imageUrl = data[item];
-        // }
       });
     },
     closeDialog() {
@@ -225,55 +252,7 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-      // // this.imageUrl = ""; // 清空头像
-      // this.nowIndex = -1; // 重置选中
     },
-    // // 头像上传相关
-    // handleAvatarSuccess(res, file) {
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    //   this.nowIndex = -1; // 取消默认头像选中样式
-    //   console.log(this.imageUrl);
-    // },
-    // beforeAvatarUpload(file) {
-    //   console.log(file.type);
-    //   // 判断上传文件的类型
-    //   if (/^image\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 0;
-    //   } else if (/^video\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 1;
-    //   } else if (/^audio\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 2;
-    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
-    //     this.fileType.fileType = 3;
-    //   } else {
-    //     this.$message.error("此文件类型不支持!");
-    //     return false;
-    //   }
-
-    //   const isLt2M = file.size / 1024 / 1024 < 100;
-
-    //   // if (!isJPG) {
-    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
-    //   // }
-    //   if (!isLt2M) {
-    //     this.$message.error("上传头像图片大小不能超过 100MB!");
-    //   }
-    //   // return isJPG && isLt2M;
-    //   return isLt2M;
-    // },
-    // // 选择默认头像
-    // choosedefaultImg(index, url) {
-    //   if (index !== this.nowIndex) {
-    //     console.log(this.nowIndex);
-    //     this.nowIndex = index;
-    //     this.imageUrl = url;
-    //   } else {
-    //     console.log(this.nowIndex, -1);
-    //     this.nowIndex = -1;
-    //     this.imageUrl = "";
-    //   }
-    // },
-
     /* 保存  */
     onCertain() {
       if (this.initFormData.id) {
@@ -411,7 +390,7 @@ export default {
 .passwordat {
   display: none;
 }
-::v-deep .el-form-item__content{
+::v-deep .el-form-item__content {
   width: 650px;
 }
 </style>

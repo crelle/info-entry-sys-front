@@ -108,6 +108,13 @@
         >
         </el-table-column>
         <el-table-column
+          prop=""
+          label="工号"
+          min-width="100"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
           prop="userPhone"
           label="手机号"
           min-width="100"
@@ -216,6 +223,7 @@
     </el-card>
     <user-edit-dialog
       :toChild="list"
+      :tableData="tableData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
@@ -275,6 +283,29 @@ export default {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          queryUser(data).then((res) => {
+            console.log(res, "res++++++++++");
+            if (res && res.code && res.code === "00000") {
+              this.tableData = res.data.records; // 表格数据赋值
+              console.log(
+                this.tableData,
+              );
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    queryUserList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "-------validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;

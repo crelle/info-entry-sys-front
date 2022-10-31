@@ -24,14 +24,11 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="性别" required>
-              <el-select
-                v-model="xingbie"
-                placeholder="请选择"
-              >
-                <el-option label="男" :value="true"></el-option>
-                <el-option label="女" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
+                  <el-select v-model="xingbie" placeholder="请选择">
+                    <el-option label="男" :value="true"></el-option>
+                    <el-option label="女" :value="false"></el-option>
+                  </el-select>
+                </el-form-item>
                 <el-form-item label="接口人办公地址" prop="address">
                   <el-input type="email" placeholder="接口人办公地址"
                     ><i class="el-icon-magic-stick" slot="prepend"></i
@@ -61,12 +58,25 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="负责项目">
-                  <el-input
-                    type="email"
-                    placeholder="负责项目"
+                <!-- <el-form-item label="负责项目">
+                  <el-input type="email" placeholder="负责项目"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
+                </el-form-item> -->
+                <el-form-item label="负责项目" prop="userNickName">
+                  <el-select
+                    v-model="userEditForm.userNickName"
+                    placeholder="请选择负责项目"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.userNickName"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="介绍" prop="">
                   <el-input
@@ -110,10 +120,11 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    tableData: "",
   },
   data() {
     return {
-      xingbie:"",
+      xingbie: "",
       textarea: "",
       dialogFormVisible: false,
       fileType: {
@@ -201,6 +212,17 @@ export default {
     };
   },
   methods: {
+    //自动选择
+    queryson(e) {
+      // console.log("选择的触发///////////");
+      // console.log(e, "----------------");
+      // console.log(this.tableData[e], "+++++++++++++++");
+      // this.userEditForm = this.tableData[e];
+      this.userEditForm.userNickName = this.tableData[e].userNickName;
+      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+    },
+    //
+    // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示

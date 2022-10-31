@@ -34,12 +34,19 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="接口人" prop="userNickName">
-                  <el-input
-                    type="text"
+                  <el-select
                     v-model="userEditForm.userNickName"
-                    placeholder="接口人"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
+                    placeholder="请选择接口人"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.userNickName"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="手机号" prop="userPhone">
                   <el-input
@@ -100,6 +107,7 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    tableData: "",
   },
   data() {
     return {
@@ -190,6 +198,18 @@ export default {
     };
   },
   methods: {
+    //自动选择
+    queryson(e) {
+      // console.log("选择的触发///////////");
+      // console.log(e, "----------------");
+      // console.log(this.tableData[e], "+++++++++++++++");
+      // this.userEditForm = this.tableData[e];
+      this.userEditForm.userNickName = this.tableData[e].userNickName;
+      this.userEditForm.userPhone = this.tableData[e].userPhone;
+      this.userEditForm.userEmail = this.tableData[e].userEmail;
+      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+    },
+    // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示

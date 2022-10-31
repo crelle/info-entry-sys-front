@@ -31,28 +31,6 @@
               <el-input placeholder="地域名称"></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="账号是否未被锁定" required>
-              <el-select
-                v-model="formOptions.accountNonLocked"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="账号是否未过期" required>
-              <el-select
-                v-model="formOptions.accountNonExpired"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col> -->
           <el-col
             :span="24"
             :class="
@@ -221,6 +199,7 @@
     </el-card>
     <user-edit-dialog
       :toChild="list"
+      :tableData="tableData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
