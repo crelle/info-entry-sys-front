@@ -17,7 +17,7 @@ const queryUser = (data) =>
   });
 
 // 更新用户（编辑）
-const updateUser = (data, id) =>
+const updateUser = (data,id) =>
   Request({
     method: "put",
     url: `${BaseURL}/sysmgmt/user/update/${id}`,

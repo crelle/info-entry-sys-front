@@ -54,6 +54,22 @@ const routes = [
         },
       },
       {
+        path: "region",
+        name: "regions",
+        component: () => import("@/views/sysmanage/region/index.vue"),
+        meta: {
+          title: "地域管理",
+        },
+      },
+      {
+        path: "department",
+        name: "departments",
+        component: () => import("@/views/sysmanage/department/index.vue"),
+        meta: {
+          title: "部门管理",
+        },
+      },
+      {
         path: "menu",
         name: "menus",
         component: () => import("@/views/sysmanage/menus/index.vue"),
@@ -62,11 +78,11 @@ const routes = [
         },
       },
       {
-        path: "math",
-        name: "maths",
-        component: () => import("@/views/discipline/maths/index.vue"),
+        path: "customer",
+        name: "customers",
+        component: () => import("@/views/discipline/customer/index.vue"),
         meta: {
-          title: "数学",
+          title: "客户管理",
         },
         // children: [
         //   {
@@ -80,11 +96,27 @@ const routes = [
         // ]
       },
       {
-        path: "chinese",
-        name: "chineses",
-        component: () => import("@/views/discipline/chineses/index.vue"),
+        path: "interface",
+        name: "interfaces",
+        component: () => import("@/views/discipline/interface/index.vue"),
         meta: {
-          title: "语文",
+          title: "接口人管理",
+        },
+      },
+      {
+        path: "project",
+        name: "projects",
+        component: () => import("@/views/discipline/project/index.vue"),
+        meta: {
+          title: "项目管理",
+        },
+      },
+      {
+        path: "post",
+        name: "posts",
+        component: () => import("@/views/discipline/post/index.vue"),
+        meta: {
+          title: "项目管理",
         },
       },
       {
@@ -109,16 +141,6 @@ const routes = [
         component: () => import("@/views/plans/index.vue"),
         meta: {
           title: "计划",
-        },
-      },
-      // 员工详情
-      {
-        path: "details",
-        name: "details",
-        component: () =>
-          import("@/views/discipline/maths/newly_build/details.vue"),
-        meta: {
-          title: "详情",
         },
       },
     ],
