@@ -8,7 +8,7 @@
             size="small"
             :src="userdetail.userAvatar"
           ></el-avatar>
-          <span>欢迎 {{userdetail.userNickName}}</span>
+          <span>欢迎 {{userdetail.username}}</span>
           <el-popconfirm
             confirm-button-text='确认'
             cancel-button-text='取消'

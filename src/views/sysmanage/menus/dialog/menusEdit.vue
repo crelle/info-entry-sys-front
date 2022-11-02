@@ -8,57 +8,58 @@
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="24">
+          <el-col :span="12">
             <div class="grid-content-right">
               <el-form
-                :model="initFormData"
+                :model="userEditForm"
                 :rules="userEditFormRules"
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="" prop="id">
-                  <el-input v-model="initFormData.id" placeholder="菜单标识"
-                    ><i class="el-icon-user" slot="prepend"
-                      >菜单标识</i
-                    ></el-input
-                  >
+                <el-form-item label="菜单名称" prop="name">
+                  <el-input v-model="userEditForm.name" placeholder="菜单名称"
+                    ><i class="el-icon-user" slot="prepend"></i
+                  ></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="name">
-                  <el-input v-model="initFormData.name" placeholder="菜单名称"
-                    ><i class="el-icon-user" slot="prepend"
-                      >菜单名称</i
-                    ></el-input
-                  >
-                </el-form-item>
-                <el-form-item label="" prop="url">
+                <el-form-item label="后台资源地址" prop="url">
                   <el-input
                     type="text"
-                    v-model="initFormData.url"
+                    v-model="userEditForm.url"
                     placeholder="后台资源地址"
-                    ><i class="el-icon-magic-stick w125" slot="prepend"
-                      >后台资源地址</i
-                    ></el-input
-                  >
+                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                  ></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="path">
+                <el-form-item label="前台资源地址" prop="path">
                   <el-input
                     type="tel"
-                    v-model="initFormData.path"
-                    placeholder="前台页面路径"
-                    ><i class="el-icon-mobile-phone" slot="prepend"
-                      >前台页面路径</i
-                    ></el-input
-                  >
+                    v-model="userEditForm.path"
+                    placeholder="前台资源地址"
+                    ><i class="el-icon-mobile-phone" slot="prepend"></i
+                  ></el-input>
                 </el-form-item>
-                <el-form-item label="" prop="iconCls">
+                <el-form-item label="菜单图标" prop="iconLs">
                   <el-input
                     type="email"
-                    v-model="initFormData.iconCls"
+                    v-model="userEditForm.iconLs"
                     placeholder="菜单图标"
-                    ><i class="el-icon-message" slot="prepend"
-                      >菜单图标</i
-                    ></el-input
-                  >
+                    ><i class="el-icon-message" slot="prepend"></i
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="菜单类型">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.parentId"
+                    placeholder="菜单类型"
+                    ><i class="el-icon-message" slot="prepend"></i
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="菜单顺序">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.menuSort"
+                    placeholder="菜单顺序"
+                    ><i class="el-icon-message" slot="prepend"></i
+                  ></el-input>
                 </el-form-item>
                 <el-form-item
                   label="是否可用"
@@ -66,32 +67,21 @@
                   prop="enabled"
                 >
                   <el-switch
-                    v-model="initFormData.enabled"
+                    v-model="userEditForm.enabled"
                     active-text="可用"
                     inactive-text="不可用"
                   >
                   </el-switch>
                 </el-form-item>
                 <el-form-item
-                  label="是否未被锁定"
+                  label="是否鉴权"
                   label-width="100px"
-                  prop="accountNonLocked"
+                  prop="requireAuth"
                 >
                   <el-switch
-                    v-model="initFormData.accountNonLocked"
-                    active-text="未锁定"
-                    inactive-text="锁定"
-                  ></el-switch>
-                </el-form-item>
-                <el-form-item
-                  label="是否未过期"
-                  label-width="100px"
-                  prop="accountNonExpired"
-                >
-                  <el-switch
-                    v-model="initFormData.accountNonExpired"
-                    active-text="未过期"
-                    inactive-text="已过期"
+                    v-model="userEditForm.requireAuth"
+                    active-text="未鉴权"
+                    inactive-text="鉴权"
                   ></el-switch>
                 </el-form-item>
               </el-form>
@@ -100,12 +90,14 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini">取 消</el-button>
-        <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
-          >重置</el-button
+        <el-button type="primary" @click="dialogClose" size="mini"
+          >取 消</el-button
         >
+        <!-- <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
+          >重置</el-button
+        > -->
         <el-button type="primary" size="mini" @click="onCertain"
-          >确认</el-button
+          >保存</el-button
         >
       </div>
     </el-dialog>
@@ -113,9 +105,8 @@
 </template>
 
 <script>
-import { BaseURL } from "@/api/config";
 import { modifyTheMenu, createMenu } from "@/api/menu";
-import LoginVue from "../../../Login.vue";
+
 export default {
   props: {
     toChild: String,
@@ -126,65 +117,62 @@ export default {
       fileType: {
         fileType: 0,
       },
+      imageUrl: "",
       nowIndex: -1,
-      baseURL: BaseURL,
-      userEditForm: {},
-      initFormData: {
-        accountNonExpired: true,
-        accountNonLocked: true,
+      // baseURL: BaseURL,
+      userEditForm: {
+        component: "",
         enabled: true,
-        userAvatar: "",
-        iconCls: "",
-        url: "",
-        path: "",
+        iconLs: "",
+        menuType: "",
         name: "",
-        id: "",
-        requireAuth: "",
+        path: "",
+        requireAuth: true,
+        url: "",
+        menuSort:"",
+        parentId:""
       },
-      defaultImgs: [
-        "https://img0.baidu.com/it/u=1735274212,3352382534&fm=253&app=138&size=w931&n=0&f=JPG&fmt=auto?sec=1664298000&t=d809891ec3771145c813cf90875fc576",
-      ],
+      initFormData: {},
       userEditFormRules: {
         name: [
           {
             required: true,
-            message: "请填写菜单名称",
-            trigger: ["blur"],
+            message: "请输入菜单名称",
+            trigger: ["blur", "change"],
           },
-          {
-            min: 2,
-            max: 10,
-            message: "菜单名称长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-
-        iconCls: [
-          {
-            required: true,
-            message: "请填写菜单图标",
-            trigger: ["blur"],
-          },
+          // {
+          //   min: 3,
+          //   max: 10,
+          //   message: "用户名长度在 3 到 10 个字符",
+          //   trigger: "blur",
+          // },
         ],
         url: [
           {
             required: true,
-            message: "请填写后台资源地址",
-            trigger: ["blur"],
+            message: "请输入后台资源地址",
+            trigger: ["blur", "change"],
           },
+          // {
+          //   min: 1,
+          //   max: 16,
+          //   message: "用户名长度在1-16 个字符",
+          //   trigger: "blur",
+          // },
         ],
+
         path: [
           {
             required: true,
-            message: "请填写前台页面路径",
-            trigger: ["blur"],
+            message: "请填写前台资源地址",
+            trigger: ["blur", "change"],
           },
         ],
-        id: [
+        iconLs: [
           {
-            required: true,
-            message: "请填写菜单标识id",
-            trigger: ["blur"],
+            required: false,
+            message: "请填写菜单图标",
+            trigger: ["blur", "change"],
           },
         ],
       },
@@ -192,6 +180,7 @@ export default {
   },
   methods: {
     openDialog(row) {
+      console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -201,50 +190,63 @@ export default {
         });
       } else {
         console.log("我是新增");
-        this.initForm("");
       }
     },
     initForm(data) {
-      Object.keys(this.initFormData).forEach((item) => {
-        this.initFormData[item] = data[item] ? data[item] : null;
+     
+      Object.keys(this.userEditForm).forEach((item) => {
+        // console.log(Object.keys(this.userEditForm),'------------1');
+        this.userEditForm[item] = data[item] ? data[item] : null;
+        
       });
+      // console.log(this.userEditForm, '------------');
     },
     closeDialog() {
+      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
       this.resetForm("userEditRef"); // 重置表单
-      this.resetFormData(); // 初始化弹窗数据 重置 等
     },
+    // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      this.resetFormData();
+      console.log(this.userEditForm, "取消231取消3131");
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.initFormData);
-      this.resetFormData();
+      // this.initForm(this.userEditForm);
+      // this.resetFormData();
     },
 
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-      this.nowIndex = -1; // 重置选中
     },
-    // 确认
+
+    /* 保存  */
     onCertain() {
       if (this.initFormData.id) {
-        console.log(this.initFormData.id, "this.initFormData.id");
+        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
+        this.userEditForm.id = this.initFormData.id;
+        this.initFormData = this.userEditForm;
+        console.log(this.userEditForm, "userEditFormuserEditForm123");
+        console.log(
+          this.userEditForm.id,
+          this.userEditForm,
+          "this.initFormData.id"
+        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            modifyTheMenu(this.initFormData, this.initFormData.id).then(
+            console.log(this.userEditForm, "----传的内容");
+            modifyTheMenu(this.userEditForm, this.userEditForm.id).then(
               (res) => {
-                console.log(res, "res11111");
+                console.log(res, "---接口后的res");
                 if (res && res.code && res.code === "00000") {
-                  this.resetForm("userEditRef"); // 重置表单
-                  this.nowIndex = -1; // 重置选中
                   this.$message.success("修改成功！");
-                  this.dialogClose();
+                  // this.dialogClose();
+                  this.$parent.queryMenus();
+                  this.dialogFormVisible = false; // 让弹窗隐藏
                 }
               }
             );
@@ -255,15 +257,16 @@ export default {
       } else {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
+          console.log(valid, "增加了的valid");
           if (valid) {
-            createMenu(this.initFormData, this.initFormData.id).then((res) => {
-              console.log(res, "res11111");
+            createMenu(this.userEditForm).then((res) => {
+              console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                this.resetForm("userEditRef"); // 重置表单
-                this.nowIndex = -1; // 重置选中
+                // this.$parent.resetForm();
+                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
-                this.dialogClose();
+                this.$parent.queryMenus();
+                this.dialogFormVisible = false; // 让弹窗隐藏
               }
             });
           } else {
@@ -350,17 +353,9 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px;
+  padding: 10px 20px 10px 0;
   .el-input-group__append {
     padding: 0 2px;
   }
-}
-@{deep} .el-input-group__prepend {
-  width: 85px;
-}
-.title {
-  margin-bottom: 20px;
-  font-size: 14px;
-  font-weight: bold;
 }
 </style>

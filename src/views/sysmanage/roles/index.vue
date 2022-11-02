@@ -39,6 +39,9 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryRoles">查询</el-button>
+              <el-button type="primary" icon="el-icon-edit" @click="addClick"
+                >新增</el-button
+              >
             </el-form-item>
           </el-col>
         </el-row>
@@ -64,12 +67,12 @@
           width="55"
           fixed
         ></el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           label="角色标识"
           prop="id"
           min-width="120"
           fixed
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           label="角色编码"
           prop="name"
@@ -83,31 +86,44 @@
           fixed
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
-          <template slot-scope="scope">
-            <el-button @click="onEditRole(scope.row)" type="primary" size="mini"
+          <template slot-scope="{ row, $index }">
+            <el-button @click="onEditRole(row)" type="primary" size="mini"
               >编辑</el-button
             >
+            <el-button
+              type="primary"
+              size="mini"
+              @click="deleteMenu(row, $index)"
+            >
+              删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="paginationOptions.pageNo"
-        :page-sizes="paginationOptions.pageSizes"
-        :page-size="paginationOptions.pageSize"
-        :layout="paginationOptions.loyout"
-        background
-        :total="paginationOptions.total"
-      >
-      </el-pagination>
+      <div class="block">
+        <!-- <span class="demonstration">完整功能</span> -->
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="paginationOptions.pageNo"
+          :page-sizes="paginationOptions.pageSizes"
+          :page-size="paginationOptions.pageSize"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="paginationOptions.total"
+          size="mini"
+        >
+        </el-pagination>
+      </div>
     </el-card>
-    <role-edit-dialog ref="roleEditDialogRef"></role-edit-dialog>
+    <role-edit-dialog
+      :toChild="list"
+      ref="roleEditDialogRef"
+    ></role-edit-dialog>
   </div>
 </template>
 
 <script>
-import { queryRole } from "@/api/role";
+import { queryRole,deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
 export default {
   components: {
@@ -115,10 +131,12 @@ export default {
   },
   data() {
     return {
+      list: "",
       formOptions: {
         name: "",
         nameZh: "",
       },
+      tableData: [],
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
@@ -128,21 +146,24 @@ export default {
       },
     };
   },
-    mounted() {
+  mounted() {
     this.queryRoles();
   },
   methods: {
+    // 查询
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
-          let data = { condition: { ...this.formOptions } };
-          data.pageNo = this.paginationOptions.pageNo;
-          data.pageSize = this.paginationOptions.pageSize;
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
           queryRole(data).then((res) => {
+            console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryRoleRef"); // 重置表单
               this.tableData = res.data.records; // 表格数据赋值
-              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
         } else {
@@ -150,10 +171,49 @@ export default {
         }
       });
     },
-
+    // 删除弹框
+    deleteMenu(row, index) {
+      this.$alert("此操作将永久删除该文件, 是否继续?", "删除", {
+        confirmButtonText: "确定",
+        type: "warning",
+      })
+        .then(() => {
+          this.tableData.splice(index, 1);
+          // 点击确认，发起后台请求，删除该用户
+          deleteRole(row.id).then((res) => {
+            console.log(res, "点击确认，发起后台请求，删除");
+            if (res.code == "00000") {
+              return this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "success",
+                message: "删除失败!",
+              });
+            }
+          });
+        })
+        .catch(() => {
+          // 点击取消，取消该操作
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // 添加
+    addClick() {
+      this.$refs.roleEditDialogRef.openDialog();
+      this.list = "添加";
+      console.log("我要添加");
+    },
+    // 编辑
     onEditRole(row) {
-      console.log("onEditRole,req="+row.tableData);
       this.$refs.roleEditDialogRef.openDialog(row);
+      this.list = "编辑";
+      console.log("编辑", row, row.id);
     },
     // 重置表单
     resetForm(formName) {
@@ -177,5 +237,8 @@ export default {
 };
 </script>
 
-<style>
+<style lang="less" scoped>
+::v-deep .cell {
+  text-align: center;
+}
 </style>

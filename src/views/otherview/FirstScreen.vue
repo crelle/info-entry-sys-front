@@ -358,7 +358,7 @@ export default {
           value: Math.round(Math.random() * 1000),
         },
         {
-          name: "宁波地区",
+          name: "吉林地区",
           value: Math.round(Math.random() * 1000),
         },
       ];
