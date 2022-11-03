@@ -19,11 +19,54 @@
                 <el-form-item label="岗位名称" prop="nameZh">
                   <el-input
                     type="text"
-                    v-model="userEditForm.nameZh"
+                    v-model="userEditForm.userPhone"
                     placeholder="岗位名称"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
+                <el-form-item label="岗位职责">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.userPhone"
+                    placeholder="岗位职责"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="岗位要求">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.userPhone"
+                    placeholder="岗位要求"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="项目" prop="userNickName">
+                  <el-select
+                    v-model="userEditForm.nameZh"
+                    placeholder="请选择接项目"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.nameZh"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="客户">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.id"
+                    placeholder="客户"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="岗位需求人数">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.userNickName"
+                    placeholder="岗位需求人数"
+                  ></el-input>
+                </el-form-item>
+                
               </el-form>
             </div>
           </el-col>
@@ -47,6 +90,7 @@ import { updateRole, deleteRole } from "@/api/role";
 export default {
   props: {
     toChild: String,
+    tableData: "",
   },
   data() {
     return {
@@ -56,9 +100,22 @@ export default {
       },
       nowIndex: -1,
       // baseURL: BaseURL,
+
       userEditForm: {
         name: "",
         nameZh: "",
+        accountNonExpired: true,
+        accountNonLocked: true,
+        enabled: true,
+        password: "123456",
+        userAvatar: "",
+        userEmail: "",
+        userNickName: "",
+        userPhone: "",
+        username: "",
+        id: "",
+        date1: "",
+        roles: [],
       },
       initFormData: {},
       userEditFormRules: {
@@ -92,9 +149,21 @@ export default {
     };
   },
   methods: {
+    //自动选择
+    queryson(e) {
+      // console.log("选择的触发///////////");
+      // console.log(e, "----------------");
+      // console.log(this.tableData[e], "+++++++++++++++");
+      // this.userEditForm = this.tableData[e];
+      this.userEditForm.id = this.tableData[e].id;
+      console.log(this.userEditForm,"----this.userEditForm-this.tableData[e]",this.tableData[e]);
+    },
+    //
+    // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      // console.log(this.tableData,"-------------");
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -150,7 +219,7 @@ export default {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                 this.dialogClose();
+                this.dialogClose();
                 console.log("修改成功！");
                 this.$parent.queryRoles();
               }

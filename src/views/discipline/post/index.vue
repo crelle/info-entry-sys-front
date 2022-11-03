@@ -50,7 +50,7 @@
         border
         stripe
         size="mini"
-        height="380"
+        height="610"
       >
         <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column
@@ -100,6 +100,7 @@
     </el-card>
     <role-edit-dialog
       :toChild="list"
+       :tableData="tableData"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
     <role-data-dialog
@@ -195,13 +196,13 @@ export default {
     // 查看
     lookClick(row) {
       this.$refs.roleDataDialogRef.openDialog(row);
-      this.list = "查看";
+      this.list = "查看岗位详情";
       console.log("我要查看",row);
     },
     // 添加
     addClick() {
       this.$refs.roleEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加岗位";
       console.log("我要添加");
     },
     // 编辑
