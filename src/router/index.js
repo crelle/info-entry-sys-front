@@ -140,7 +140,7 @@ const routes = [
         name: "plans",
         component: () => import("@/views/plans/index.vue"),
         meta: {
-          title: "计划",
+          title: "个人信息",
         },
       },
     ],

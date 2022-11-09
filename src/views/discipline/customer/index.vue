@@ -63,7 +63,7 @@
         border
         stripe
         size="mini"
-        height="380"
+        height="540"
       >
         <el-table-column type="selection" width="55" fixed> </el-table-column>
         <el-table-column label="序号" type="index" width="55" fixed>

@@ -12,11 +12,6 @@
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
                 <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>需求管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>岗位管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
                   <ul>
                     <li>
                       <span>岗位昵称:</span><span>{{ userEditForm.nameZh }}</span>

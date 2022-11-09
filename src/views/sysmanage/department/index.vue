@@ -26,38 +26,8 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="8">
-            <el-form-item label="是否可用" required>
-              <el-select v-model="formOptions.enabled" placeholder="请选择">
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="账号是否未被锁定" required>
-              <el-select
-                v-model="formOptions.accountNonLocked"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="账号是否未过期" required>
-              <el-select
-                v-model="formOptions.accountNonExpired"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col> -->
           <el-col
-            :span="24"
+            :span="8"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -88,7 +58,7 @@
         border
         stripe
         size="mini"
-        height="380"
+        height="560"
       >
         <el-table-column type="selection" width="55" fixed> </el-table-column>
         <el-table-column label="序号" type="index" width="55" fixed>
@@ -291,9 +261,7 @@ export default {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(
-                this.tableData,
-              );
+              console.log(this.tableData);
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
@@ -314,9 +282,7 @@ export default {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(
-                this.tableData,
-              );
+              console.log(this.tableData);
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });

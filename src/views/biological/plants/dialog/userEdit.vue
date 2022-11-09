@@ -246,34 +246,7 @@
                   >
                   </el-input>
                 </el-form-item>
-                <!-- 员工动态记录 -->
-                <div class="block">
-                  <el-timeline>
-                    <el-timeline-item
-                      v-for="(item, index) in datashu"
-                      :key="item.index"
-                      :label="item.textarea1"
-                      :value="index"
-                      placement="top"
-                      :timestamp="item.time"
-                    >
-                      <el-card>
-                        {{ item.textarea1 }}
-                      </el-card>
-                    </el-timeline-item>
-                    <el-timeline-item :timestamp="monthValue" placement="top">
-                      <el-card>
-                        <el-input
-                          type="textarea"
-                          :rows="3"
-                          placeholder="请输入内容"
-                          v-model="textarea"
-                        >
-                        </el-input>
-                      </el-card>
-                    </el-timeline-item>
-                  </el-timeline>
-                </div>
+
                 <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
@@ -311,25 +284,7 @@ export default {
   },
   data() {
     return {
-      // 当前日期
-      monthValue:"",
       textarea: "",
-      datashu: [
-        {
-          textarea1: "日志1111",
-          time: "2018/1/12",
-        },
-        {
-          textarea1: "日志12221",
-          time: "2018/2/12",
-        },
-        {
-          textarea1: "日志133331",
-          time: "2018/3/12",
-        },
-      ],
-      textarea1: "",
-      timestamp: "",
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -436,14 +391,6 @@ export default {
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
-      // 当前时间
-      var data = new Date();
-      var year = data.getFullYear();
-      var month = data.getMonth();
-      var day=data.getDate()
-      var toMonth = year + "/" + (month + 1)+"/"+day;
-      this.monthValue = toMonth;
-      
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -480,8 +427,6 @@ export default {
     resetFormData() {
       this.ifLogin = true;
       this.userEditForm.roles = [];
-      // // this.imageUrl = ""; // 清空头像
-      // this.nowIndex = -1; // 重置选中
     },
 
     /* 保存  */

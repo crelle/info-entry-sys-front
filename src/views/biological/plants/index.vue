@@ -73,7 +73,7 @@
         border
         stripe
         size="mini"
-        height="380"
+        height="540"
       >
         <el-table-column type="selection" width="55" fixed> </el-table-column>
         <el-table-column label="序号" type="index" width="55" fixed>
@@ -309,7 +309,7 @@ export default {
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
-      this.list = "查看详情";
+      this.list = "查看员工信息详情";
       console.log("详情", row, row.id);
     },
     // 重置表单
