@@ -11,37 +11,41 @@
         class="demo-form-inline"
         size="mini"
         label-position="right"
-        label-width="120px"
         ref="queryMenuRef"
         :model="formOptions"
       >
         <el-row>
-          <el-col>
-            <el-form-item label="菜单名称">
+           <el-col :span="5">
+               <el-form-item label="菜单名称">
               <el-input
                 v-model="formOptions.name"
                 placeholder="菜单名称"
               ></el-input>
             </el-form-item>
+           </el-col>
+          <el-col :span="5">
             <el-form-item label="是否需要鉴权">
               <el-select v-model="formOptions.requireAuth" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
+          </el-col>
+           <el-col :span="5">
             <el-form-item label="是否可用">
               <el-select v-model="formOptions.enabled" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
+           </el-col>
+            <el-col :span="9">
             <el-form-item>
               <el-button type="primary" @click="queryMenus">查询</el-button>
               <el-button
                 class="filter-item"
                 style="margin-left: 10px"
                 type="primary"
-                icon="el-icon-edit"
                 @click="addClick()"
               >
                 添加
@@ -61,9 +65,8 @@
         border
         stripe
         size="mini"
-        height="540"
+        height="550"
       >
-        <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column
           label="序号"
           type="index"
@@ -139,7 +142,6 @@
             > -->
             <el-button
               type="primary"
-              icon="el-icon-edit"
               size="mini"
               @click="handleClick(row)"
             >
@@ -266,13 +268,13 @@ export default {
     // 添加
     addClick() {
       this.$refs.menusEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加菜单";
       console.log("我要添加");
     },
     // 编辑&
     handleClick(row) {
       this.$refs.menusEditDialogRef.openDialog(row);
-      this.list = "编辑";
+      this.list = "编辑菜单";
       console.log("编辑", row, row.id);
     },
     // 重置表单
@@ -299,16 +301,28 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@deep: ~">>>";
-@{deep}.el-message-box__btns{ 
-  .el-button--small {
-  background-color: aqua!important
-  }
-}
-.el-card{
-  margin-top: 25px;
-}
 ::v-deep .cell {
   text-align: center;
+    line-height: 36.9px;
+}
+::v-deep .el-col-9 {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination{
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label{
+  margin-right: 5px;
 }
 </style>

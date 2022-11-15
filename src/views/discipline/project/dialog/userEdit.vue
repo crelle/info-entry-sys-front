@@ -16,15 +16,16 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="项目名称" prop="userNickName">
-                  <el-input  placeholder="项目名称"
-                    ><i class="el-icon-user" slot="prepend"></i
+                <el-form-item label="项目名称" prop="project">
+                  <el-input
+                    placeholder="项目名称"
+                    v-model="userEditForm.project"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="项目状态">
-                   <!--  必填属性 required -->
+                <el-form-item label="项目状态" prop="status">
+                  <!--  必填属性 required -->
                   <el-select
-                    v-model="userEditForm.roles[0]"
+                    v-model="userEditForm.status"
                     placeholder="请选择项目状态"
                   >
                     <el-option label="开发中" :value="true"></el-option>
@@ -32,76 +33,80 @@
                     <el-option label="交付阶段" :value="false"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="立项时间">
+                <el-form-item label="立项时间" prop="time">
                   <el-col :span="11">
                     <el-date-picker
                       type="date"
                       placeholder="选择日期"
-                      v-model="userEditForm.date1"
+                      v-model="userEditForm.time"
                       style="width: 100%"
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <el-form-item label="地域" prop="id">
+                <el-form-item label="地域" prop="address">
                   <el-select
-                    v-model="userEditForm.id"
+                    v-model="userEditForm.address"
                     placeholder="地域"
                     filterable
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item, index) in MockUser"
                       :key="item.index"
-                      :label="item.id"
+                      :label="item.region"
                       :value="index"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="接口人" prop="userNickName">
+                <el-form-item label="接口人" prop="name">
                   <el-select
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.name"
                     placeholder="请选择接口人"
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item, index) in Interface"
                       :key="item.index"
-                      :label="item.username"
+                      :label="item.name"
                       :value="index"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="手机号" prop="userPhone">
+                <el-form-item label="手机号" prop="cellPhone">
                   <el-input
-                    v-model="userEditForm.userPhone"
+                    v-model="userEditForm.cellPhone"
                     placeholder="手机号"
-                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="userEmail">
+                <el-form-item label="邮箱" prop="email">
                   <el-input
-                    v-model="userEditForm.userEmail"
+                    v-model="userEditForm.email"
                     placeholder="邮箱"
-                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="客户名称" prop="userNickName">
+                <el-form-item label="客户名称" prop="customer">
                   <el-input
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.customer"
                     placeholder="客户名称"
-                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="部门名称" prop="userNickName">
-                  <el-input
-                    v-model="userEditForm.userNickName"
-                    placeholder="部门名称"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="合作模式">
+                <el-form-item label="部门名称" prop="departmentId">
                   <el-select
-                    v-model="userEditForm.xiangmuzhuangtai"
+                    v-model="userEditForm.departmentId"
+                    placeholder="部门名称"
+                    filterable
+                  >
+                    <el-option
+                      v-for="(item, index) in Users"
+                      :key="item.index"
+                      :label="item.department"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="合作模式" prop="cooperation">
+                  <el-select
+                    v-model="userEditForm.cooperation"
                     placeholder="请选择合作模式"
                   >
                     <el-option label="TM" :value="true"></el-option>
@@ -117,7 +122,7 @@
                   >
                   </el-input>
                 </el-form-item>
-                <el-form-item label="" prop="password">
+                <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -126,18 +131,22 @@
                     :disabled="true"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -145,12 +154,18 @@
 </template>
 
 <script>
+//创建项目
+import { establish } from "@/api/project";
+
 import { updateUser, addUser } from "@/api/user";
 
 export default {
   props: {
     toChild: String,
     tableData: "",
+    Interface: "",
+    MockUser: "",
+    Users: "",
   },
   data() {
     return {
@@ -163,80 +178,107 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
+        introduce: "",
+        jobNo: "",
+        userId: "",
+
+        //
         id: "",
-        date1: "",
-        roles: [],
+        name: "",
+        gender: "",
+        cellPhone: "",
+        email: "",
+        customer: "",
+        status: "",
+        departmentId: "",
+        project: "",
+        address: "",
+        time: "",
+        cooperation: "",
+        number: "",
       },
       initFormData: {},
       userEditFormRules: {
-        username: [
+        name: [
           {
             required: true,
-            message: "请输入用户名",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-        id: [
-          {
-            required: true,
-            message: "请输项目名称",
+            message: "请输入接口人",
             trigger: ["blur", "change"],
           },
           // {
-          //   min: 1,
-          //   max: 16,
-          //   message: "用户名长度在1-16 个字符",
+          //   min: 3,
+          //   max: 10,
+          //   message: "用户名长度在 3 到 10 个字符",
           //   trigger: "blur",
           // },
         ],
-
-        userEmail: [
+        gender: [
           {
-            required: true,
-            message: "请填写",
+            required: false,
+            message: "请选择性别",
             trigger: ["blur", "change"],
           },
         ],
-        userNickName: [
+        cellPhone: [
           {
             required: true,
-            message: "请填写客户名称",
+            message: "请输入手机号",
             trigger: ["blur", "change"],
           },
         ],
-        userPhone: [
+        email: [
           {
             required: true,
-            message: "请填写手机号码",
+            message: "请输入邮箱",
+            trigger: ["blur", "change"],
+          },
+        ],
+        customer: [
+          {
+            required: true,
+            message: "请选择客户",
+            trigger: ["blur", "change"],
+          },
+        ],
+        status: [
+          {
+            required: false,
+            message: "请选择状态",
+            trigger: ["blur", "change"],
+          },
+        ],
+        departmentId: [
+          {
+            required: true,
+            message: "请选择部门",
+            trigger: ["blur", "change"],
+          },
+        ],
+        project: [
+          {
+            required: true,
+            message: "请填写项目名称",
             trigger: ["blur", "change"],
           },
         ],
         address: [
           {
-            required: true,
-            message: "请填写地域",
+            required: false,
+            message: "请选泽地域",
             trigger: ["blur", "change"],
           },
         ],
-        addplace: [
+        time: [
           {
-            required: true,
-            message: "请填写办公地点",
+            required: false,
+            message: "请选泽立项时间",
+            trigger: ["blur", "change"],
+          },
+        ],
+        cooperation: [
+          {
+            required: false,
+            message: "请选泽合作模式",
             trigger: ["blur", "change"],
           },
         ],
@@ -250,9 +292,9 @@ export default {
       // console.log(e, "----------------");
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
-      this.userEditForm.userNickName = this.tableData[e].userNickName;
-      this.userEditForm.userEmail = this.tableData[e].userEmail;
-      this.userEditForm.userPhone = this.tableData[e].userPhone;
+      this.userEditForm.customer = this.Interface[e].customer;
+      this.userEditForm.email = this.Interface[e].Email;
+      this.userEditForm.cellPhone = this.Interface[e].cell_phone;
       // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     //
@@ -386,16 +428,17 @@ export default {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
+          console.log(this.userEditForm,"-----------增加的项目内容*********");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "增加了...res11111");
-              if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
-                this.$message.success("创建成功！");
-                this.dialogClose();
-                this.$parent.resetForm();
-              }
+            establish(this.userEditForm).then((res) => {
+              console.log(res, "增加了项目");
+              // if (res && res.code && res.code === "00000") {
+              //   // this.$parent.resetForm();
+              //   // this.nowIndex = -1; // 重置选中
+              //   this.$message.success("创建成功！");
+              //   this.dialogClose();
+              //   this.$parent.resetForm();
+              // }
             });
           } else {
             return false;
@@ -406,6 +449,7 @@ export default {
   },
 };
 </script>
+
 
 <style lang="less" scoped>
 @deep: ~">>>";
@@ -481,7 +525,10 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 14px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
@@ -489,7 +536,35 @@ export default {
 .passwordat {
   display: none;
 }
-::v-deep .el-form-item__content {
-  width: 650px;
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
 }
+::v-deep .el-form-item__label {
+  width: 125px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+::v-deep .el-dialog__body {
+  padding: 0 20px;
+}
+::v-deep .el-dialog__footer {
+  padding: 0 20px 20px;
+}
+
 </style>

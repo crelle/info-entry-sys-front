@@ -5,10 +5,11 @@
       :visible.sync="dialogFormVisible"
       lock-scroll
       @close="closeDialog"
+      class="showAll_dialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="20">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -16,78 +17,68 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="角色编码">
+                <!-- <el-form-item label="角色编码">
                   <el-input v-model="userEditForm.name" placeholder="角色编码"
                     ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="角色名称" prop="nameZh">
                   <el-input
                     type="text"
                     v-model="userEditForm.nameZh"
                     placeholder="角色名称"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
                 <span>角色权限配置</span>
                 <div class="configuration">
                   <div class="sbox">
-                    <span>数据权限</span>
-                    <el-tree
-                      :data="data1"
-                      show-checkbox
-                      node-key="id"
-                      :default-expanded-keys="[1]"
-                      :default-checked-keys="[0]"
-                      :props="defaultProps"
-                    >
-                    </el-tree>
-                  </div>
-                  <div class="sbox">
                     <span>菜单权限</span>
                     <div class="menubox">
+                      <!-- default-expand-all展开所有 -->
                       <el-tree
-                        :data="data2"
+                        :data="data"
                         show-checkbox
                         node-key="id"
-                        :default-expanded-keys="[1]"
-                        :default-checked-keys="[0]"
+                        :default-expanded-keys="datas"
+                        ref="tree_n"
+                        highlight-current
                         :props="defaultProps"
                       >
                       </el-tree>
+                    </div>
+                  </div>
+                  <div class="sbox">
+                    <span>数据权限</span>
+                    <div class="menubox">
                       <el-tree
-                        :data="data3"
+                        :data="data1"
                         show-checkbox
                         node-key="id"
-                        :default-expanded-keys="[1]"
-                        :default-checked-keys="[0]"
-                        :props="defaultProps"
-                      >
-                      </el-tree>
-                      <el-tree
-                        :data="data4"
-                        show-checkbox
-                        node-key="id"
-                        :default-expanded-keys="[1]"
-                        :default-checked-keys="[0]"
+                        :default-expanded-keys="[3]"
+                        ref="tree_t"
+                        highlight-current
                         :props="defaultProps"
                       >
                       </el-tree>
                     </div>
                   </div>
                 </div>
+                <el-form-item class="dialog-footer">
+                  <el-button type="primary" size="mini" @click="onCertain"
+                    >保 存</el-button
+                  >
+                  <el-button
+                    class="cancel"
+                    type="primary"
+                    @click="dialogClose"
+                    size="mini"
+                    >取 消</el-button
+                  >
+                </el-form-item>
               </el-form>
             </div>
           </el-col>
         </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
-        <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
-        >
       </div>
     </el-dialog>
   </div>
@@ -102,38 +93,8 @@ export default {
   },
   data() {
     return {
-      // 多选权限
-      data1: [
-        {
-          id: 1,
-          label: "ALL",
-        },
-        {
-          id: 2,
-          label: "业务部",
-          children: [
-            {
-              id: 4,
-              label: "孵化使能部",
-              children: [
-                {
-                  id: 5,
-                  label: "合同管理",
-                },
-                {
-                  id: 6,
-                  label: "平台管理",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "零售部",
-        },
-      ],
-      data2: [
+      datas: [],
+      data: [
         {
           id: 1,
           label: "系统管理",
@@ -143,23 +104,23 @@ export default {
               label: "用户管理",
               children: [
                 {
-                  id: 5,
+                  id: 9,
                   label: "新增",
                 },
                 {
-                  id: 6,
+                  id: 10,
                   label: "编辑",
                 },
                 {
-                  id: 7,
+                  id: 11,
                   label: "查看",
                 },
                 {
-                  id: 8,
+                  id: 12,
                   label: "角色配置",
                 },
                 {
-                  id: 9,
+                  id: 13,
                   label: "停用启用",
                 },
               ],
@@ -169,19 +130,19 @@ export default {
               label: "角色管理",
               children: [
                 {
-                  id: 10,
+                  id: 5,
                   label: "新增",
                 },
                 {
-                  id: 11,
+                  id: 6,
                   label: "编辑",
                 },
                 {
-                  id: 12,
+                  id: 7,
                   label: "查看",
                 },
                 {
-                  id: 13,
+                  id: 8,
                   label: "删除",
                 },
               ],
@@ -191,115 +152,41 @@ export default {
               label: "地域管理",
               children: [
                 {
-                  id: 14,
-                  label: "新增",
-                },
-                {
-                  id: 15,
-                  label: "编辑",
-                },
-                {
-                  id: 16,
-                  label: "查看",
-                },
-                {
-                  id: 17,
-                  label: "删除",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      data3: [
-        {
-          id: 1,
-          label: "需求管理",
-          children: [
-            {
-              id: 2,
-              label: "客户管理",
-              children: [
-                {
-                  id: 5,
-                  label: "新增",
-                },
-                {
-                  id: 6,
-                  label: "编辑",
-                },
-                {
                   id: 7,
-                  label: "查看",
+                  label: "新增",
                 },
                 {
                   id: 8,
-                  label: "删除",
+                  label: "编辑",
                 },
-              ],
-            },
-            {
-              id: 3,
-              label: "接口人管理",
-              children: [
                 {
                   id: 9,
-                  label: "新增",
+                  label: "查看",
                 },
                 {
                   id: 10,
-                  label: "编辑",
-                },
-                {
-                  id: 11,
-                  label: "查看",
-                },
-                {
-                  id: 12,
-                  label: "删除",
-                },
-              ],
-            },
-            {
-              id: 4,
-              label: "项目管理",
-              children: [
-                {
-                  id: 13,
-                  label: "新增",
-                },
-                {
-                  id: 14,
-                  label: "编辑",
-                },
-                {
-                  id: 15,
-                  label: "查看",
-                },
-                {
-                  id: 16,
                   label: "删除",
                 },
               ],
             },
             {
               id: 5,
-              label: "岗位管理",
+              label: "部门管理",
               children: [
                 {
-                  id: 17,
+                  id: 7,
                   label: "新增",
                 },
                 {
-                  id: 18,
+                  id: 8,
                   label: "编辑",
                 },
                 {
-                  id: 19,
+                  id: 9,
                   label: "查看",
                 },
                 {
-                  id: 20,
+                  id: 10,
                   label: "删除",
                 },
               ],
@@ -307,33 +194,57 @@ export default {
           ],
         },
       ],
-      data4: [
+      data1: [
         {
           id: 1,
-          label: "员工管理",
+          label: "业务部",
           children: [
             {
-              id: 2,
-              label: "员工信息",
+              id: 4,
+              label: "孵化使能部",
               children: [
                 {
-                  id: 5,
+                  id: 9,
+                  label: "合同管理",
+                },
+                {
+                  id: 10,
+                  label: "平台管理",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          id: 2,
+          label: "零售部",
+        },
+        {
+          id: 3,
+          label: "系统管理",
+          children: [
+            {
+              id: 7,
+              label: "用户管理",
+              children: [
+                {
+                  id: 8,
                   label: "新增",
                 },
                 {
-                  id: 6,
+                  id: 9,
                   label: "编辑",
                 },
                 {
-                  id: 7,
+                  id: 10,
                   label: "查看",
                 },
                 {
-                  id: 8,
+                  id: 11,
                   label: "角色配置",
                 },
                 {
-                  id: 9,
+                  id: 12,
                   label: "停用启用",
                 },
               ],
@@ -345,6 +256,7 @@ export default {
         children: "children",
         label: "label",
       },
+      // 多选权限
       // ----
       dialogFormVisible: false,
       fileType: {
@@ -353,7 +265,6 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        name: "",
         nameZh: "",
       },
       initFormData: {},
@@ -388,18 +299,58 @@ export default {
     };
   },
   methods: {
+    // 树形控件赋值
+    setCheckedNodes() {
+      this.$refs.tree_n.setCheckedNodes([
+        {
+          id: 5,
+          label: "二级 2-1",
+        },
+        {
+          id: 9,
+          label: "三级 1-1-1",
+        },
+      ]);
+      this.$refs.tree_t.setCheckedNodes([
+        {
+          id: 5,
+          label: "二级 2-1",
+        },
+        {
+          id: 9,
+          label: "三级 1-1-1",
+        },
+      ]);
+    },
+    // 树形控件清空
+    resetChecked() {
+      this.$refs.tree_n.setCheckedKeys([]);
+      this.$refs.tree_t.setCheckedKeys([]);
+    },
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.$nextTick(() => {
+        // 这个要加上
+        this.datas = [1];
+      });
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
+          this.setCheckedNodes();
+          console.log("我是编辑");
         });
       } else {
+        // 树形控件清空
+        this.resetChecked();
         console.log("我是新增");
         // this.initForm("");
+        //  this.check1="",
+        //  this.check2="",
+        //  this.check3="",
+        //  this.check4="",
       }
     },
     initForm(data) {
@@ -425,6 +376,8 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
+
+      console.log("初始化了");
     },
 
     /* 保存  */
@@ -552,14 +505,15 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 10px 40px;
   .el-input-group__append {
     padding: 0 2px;
   }
 }
 .configuration {
-  // display: flex;
-  // justify-content: space-around;
+  min-height: 450px;
+  display: flex;
+  justify-content: space-around;
   padding: 15px 20px 0;
   margin-top: 15px;
   border: 1px solid #eee;
@@ -578,10 +532,51 @@ export default {
 ::v-deep .el-dialog__body {
   padding: 10px;
 }
-::v-deep .el-row {
-  padding-left: 130px;
+
+.el-form-item {
+  display: flex;
+  .el-form-item__label {
+    width: 80px;
+  }
 }
-::v-deep .el-dialog {
-  margin-top: 4vh !important;
+// 修改对话框高度 滚动条
+.showAll_dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  ::v-deep .el-dialog {
+    margin: 0 auto !important;
+    height: 80%;
+    overflow: hidden;
+    .el-dialog__body {
+      position: absolute;
+      left: 0;
+      top: 54px;
+      bottom: 0;
+      right: 0;
+      padding: 0;
+      z-index: 1;
+      overflow: hidden;
+      overflow-y: auto;
+      // 下边设置字体，我的需求是黑底白字
+      color: #606266;
+      line-height: 30px;
+      padding: 0 15px;
+    }
+  }
+}
+.dialog-footer {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  margin-top: 35px;
+}
+::v-deep .el-form-item__label {
+  margin-right: 25px;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
 }
 </style>

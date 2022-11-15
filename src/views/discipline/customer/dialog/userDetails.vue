@@ -12,42 +12,39 @@
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
                 <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>需求管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>客户管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span>{{ userEditForm.username }}</span>
+                      ><span>{{ userEditForm.customer }}</span>
                     </li>
-                    <li><span>地域:</span><span>zzqqqzz</span></li>
-                    <li><span>办公地点:</span><span>xxyyx</span></li>
                     <li>
-                      <span>(客户)负责人:</span
-                      ><span>{{ userEditForm.userNickName }}</span>
+                      <span>地域:</span><span>{{ userEditForm.region }}</span>
+                    </li>
+                    <li>
+                      <span>办公地点:</span
+                      ><span>{{ userEditForm.address }}</span>
+                    </li>
+                    <li>
+                      <span>负责人:</span
+                      ><span>{{ userEditForm.responsibility }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.userPhone }}</span>
+                      ><span>{{ userEditForm.cell_phone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span
-                      ><span>{{ userEditForm.userEmail }}</span>
-                    </li>
-
-                    <li>
-                      <span>介绍:</span>
-                      <el-input
-                        type="textarea"
-                        :rows="2"
-                        placeholder="请输入内容"
-                        v-model="textarea"
-                      >
-                      </el-input>
+                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
                     </li>
                   </ul>
+                  <el-form-item class="textarea" label="介绍:">
+                    <el-input
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容"
+                      v-model="textarea"
+                    >
+                    </el-input>
+                  </el-form-item>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="客户项目" name="first">
@@ -63,18 +60,22 @@
                           <el-table-column
                             prop="name"
                             label="项目人数"
-                            width="180"
+                            width="80"
                           >
                           </el-table-column>
                           <el-table-column
                             prop="contact"
                             label="所属部门"
-                            width="180"
+                            width="120"
                           >
                           </el-table-column>
                           <el-table-column prop="person" label="接口人">
                           </el-table-column>
-                           <el-table-column prop="project" label="项目状态">
+                          <el-table-column prop="project" label="项目状态">
+                          </el-table-column>
+                          <el-table-column prop="psonstatus" label="项目人数">
+                          </el-table-column>
+                          <el-table-column prop="gap" label="项目缺口">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -88,7 +89,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -111,6 +112,8 @@ export default {
           contact: "研发1部",
           project: "开发中",
           person: "aaa",
+          psonstatus: "15人",
+          gap: "5人",
         },
         {
           number: "2",
@@ -119,6 +122,8 @@ export default {
           contact: "研发2部",
           project: "维护中",
           person: "bbb",
+          psonstatus: "25人",
+          gap: "1人",
         },
         {
           number: "3",
@@ -127,6 +132,8 @@ export default {
           contact: "研发3部",
           project: "暂停中",
           person: "ccc",
+          psonstatus: "18人",
+          gap: "5人",
         },
         {
           number: "4",
@@ -135,9 +142,11 @@ export default {
           contact: "研发4部",
           project: "上线中",
           person: "ddd",
+          psonstatus: "35人",
+          gap: "4人",
         },
       ],
-   
+
       // 假数据
       activeName: "first",
       textarea:
@@ -150,16 +159,13 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-        roles: "",
+        Email: "",
+        address: "",
+        cell_phone: "",
+        customer: "",
+        id: "",
+        region: "",
+        responsibility: "",
       },
       initFormData: {},
     };
@@ -232,7 +238,44 @@ export default {
 ::v-deep .cell {
   text-align: center;
 }
-.lis{
+.lis {
   padding: 0;
+}
+::v-deep .el-dialog__body {
+  margin: 0 40px;
+  padding: 0 40px;
+}
+.lis {
+  display: flex;
+  flex-wrap: wrap;
+  li {
+    width: 400px;
+    margin: 10px 0;
+    display: flex;
+    span {
+      display: block;
+    }
+    span:nth-child(1) {
+      width: 100px;
+    }
+  }
+}
+::v-deep .el-table {
+  font-size: 12px;
+}
+.dialog-footer {
+  text-align: center;
+}
+::v-deep .el-dialog {
+  margin-top: 10vh !important;
+}
+.textarea {
+  display: flex;
+  ::v-deep .el-textarea__inner {
+    width: 690px;
+    height: 100px;
+    line-height: 30px;
+    margin-left: 52px;
+  }
 }
 </style>

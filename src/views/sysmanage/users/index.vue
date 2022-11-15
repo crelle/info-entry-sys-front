@@ -1,5 +1,10 @@
 <template>
   <div class="users_content">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>用户管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
@@ -10,54 +15,49 @@
         label-position="right"
       >
         <el-row>
-          <el-col :span="8">
+          <el-col :span="5">
             <el-form-item label="用户名称">
               <el-input
                 v-model="formOptions.username"
-                placeholder="用户名称"
+                placeholder="请输入用户名称"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="手机">
+          <el-col :span="5">
+            <el-form-item label="手机号">
               <el-input
                 v-model="formOptions.userPhone"
-                placeholder="手机号码"
+                placeholder="请输入用户手机号码"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="是否可用" required>
-              <el-select v-model="formOptions.enabled" placeholder="请选择">
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <!-- <el-col :span="12">
-            <el-form-item label="账号是否未被锁定" required>
-              <el-select
-                v-model="formOptions.accountNonLocked"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="12">
-            <el-form-item label="账号是否未过期" required>
-              <el-select
-                v-model="formOptions.accountNonExpired"
-                placeholder="请选择"
-              >
-                <el-option label="是" :value="true"></el-option>
-                <el-option label="否" :value="false"></el-option>
+          <!-- <el-col :span="5">
+            <el-form-item label="用户状态" required>
+              <el-select v-model="formOptions.enabled" placeholder="请选择状态">
+                <el-option label="启用" :value="true"></el-option>
+                <el-option label="禁用" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col> -->
+          <el-col :span="5">
+            <el-form-item label="状态">
+              <el-select v-model="formOptions.enabled" placeholder="请选择状态">
+                <el-option label="启用" :value="true"></el-option>
+                <el-option label="禁用" :value="false"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="角色">
+              <el-select v-model="quanxian" placeholder="请选择角色">
+                <el-option label="管理员" :value="true"></el-option>
+                <el-option label="普通用户" :value="false"></el-option>
+                <el-option label="访客" :value="false"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <el-col
-            :span="24"
+            :span="4"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -68,9 +68,7 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="addClick"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -87,25 +85,25 @@
         border
         stripe
         size="mini"
-        height="540"
+        height="550"
       >
-        <el-table-column type="selection" width="55" fixed> </el-table-column>
+        <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
         <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
           prop="username"
-          label="用户名"
+          label="用户名称"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="userNickName"
           label="昵称"
           min-width="80"
           show-overflow-tooltip
         >
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column label="工号" min-width="100" show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -151,12 +149,12 @@
         </el-table-column> -->
         <el-table-column
           prop="enabled"
-          label="账户是否可用"
+          label="状态"
           min-width="80"
           show-overflow-tooltip
         >
           <template slot-scope="scope">{{
-            scope.row.enabled ? "是" : "否"
+            scope.row.enabled ? "启用" : "禁用"
           }}</template>
         </el-table-column>
         <el-table-column
@@ -175,10 +173,10 @@
             >
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="140">
+        <el-table-column fixed="right" label="操作" min-width="220">
           <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="small"
-              >详情</el-button
+            <el-button @click="detailsClick(row)" type="primary" size="mini"
+              >查看</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button
@@ -230,6 +228,8 @@ export default {
   },
   data() {
     return {
+      // 权限
+      quanxian: "",
       list: "",
       formOptions: {
         accountNonExpired: true,
@@ -290,7 +290,7 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$alert("此操作将永久删除该用户, 是否继续?", "删除用户", {
         confirmButtonText: "确定",
         type: "warning",
       })
@@ -323,18 +323,19 @@ export default {
     // 添加
     addClick() {
       this.$refs.userEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "新增用户";
       console.log("我要添加");
     },
     // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
-      this.list = "编辑";
+      this.list = "编辑用户信息";
       console.log("编辑----", row, row.id);
     },
     // 详情
     detailsClick(row) {
       console.log("详情", row, row.id);
+      this.list = "查看用户详情";
       this.$refs.userDaitDialogRef.openDialog(row);
     },
     // 重置表单
@@ -359,62 +360,30 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-@deep: ~">>>";
-// 表单样式
-.el-col {
-  .el-form-item {
-    width: 100%;
-  }
-  @{deep} .el-form-item__label {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  @{deep} .el-form-item__content {
-    width: calc(100% - 120px);
-    > div {
-      width: 100%;
-    }
-  }
-}
-// 表单操作按钮区域样式
-.inline1_action_button_content {
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.inline2_action_button_content {
-  width: 66.6%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.nextline_action_button_content {
-  width: 100%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-@{deep} .el-pagination {
-  margin: 10px 0;
-}
-@{deep} .el-form-item--mini {
-  display: flex;
-}
-@{deep} .el-form-item__label {
-  width: 140px;
-}
-::v-deep .el-message-box__btns .el-button {
-  background-color: black !important;
-}
+
+<style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
+    line-height: 36.9px;
+}
+::v-deep .nextline_action_button_content {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination{
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label{
+  margin-right: 5px;
 }
 </style>

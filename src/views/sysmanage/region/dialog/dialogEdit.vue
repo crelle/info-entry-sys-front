@@ -8,7 +8,7 @@
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -16,17 +16,11 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="地域编码" prop="name">
-                  <el-input v-model="userEditForm.name" placeholder="地域编码"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="地域名称" prop="nameZh">
+                <el-form-item label="地域名称" prop="region">
                   <el-input
                     type="text"
-                    v-model="userEditForm.nameZh"
-                    placeholder="地域名称"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                    v-model="userEditForm.region"
+                    placeholder="请填写地域名称"
                   ></el-input>
                 </el-form-item>
               </el-form>
@@ -35,11 +29,15 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -48,6 +46,7 @@
 
 <script>
 import { updateRole, deleteRole } from "@/api/role";
+import { establish } from "@/api/region";
 
 export default {
   props: {
@@ -62,36 +61,22 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        name: "",
-        nameZh: "",
+        region: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
+        region: [
           {
             required: true,
-            message: "请输入地域编码",
+            message: "请输入地域名称",
             trigger: ["blur", "change"],
           },
-          {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-        nameZh: [
-          {
-            required: true,
-            message: "请填写地域名称",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
+          // {
+          //   min: 1,
+          //   max: 10,
+          //   message: "用户名长度在 3 到 10 个字符",
+          //   trigger: "blur",
+          // },
         ],
       },
     };
@@ -155,7 +140,7 @@ export default {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                 this.dialogClose();
+                this.dialogClose();
                 console.log("修改成功！");
                 this.$parent.queryRoles();
               }
@@ -165,26 +150,28 @@ export default {
           }
         });
       } else {
-        return false;
+        console.log("增加了...");
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log(valid, "增加了的valid");
+          console.log(
+            this.userEditForm,
+            this.userEditForm.id,
+            "*******----------地域"
+          );
+          if (valid) {
+            establish(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "增加了...res11111");
+              // if (res && res.code && res.code === "00000") {
+              //   // this.$parent.resetForm();
+              //   // this.nowIndex = -1; // 重置选中
+              //   this.$message.success("创建成功！");
+              // }
+            });
+          } else {
+            return false;
+          }
+        });
       }
-      // else {
-      //   console.log("增加了...");
-      //   this.$refs["userEditRef"].validate((valid) => {
-      //     console.log(valid, "增加了的valid");
-      //     if (valid) {
-      //       addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-      //         console.log(res, "增加了...res11111");
-      //         if (res && res.code && res.code === "00000") {
-      //           // this.$parent.resetForm();
-      //           // this.nowIndex = -1; // 重置选中
-      //           this.$message.success("创建成功！");
-      //         }
-      //       });
-      //     } else {
-      //       return false;
-      //     }
-      //   });
-      // }
     },
   },
 };
@@ -269,4 +256,18 @@ export default {
     padding: 0 2px;
   }
 }
+.el-form-item {
+  display: flex;
+}
+::v-deep .el-dialog {
+  width: 20%;
+}
+::v-deep .el-form-item__label {
+  margin-right: 25px;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+
 </style>

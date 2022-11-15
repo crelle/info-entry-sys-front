@@ -5,6 +5,7 @@
       :visible.sync="dialogFormVisible"
       lock-scroll
       @close="closeDialog"
+      class="showAll_dialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -12,50 +13,42 @@
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
                 <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>需求管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>接口人管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
                   <ul class="lis">
                     <li>
-                      <span>接口人名:</span
-                      ><span>{{ userEditForm.username }}</span>
+                      <span>接口人名:</span><span>{{ userEditForm.name }}</span>
                     </li>
                     <li>
-                      <span>性别:</span><span>{{}}</span>
+                      <span>性别:</span><span>{{ userEditForm.gender }}</span>
                     </li>
                     <li>
-                      <span>客户:</span
-                      ><span>{{ userEditForm.userNickName }}</span>
+                      <span>客户:</span><span>{{ userEditForm.customer }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.userPhone }}</span>
+                      ><span>{{ userEditForm.cell_phone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span
-                      ><span>{{ userEditForm.userEmail }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
                     </li>
                     <li>
                       <span>接口人办公地址:</span>
-                      <span>{{}}</span>
+                      <span>{{ userEditForm.address }}</span>
                     </li>
                     <li>
                       <span>负责项目:</span>
-                      <span>{{}}</span>
-                    </li>
-                    <li>
-                      <span>介绍:</span>
-                      <el-input
-                        type="textarea"
-                        :rows="2"
-                        placeholder="请输入内容"
-                        v-model="textarea"
-                      >
-                      </el-input>
+                      <span>{{ userEditForm.project }}</span>
                     </li>
                   </ul>
+                  <div>
+                    <span>介绍:</span>
+                    <el-input
+                      type="textarea"
+                      :rows="2"
+                      placeholder="请输入内容"
+                      v-model="textarea"
+                    >
+                    </el-input>
+                  </div>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="项目表" name="first">
@@ -66,28 +59,21 @@
                             width="50"
                           >
                           </el-table-column>
-                          <el-table-column prop="date" label="项目名称" width="120">
-                          </el-table-column>
                           <el-table-column
-                            prop="name"
-                            label="接口人"
-                            width="80"
+                            prop="date"
+                            label="项目名称"
+                            width="120"
                           >
-                          </el-table-column>
-                          <el-table-column
-                            prop="contact"
-                            label="手机号"
-                            width="180"
-                          >
-                          </el-table-column>
-                          <el-table-column prop="address" label="邮箱">
                           </el-table-column>
                           <el-table-column prop="project" label="项目状态">
                           </el-table-column>
                           <el-table-column prop="person" label="客户">
                           </el-table-column>
-                          <el-table-column prop="derson" label="所属部门">
+                          <el-table-column prop="people" label="项目人数">
                           </el-table-column>
+                          <el-table-column prop="gap" label="项目缺口">
+                          </el-table-column>
+                         
                         </el-table>
                       </el-tab-pane>
                     </el-tabs>
@@ -97,12 +83,13 @@
             </div>
           </el-col>
         </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
+        <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+          >取 消</el-button
         >
       </div>
+      </div>
+      
     </el-dialog>
   </div>
 </template>
@@ -122,9 +109,11 @@ export default {
           name: "赵二",
           address: "@ewqe",
           contact: "13315715789",
-          project: "xxx项目",
+          project: "开发中",
           person: "aaa",
           derson: "ergfdd",
+          people:"22人",
+          gap:"4人",
         },
         {
           number: "2",
@@ -132,9 +121,11 @@ export default {
           name: "张三",
           address: "@qeqwe",
           contact: "13915715789",
-          project: "yyy项目",
+          project: "开发中",
           person: "bbb",
           derson: "ytht",
+           people:"20人",
+          gap:"1人",
         },
         {
           number: "3",
@@ -142,9 +133,11 @@ export default {
           name: "李四",
           address: "@rfwr213",
           contact: "13215715789",
-          project: "zzz项目",
+          project: "暂停中",
           person: "ccc",
           derson: "xsad",
+           people:"30人",
+          gap:"4人",
         },
         {
           number: "4",
@@ -152,9 +145,11 @@ export default {
           name: "王五",
           address: "@r43rft455",
           contact: "13115715789",
-          project: "www项目",
+          project: "交付中",
           person: "ddd",
           derson: "jfgtr",
+           people:"10人",
+          gap:"2人",
         },
       ],
       // 假数据
@@ -169,16 +164,15 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-        roles: "",
+        id: "",
+        name: "",
+        gender: "",
+        cell_phone: "",
+        Email: "",
+        address: "",
+        customer: "",
+        customer: "",
+        project: "",
       },
       initFormData: {},
     };
@@ -232,6 +226,7 @@ export default {
 };
 </script>
 
+
 <style lang="less" scoped>
 * {
   list-style: none;
@@ -254,8 +249,65 @@ export default {
 }
 ::v-deep .cell {
   text-align: center;
+  line-height: 35px;
 }
 .lis {
   padding: 0;
+}
+::v-deep .el-dialog__body {
+  margin: 0 40px;
+  padding: 0 40px;
+}
+.lis {
+  display: flex;
+  flex-wrap: wrap;
+  li {
+    width: 395px;
+    margin: 5px 0;
+    display: flex;
+    span {
+      display: block;
+    }
+    span:nth-child(1) {
+      width: 115px;
+    }
+  }
+}
+::v-deep .el-table {
+  font-size: 12px;
+}
+.dialog-footer {
+  text-align: center;
+  margin-top: 25px;
+}
+::v-deep .el-dialog{
+  margin-top: 10vh !important;
+}
+// 修改对话框高度 滚动条
+.showAll_dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  ::v-deep .el-dialog {
+    margin: 0 auto !important;
+    height: 80%;
+    overflow: hidden;
+    .el-dialog__body {
+      position: absolute;
+      left: 0;
+      top: 54px;
+      bottom: 0;
+      right: 0;
+      padding: 0;
+      z-index: 1;
+      overflow: hidden;
+      overflow-y: auto;
+      // 下边设置字体，我的需求是黑底白字
+      color: #606266;
+      line-height: 30px;
+      padding: 0 15px;
+    }
+  }
 }
 </style>

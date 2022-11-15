@@ -17,75 +17,80 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="部门名" prop="username">
-                  <el-input v-model="userEditForm.username" placeholder="部门名"
-                    ><i class="el-icon-user" slot="prepend"></i
+                <el-form-item label="部门名" prop="department">
+                  <el-input
+                    v-model="userEditForm.department"
+                    placeholder="部门名"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="负责人" prop="userNickName">
+                <el-form-item label="负责人" prop="responsibility">
                   <el-select
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.responsibility"
                     placeholder="请选择负责人"
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item, index) in UserData"
                       :key="item.index"
-                      :label="item.userNickName"
+                      :label="item.username"
                       :value="index"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="工号" prop="">
-                  <el-input placeholder="工号"
-                    ><i class="el-icon-user" slot="prepend"></i
+                <el-form-item label="工号" prop="job_no">
+                  <el-input
+                    placeholder="工号"
+                    v-model="userEditForm.job_no"
+                    readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="userPhone">
+                <el-form-item label="手机号" prop="cell_phone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.userPhone"
+                    v-model="userEditForm.cell_phone"
                     placeholder="手机号"
-                    ><i class="el-icon-mobile-phone" slot="prepend"></i
+                    readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="userEmail">
+                <el-form-item label="邮箱" prop="Email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.userEmail"
+                    v-model="userEditForm.Email"
                     placeholder="邮箱"
-                    ><i class="el-icon-message" slot="prepend"></i
+                    readonly
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="上级部门">
                   <el-select
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.departmentop"
                     @change="queryson"
                   >
                     <el-option
                       v-for="(item, index) in tableData"
                       :key="item.index"
-                      :label="item.userNickName"
+                      :label="item.department"
                       :value="index"
                     ></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="部门总部地址" prop="address">
-                  <el-input type="email" placeholder="部门总部地址"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                  <el-input
+                    type="email"
+                    placeholder="部门总部地址"
+                    v-model="userEditForm.address"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="部门介绍" prop="">
+                <el-form-item label="部门介绍" prop="textarea">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                     v-model="userEditForm.textarea"
                   >
                   </el-input>
                 </el-form-item>
-                <el-form-item label="" prop="password">
+                <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -94,18 +99,22 @@
                     :disabled="true"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -119,11 +128,11 @@ export default {
   props: {
     toChild: String,
     tableData: "",
+    UserData: "",
   },
   data() {
     return {
       tableDatasan: [],
-      textarea: "",
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -132,19 +141,20 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
+        id: "",
+        department: "",
+        responsibility: "",
+        job_no: "",
+        cell_phone: "",
+        address: "",
+        retained: "",
+        Email: "",
+        departmentop: "",
+        textarea:""
       },
       initFormData: {},
       userEditFormRules: {
-        username: [
+        department: [
           {
             required: true,
             message: "请输部门名",
@@ -171,31 +181,45 @@ export default {
           // },
         ],
 
-        userEmail: [
+        Email: [
           {
-            required: true,
+            required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        userNickName: [
+        responsibility: [
           {
             required: true,
             message: "请选择负责人",
             trigger: ["blur", "change"],
           },
         ],
-        userPhone: [
+        cell_phone: [
           {
-            required: true,
+            required: false,
             message: "请填写手机号码",
+            trigger: ["blur", "change"],
+          },
+        ],
+        job_no: [
+          {
+            required: false,
+            message: "请填工号",
             trigger: ["blur", "change"],
           },
         ],
         address: [
           {
-            required: true,
+            required: false,
             message: "请填写部门总部地址",
+            trigger: ["blur", "change"],
+          },
+        ],
+        textarea: [
+          {
+            required: false,
+            message: "请填写部门介绍",
             trigger: ["blur", "change"],
           },
         ],
@@ -210,9 +234,10 @@ export default {
       // console.log(e, "----------------");
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
-      this.userEditForm.userNickName = this.tableData[e].userNickName;
-      this.userEditForm.userPhone = this.tableData[e].userPhone;
-      this.userEditForm.userEmail = this.tableData[e].userEmail;
+      this.userEditForm.responsibility = this.UserData[e].username;
+      this.userEditForm.cell_phone = this.UserData[e].userPhone;
+      this.userEditForm.Email = this.UserData[e].userEmail;
+      this.userEditForm.job_no = this.UserData[e].id;
       // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     //
@@ -388,7 +413,10 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
@@ -396,7 +424,33 @@ export default {
 .passwordat {
   display: none;
 }
-::v-deep .el-form-item__content {
-  width: 650px;
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
 }
+::v-deep .el-form-item__label {
+  width: 110px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+
 </style>
+
+
+
+

@@ -8,7 +8,7 @@
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-         <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -17,33 +17,54 @@
                 size="mini"
               >
                 <el-form-item label="用户名" prop="username">
-                  <el-input v-model="userEditForm.username" placeholder="用户名"
-                    ><i class="el-icon-user" slot="prepend"></i
+                  <el-input
+                    v-model="userEditForm.username"
+                    placeholder="请输入用户名"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="工号" prop="userNickName">
                   <el-input
                     type="text"
                     v-model="userEditForm.userNickName"
-                    placeholder="工号"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                    placeholder="请输入用户工号"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="userPhone">
                   <el-input
                     type="tel"
                     v-model="userEditForm.userPhone"
-                    placeholder="手机号"
-                    ><i class="el-icon-mobile-phone" slot="prepend"></i
+                    placeholder="请输入用户手机号"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="userEmail">
                   <el-input
                     type="email"
                     v-model="userEditForm.userEmail"
-                    placeholder="邮箱"
-                    ><i class="el-icon-message" slot="prepend"></i
+                    placeholder="请输入用户邮箱"
                   ></el-input>
+                </el-form-item>
+
+                <el-form-item label="角色权限" prop="roles">
+                  <el-select
+                    v-model="userEditForm.roles[0].nameZh"
+                    placeholder="请选择角色权限"
+                    filterable
+                  >
+                    <el-option
+                      v-for="(item, index) in tableData"
+                      :key="item.index"
+                      :label="item.nameZh"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item class="ifnoyes" label="是否可用" prop="enabled">
+                  <el-switch
+                    v-model="userEditForm.enabled"
+                    active-text="启用"
+                    inactive-text="禁用"
+                  >
+                  </el-switch>
                 </el-form-item>
                 <el-form-item label="" prop="password">
                   <el-input
@@ -52,34 +73,7 @@
                     v-model="userEditForm.password"
                     placeholder="密码"
                     :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
-                <el-form-item label="角色权限">
-                  <el-select
-                    v-model="userEditForm.roles[0].nameZh"
-                    placeholder="请选择"
-                  >
-                    <el-option label="管理员" value="管理员"></el-option>
-                    <el-option label="普通用户" value="普通用户"></el-option>
-                    <el-option label="访客" value="访客"></el-option>
-                    <el-option label="部门经理" value="部门经理"></el-option>
-                    <el-option label="项目助理" value="项目助理"></el-option>
-                    <el-option label="项目经理" value="项目经理"></el-option>
-                    <el-option label="HR" value="HR"></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item
-                  label="是否可用"
-                  label-width="100px"
-                  prop="enabled"
-                >
-                  <el-switch
-                    v-model="userEditForm.enabled"
-                    active-text="可用"
-                    inactive-text="不可用"
-                  >
-                  </el-switch>
                 </el-form-item>
               </el-form>
             </div>
@@ -87,11 +81,15 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          size="mini"
+          @click="dialogClose"
+          >取消</el-button
         >
       </div>
     </el-dialog>
@@ -100,20 +98,15 @@
 
 <script>
 import { updateUser, addUser } from "@/api/user";
-
+import { queryRole } from "@/api/role";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
+      tableData: "",
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -138,12 +131,6 @@ export default {
             message: "请输入用户名",
             trigger: ["blur", "change"],
           },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
         ],
         password: [
           {
@@ -155,7 +142,7 @@ export default {
 
         userEmail: [
           {
-            required: true,
+            required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
@@ -163,7 +150,7 @@ export default {
         userNickName: [
           {
             required: true,
-            message: "请填写昵称",
+            message: "请填写工号",
             trigger: ["blur", "change"],
           },
         ],
@@ -174,13 +161,46 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+
+        roles: [
+          {
+            required: false,
+            message: "请选择权限",
+            trigger: ["blur", "change"],
+          },
+        ],
+        enabled: [
+          {
+            required: false,
+            message: "请选择权限",
+            trigger: ["blur", "change"],
+          },
+        ],
       },
     };
   },
+  mounted() {
+    this.queryRoles();
+  },
   methods: {
+    // 查询权限
+    queryRoles() {
+      let data = { records: [{ ...this.formOptions }] };
+      console.log(data, "data---------");
+      queryRole(data).then((res) => {
+        console.log(res, "res++++++++++");
+        if (res && res.code && res.code === "00000") {
+          // this.resetForm("queryRoleRef"); // 重置表单
+          this.tableData = res.data.records; // 表格数据赋值
+          console.log(this.tableData, "20221104this.tableData");
+        }
+      });
+    },
+    // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -189,22 +209,15 @@ export default {
         });
       } else {
         console.log("我是新增");
-        // this.initForm("");
       }
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        // if (item === "userAvatar") {
-        //   // 最终保存的时候 此字段（头像地址）才是最终会
-        //   // 赋值给this.userEditForm.userAvatar的值，
-        //   // 所以要初始化的时候也要赋值一次
-        //   this.imageUrl = data[item];
-        // }
       });
     },
     closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
+      this.resetFormData(); // 初始化弹窗数据 重置
       this.resetForm("userEditRef"); // 重置表单
     },
     // 取消
@@ -260,6 +273,7 @@ export default {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
+          console.log(this.userEditForm, this.userEditForm.id, "增加了的内容");
           if (valid) {
             addUser(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "增加了...res11111");
@@ -285,7 +299,7 @@ export default {
 @deep: ~">>>";
 @{deep} .register_form_main {
   position: relative;
-  min-width: 40%;
+  min-width: 30%;
   overflow: hidden;
   > span {
     display: block;
@@ -355,12 +369,42 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
 }
 .passwordat {
   display: none;
+}
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
+}
+::v-deep .el-form-item__label {
+  width: 95px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+.ifnoyes{
+  width: 300px;
 }
 </style>

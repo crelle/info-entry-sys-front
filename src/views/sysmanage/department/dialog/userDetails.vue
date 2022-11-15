@@ -11,39 +11,32 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>部门管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
+                <div class="box">
                   <ul>
                     <li>
                       <span>部门名:</span
-                      ><span>{{ userEditForm.username }}</span>
+                      ><span>{{ userEditForm.department }}</span>
                     </li>
                     <li>
                       <span>负责人:</span
-                      ><span>{{ userEditForm.userNickName }}</span>
+                      ><span>{{ userEditForm.responsibility }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.userPhone }}</span>
+                      ><span>{{ userEditForm.cell_phone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span
-                      ><span>{{ userEditForm.userEmail }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
                     </li>
-                    <li><span>部门总部地址:</span><span></span></li>
                     <li>
+                      <span>部门总部地址:</span
+                      ><span>{{ userEditForm.address }}</span>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li class="new">
                       <span>部门介绍:</span>
-                      <el-input
-                        type="textarea"
-                        :rows="2"
-                        placeholder="请输入内容"
-                        v-model="textarea"
-                      >
-                      </el-input>
+                      <span>{{ textarea }}</span>
                     </li>
                   </ul>
                   <div>
@@ -56,25 +49,27 @@
                             width="50"
                           >
                           </el-table-column>
-                          <el-table-column prop="date" label="工号" width="180">
+                          <el-table-column prop="date" label="工号" width="120">
                           </el-table-column>
                           <el-table-column
                             prop="name"
                             label="人员姓名"
-                            width="180"
+                            width="100"
                           >
                           </el-table-column>
                           <el-table-column
                             prop="contact"
                             label="联系方式"
-                            width="180"
+                            width="150"
                           >
                           </el-table-column>
-                          <el-table-column prop="address" label="地域">
+                          <el-table-column prop="address" label="地域" width="150">
                           </el-table-column>
                           <el-table-column prop="project" label="所在项目">
                           </el-table-column>
                           <el-table-column prop="person" label="接口人">
+                          </el-table-column>
+                          <el-table-column prop="sonstate" label="状态">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -89,7 +84,7 @@
                           <el-table-column
                             prop="project"
                             label="项目名称"
-                            width="180"
+                            width="100"
                           >
                           </el-table-column>
                           <el-table-column
@@ -100,11 +95,19 @@
                           </el-table-column>
                           <el-table-column prop="contact" label="联系方式">
                           </el-table-column>
-                          <el-table-column prop="state" width="100" label="项目状态">
+                          <el-table-column
+                            prop="state"
+                            width="100"
+                            label="项目状态"
+                          >
                           </el-table-column>
                           <el-table-column prop="customer" label="客户">
                           </el-table-column>
                           <el-table-column prop="belonging" label="所属部门">
+                          </el-table-column>
+                          <el-table-column prop="people" label="项目人数">
+                          </el-table-column>
+                          <el-table-column prop="gap" label="项目缺口">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -118,7 +121,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -142,6 +145,7 @@ export default {
           contact: "13315715789",
           project: "xxx项目",
           person: "aaa",
+          sonstate: "在岸",
         },
         {
           number: "2",
@@ -151,6 +155,7 @@ export default {
           contact: "13915715789",
           project: "yyy项目",
           person: "bbb",
+          sonstate: "外派",
         },
         {
           number: "3",
@@ -160,6 +165,7 @@ export default {
           contact: "13215715789",
           project: "zzz项目",
           person: "ccc",
+          sonstate: "离职",
         },
         {
           number: "4",
@@ -169,6 +175,7 @@ export default {
           contact: "13115715789",
           project: "www项目",
           person: "ddd",
+          sonstate: "在岸",
         },
       ],
       tableData2: [
@@ -180,6 +187,8 @@ export default {
           state: "开发中",
           customer: "ddd客户",
           belonging: "kkk部门",
+          people: "50人",
+          gap: "1人",
         },
         {
           number: "2",
@@ -189,6 +198,8 @@ export default {
           state: "完成",
           customer: "ccc客户",
           belonging: "zzz部门",
+          people: "30人",
+          gap: "5人",
         },
         {
           number: "3",
@@ -198,6 +209,8 @@ export default {
           state: "维护",
           customer: "bbb客户",
           belonging: "yyy部门",
+          people: "18人",
+          gap: "10人",
         },
         {
           number: "4",
@@ -207,10 +220,12 @@ export default {
           state: "测试中",
           customer: "aaa客户",
           belonging: "xxx部门",
+          people: "50人",
+          gap: "5人",
         },
       ],
       // 假数据
-      activeName: "second",
+      activeName: "first",
       textarea:
         "诚迈科技（南京）股份有限公司（300598.SZ）成立于2006年，总部位于南京，专注于智能互联与操作系统技术的研发与创新，致力于成为全球领先的智能科技专家，以科技造福人类",
       dialogFormVisible: false,
@@ -221,16 +236,14 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-        roles: "",
+        id: "",
+        department: "",
+        responsibility: "",
+        job_no: "",
+        cell_phone: "",
+        address: "",
+        retained: "",
+        Email: "",
       },
       initFormData: {},
     };
@@ -292,7 +305,7 @@ export default {
   > span {
     display: block;
     text-align: center;
-    font-size: 24px;
+    font-size: 12px;
     font-weight: 500;
     padding: 20px 0;
     color: #409eff;
@@ -300,7 +313,63 @@ export default {
     text-shadow: 0 1px -3px #409eff;
   }
 }
-::v-deep .cell{
+::v-deep .cell {
   text-align: center;
+}
+.box {
+  ul {
+    display: flex;
+    flex-wrap: wrap;
+    li {
+      font-size: 12px;
+      width: 50%;
+      margin: 10px 0;
+      display: flex;
+
+      span:nth-child(1) {
+        width: 120px;
+      }
+    }
+    .new {
+      width: 80%;
+      span:nth-child(1) {
+        display: block;
+        width: 215px;
+      }
+      span:nth-child(2) {
+        margin-right: 40px;
+        line-height: 20px;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* 超出几行省略 */
+      }
+    }
+  }
+}
+::v-deep .el-textarea {
+  width: 100%;
+  .el-textarea__inner {
+    min-height: 80px !important;
+    width: 100%;
+    color: #606266;
+  }
+}
+::v-deep .el-dialog__body {
+  padding-bottom: 10px;
+}
+::v-deep .el-tabs {
+  padding: 0 40px;
+}
+.dialog-footer {
+  text-align: center;
+}
+::v-deep .el-table {
+  font-size: 12px;
+}
+::v-deep .el-dialog__body {
+  padding: 0;
 }
 </style>

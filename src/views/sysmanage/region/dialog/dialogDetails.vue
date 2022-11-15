@@ -11,18 +11,10 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>地域管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
+                <div class="regionbox">
                   <ul>
                     <li>
-                      <span>地域名:</span><span>{{ userEditForm.name }}</span>
-                    </li>
-                    <li>
-                      <span>地域昵称:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>地域名称 : </span> <span>{{ userEditForm.region }}</span>
                     </li>
                   </ul>
                 </div>
@@ -33,7 +25,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -55,8 +47,7 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        name: "",
-        nameZh:"",
+        region:"",
       },
       initFormData: {},
     };
@@ -103,6 +94,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ul,li{
+  margin: 0;
+  padding: 0;
+  list-style:none
+}
 @deep: ~">>>";
 @{deep} .register_form_main {
   position: relative;
@@ -118,5 +114,25 @@ export default {
     background-color: #383f49;
     text-shadow: 0 1px -3px #409eff;
   }
+}
+.regionbox{
+  height: 70px;
+  ul{
+    li{
+      display: flex;
+      span{
+        display: block;
+        margin-right: 15px;
+        font-size: 16px;
+      }
+    }
+  }
+}
+::v-deep .el-dialog{
+  width: 20%;
+  height: 239px;
+}
+.dialog-footer{
+  text-align: center;
 }
 </style>

@@ -23,3 +23,6 @@ new Vue({
   store,
   render: (h) => h(App),
 }).$mount("#app");
+
+// 引入mockjs
+require('./mockjs/mock')
