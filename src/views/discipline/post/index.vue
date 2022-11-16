@@ -330,8 +330,9 @@ export default {
     // },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除", {
+      this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
@@ -404,28 +405,31 @@ export default {
 
 
 <style lang="less" scoped>
-::v-deep .cell {
-  text-align: center;
-  line-height: 36.9px;
-}
-::v-deep .inline2_action_button_content {
-  text-align: right;
-}
-.el-form--inline .el-form-item {
-  margin-right: 0;
-}
-::v-deep .el-card__body {
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
-.el-breadcrumb {
-  margin-bottom: 25px;
-}
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
-::v-deep .el-form-item__label {
-  margin-right: 5px;
-}
+// ::v-deep .cell {
+//   text-align: center;
+//   line-height: 36.9px;
+// }
+// ::v-deep .inline2_action_button_content {
+//   text-align: right;
+// }
+// .el-form--inline .el-form-item {
+//   margin-right: 0;
+// }
+// ::v-deep .el-card__body {
+//   .el-form-item--mini.el-form-item {
+//     margin-bottom: 0;
+//   }
+// }
+// .el-breadcrumb {
+//   margin-bottom: 25px;
+// }
+// ::v-deep .el-pagination {
+//   margin: 10px 0;
+// }
+// ::v-deep .el-form-item__label {
+//   margin-right: 5px;
+// }
+// ::v-deep .el-button{
+//   color: #000;
+// }
 </style>

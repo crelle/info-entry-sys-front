@@ -16,10 +16,10 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="用户名称">
+            <el-form-item label="用户名">
               <el-input
                 v-model="formOptions.username"
-                placeholder="请输入用户名称"
+                placeholder="请输入用户名"
               ></el-input>
             </el-form-item>
           </el-col>
@@ -92,7 +92,7 @@
         </el-table-column>
         <el-table-column
           prop="username"
-          label="用户名称"
+          label="用户名"
           min-width="80"
           show-overflow-tooltip
         >

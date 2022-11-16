@@ -257,8 +257,20 @@ let getStaffList = () => {
       Induction: "2022/4/18",
       post: "测试",
       enable_feactivate: true,
-      employee_status: "工作中",
-      region:"北京"
+      employee_status: "在岸",
+      region: "北京",
+      // 出差
+      businesstravel_place: "出差北京",
+      businesstravel_time: "11-11出差",
+      businesstravel_cycle: "出差11-22",
+      // 派遣
+      dispatch_place: "派遣北京",
+      dispatch_time: "11-11派遣",
+      dispatch_cycle: "派遣11-30",
+      // 离职
+      quit_time: "离职11-30",
+      quit_reason: "个人原因",
+      quit_going: "出国了",
     },
     {
       id: "2",
@@ -295,8 +307,20 @@ let getStaffList = () => {
       Induction: "2022/4/18",
       post: "Java",
       enable_feactivate: false,
-      employee_status: "休假中",
-      region:"上海"
+      employee_status: "派遣",
+      region: "上海",
+      // 出差
+      businesstravel_place: "出差武汉",
+      businesstravel_time: "11-11出差",
+      businesstravel_cycle: "出差11-22",
+      // 派遣
+      dispatch_place: "派遣武汉",
+      dispatch_time: "11-11派遣",
+      dispatch_cycle: "派遣11-30",
+      // 离职
+      quit_time: "离职11-30",
+      quit_reason: "个人原因",
+      quit_going: "上天了",
     },
     {
       id: "3",
@@ -333,8 +357,20 @@ let getStaffList = () => {
       Induction: "2022/5/18",
       post: "Web",
       enable_feactivate: true,
-      employee_status: "工作中",
-      region:"武汉"
+      employee_status: "出差",
+      region: "武汉",
+      // 出差
+      businesstravel_place: "出差上海",
+      businesstravel_time: "11-11出差",
+      businesstravel_cycle: "出差11-22",
+      // 派遣
+      dispatch_place: "派遣上海",
+      dispatch_time: "11-11派遣",
+      dispatch_cycle: "派遣11-30",
+      // 离职
+      quit_time: "离职11-30",
+      quit_reason: "个人原因",
+      quit_going: "下海了",
     },
   ];
   return users;
@@ -350,9 +386,11 @@ let getPostList = () => {
       customer: "华为",
       number: "12人",
       date: "2022/11/10",
+      date_do: "2022/11/15",
       region: "南京",
       place: "南京xxx区xxx",
-      duty: "职责1--职责1--职责1--职责1-职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1**职责1*职责1职责1*v",
+      duty:
+        "职责1--职责1--职责1--职责1-职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1职责1*职责1职责1职责1*职责1**职责1*职责1职责1*v",
       requirement: "精通WEB,JAVA,UI.....",
     },
     {
@@ -363,6 +401,7 @@ let getPostList = () => {
       customer: "移动",
       number: "15人",
       date: "2022/11/20",
+      date_do: "2022/11/25",
       region: "北京",
       place: "北京xxx区xxx",
       duty: "职责2",
@@ -376,6 +415,7 @@ let getPostList = () => {
       customer: "腾讯",
       number: "5人",
       date: "2022/11/30",
+      date_do: "2022/12/10",
       region: "上海",
       place: "上海xxx区xxx",
       duty: "职责3",

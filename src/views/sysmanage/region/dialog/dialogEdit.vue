@@ -16,10 +16,10 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="地域名称" prop="region">
+                <el-form-item label="地域名称" prop="regionName">
                   <el-input
                     type="text"
-                    v-model="userEditForm.region"
+                    v-model="userEditForm.regionName"
                     placeholder="请填写地域名称"
                   ></el-input>
                 </el-form-item>
@@ -45,8 +45,9 @@
 </template>
 
 <script>
-import { updateRole, deleteRole } from "@/api/role";
-import { establish } from "@/api/region";
+
+// 新增 * 编辑
+import { establish,edit } from "@/api/region";
 
 export default {
   props: {
@@ -61,11 +62,11 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        region: "",
+        regionName: "",
       },
       initFormData: {},
       userEditFormRules: {
-        region: [
+        regionName: [
           {
             required: true,
             message: "请输入地域名称",
@@ -123,20 +124,20 @@ export default {
 
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.regionId) {
+        this.userEditForm.regionId = this.initFormData.regionId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
+        console.log(this.userEditForm, "保存执行了");
         console.log(
-          this.userEditForm.id,
+          this.userEditForm.regionId,
           this.userEditForm,
-          "this.initFormData.id"
+          "this.initFormData.regionId"
         );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            edit(this.userEditForm, this.userEditForm.regionId).then((res) => {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
@@ -155,22 +156,25 @@ export default {
           console.log(valid, "增加了的valid");
           console.log(
             this.userEditForm,
-            this.userEditForm.id,
+            this.userEditForm.regionId,
             "*******----------地域"
           );
           if (valid) {
-            establish(this.userEditForm, this.userEditForm.id).then((res) => {
+            establish(this.userEditForm, this.userEditForm.regionId).then((res) => {
               console.log(res, "增加了...res11111");
-              // if (res && res.code && res.code === "00000") {
-              //   // this.$parent.resetForm();
-              //   // this.nowIndex = -1; // 重置选中
-              //   this.$message.success("创建成功！");
-              // }
+              if (res && res.code && res.code === "00000") {
+                // this.$parent.resetForm();
+                // this.nowIndex = -1; // 重置选中
+                this.dialogFormVisible = false; // 让弹窗隐藏
+                this.$message.success("创建成功！");
+                 this.$parent.queryRoles();
+              }
             });
           } else {
             return false;
           }
         });
+      
       }
     },
   },
@@ -251,7 +255,7 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 0 20px 20;
   .el-input-group__append {
     padding: 0 2px;
   }
@@ -269,5 +273,7 @@ export default {
   background-color: #999 !important;
   border: 1px solid #999 !important;
 }
-
+::v-deep .el-dialog__body{
+  padding: 20px 20px 0;
+}
 </style>

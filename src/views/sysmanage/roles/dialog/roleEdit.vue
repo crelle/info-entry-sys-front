@@ -30,36 +30,38 @@
                   ></el-input>
                 </el-form-item>
                 <span>角色权限配置</span>
-                <div class="configuration">
-                  <div class="sbox">
-                    <span>菜单权限</span>
-                    <div class="menubox">
-                      <!-- default-expand-all展开所有 -->
-                      <el-tree
-                        :data="data"
-                        show-checkbox
-                        node-key="id"
-                        :default-expanded-keys="datas"
-                        ref="tree_n"
-                        highlight-current
-                        :props="defaultProps"
-                      >
-                      </el-tree>
+                <div>
+                  <div class="configuration">
+                    <div class="sbox">
+                      <span>菜单权限</span>
+                      <div class="menubox">
+                        <!-- default-expand-all展开所有 -->
+                        <el-tree
+                          :data="data"
+                          show-checkbox
+                          node-key="id"
+                          :default-expanded-keys="datas"
+                          ref="tree_n"
+                          highlight-current
+                          :props="defaultProps"
+                        >
+                        </el-tree>
+                      </div>
                     </div>
-                  </div>
-                  <div class="sbox">
-                    <span>数据权限</span>
-                    <div class="menubox">
-                      <el-tree
-                        :data="data1"
-                        show-checkbox
-                        node-key="id"
-                        :default-expanded-keys="[3]"
-                        ref="tree_t"
-                        highlight-current
-                        :props="defaultProps"
-                      >
-                      </el-tree>
+                    <div class="sbox">
+                      <span>数据权限</span>
+                      <div class="menubox">
+                        <el-tree
+                          :data="data1"
+                          show-checkbox
+                          node-key="id"
+                          :default-expanded-keys="[3]"
+                          ref="tree_t"
+                          highlight-current
+                          :props="defaultProps"
+                        >
+                        </el-tree>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -344,8 +346,10 @@ export default {
         });
       } else {
         // 树形控件清空
-        this.resetChecked();
         console.log("我是新增");
+        this.resetChecked();
+        // this.$refs.tree_n.setCheckedKeys([]);
+        // this.$refs.tree_t.setCheckedKeys([]);
         // this.initForm("");
         //  this.check1="",
         //  this.check2="",
@@ -372,7 +376,6 @@ export default {
       this.$refs[formName].resetFields();
       this.initForm(this.userEditForm);
     },
-
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
@@ -505,13 +508,13 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 40px;
+  padding: 6px 40px;
   .el-input-group__append {
     padding: 0 2px;
   }
 }
 .configuration {
-  min-height: 450px;
+  min-height: 215px;
   display: flex;
   justify-content: space-around;
   padding: 15px 20px 0;
@@ -547,7 +550,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 80%;
+    height: 50%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;
@@ -570,7 +573,7 @@ export default {
   display: flex;
   justify-content: end;
   align-items: center;
-  margin-top: 35px;
+  margin-top: 30px;
 }
 ::v-deep .el-form-item__label {
   margin-right: 25px;

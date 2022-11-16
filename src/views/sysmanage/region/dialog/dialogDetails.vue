@@ -14,7 +14,7 @@
                 <div class="regionbox">
                   <ul>
                     <li>
-                      <span>地域名称 : </span> <span>{{ userEditForm.region }}</span>
+                      <span>地域名称 : </span> <span>{{ userEditForm.regionName }}</span>
                     </li>
                   </ul>
                 </div>
@@ -25,7 +25,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
+          >确 定</el-button
         >
       </div>
     </el-dialog>
@@ -47,7 +47,7 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        region:"",
+        regionName:"",
       },
       initFormData: {},
     };
@@ -116,7 +116,6 @@ ul,li{
   }
 }
 .regionbox{
-  height: 70px;
   ul{
     li{
       display: flex;
@@ -130,9 +129,14 @@ ul,li{
 }
 ::v-deep .el-dialog{
   width: 20%;
-  height: 239px;
 }
 .dialog-footer{
   text-align: center;
+}
+::v-deep .el-dialog__footer{
+  padding: 0 20px 20px ;
+}
+::v-deep .el-dialog__body{
+  padding: 20px;
 }
 </style>

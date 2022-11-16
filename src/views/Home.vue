@@ -4,32 +4,28 @@
       <div class="header_main">
         <h1>诚迈员工管理系统</h1>
         <div class="header_avatar">
-          <el-avatar
-            size="small"
-            :src="userdetail.userAvatar"
-          ></el-avatar>
-          <span>欢迎 {{userdetail.username}}</span>
+          <div @click="personal()">
+            <el-avatar size="small" :src="userdetail.userAvatar"></el-avatar>
+            <span>欢迎 {{ userdetail.username }}</span>
+          </div>
           <el-popconfirm
-            confirm-button-text='确认'
-            cancel-button-text='取消'
+            confirm-button-text="确认"
+            cancel-button-text="取消"
             icon="el-icon-info"
             icon-color="red"
             title="确认退出吗？"
             @confirm="loginout"
           >
-            <el-button
-              slot="reference"
-              type="text"
-              icon="el-icon-switch-button"
-            >退 出</el-button>
+            <el-button slot="reference" type="text" icon="el-icon-switch-button"
+              >退 出</el-button
+            >
           </el-popconfirm>
         </div>
-
       </div>
     </el-header>
     <el-container>
       <el-aside width="200px">
-        <el-scrollbar style="height: 100%;width: 200px;">
+        <el-scrollbar style="height: 100%; width: 200px">
           <el-menu
             :default-active="nowMenu"
             class="el-menu-vertical-demo"
@@ -38,30 +34,32 @@
             :unique-opened="true"
             router
           >
-          <!-- 侧边栏 -->
-          <div v-for="item in userdetail.roles[0].menus" :key="item.path">
-            <el-submenu
-              :index="item.path"
-              v-if="item.childrenMenus.length>0"
-            >
-              <template slot="title">
-                <i :class="item.iconCls? item.iconCls : `el-icon-setting`"></i>
-                <span>{{item.name}}</span>
-              </template>
-              <el-menu-item-group>
-                <el-menu-item
-                  :index="subitem.path"
-                  v-for="subitem in item.childrenMenus"
-                  :key="subitem.path"
-                >{{subitem.name}}
-                </el-menu-item>
-              </el-menu-item-group>
-            </el-submenu>
-            <el-menu-item v-else :index="item.path" >
-              <i :class="item.iconCls? item.iconCls : `el-icon-setting`"></i>
-              <span slot="title">{{item.name}}</span>
-            </el-menu-item>
-          </div>
+            <!-- 侧边栏 -->
+            <div v-for="item in userdetail.roles[0].menus" :key="item.path">
+              <el-submenu
+                :index="item.path"
+                v-if="item.childrenMenus.length > 0"
+              >
+                <template slot="title">
+                  <i
+                    :class="item.iconCls ? item.iconCls : `el-icon-setting`"
+                  ></i>
+                  <span>{{ item.name }}</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item
+                    :index="subitem.path"
+                    v-for="subitem in item.childrenMenus"
+                    :key="subitem.path"
+                    >{{ subitem.name }}
+                  </el-menu-item>
+                </el-menu-item-group>
+              </el-submenu>
+              <el-menu-item v-else :index="item.path">
+                <i :class="item.iconCls ? item.iconCls : `el-icon-setting`"></i>
+                <span slot="title">{{ item.name }}</span>
+              </el-menu-item>
+            </div>
           </el-menu>
         </el-scrollbar>
       </el-aside>
@@ -84,26 +82,26 @@ export default {
     return {
       tableData: [],
       userdetail: {},
-      nowMenu: ""
+      nowMenu: "",
     };
   },
   computed: {
     pathNow() {
-      return this.$route.path
-    }
+      return this.$route.path;
+    },
   },
   watch: {
     // 侦听路由 路由改变则联动菜单
     pathNow(n) {
       this.nowMenu = n;
-    }
+    },
   },
   created() {
     this.userdetail = window.localStorage.getItem("userdetail")
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
-      console.log(window.localStorage.getItem("userdetail"));
-      console.log( this.userdetail,"我是 this.userdetail");
+    console.log(window.localStorage.getItem("userdetail"));
+    console.log(this.userdetail, "我是 this.userdetail");
     if (Object.keys(this.userdetail).length === 0) {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");
@@ -119,22 +117,31 @@ export default {
       console.log(key, keyPath);
     },
     loginout() {
-      this.$loginout()
+      this.$loginout();
     },
     queryuser() {
       queryUserAll().then((res) => {
         console.log(res);
       });
     },
+    // 个人信息跳转
+    personal() {
+      if (this.$route.path !== "/sys/plan") {
+        this.$nextTick(() => {
+          console.log("出发了个人信息跳转");
+          this.$router.push({ path: "/sys/plan" });
+        });
+      }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-@deep: ~'>>>';
+@deep: ~">>>";
 .el-header {
   background-color: #383f49;
-  border-bottom:4px solid #eee;
+  border-bottom: 4px solid #eee;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -151,8 +158,13 @@ export default {
     .header_avatar {
       display: flex;
       align-items: center;
+      div {
+        display: flex;
+        align-items: center;
+      }
       span {
         margin: 0 10px;
+        cursor: pointer;
       }
     }
   }

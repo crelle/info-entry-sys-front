@@ -71,6 +71,12 @@
               </el-select>
             </el-form-item>
           </el-col>
+           <el-col :span="4" class="btn">
+            <el-form-item>
+              <el-button type="primary" @click="queryUserList">查询</el-button>
+              <el-button type="primary" @click="addClick">新增</el-button>
+            </el-form-item>
+          </el-col>
         </el-row>
         <el-row class="name">
           <el-col :span="5">
@@ -131,12 +137,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4" class="btn">
-            <el-form-item>
-              <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" @click="addClick">新增</el-button>
-            </el-form-item>
-          </el-col>
+         
         </el-row>
       </el-form>
     </el-card>
@@ -165,7 +166,7 @@
         <el-table-column
           prop="name"
           label="姓名"
-          min-width="80"
+          min-width="50"
           show-overflow-tooltip
         >
         </el-table-column>
@@ -179,27 +180,11 @@
         <el-table-column
           prop="customer"
           label="地域"
-          min-width="100"
+          min-width="50"
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- 项目状态 -->
-        <!-- <el-table-column
-          prop="role"
-          label="项目状态"
-          show-overflow-tooltip
-          min-width="80"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              type="primary"
-              disable-transitions
-              v-for="item in scope.row.roles"
-              :key="item.id"
-              >{{ item.nameZh }}</el-tag
-            >
-          </template>
-        </el-table-column> -->
+
         <el-table-column
           prop="department"
           label="部门"
@@ -221,8 +206,19 @@
           show-overflow-tooltip
         >
         </el-table-column>
+        <!-- 项目状态 -->
+        <el-table-column
+          prop="employee_status"
+          label="项目状态"
+          show-overflow-tooltip
+        >
+        
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
+            <el-button @click="stateClick(row)" type="primary" size="mini"
+              >状态</el-button
+            >
             <el-button @click="detailsClick(row)" type="primary" size="mini"
               >详情</el-button
             >
@@ -264,6 +260,10 @@
       :toChild="list"
       ref="userDaitDialogRef"
     ></user-dait-dialog>
+    <user-state-dialog
+      :toChild="list"
+      ref="userStateDialogRef"
+    ></user-state-dialog>
   </div>
 </template>
 
@@ -281,10 +281,12 @@ import {
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
+import UserStateDialog from "@/views/biological/plants/dialog/state.vue";
 export default {
   components: {
     UserEditDialog,
     UserDaitDialog,
+    UserStateDialog,
   },
   data() {
     return {
@@ -579,6 +581,12 @@ export default {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑员工信息";
       console.log("编辑", row, row.id);
+    },
+    // 状态
+    stateClick(row) {
+      this.$refs.userStateDialogRef.openDialog(row);
+      this.list = "查看员工状态";
+      console.log("详情", row, row.id);
     },
     // 详情
     detailsClick(row) {

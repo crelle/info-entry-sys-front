@@ -63,12 +63,26 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="计划满足日期 :" prop="date">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.date"
-                    placeholder="计划满足日期"
-                  ></el-input>
+                  <el-col :span="11">
+                    <el-date-picker
+                      type="date"
+                      placeholder="计划满足日期"
+                      v-model="userEditForm.date"
+                      style="width: 100%"
+                    ></el-date-picker>
+                  </el-col>
                 </el-form-item>
+                <el-form-item label="最晚到岗时间" prop="birthday">
+                  <el-col :span="11">
+                    <el-date-picker
+                      type="date"
+                      placeholder="选择日期"
+                      v-model="userEditForm.date_do"
+                      style="width: 100%"
+                    ></el-date-picker>
+                  </el-col>
+                </el-form-item>
+
                 <el-form-item label="办公地点 :" prop="place">
                   <el-input
                     type="text"
@@ -145,6 +159,7 @@ export default {
         project: "",
         customer: "",
         number: "",
+        date_do: "",
         date: "",
         region: "",
         place: "",
@@ -441,5 +456,4 @@ export default {
 .dialog-footer {
   text-align: right;
 }
-
 </style>

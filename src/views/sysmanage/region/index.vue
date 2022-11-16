@@ -18,7 +18,7 @@
           <el-col :span="5">
             <el-form-item label="地域名称">
               <el-input
-                v-model="formOptions.region"
+                v-model="formOptions.regionName"
                 placeholder="请输入地域名称"
               ></el-input>
             </el-form-item>
@@ -64,7 +64,7 @@
         ></el-table-column>
         <el-table-column
           label="地域名称"
-          prop="region"
+          prop="regionName"
           min-width="100"
           fixed
         ></el-table-column>
@@ -114,8 +114,10 @@
 </template>
 
 <script>
-// 假的
-import { reqMockUser } from "@/mockjs/reqMock";
+// // 假的
+// import { reqMockUser } from "@/mockjs/reqMock";
+// 真的地域接口
+import { query,deletes } from "@/api/region";
 
 import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
@@ -129,7 +131,7 @@ export default {
     return {
       list: "",
       formOptions: {
-        region: "",
+        regionName: "",
       },
       tableData: [],
       paginationOptions: {
@@ -145,28 +147,7 @@ export default {
     this.queryRoles();
   },
   methods: {
-    //  假数据拿取查询方法
-    queryRoles() {
-      this.$refs["queryRoleRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqMockUser(data).then((res) => {
-            console.log(res, "res-假的****");
-            this.resetForm("queryRoleRef"); // 重置表单
-            this.tableData = res.data; // 表格数据赋值
-            this.paginationOptions.total = 10; // 分页器赋值
-            // this.paginationOptions.total = res.data.total; // 分页器赋值
-            console.log(this.tableData, "假的tableData////");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    // 真的方法
+    // // // //  假数据拿取查询方法
     // queryRoles() {
     //   this.$refs["queryRoleRef"].validate((valid) => {
     //     if (valid) {
@@ -174,19 +155,40 @@ export default {
     //       data.current = this.paginationOptions.pageNo;
     //       data.size = this.paginationOptions.pageSize;
     //       console.log(data, "data---------");
-    //       queryRole(data).then((res) => {
-    //         console.log(res, "res++++++++++");
-    //         if (res && res.code && res.code === "00000") {
-    //           this.resetForm("queryRoleRef"); // 重置表单
-    //           this.tableData = res.data.records; // 表格数据赋值
-    //           this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         }
+    //       reqMockUser(data).then((res) => {
+    //         console.log(res, "res-假的****");
+    //         this.resetForm("queryRoleRef"); // 重置表单
+    //         this.tableData = res.data; // 表格数据赋值
+    //         this.paginationOptions.total = 10; // 分页器赋值
+    //         // this.paginationOptions.total = res.data.total; // 分页器赋值
+    //         console.log(this.tableData, "假的tableData////");
     //       });
     //     } else {
     //       return false;
     //     }
     //   });
     // },
+    // 真的方法
+    queryRoles() {
+      this.$refs["queryRoleRef"].validate((valid) => {
+        if (valid) {
+          let data = { records: [{ ...this.formOptions }] };
+          data.pages = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          query(data).then((res) => {
+            console.log(res, "res++++++++++");
+            if (res && res.code && res.code === "00000") {
+              this.resetForm("queryRoleRef"); // 重置表单
+              this.tableData = res.data.records; // 表格数据赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     // 删除弹框
     deleteMenu(row, index) {
       this.$alert("此操作将永久删除该地域, 是否继续?", "删除地域", {
@@ -196,7 +198,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deleteRole(row.id).then((res) => {
+          deletes(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               return this.$message({
@@ -235,7 +237,7 @@ export default {
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
       this.list = "修改地域信息";
-      console.log("编辑", row, row.id);
+      console.log("编辑", row, row.regionId);
     },
     // 重置表单
     resetForm(formName) {
