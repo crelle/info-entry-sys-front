@@ -150,7 +150,7 @@ export default {
       datashu: [
         {
           text: "出差地点",
-          textarea1: "出差地点xxxx",
+          textarea1: "出差地点xxxzcxxczxx",
           times: "出差时间",
           time: "2018/1/12/12时11分",
           cycles: "预计出差周期",
@@ -158,7 +158,7 @@ export default {
         },
         {
           text: "外派地点",
-          textarea1: "外派地点xxxx",
+          textarea1: "外派地点xxzczxxx",
           times: "外派时间",
           time: "2018/2/12/11时12分",
           cycles: "预计外派周期",
@@ -166,7 +166,7 @@ export default {
         },
         {
           text: "离职去向",
-          textarea1: "离职去向地点xxx",
+          textarea1: "离职去向地点xzxcxx",
           times: "离职时间",
           time: "2018/3/12/3时21分",
           cycles: "离职原因",
