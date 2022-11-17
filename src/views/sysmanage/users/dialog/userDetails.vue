@@ -12,30 +12,25 @@
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
                 <div class="userbox">
-                  <el-breadcrumb separator-class="el-icon-arrow-right">
-                    <el-breadcrumb-item>系统管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>用户管理</el-breadcrumb-item>
-                    <el-breadcrumb-item>详情</el-breadcrumb-item>
-                  </el-breadcrumb>
-                  <ul>
+                  <ul class="lis">
                     <li>
                       <span>用户名:</span
                       ><span>{{ userEditForm.username }}</span>
                     </li>
                     <li>
-                      <span>昵称:</span
-                      ><span>{{ userEditForm.userNickName }}</span>
+                      <span>工号 :</span
+                      ><span>{{  }}</span>
                     </li>
                     <li>
-                      <span>手机号:</span
+                      <span>手机号 :</span
                       ><span>{{ userEditForm.userPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span
+                      <span>邮箱 :</span
                       ><span>{{ userEditForm.userEmail }}</span>
                     </li>
                     <li>
-                      <span>角色:</span
+                      <span>角色 :</span
                       ><span
                         v-for="item in userEditForm.roles"
                         :key="item.id"
@@ -43,7 +38,7 @@
                       >
                     </li>
                     <li>
-                      <span>账户是否可用:</span
+                      <span>是否可用 :</span
                       ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
                     </li>
                     <!-- <li>
@@ -62,8 +57,8 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+        <el-button type="primary" size="mini" @click="dialogClose"
+          >取消</el-button
         >
       </div>
     </el-dialog>
@@ -87,7 +82,7 @@ export default {
       userEditForm: {
         accountNonExpired: true,
         accountNonLocked: true,
-        enabled: true,
+        enabled: false,
         password: "123456",
         userAvatar: "",
         userEmail: "",
@@ -141,25 +136,39 @@ export default {
 </script>
 
 <style lang="less" scoped>
-* {
+ul,
+li {
   padding: 0;
   margin: 0;
   list-style: none;
 }
-@deep: ~">>>";
-@{deep} .register_form_main {
-  position: relative;
-  min-width: 40%;
-  overflow: hidden;
-  > span {
-    display: block;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 500;
-    padding: 20px 0;
-    color: #409eff;
-    background-color: #383f49;
-    text-shadow: 0 1px -3px #409eff;
+.lis {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+  li {
+    width: 200px;
+    margin: 5px 0;
+    line-height: 35px;
+    font-size: 16px;
+    display: flex;
+
+    span {
+      display: block;
+    }
+    span:nth-child(1) {
+      width: 80px;
+    }
+    span:nth-child(2) {
+      padding-left: 10px;
+    }
   }
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.dialog-footer{
+  text-align: center;
 }
 </style>

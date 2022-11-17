@@ -1,34 +1,38 @@
 <template>
   <div class="roles_content">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>角色管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
         class="demo-form-inline"
         size="mini"
         label-position="right"
-        label-width="120px"
         ref="queryRoleRef"
         :model="formOptions"
       >
         <el-row>
-          <el-col :span="8">
+          <!-- <el-col :span="5">
             <el-form-item label="角色编码">
               <el-input
                 v-model="formOptions.name"
-                placeholder="角色编码"
+                placeholder="请输入角色编码"
               ></el-input>
             </el-form-item>
-          </el-col>
-          <el-col :span="8">
+          </el-col> -->
+          <el-col :span="5">
             <el-form-item label="角色名称">
               <el-input
                 v-model="formOptions.nameZh"
-                placeholder="角色名称"
+                placeholder="请输入角色名称"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col
-            :span="8"
+            :span="19"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -39,9 +43,7 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryRoles">查询</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="addClick"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -58,9 +60,10 @@
         border
         stripe
         size="mini"
-        height="540"
+        height="550"
       >
-        <el-table-column type="selection" width="55" fixed></el-table-column>
+        <!-- 多选 -->
+        <!-- <el-table-column type="selection" width="55" fixed></el-table-column> -->
         <el-table-column
           label="序号"
           type="index"
@@ -73,12 +76,12 @@
           min-width="120"
           fixed
         ></el-table-column> -->
-        <el-table-column
+        <!-- <el-table-column
           label="角色编码"
           prop="name"
           min-width="120"
           fixed
-        ></el-table-column>
+        ></el-table-column> -->
         <el-table-column
           label="角色名称"
           prop="nameZh"
@@ -87,6 +90,9 @@
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="{ row, $index }">
+             <el-button @click="lookClick(row)" type="primary" size="mini"
+              >查看</el-button
+            >
             <el-button @click="onEditRole(row)" type="primary" size="mini"
               >编辑</el-button
             >
@@ -119,15 +125,21 @@
       :toChild="list"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
+     <role-data-dialog
+      :toChild="list"
+      ref="roleDataDialogRef"
+    ></role-data-dialog>
   </div>
 </template>
 
 <script>
-import { queryRole,deleteRole } from "@/api/role";
+import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
+import RoleDataDialog from "@/views/sysmanage/roles/dialog/roleDetails.vue";
 export default {
   components: {
     RoleEditDialog,
+    RoleDataDialog
   },
   data() {
     return {
@@ -173,8 +185,10 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除", {
+      this.$confirm("此操作将永久删除该角色, 是否继续?", "删除当前角色", {
         confirmButtonText: "确定",
+         cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -206,13 +220,19 @@ export default {
     // 添加
     addClick() {
       this.$refs.roleEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加角色";
       console.log("我要添加");
+    },
+       // 查看
+    lookClick(row) {
+      this.$refs.roleDataDialogRef.openDialog(row);
+      this.list = "查看角色详情";
+      console.log("我要查看", row);
     },
     // 编辑
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
-      this.list = "编辑";
+      this.list = "编辑角色信息";
       console.log("编辑", row, row.id);
     },
     // 重置表单
@@ -236,9 +256,35 @@ export default {
   },
 };
 </script>
-
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
+    line-height: 36.9px;
+}
+::v-deep .inline1_action_button_content {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination{
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label{
+  margin-right: 5px;
 }
 </style>

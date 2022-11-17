@@ -9,13 +9,18 @@
           </el-breadcrumb>
           <div>
             <div class="but">
+              <el-button type="primary" v-if="reset" @click="onEditRoleMima">
+                重置密码
+              </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
                 >保存</el-button
               >
               <el-button type="primary" v-if="displays" @click="cancel"
                 >取消</el-button
               >
-              <el-button type="primary" @click="edit">编辑</el-button>
+              <el-button type="primary" v-if="editbtn" @click="edit"
+                >编辑</el-button
+              >
             </div>
             <el-form
               ref="form"
@@ -25,15 +30,9 @@
             >
               <div class="box">
                 <div class="boxlis">
-                  <el-form-item label="姓名 :">
+                  <el-form-item label="用户名 :">
                     <el-input v-model="form.xm"></el-input>
                   </el-form-item>
-                </div>
-                <div class="boxlis">
-                  <span>登录密码:</span> <span>xxxxxxx</span>
-                  <button class="btn" @click="onEditRoleMima()">
-                    重置密码
-                  </button>
                 </div>
               </div>
               <div class="box">
@@ -59,15 +58,6 @@
                     <el-input v-model="form.dh"></el-input>
                   </el-form-item>
                 </div>
-              </div>
-              <div class="box">
-                <div class="boxlis">
-                  <el-form-item label="住址 :">
-                    <el-input v-model="form.zz"></el-input>
-                  </el-form-item>
-                </div>
-
-                <div class="boxlis"></div>
               </div>
             </el-form>
           </div>
@@ -99,6 +89,8 @@ export default {
       userdetail: {},
       nowMenu: "",
       //
+      reset: true,
+      editbtn: true,
       displays: false,
       isInput: true,
       form: {
@@ -106,7 +98,6 @@ export default {
         gh: "123123",
         yx: "12312@qe",
         dh: "13912313",
-        zz: "nanj",
         desc: "",
         password: "",
         js: "管理员",
@@ -162,12 +153,16 @@ export default {
     edit() {
       this.isInput = false;
       this.displays = true;
+      this.editbtn = false;
+      this.reset = false;
     },
     // 取消
     cancel() {
       // 表单禁用
       this.isInput = true;
       this.displays = false;
+      this.editbtn = true;
+      this.reset = true;
       // 获取数据
       // this.getSave();
     },
@@ -176,6 +171,8 @@ export default {
       console.log("submit!", this.form);
       this.isInput = true;
       this.displays = false;
+      this.editbtn = true;
+      this.reset = true;
     },
     // 编辑密码
     onEditRoleMima() {
@@ -242,8 +239,11 @@ export default {
     line-height: 50px;
     margin-right: 20px;
     box-sizing: border-box;
+    display: flex;
     span {
       margin-right: 50px;
+      line-height: 45px;
+      display: block;
     }
   }
 }

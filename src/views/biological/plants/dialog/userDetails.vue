@@ -9,248 +9,145 @@
     >
       <el-tabs v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基础信息" name="first">
-          <div class="register_form_main">
-            <el-row style="height: 100%">
-              <el-col :span="24">
-                <div class="grid-content-right">
-                  <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                    <div class="userbox">
-                      <div>
-                        <div class="but">
-                          <el-button
-                            type="primary"
-                            v-if="displays"
-                            @click="cancel"
-                            >取消</el-button
-                          >
-                          <el-button type="primary" @click="edit"
-                            >编辑</el-button
-                          >
-                        </div>
-                        <el-form
-                          ref="form"
-                          :model="form"
-                          :disabled="isInput"
-                          label-width="100px"
-                        >
-                          <el-form-item label="姓名:">
-                            <el-input v-model="form.name"></el-input>
-                          </el-form-item>
-                          <el-form-item label="性别:">
-                            <el-input v-model="form.gender"></el-input>
-                          </el-form-item>
-                          <el-form-item label="年龄:">
-                            <el-input v-model="form.age"></el-input>
-                          </el-form-item>
-                          <el-form-item label="出生年月:">
-                            <el-col :span="11">
-                              <el-date-picker
-                                type="date"
-                                placeholder="选择日期"
-                                v-model="form.birthday"
-                                style="width: 100%"
-                              ></el-date-picker>
-                            </el-col>
-                          </el-form-item>
-                          <el-form-item label="联系电话:">
-                            <el-input v-model="form.telephone"></el-input>
-                          </el-form-item>
-                          <el-form-item label="政治面貌:">
-                            <el-input v-model="form.politics"></el-input>
-                          </el-form-item>
-                          <el-form-item label="最高学历:">
-                            <el-input v-model="form.education"></el-input>
-                          </el-form-item>
-
-                          <el-form-item label="毕业院校:">
-                            <el-input v-model="form.school"></el-input>
-                          </el-form-item>
-                          <el-form-item label="毕业时间:">
-                            <el-col :span="11">
-                              <el-date-picker
-                                type="date"
-                                placeholder="选择日期"
-                                v-model="form.graduation_time"
-                                style="width: 100%"
-                              ></el-date-picker>
-                            </el-col>
-                          </el-form-item>
-                          <el-form-item label="工作年限:">
-                            <el-input v-model="form.work_time"></el-input>
-                          </el-form-item>
-                          <el-form-item label="入职时间:">
-                            <el-col :span="11">
-                              <el-date-picker
-                                type="date"
-                                placeholder="选择日期"
-                                v-model="form.induction_time"
-                                style="width: 100%"
-                              ></el-date-picker>
-                            </el-col>
-                          </el-form-item>
-                          <el-form-item label="工号:">
-                            <el-input v-model="form.job_no"></el-input>
-                          </el-form-item>
-                          <el-form-item label="户籍地:">
-                            <el-input
-                              v-model="form.registered_residence"
-                            ></el-input>
-                          </el-form-item>
-                          <el-form-item label="现居住地:">
-                            <el-input v-model="form.address"></el-input>
-                          </el-form-item>
-                          <el-form-item label="婚姻状况:">
-                            <el-input v-model="form.marital_status"></el-input>
-                          </el-form-item>
-                          <el-form-item label="有无小孩:">
-                            <el-input v-model="form.children"></el-input>
-                          </el-form-item>
-                          <el-form-item label="有无小孩">
-                            <el-select
-                              v-model="form.children"
-                              placeholder="请选择"
-                            >
-                              <el-option label="有" value="有"></el-option>
-                              <el-option label="无" value="无"></el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="紧急联系人:">
-                            <el-input
-                              v-model="form.emergency_contact"
-                            ></el-input>
-                          </el-form-item>
-                          <el-form-item label="紧急联系人电话:">
-                            <el-input
-                              v-model="form.emergency_contact_number"
-                            ></el-input>
-                          </el-form-item>
-                          <el-form-item label="证书:">
-                            <el-input v-model="form.certificate"></el-input>
-                          </el-form-item>
-                          <el-form-item label="爱好:">
-                            <el-input v-model="form.hobby"></el-input>
-                          </el-form-item>
-                          <el-form-item label="工作技能:">
-                            <el-checkbox-group v-model="form.skill">
-                              <el-checkbox
-                                label="Web"
-                                name="skill"
-                              ></el-checkbox>
-                              <el-checkbox
-                                label="UI"
-                                name="skill"
-                              ></el-checkbox>
-                              <el-checkbox
-                                label="Java"
-                                name="skill"
-                              ></el-checkbox>
-                              <el-checkbox
-                                label="测试"
-                                name="skill"
-                              ></el-checkbox>
-                            </el-checkbox-group>
-                          </el-form-item>
-                          <el-form-item label="地域:">
-                            <el-select
-                              v-model="form.region"
-                              placeholder="请选择"
-                            >
-                              <el-option label="南京" value="南京"></el-option>
-                              <el-option label="上海" value="上海"></el-option>
-                              <el-option label="湖北" value="湖北"></el-option>
-                              <el-option label="武汉" value="武汉"></el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="部门:">
-                            <el-select
-                              v-model="form.department"
-                              placeholder="请选择"
-                            >
-                              <el-option
-                                label="研发1"
-                                value="研发1"
-                              ></el-option>
-                              <el-option
-                                label="研发2"
-                                value="研发2"
-                              ></el-option>
-                              <el-option
-                                label="研发3"
-                                value="研发3"
-                              ></el-option>
-                              <el-option
-                                label="研发4"
-                                value="研发4"
-                              ></el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="项目:">
-                            <el-select
-                              v-model="form.project"
-                              placeholder="请选择"
-                            >
-                              <el-option
-                                label="项目1"
-                                value="项目1"
-                              ></el-option>
-                              <el-option
-                                label="项目2"
-                                value="项目2"
-                              ></el-option>
-                              <el-option
-                                label="项目3"
-                                value="项目3"
-                              ></el-option>
-                              <el-option
-                                label="项目4"
-                                value="项目4"
-                              ></el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="岗位:">
-                            <el-select v-model="form.post" placeholder="请选择">
-                              <el-option label="测试" value="测试"></el-option>
-                              <el-option label="web" value="web"></el-option>
-                              <el-option label="ui" value="ui"></el-option>
-                              <el-option label="hr" value="hr"></el-option>
-                            </el-select>
-                          </el-form-item>
-                          <el-form-item label="接口人:">
-                            <el-input v-model="form.contact_person"></el-input>
-                          </el-form-item>
-                          <el-form-item label="启用/停用">
-                            <el-switch
-                              v-model="form.enable_feactivate"
-                            ></el-switch>
-                          </el-form-item>
-
-                          <el-form-item label="员工状态:">
-                            <el-radio-group v-model="form.employee_status">
-                              <el-radio label="工作中"></el-radio>
-                              <el-radio label="休假中"></el-radio>
-                            </el-radio-group>
-                          </el-form-item>
-                          <el-form-item label="员工动态记录:">
-                            <el-input
-                              type="textarea"
-                              v-model="form.record"
-                            ></el-input>
-                          </el-form-item>
-                          <el-form-item>
-                            <el-button
-                              type="primary"
-                              v-if="displays"
-                              @click="onSubmit"
-                              >保存修改</el-button
-                            >
-                          </el-form-item>
-                        </el-form>
-                      </div>
+          <el-col :span="24">
+            <div class="grid-content-right">
+              <el-form :model="userEditForm" ref="userEditRef" size="mini">
+                <div class="userbox_n">
+                  <ul>
+                    <li>
+                      <span>姓名:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>出生年月日:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>最高学历:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>工号:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>户籍地:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>婚姻状况:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>紧急联系人:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>证书:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>部门:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>项目:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>岗位:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                  </ul>
+                  <div class="userbox_t">
+                    <div class="userbox_s">
+                      <ul>
+                        <li>
+                          <span>性别:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>联系电话:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>毕业院校:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>入职时间:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                      </ul>
+                      <ul>
+                        <li>
+                          <span>年龄:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>电子邮箱:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>毕业时间:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>工作年限:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                      </ul>
                     </div>
-                  </el-form>
+                    <div class="current">
+                      <ul>
+                        <li>
+                          <span>现居住地</span
+                          ><span class="residence">{{
+                            userEditForm.nameZh
+                          }}</span>
+                        </li>
+                        <li>
+                          <span>有无小孩</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>紧急联系电话</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>兴趣爱好</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="userbox_f">
+                      <ul>
+                        <li>
+                          <span>地域:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>接口人:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li>
+                          <span>工作技能:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                      </ul>
+                      <ul>
+                        <li>
+                          <span>客户:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                        <li class="state">
+                          <span>员工状态:</span
+                          ><span>{{ userEditForm.nameZh }}</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
                 </div>
-              </el-col>
-            </el-row>
+              </el-form>
+            </div>
+          </el-col>
+          <div class="footbtn">
+            <el-button class="btn" type="primary" @click="close" size="mini"
+              >取 消</el-button
+            >
           </div>
         </el-tab-pane>
         <el-tab-pane label="沟通信息" name="second">
@@ -285,11 +182,12 @@
                 </el-card>
               </el-timeline-item>
             </el-timeline>
-          </div>
-          <div class="preservation">
-            <el-button type="primary" @click="empty">清空</el-button>
-            <el-button type="primary" @click="onCertain">保存</el-button>
-            <el-button type="primary" @click="close">取消</el-button>
+            <div class="preservation">
+              <el-button type="primary" @click="onCertain">保存</el-button>
+              <el-button class="cancel" type="primary" @click="close"
+                >取消</el-button
+              >
+            </div>
           </div>
         </el-tab-pane>
       </el-tabs>
@@ -331,36 +229,42 @@ export default {
       ],
       displays: true,
       isInput: false,
-      form: {
-        name: "张三",
-        gender: "男",
-        age: "25岁",
-        birthday: "1997/11/03",
-        telephone: "1391100011",
-        politics: "群众",
-        education: "本科",
-        school: "哈弗大学",
-        graduation_time: "2010/6/15",
-        work_time: "6年",
-        induction_time: "2020/4/1",
-        job_no: "n0260001",
-        registered_residence: "江苏xxx",
-        address: "南京新街口",
-        marital_status: "已婚",
-        children: "",
-        emergency_contact: "",
-        emergency_contact_number: "",
+      userEditForm: {
+        id: "",
+        job_no: "",
+        name: "",
+        gender: "",
+        cell_phone: "",
+        Email: "",
+        customer: "",
+        status: "",
+        department: "",
+        project: "",
+        address: "",
+        time: "",
+        cooperation: "",
+        Interface: "",
+        // 详情
+        age: "",
+        birthday: "",
+        politics: "",
+        Native: "",
+        residence: "",
+        emergency: "",
+        emergency_telephone: "",
+        education: "",
+        school: "",
+        school_time: "",
+        working_hours: "",
+        marriage: "",
+        child: "",
         certificate: "",
         hobby: "",
-        skill: ["Web"],
-        region: "南京",
-        department: "研发1",
-        project: "项目1",
-        post: "测试",
-        contact_person: "",
-        enable_feactivate: true,
-        employee_status: "工作中",
-        record: "",
+        skill: "",
+        Induction: "",
+        post: "",
+        enable_feactivate: "",
+        employee_status: "",
       },
       dialogFormVisible: false,
       fileType: {
@@ -369,18 +273,7 @@ export default {
       imageUrl: "",
       nowIndex: -1,
       // baseURL: BaseURL,
-      userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-        roles: "",
-      },
+
       initFormData: {},
     };
   },
@@ -551,7 +444,6 @@ export default {
       overflow: hidden;
       overflow-y: auto;
       // 下边设置字体，我的需求是黑底白字
-      color: #ffffff;
       line-height: 30px;
       padding: 0 15px;
     }
@@ -575,5 +467,76 @@ export default {
 }
 .note_taker {
   color: #909399;
+}
+
+* {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.preservation {
+  margin-top: 40px;
+  ::v-deep .el-button {
+    padding: 7px 15px;
+  }
+}
+.userbox_n {
+  display: flex;
+  justify-content: space-around;
+  ul {
+    li {
+      display: flex;
+      line-height: 40px;
+      margin: 10px 0;
+      span {
+        display: block;
+      }
+      span:nth-child(1) {
+        width: 100px;
+      }
+      span:nth-child(2) {
+        padding-left: 10px;
+        width: 150px;
+        background-color: #f0f0f0;
+      }
+    }
+  }
+}
+.userbox_s {
+  display: flex;
+  justify-content: space-around;
+  ul:nth-child(1) {
+    margin-right: 80px;
+  }
+}
+.userbox_f {
+  display: flex;
+  margin-top: -10px;
+  ul:nth-child(1) {
+    margin-right: 80px;
+  }
+}
+.residence {
+  width: 490px !important;
+}
+.state {
+  margin-top: 60px !important;
+}
+.current {
+  margin-top: -10px;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+.btn {
+  padding: 7px 15px;
+  margin-top: 30px;
+}
+.footbtn {
+  text-align: center;
+}
+.block {
+  padding: 20px 40px 0;
 }
 </style>

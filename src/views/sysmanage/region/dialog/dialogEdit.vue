@@ -8,7 +8,7 @@
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -16,17 +16,11 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="地域编码" prop="name">
-                  <el-input v-model="userEditForm.name" placeholder="地域编码"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="地域名称" prop="nameZh">
+                <el-form-item label="地域名称" prop="regionName">
                   <el-input
                     type="text"
-                    v-model="userEditForm.nameZh"
-                    placeholder="地域名称"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
+                    v-model="userEditForm.regionName"
+                    placeholder="请填写地域名称"
                   ></el-input>
                 </el-form-item>
               </el-form>
@@ -35,11 +29,15 @@
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -47,7 +45,9 @@
 </template>
 
 <script>
-import { updateRole, deleteRole } from "@/api/role";
+
+// 新增 * 编辑
+import { establish,edit } from "@/api/region";
 
 export default {
   props: {
@@ -62,36 +62,22 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        name: "",
-        nameZh: "",
+        regionName: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
+        regionName: [
           {
             required: true,
-            message: "请输入地域编码",
+            message: "请输入地域名称",
             trigger: ["blur", "change"],
           },
-          {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-        nameZh: [
-          {
-            required: true,
-            message: "请填写地域名称",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
+          // {
+          //   min: 1,
+          //   max: 10,
+          //   message: "用户名长度在 3 到 10 个字符",
+          //   trigger: "blur",
+          // },
         ],
       },
     };
@@ -138,24 +124,24 @@ export default {
 
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.regionId) {
+        this.userEditForm.regionId = this.initFormData.regionId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
+        console.log(this.userEditForm, "保存执行了");
         console.log(
-          this.userEditForm.id,
+          this.userEditForm.regionId,
           this.userEditForm,
-          "this.initFormData.id"
+          "this.initFormData.regionId"
         );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            edit(this.userEditForm, this.userEditForm.regionId).then((res) => {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                 this.dialogClose();
+                this.dialogClose();
                 console.log("修改成功！");
                 this.$parent.queryRoles();
               }
@@ -165,26 +151,31 @@ export default {
           }
         });
       } else {
-        return false;
+        console.log("增加了...");
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log(valid, "增加了的valid");
+          console.log(
+            this.userEditForm,
+            this.userEditForm.regionId,
+            "*******----------地域"
+          );
+          if (valid) {
+            establish(this.userEditForm, this.userEditForm.regionId).then((res) => {
+              console.log(res, "增加了...res11111");
+              if (res && res.code && res.code === "00000") {
+                // this.$parent.resetForm();
+                // this.nowIndex = -1; // 重置选中
+                this.dialogFormVisible = false; // 让弹窗隐藏
+                this.$message.success("创建成功！");
+                 this.$parent.queryRoles();
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+      
       }
-      // else {
-      //   console.log("增加了...");
-      //   this.$refs["userEditRef"].validate((valid) => {
-      //     console.log(valid, "增加了的valid");
-      //     if (valid) {
-      //       addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-      //         console.log(res, "增加了...res11111");
-      //         if (res && res.code && res.code === "00000") {
-      //           // this.$parent.resetForm();
-      //           // this.nowIndex = -1; // 重置选中
-      //           this.$message.success("创建成功！");
-      //         }
-      //       });
-      //     } else {
-      //       return false;
-      //     }
-      //   });
-      // }
     },
   },
 };
@@ -264,9 +255,25 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 0 20px 20;
   .el-input-group__append {
     padding: 0 2px;
   }
+}
+.el-form-item {
+  display: flex;
+}
+::v-deep .el-dialog {
+  width: 20%;
+}
+::v-deep .el-form-item__label {
+  margin-right: 25px;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+::v-deep .el-dialog__body{
+  padding: 20px 20px 0;
 }
 </style>

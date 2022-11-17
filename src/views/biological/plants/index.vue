@@ -1,5 +1,10 @@
 <template>
   <div class="users_content">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>员工管理</el-breadcrumb-item>
+      <el-breadcrumb-item>员工信息</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
@@ -10,53 +15,126 @@
         label-position="right"
       >
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="部门">
-              <el-input
-                v-model="formOptions.userNickName"
-                placeholder="部门名称"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="地域">
-              <el-input
-                v-model="formOptions.userEmail"
-                placeholder="地域名称"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="接口人">
-              <el-input
-                v-model="formOptions.userAvatar"
-                placeholder="接口人姓名"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
-            <el-form-item label="项目">
-              <el-input
-                v-model="formOptions.userPhone"
-                placeholder="项目名称"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
+          <el-col :span="5">
             <el-form-item label="姓名">
               <el-input
-                v-model="formOptions.username"
+                v-model="formOptions.name"
                 placeholder="姓名"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8" class="btn">
+          <el-col :span="5">
+            <el-form-item label="部门">
+              <el-select
+                v-model="formOptions.department"
+                placeholder="请选择接部门"
+                filterable
+              >
+                <el-option
+                  v-for="(item, index) in Users"
+                  :key="item.index"
+                  :label="item.department"
+                  :value="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="地域">
+              <el-select
+                v-model="formOptions.region"
+                placeholder="请选择接地域名称"
+                filterable
+              >
+                <el-option
+                  v-for="(item, index) in MockUser"
+                  :key="item.index"
+                  :label="item.region"
+                  :value="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="接口人">
+              <el-select
+                v-model="formOptions.Interface"
+                placeholder="请选择接口人"
+                filterable
+              >
+                <el-option
+                  v-for="(item, index) in Interface"
+                  :key="item.index"
+                  :label="item.name"
+                  :value="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="4" class="btn">
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="addClick"
-                >新增</el-button
+              <el-button type="primary" @click="addClick">新增</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="name">
+          <el-col :span="5">
+            <el-form-item label="客户">
+              <el-select
+                v-model="formOptions.customer"
+                placeholder="请选择客户名称"
+                filterable
               >
-              <!-- <el-button @click="resetForm('formOptions')">重置</el-button> -->
+                <el-option
+                  v-for="(item, index) in tableCustomer"
+                  :key="item.index"
+                  :label="item.customer"
+                  :value="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="项目">
+              <el-select
+                v-model="formOptions.project"
+                placeholder="请选择项目名称"
+                filterable
+              >
+                <el-option
+                  v-for="(item, index) in tableProject"
+                  :key="item.index"
+                  :label="item.project"
+                  :value="index"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item label="技能">
+              <el-select v-model="value" placeholder="请选择技能">
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="5">
+            <el-form-item class="lab" label="状态">
+              <el-select v-model="label" placeholder="请选择">
+                <el-option
+                  v-for="item in state"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -73,80 +151,73 @@
         border
         stripe
         size="mini"
-        height="540"
+        height="506"
       >
-        <el-table-column type="selection" width="55" fixed> </el-table-column>
         <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
-          prop="id"
+          prop="job_no"
           label="工号"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="username"
+          prop="name"
           label="姓名"
-          min-width="80"
+          min-width="50"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userPhone"
+          prop="cell_phone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userEmail"
+          prop="customer"
           label="地域"
-          min-width="100"
+          min-width="50"
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- 项目状态 -->
-        <!-- <el-table-column
-          prop="role"
-          label="项目状态"
-          show-overflow-tooltip
-          min-width="80"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              type="primary"
-              disable-transitions
-              v-for="item in scope.row.roles"
-              :key="item.id"
-              >{{ item.nameZh }}</el-tag
-            >
-          </template>
-        </el-table-column> -->
+
         <el-table-column
-          prop="userNickName"
+          prop="department"
           label="部门"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userPhone"
+          prop="project"
           label="项目"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userAvatar"
+          prop="Interface"
           label="接口人"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
+        <!-- 员工状态 -->
+        <el-table-column
+          prop="employee_status"
+          label="员工状态"
+          show-overflow-tooltip
+        >
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="small"
+            <el-button @click="stateClick(row)" type="primary" size="mini"
+              >状态</el-button
+            >
+            <el-button @click="detailsClick(row)" type="primary" size="mini"
               >详情</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
@@ -180,35 +251,122 @@
     <user-edit-dialog
       :toChild="list"
       :tableData="tableData"
+      :tableProject="tableProject"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
       :toChild="list"
       ref="userDaitDialogRef"
     ></user-dait-dialog>
+    <user-state-dialog
+      :toChild="list"
+      ref="userStateDialogRef"
+    ></user-state-dialog>
   </div>
 </template>
 
 <script>
+// 假的员工表/项目表/地域/部门/接口人表/客户
+import {
+  reqStaff,
+  reqProject,
+  reqMockUser,
+  reqUsers,
+  reqgetInterface,
+  reqCustomer,
+} from "@/mockjs/reqMock";
+
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
+import UserStateDialog from "@/views/biological/plants/dialog/state.vue";
 export default {
   components: {
     UserEditDialog,
     UserDaitDialog,
+    UserStateDialog,
   },
   data() {
     return {
+      state: [
+        {
+          value: "选项1",
+          label: "在岸",
+        },
+        {
+          value: "选项2",
+          label: "派遣",
+        },
+        {
+          value: "选项3",
+          label: "出差",
+        },
+        {
+          value: "选项4",
+          label: "离职",
+        },
+      ],
+      options: [
+        {
+          value: "选项1",
+          label: "C++",
+        },
+        {
+          value: "选项2",
+          label: "JAVA",
+        },
+        {
+          value: "选项3",
+          label: "WEB",
+        },
+        {
+          value: "选项4",
+          label: "UI",
+        },
+        {
+          value: "选项5",
+          label: "TEST",
+        },
+      ],
+      value: "",
+      label: "",
+      //
       xmzt: "",
       list: "",
       formOptions: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        userPhone: "",
-        username: "",
+        id: "",
+        job_no: "",
+        name: "",
         gender: "",
+        cell_phone: "",
+        Email: "",
+        customer: "",
+        status: "",
+        department: "",
+        project: "",
+        address: "",
+        time: "",
+        cooperation: "",
+        Interface: "",
+        // 详情
+        age: "",
+        birthday: "",
+        politics: "",
+        Native: "",
+        residence: "",
+        emergency: "",
+        emergency_telephone: "",
+        education: "",
+        school: "",
+        school_time: "",
+        working_hours: "",
+        marriage: "",
+        child: "",
+        certificate: "",
+        hobby: "",
+        skill: "",
+        Induction: "",
+        post: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -218,25 +376,100 @@ export default {
         total: 0,
       },
       tableData: [],
+      tableProject: [],
       multipleSelection: [],
-      userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-      },
+      Users: [],
+      MockUser: [],
+      Interface: [],
+      tableCustomer: [],
     };
   },
   mounted() {
     this.queryUserList();
+    this.queryProjectList();
+    this.queryUsers();
+    this.queryMockUser();
+    this.queryInterface();
+    this.queryCustomerList();
   },
   methods: {
-    // 查询接口人列表
+    //  假数据客户查询方法
+    queryCustomerList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqCustomer(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.tableCustomer = res.data; // 表格数据赋值
+            console.log(this.tableCustomer, "假的客户数据表");
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    //  假数据部门查询方法
+    queryUsers() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqUsers(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.Users = res.data; // 表格数据赋值
+            console.log(this.Users, "假部门数据");
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    //  假数据地域查询方法
+    queryMockUser() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqMockUser(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.MockUser = res.data; // 表格数据赋值
+            console.log(this.MockUser, "假地域数据");
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    //  假数据接口人查询方法
+    queryInterface() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqgetInterface(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.Interface = res.data; // 表格数据赋值
+            console.log(this.Interface, "假接口人数据");
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 查询接口人列表 假的
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -245,23 +478,66 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          queryUser(data).then((res) => {
+          reqStaff(data).then((res) => {
             console.log(res, "res++++++++++");
-            if (res && res.code && res.code === "00000") {
-              this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData);
-              this.paginationOptions.total = res.data.total; // 分页器赋值
-            }
+            this.tableData = res.data; // 表格数据赋值
+            console.log(this.tableData, "假的员工表数据表");
+            // this.paginationOptions.total = res.data.total; // 分页器赋值
+            this.paginationOptions.total = 3; // 分页器赋值
           });
         } else {
           return false;
         }
       });
     },
+    // 项目表
+    queryProjectList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqProject(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.tableProject = res.data; // 表格数据赋值
+            console.log(this.tableProject, "假的项目数据表");
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+
+    // // 查询接口人列表 真的
+    // queryUserList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       queryUser(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         if (res && res.code && res.code === "00000") {
+    //           this.tableData = res.data.records; // 表格数据赋值
+    //           console.log(this.tableData);
+    //           this.paginationOptions.total = res.data.total; // 分页器赋值
+    //         }
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$confirm("此操作将永久删除该员工, 是否继续?", "删除员工", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -297,19 +573,25 @@ export default {
     // 添加
     addClick() {
       this.$refs.userEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加员工";
       console.log("我要添加");
     },
     // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
-      this.list = "编辑";
+      this.list = "编辑员工信息";
       console.log("编辑", row, row.id);
+    },
+    // 状态
+    stateClick(row) {
+      this.$refs.userStateDialogRef.openDialog(row);
+      this.list = "更新员工状态";
+      console.log("详情", row, row.id);
     },
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
-      this.list = "查看员工信息详情";
+      this.list = "查看员工详情";
       console.log("详情", row, row.id);
     },
     // 重置表单
@@ -331,73 +613,49 @@ export default {
   },
 };
 </script>
-
-<style scoped lang="less">
-@deep: ~">>>";
-// 表单样式
-.el-col {
-  .el-form-item {
-    width: 100%;
-  }
-  @{deep} .el-form-item__label {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  @{deep} .el-form-item__content {
-    width: calc(100% - 120px);
-    > div {
-      width: 100%;
-    }
-  }
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
 }
-// 表单操作按钮区域样式
-.inline1_action_button_content {
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.inline2_action_button_content {
-  width: 66.6%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.nextline_action_button_content {
-  width: 100%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-@{deep} .el-pagination {
-  margin: 10px 0;
-}
-@{deep} .el-form-item--mini {
-  display: flex;
-}
-@{deep} .el-form-item__label {
-  width: 140px;
-}
-::v-deep .el-message-box__btns .el-button {
-  background-color: black !important;
-}
+</style>
+<style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
+  line-height: 36.9px;
 }
-.el-form-item--mini{
-  display: flex;
-  justify-content: flex-end;
-}
-::v-deep .btn {
+::v-deep .el-col-4 {
   text-align: right;
-  span{
-    font-size: 14px;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination {
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label {
+  margin-right: 5px;
+}
+.name {
+  margin-top: 15px;
+}
+.btn {
+  text-align: right;
+}
+::v-deep .el-form-item__content {
+  width: 193px;
+}
+.lab {
+  ::v-deep .el-form-item__label {
+    margin-right: 20px;
   }
 }
 </style>

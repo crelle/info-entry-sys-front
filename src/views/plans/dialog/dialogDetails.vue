@@ -177,10 +177,17 @@ export default {
 }
 
 ::v-deep .el-form-item__label {
-  width: 130px !important;
+  width: 70px !important;
 }
 ::v-deep .el-form-item__content {
-  margin-left: 140px !important;
+  margin-left: 80px !important;
   text-align: right;
+}
+::v-deep .el-dialog__body{
+  padding: 30px 50px 0;
+}
+::v-deep .el-dialog{
+  width: 25% !important;
+  font-size: 12px;
 }
 </style>

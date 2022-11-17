@@ -16,46 +16,37 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="接口人名称" prop="username">
+                <el-form-item label="接口人名称" prop="name">
                   <el-input
-                    v-model="userEditForm.username"
+                    v-model="userEditForm.name"
                     placeholder="接口人名称"
-                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="性别" required>
-                  <el-select v-model="xingbie" placeholder="请选择">
+                <el-form-item label="性别" prop="gender">
+                  <el-select v-model="userEditForm.gender" placeholder="请选择">
                     <el-option label="男" :value="true"></el-option>
                     <el-option label="女" :value="false"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="接口人办公地址" prop="address">
-                  <el-input type="email" placeholder="接口人办公地址"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <!-- <el-form-item label="客户" prop="userNickName">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.userNickName"
-                    placeholder="客户"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
-                </el-form-item> -->
-                <el-form-item label="手机号" prop="userPhone">
-                  <el-input
-                    type="tel"
-                    v-model="userEditForm.userPhone"
-                    placeholder="手机号"
-                    ><i class="el-icon-mobile-phone" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="userEmail">
                   <el-input
                     type="email"
-                    v-model="userEditForm.userEmail"
+                    v-model="userEditForm.address"
+                    placeholder="接口人办公地址"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="手机号" prop="cell_phone">
+                  <el-input
+                    type="tel"
+                    v-model="userEditForm.cell_phone"
+                    placeholder="手机号"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="Email">
+                  <el-input
+                    type="email"
+                    v-model="userEditForm.Email"
                     placeholder="邮箱"
-                    ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="负责项目">
@@ -63,17 +54,17 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item> -->
-                <el-form-item label="客户" prop="userNickName">
+                <el-form-item label="客户" prop="customer">
                   <el-select
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.customer"
                     placeholder="请选择客户"
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item, index) in tableCustomer"
                       :key="item.index"
-                      :label="item.userNickName"
+                      :label="item.customer"
                       :value="index"
                     ></el-option>
                   </el-select>
@@ -87,7 +78,7 @@
                   >
                   </el-input>
                 </el-form-item>
-                <el-form-item label="" prop="password">
+                <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -96,18 +87,22 @@
                     :disabled="true"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
           >保存</el-button
+        >
+        <el-button
+          type="primary"
+          class="cancel"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -121,6 +116,7 @@ export default {
   props: {
     toChild: String,
     tableData: "",
+    tableCustomer: "",
   },
   data() {
     return {
@@ -134,19 +130,17 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
+        id: "",
+        name: "",
+        gender: "",
+        cell_phone: "",
+        Email: "",
+        address: "",
+        customer: "",
       },
       initFormData: {},
       userEditFormRules: {
-        username: [
+        name: [
           {
             required: true,
             message: "请输入用户名",
@@ -173,10 +167,17 @@ export default {
           // },
         ],
 
-        userEmail: [
+        Email: [
           {
             required: true,
             message: "请填写邮箱",
+            trigger: ["blur", "change"],
+          },
+        ],
+        gender: [
+          {
+            required: false,
+            message: "请选择性别",
             trigger: ["blur", "change"],
           },
         ],
@@ -187,7 +188,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        userPhone: [
+        cell_phone: [
           {
             required: true,
             message: "请填写手机号码",
@@ -196,15 +197,8 @@ export default {
         ],
         address: [
           {
-            required: true,
+            required: false,
             message: "请填写地域",
-            trigger: ["blur", "change"],
-          },
-        ],
-        addplace: [
-          {
-            required: true,
-            message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
         ],
@@ -218,7 +212,7 @@ export default {
       // console.log(e, "----------------");
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
-      this.userEditForm.userNickName = this.tableData[e].userNickName;
+      // this.userEditForm.responsibility = this.tableCustomer[e].userNickName;
       // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     //
@@ -372,6 +366,7 @@ export default {
 };
 </script>
 
+
 <style lang="less" scoped>
 @deep: ~">>>";
 @{deep} .register_form_main {
@@ -446,7 +441,10 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
@@ -454,7 +452,31 @@ export default {
 .passwordat {
   display: none;
 }
-::v-deep .el-form-item__content {
-  width: 650px;
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
+}
+::v-deep .el-form-item__label {
+  width: 125px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+::v-deep .el-dialog__body{
+  padding: 0px 20px;
 }
 </style>

@@ -1,14 +1,9 @@
 <template>
   <div>
-    <el-dialog
-      :title="toChild"
-      :visible.sync="dialogFormVisible"
-      lock-scroll
-      @close="closeDialog"
-    >
+    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" lock-scroll>
       <div class="register_form_main">
         <el-row style="height: 100%">
-          <el-col :span="12">
+          <el-col :span="24">
             <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
@@ -16,30 +11,31 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="岗位名称" prop="nameZh">
+                <el-form-item label="岗位名称 :" prop="pstname">
                   <el-input
                     type="text"
-                    v-model="userEditForm.userPhone"
-                    placeholder="岗位名称"
+                    v-model="userEditForm.pstname"
+                    placeholder="请填写岗位名称"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="岗位职责">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.userPhone"
-                    placeholder="岗位职责"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="岗位要求">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.userPhone"
-                    placeholder="岗位要求"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="项目" prop="userNickName">
+                <el-form-item label="岗位技能 :" prop="skill">
                   <el-select
-                    v-model="userEditForm.nameZh"
+                    v-model="userEditForm.skill"
+                    placeholder="请选择岗位技能"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="item in skill"
+                      :key="item.index"
+                      :label="item.ski"
+                      :value="item.ski"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="项目 :" prop="project">
+                  <el-select
+                    v-model="userEditForm.project"
                     placeholder="请选择接项目"
                     filterable
                     @change="queryson"
@@ -52,33 +48,78 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="客户">
+                <el-form-item label="客户 :" prop="customer">
                   <el-input
                     type="text"
-                    v-model="userEditForm.id"
+                    v-model="userEditForm.customer"
                     placeholder="客户"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="岗位需求人数">
+                <el-form-item label="岗位需求人数 :" prop="number">
                   <el-input
                     type="text"
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.number"
                     placeholder="岗位需求人数"
                   ></el-input>
                 </el-form-item>
-                
+                <el-form-item label="计划满足日期 :" prop="date">
+                  <el-col :span="11">
+                    <el-date-picker
+                      type="date"
+                      placeholder="计划满足日期"
+                      v-model="userEditForm.date"
+                      style="width: 100%"
+                    ></el-date-picker>
+                  </el-col>
+                </el-form-item>
+                <el-form-item label="最晚到岗时间" prop="birthday">
+                  <el-col :span="11">
+                    <el-date-picker
+                      type="date"
+                      placeholder="选择日期"
+                      v-model="userEditForm.date_do"
+                      style="width: 100%"
+                    ></el-date-picker>
+                  </el-col>
+                </el-form-item>
+
+                <el-form-item label="办公地点 :" prop="place">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.place"
+                    placeholder="办公地点"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="岗位职责 :" prop="duty">
+                  <el-input
+                    type="textarea"
+                    v-model="userEditForm.duty"
+                    placeholder="请输入岗位职责..."
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="岗位要求 :" prop="requirement">
+                  <el-input
+                    type="textarea"
+                    v-model="userEditForm.requirement"
+                    placeholder="请输入岗位要求..."
+                  ></el-input>
+                </el-form-item>
               </el-form>
             </div>
           </el-col>
         </el-row>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
-        <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
-        >
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" size="mini" @click="onCertain"
+            >保存</el-button
+          >
+          <el-button
+            class="cancel"
+            type="primary"
+            @click="dialogClose"
+            size="mini"
+            >取 消</el-button
+          >
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -100,49 +141,94 @@ export default {
       },
       nowIndex: -1,
       // baseURL: BaseURL,
-
+      skill: [
+        {
+          ski: "JAVA",
+        },
+        {
+          ski: "WEB",
+        },
+        {
+          ski: "UI",
+        },
+      ],
       userEditForm: {
-        name: "",
-        nameZh: "",
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
         id: "",
-        date1: "",
-        roles: [],
+        pstname: "",
+        skill: "",
+        project: "",
+        customer: "",
+        number: "",
+        date_do: "",
+        date: "",
+        region: "",
+        place: "",
+        duty: "",
+        requirement: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
-          {
-            required: true,
-            message: "请输入岗位编码",
-            trigger: ["blur", "change"],
-          },
-          {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-        nameZh: [
+        pstname: [
           {
             required: true,
             message: "请填写岗位名称",
             trigger: ["blur", "change"],
           },
+        ],
+        duty: [
           {
-            min: 1,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
+            required: false,
+            message: "请填写岗位职责",
+            trigger: ["blur", "change"],
+          },
+        ],
+        skill: [
+          {
+            required: false,
+            message: "请选择岗位技能",
+            trigger: ["blur", "change"],
+          },
+        ],
+        requirement: [
+          {
+            required: false,
+            message: "请填写岗位需求",
+            trigger: ["blur", "change"],
+          },
+        ],
+        project: [
+          {
+            required: false,
+            message: "请填写项目名称",
+            trigger: ["blur", "change"],
+          },
+        ],
+        customer: [
+          {
+            required: false,
+            message: "请填写客户名称",
+            trigger: ["blur", "change"],
+          },
+        ],
+        number: [
+          {
+            required: false,
+            message: "请填写需求人数",
+            trigger: ["blur", "change"],
+          },
+        ],
+        date: [
+          {
+            required: false,
+            message: "请填写完成时间",
+            trigger: ["blur", "change"],
+          },
+        ],
+        place: [
+          {
+            required: false,
+            message: "请填写办公地点",
+            trigger: ["blur", "change"],
           },
         ],
       },
@@ -156,7 +242,11 @@ export default {
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
       this.userEditForm.id = this.tableData[e].id;
-      console.log(this.userEditForm,"----this.userEditForm-this.tableData[e]",this.tableData[e]);
+      console.log(
+        this.userEditForm,
+        "----this.userEditForm-this.tableData[e]",
+        this.tableData[e]
+      );
     },
     //
     // 弹窗
@@ -258,7 +348,7 @@ export default {
 @deep: ~">>>";
 @{deep} .register_form_main {
   position: relative;
-  min-width: 40%;
+  min-width: 30%;
   overflow: hidden;
   > span {
     display: block;
@@ -328,9 +418,42 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 5px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
+}
+.passwordat {
+  display: none;
+}
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
+}
+::v-deep .el-form-item__label {
+  width: 110px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 100px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+.dialog-footer {
+  text-align: right;
 }
 </style>

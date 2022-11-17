@@ -16,52 +16,63 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="客户名称" prop="username">
+                <el-form-item label="客户名称" prop="customer">
                   <el-input
-                    v-model="userEditForm.username"
+                    v-model="userEditForm.customer"
                     placeholder="客户名称"
-                    ><i class="el-icon-user" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="地域" prop="address">
-                  <el-input type="email" placeholder="地域"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="办公地点" prop="addplace">
-                  <el-input type="email" placeholder="办公地点"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="(客户)负责人" prop="userNickName">
+                <el-form-item label="地域" prop="region">
                   <el-select
-                    v-model="userEditForm.userNickName"
-                    placeholder="(客户)负责人"
+                    v-model="userEditForm.region"
+                    placeholder="请选择地域"
                     filterable
-                    @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item, index) in regionData"
                       :key="item.index"
-                      :label="item.userNickName"
+                      :label="item.region"
                       :value="index"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="手机号" prop="userPhone">
-                  <el-input
-                    type="tel"
-                    v-model="userEditForm.userPhone"
-                    placeholder="手机号"
-                    ><i class="el-icon-mobile-phone" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="userEmail">
+
+                <el-form-item label="办公地点" prop="address">
                   <el-input
                     type="email"
-                    v-model="userEditForm.userEmail"
-                    placeholder="邮箱"
-                    ><i class="el-icon-message" slot="prepend"></i
+                    placeholder="请输入办公地点"
+                    v-model="userEditForm.address"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="负责人" prop="responsibility">
+                  <el-select
+                    v-model="userEditForm.responsibility"
+                    placeholder="请选择负责人"
+                    filterable
+                    @change="queryson"
+                  >
+                    <el-option
+                      v-for="(item, index) in UserList"
+                      :key="item.index"
+                      :label="item.username"
+                      :value="index"
+                    ></el-option>
+                  </el-select>
+                </el-form-item>
+                <el-form-item label="手机号" prop="cell_phone">
+                  <el-input
+                    type="tel"
+                    v-model="userEditForm.cell_phone"
+                    placeholder="请输入手机号"
+                    readonly
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="Email">
+                  <el-input
+                    type="email"
+                    v-model="userEditForm.Email"
+                    placeholder="请输入邮箱"
+                    readonly
                   ></el-input>
                 </el-form-item>
 
@@ -74,27 +85,21 @@
                   >
                   </el-input>
                 </el-form-item>
-                <el-form-item label="" prop="password">
-                  <el-input
-                    class="passwordat"
-                    type="email"
-                    v-model="userEditForm.password"
-                    placeholder="密码"
-                    :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item>
               </el-form>
             </div>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
+        >
+        <el-button
+          class="cancel"
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -107,7 +112,8 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
-    tableData: "",
+    UserList: "",
+    regionData: "",
   },
   data() {
     return {
@@ -120,22 +126,20 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
         password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
+        customer: "",
+        region: "",
+        regionwoek: "",
+        responsibility: "",
+        cell_phone: "",
+        Email: "",
       },
       initFormData: {},
       userEditFormRules: {
-        username: [
+        responsibility: [
           {
-            required: true,
-            message: "请输入用户名",
+            required: false,
+            message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
           {
@@ -159,37 +163,37 @@ export default {
           // },
         ],
 
-        userEmail: [
+        Email: [
           {
-            required: true,
+            required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        userNickName: [
+        customer: [
           {
             required: true,
-            message: "请填写昵称",
+            message: "请填写客户名",
             trigger: ["blur", "change"],
           },
         ],
-        userPhone: [
+        cell_phone: [
           {
-            required: true,
+            required: false,
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
         ],
         address: [
           {
-            required: true,
+            required: false,
             message: "请填写地域",
             trigger: ["blur", "change"],
           },
         ],
-        addplace: [
+        address: [
           {
-            required: true,
+            required: false,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
@@ -204,15 +208,15 @@ export default {
       // console.log(e, "----------------");
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
-      this.userEditForm.userNickName = this.tableData[e].userNickName;
-      this.userEditForm.userPhone = this.tableData[e].userPhone;
-      this.userEditForm.userEmail = this.tableData[e].userEmail;
+      this.userEditForm.cell_phone = this.UserList[e].userPhone;
+      this.userEditForm.Email = this.UserList[e].userEmail;
       // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     // 弹窗
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      console.log(this.UserList, "父亲传来的用户表----------");
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -258,52 +262,6 @@ export default {
       // // this.imageUrl = ""; // 清空头像
       // this.nowIndex = -1; // 重置选中
     },
-    // // 头像上传相关
-    // handleAvatarSuccess(res, file) {
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    //   this.nowIndex = -1; // 取消默认头像选中样式
-    //   console.log(this.imageUrl);
-    // },
-    // beforeAvatarUpload(file) {
-    //   console.log(file.type);
-    //   // 判断上传文件的类型
-    //   if (/^image\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 0;
-    //   } else if (/^video\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 1;
-    //   } else if (/^audio\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 2;
-    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
-    //     this.fileType.fileType = 3;
-    //   } else {
-    //     this.$message.error("此文件类型不支持!");
-    //     return false;
-    //   }
-
-    //   const isLt2M = file.size / 1024 / 1024 < 100;
-
-    //   // if (!isJPG) {
-    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
-    //   // }
-    //   if (!isLt2M) {
-    //     this.$message.error("上传头像图片大小不能超过 100MB!");
-    //   }
-    //   // return isJPG && isLt2M;
-    //   return isLt2M;
-    // },
-    // // 选择默认头像
-    // choosedefaultImg(index, url) {
-    //   if (index !== this.nowIndex) {
-    //     console.log(this.nowIndex);
-    //     this.nowIndex = index;
-    //     this.imageUrl = url;
-    //   } else {
-    //     console.log(this.nowIndex, -1);
-    //     this.nowIndex = -1;
-    //     this.imageUrl = "";
-    //   }
-    // },
-
     /* 保存  */
     onCertain() {
       if (this.initFormData.id) {
@@ -358,6 +316,7 @@ export default {
   },
 };
 </script>
+
 
 <style lang="less" scoped>
 @deep: ~">>>";
@@ -433,7 +392,10 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 20px 10px 0;
+  padding: 10px 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
   .el-input-group__append {
     padding: 0 2px;
   }
@@ -441,7 +403,31 @@ export default {
 .passwordat {
   display: none;
 }
-::v-deep .el-form-item__content {
-  width: 650px;
+.el-form-item {
+  display: flex;
+  margin-right: 50px;
+}
+::v-deep .el-form-item__label {
+  width: 95px;
+  text-align: left;
+}
+::v-deep .el-input__inner {
+  width: 250px;
+}
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  color: #606266;
+  font-size: inherit !important;
+}
+::v-deep .el-dialog {
+  width: 30%;
+}
+.cancel {
+  background-color: #999 !important;
+  border: 1px solid #999 !important;
+}
+::v-deep .el-dialog__body{
+  padding: 0px 20px;
 }
 </style>

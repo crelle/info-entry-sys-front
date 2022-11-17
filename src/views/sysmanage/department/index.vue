@@ -1,5 +1,10 @@
 <template>
   <div class="users_content">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>部门管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
@@ -10,24 +15,17 @@
         label-position="right"
       >
         <el-row>
-          <el-col :span="8">
+          <el-col :span="5">
             <el-form-item label="部门名称">
               <el-input
                 v-model="formOptions.username"
-                placeholder="部门名称"
+                placeholder="请输入部门名称"
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
-            <el-form-item label="负责人">
-              <el-input
-                v-model="formOptions.userNickName"
-                placeholder="负责人姓名"
-              ></el-input>
-            </el-form-item>
-          </el-col>
+         
           <el-col
-            :span="8"
+            :span="19"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -38,9 +36,7 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="addClick"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="addClick">新增</el-button>
               <!-- <el-button @click="resetForm('formOptions')">重置</el-button> -->
             </el-form-item>
           </el-col>
@@ -58,110 +54,57 @@
         border
         stripe
         size="mini"
-        height="560"
+        height="550"
       >
-        <el-table-column type="selection" width="55" fixed> </el-table-column>
         <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
-          prop="username"
+          prop="department"
           label="部门名"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userNickName"
+          prop="responsibility"
           label="负责人"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop=""
+          prop="job_no"
           label="工号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="userPhone"
+          prop="cell_phone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
+
         <el-table-column
-          prop="userEmail"
-          label="邮箱"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop=""
+          prop="address"
           label="部门总部地址"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- <el-table-column
-          prop="password"
-          label="密码"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column> -->
-        <!-- <el-table-column
-          prop="accountNonExpired"
-          label="账户是否未过期"
-          min-width="80"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">{{
-            scope.row.accountNonExpired ? "是" : "否"
-          }}</template>
-        </el-table-column>
         <el-table-column
-          prop="accountNonLocked"
-          label="账户是否未被锁定"
+          prop="retained"
+          label="留存率"
           min-width="100"
           show-overflow-tooltip
         >
-          <template slot-scope="scope">{{
-            scope.row.accountNonLocked ? "是" : "否"
-          }}</template>
         </el-table-column>
-        <el-table-column
-          prop="enabled"
-          label="账户是否可用"
-          min-width="100"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">{{
-            scope.row.enabled ? "是" : "否"
-          }}</template>
-        </el-table-column> -->
-        <!-- <el-table-column
-          prop="role"
-          label="角色"
-          show-overflow-tooltip
-          min-width="80"
-        >
-          <template slot-scope="scope">
-            <el-tag
-              type="primary"
-              disable-transitions
-              v-for="item in scope.row.roles"
-              :key="item.id"
-              >{{ item.nameZh }}</el-tag
-            >
-          </template>
-        </el-table-column> -->
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="small"
-              >详情</el-button
+            <el-button @click="detailsClick(row)" type="primary" size="mini"
+              >查看</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button
@@ -193,6 +136,7 @@
     </el-card>
     <user-edit-dialog
       :toChild="list"
+      :UserData="UserData"
       :tableData="tableData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
@@ -204,6 +148,9 @@
 </template>
 
 <script>
+// 假的
+import { reqUsers } from "@/mockjs/reqMock";
+
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/sysmanage/department/dialog/userDetails.vue";
@@ -230,6 +177,7 @@ export default {
         total: 0,
       },
       tableData: [],
+      UserData: [],
       multipleSelection: [],
       userEditForm: {
         accountNonExpired: true,
@@ -246,10 +194,33 @@ export default {
   },
   mounted() {
     this.queryUserList();
+    this.queryUser();
   },
   methods: {
-    // 查询部门列表
+    // 假的查询部门列表
     queryUserList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          reqUsers(data).then((res) => {
+            console.log(res, "res++++++++++");
+            this.tableData = res.data; // 表格数据赋值
+            console.log(this.tableData, "假的部门数据");
+            this.paginationOptions.total = 3; // 分页器赋值
+            // this.paginationOptions.total = res.data.total; // 分页器赋值
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 真的
+    // 查询用户列表
+    queryUser() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           console.log(valid, "validvalidvalid");
@@ -260,9 +231,8 @@ export default {
           queryUser(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
-              this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData);
-              this.paginationOptions.total = res.data.total; // 分页器赋值
+              this.UserData = res.data.records; // 表格数据赋值
+              console.log(this.UserData, " // 真的查询用户列表");
             }
           });
         } else {
@@ -270,31 +240,36 @@ export default {
         }
       });
     },
-    queryUserList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "-------validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          queryUser(data).then((res) => {
-            console.log(res, "res++++++++++");
-            if (res && res.code && res.code === "00000") {
-              this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData);
-              this.paginationOptions.total = res.data.total; // 分页器赋值
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // 真的
+    // // 查询部门列表
+    // queryUserList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       queryUser(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         if (res && res.code && res.code === "00000") {
+    //           this.tableData = res.data.records; // 表格数据赋值
+    //           console.log(this.tableData);
+    //           this.paginationOptions.total = res.data.total; // 分页器赋值
+    //         }
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$confirm("此操作将永久删除该部门, 是否继续?", "删除部门", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -330,19 +305,19 @@ export default {
     // 添加
     addClick() {
       this.$refs.userEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加部门";
       console.log("我要添加");
     },
     // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
-      this.list = "编辑";
+      this.list = "编辑部门信息";
       console.log("编辑", row, row.id);
     },
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
-      this.list = "查看详情";
+      this.list = "查看部门详情";
       console.log("详情", row, row.id);
     },
     // 重置表单
@@ -365,62 +340,35 @@ export default {
 };
 </script>
 
-<style scoped lang="less">
-@deep: ~">>>";
-// 表单样式
-.el-col {
-  .el-form-item {
-    width: 100%;
-  }
-  @{deep} .el-form-item__label {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  @{deep} .el-form-item__content {
-    width: calc(100% - 120px);
-    > div {
-      width: 100%;
-    }
-  }
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
 }
-// 表单操作按钮区域样式
-.inline1_action_button_content {
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.inline2_action_button_content {
-  width: 66.6%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-.nextline_action_button_content {
-  width: 100%;
-  @{deep} .el-form-item__content {
-    width: 100%;
-    display: flex;
-    justify-content: flex-end;
-  }
-}
-@{deep} .el-pagination {
-  margin: 10px 0;
-}
-@{deep} .el-form-item--mini {
-  display: flex;
-}
-@{deep} .el-form-item__label {
-  width: 140px;
-}
-::v-deep .el-message-box__btns .el-button {
-  background-color: black !important;
-}
+</style>
+<style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
+    line-height: 36.9px;
+}
+::v-deep .inline1_action_button_content {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination{
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label{
+  margin-right: 5px;
 }
 </style>

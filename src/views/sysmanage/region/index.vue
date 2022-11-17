@@ -1,34 +1,30 @@
 <template>
   <div class="roles_content">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>系统管理</el-breadcrumb-item>
+      <el-breadcrumb-item>地域管理</el-breadcrumb-item>
+    </el-breadcrumb>
     <el-card>
       <el-form
         :inline="true"
         class="demo-form-inline"
         size="mini"
         label-position="right"
-        label-width="120px"
         ref="queryRoleRef"
         :model="formOptions"
       >
         <el-row>
-          <el-col :span="8">
-            <el-form-item label="地域编码">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="地域编码"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="8">
+          <el-col :span="5">
             <el-form-item label="地域名称">
               <el-input
-                v-model="formOptions.nameZh"
-                placeholder="地域名称"
+                v-model="formOptions.regionName"
+                placeholder="请输入地域名称"
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col
-            :span="8"
+            :span="19"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -39,9 +35,7 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryRoles">查询</el-button>
-              <el-button type="primary" icon="el-icon-edit" @click="addClick"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -58,9 +52,8 @@
         border
         stripe
         size="mini"
-        height="610"
+        height="550"
       >
-        <el-table-column type="selection" width="55" fixed></el-table-column>
         <el-table-column
           label="序号"
           type="index"
@@ -69,16 +62,11 @@
         ></el-table-column>
         <el-table-column
           label="地域名称"
-          prop="nameZh"
+          prop="regionName"
           min-width="100"
           fixed
         ></el-table-column>
-        <el-table-column
-          label="地域编码"
-          prop="name"
-          min-width="120"
-          fixed
-        ></el-table-column>
+
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
@@ -124,20 +112,24 @@
 </template>
 
 <script>
+// // 假的
+// import { reqMockUser } from "@/mockjs/reqMock";
+// 真的地域接口
+import { query, deletes } from "@/api/region";
+
 import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
 import RoleDataDialog from "@/views/sysmanage/region/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleEditDialog,
-    RoleDataDialog
+    RoleDataDialog,
   },
   data() {
     return {
       list: "",
       formOptions: {
-        name: "",
-        nameZh: "",
+        regionName: "",
       },
       tableData: [],
       paginationOptions: {
@@ -153,15 +145,36 @@ export default {
     this.queryRoles();
   },
   methods: {
-    // 查询
+    // // // //  假数据拿取查询方法
+    // queryRoles() {
+    //   this.$refs["queryRoleRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqMockUser(data).then((res) => {
+    //         console.log(res, "res-假的****");
+    //         this.resetForm("queryRoleRef"); // 重置表单
+    //         this.tableData = res.data; // 表格数据赋值
+    //         this.paginationOptions.total = 10; // 分页器赋值
+    //         // this.paginationOptions.total = res.data.total; // 分页器赋值
+    //         console.log(this.tableData, "假的tableData////");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+    // 真的方法
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          queryRole(data).then((res) => {
+          query(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryRoleRef"); // 重置表单
@@ -176,16 +189,19 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除", {
+      this.$confirm("此操作将永久删除该地域, 是否继续?", "删除地域", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deleteRole(row.id).then((res) => {
+          deletes(row.regionId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
+              this.queryRoles();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -209,20 +225,20 @@ export default {
     // 查看
     lookClick(row) {
       this.$refs.roleDataDialogRef.openDialog(row);
-      this.list = "查看";
-      console.log("我要查看",row);
+      this.list = "查看地域详情";
+      console.log("我要查看", row);
     },
     // 添加
     addClick() {
       this.$refs.roleEditDialogRef.openDialog();
-      this.list = "添加";
+      this.list = "添加地域";
       console.log("我要添加");
     },
     // 编辑
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
-      this.list = "编辑";
-      console.log("编辑", row, row.id);
+      this.list = "修改地域信息";
+      console.log("编辑", row, row.regionId);
     },
     // 重置表单
     resetForm(formName) {
@@ -245,9 +261,36 @@ export default {
   },
 };
 </script>
-
+​
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
+  line-height: 36.9px;
+}
+::v-deep .inline2_action_button_content {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination {
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label {
+  margin-right: 5px;
 }
 </style>
