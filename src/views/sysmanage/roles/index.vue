@@ -185,8 +185,10 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该角色, 是否继续?", "删除当前角色", {
+      this.$confirm("此操作将永久删除该角色, 是否继续?", "删除当前角色", {
         confirmButtonText: "确定",
+         cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -254,7 +256,12 @@ export default {
   },
 };
 </script>
-
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;

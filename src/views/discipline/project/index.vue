@@ -379,8 +379,10 @@ export default {
     // },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -450,15 +452,20 @@ export default {
   },
 };
 </script>
-
-
+​
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
   line-height: 36.9px;
 }
 ::v-deep .el-col-4 {
- margin-right: 13px;
+  margin-right: 13px;
 }
 .btn {
   text-align: right;

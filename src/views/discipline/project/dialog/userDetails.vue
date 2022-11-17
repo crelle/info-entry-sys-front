@@ -51,7 +51,7 @@
                   </div>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
-                      <el-tab-pane label="部门人员" name="first">
+                      <el-tab-pane label="项目人员" name="first">
                         <el-table :data="tableData1" border style="width: 100%">
                           <el-table-column
                             prop="number"

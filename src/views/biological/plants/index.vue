@@ -71,7 +71,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-           <el-col :span="4" class="btn">
+          <el-col :span="4" class="btn">
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
@@ -137,7 +137,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-         
         </el-row>
       </el-form>
     </el-card>
@@ -206,13 +205,12 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- 项目状态 -->
+        <!-- 员工状态 -->
         <el-table-column
           prop="employee_status"
-          label="项目状态"
+          label="员工状态"
           show-overflow-tooltip
         >
-        
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
@@ -536,8 +534,10 @@ export default {
     // },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$confirm("此操作将永久删除该员工, 是否继续?", "删除员工", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -613,7 +613,12 @@ export default {
   },
 };
 </script>
-
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;

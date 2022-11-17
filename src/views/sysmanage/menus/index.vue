@@ -1,6 +1,6 @@
 <template>
   <div class="menus_content">
-     <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
       <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
@@ -15,14 +15,14 @@
         :model="formOptions"
       >
         <el-row>
-           <el-col :span="5">
-               <el-form-item label="菜单名称">
+          <el-col :span="5">
+            <el-form-item label="菜单名称">
               <el-input
                 v-model="formOptions.name"
                 placeholder="菜单名称"
               ></el-input>
             </el-form-item>
-           </el-col>
+          </el-col>
           <el-col :span="5">
             <el-form-item label="是否需要鉴权">
               <el-select v-model="formOptions.requireAuth" placeholder="请选择">
@@ -31,15 +31,15 @@
               </el-select>
             </el-form-item>
           </el-col>
-           <el-col :span="5">
+          <el-col :span="5">
             <el-form-item label="是否可用">
               <el-select v-model="formOptions.enabled" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
               </el-select>
             </el-form-item>
-           </el-col>
-            <el-col :span="9">
+          </el-col>
+          <el-col :span="9">
             <el-form-item>
               <el-button type="primary" @click="queryMenus">查询</el-button>
               <el-button
@@ -140,14 +140,10 @@
             <!-- <el-button type="primary" size="small" icon="el-icon-share"
               >详情</el-button
             > -->
-            <el-button
-              type="primary"
-              size="mini"
-              @click="handleClick(row)"
-            >
+            <el-button type="primary" size="mini" @click="handleClick(row)">
               编辑
             </el-button>
-             <el-button
+            <el-button
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
@@ -234,8 +230,10 @@ export default {
     },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$alert("此操作将永久删除该文件, 是否继续?", "删除菜单", {
+      this.$confirm("此操作将永久删除该菜单, 是否继续?", "删除菜单", {
         confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -299,11 +297,16 @@ export default {
   },
 };
 </script>
-
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
-    line-height: 36.9px;
+  line-height: 36.9px;
 }
 ::v-deep .el-col-9 {
   text-align: right;
@@ -319,10 +322,10 @@ export default {
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination{
+::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   margin-right: 5px;
 }
 </style>

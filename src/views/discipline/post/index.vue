@@ -142,13 +142,18 @@
         <el-table-column
           label="需求人数"
           prop="number"
-          min-width="100"
+          min-width="50"
           fixed
         ></el-table-column>
         <el-table-column
           label="计划满足日期"
           prop="date"
           min-width="100"
+          fixed
+        ></el-table-column>
+        <el-table-column
+          label="截止今日岗位缺口"
+          prop="number"
           fixed
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
@@ -330,9 +335,10 @@ export default {
     // },
     // 删除弹框
     deleteMenu(row, index) {
-      this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
+      this.$confirm("此操作将永久删除该岗位, 是否继续?", "删除岗位", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
+        cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
         .then(() => {
@@ -402,34 +408,36 @@ export default {
   },
 };
 </script>
-
+<style lang='less'>
+.btn-custom-cancel {
+  float: right;
+  margin-left: 10px;
+}
+</style>
 
 <style lang="less" scoped>
-// ::v-deep .cell {
-//   text-align: center;
-//   line-height: 36.9px;
-// }
-// ::v-deep .inline2_action_button_content {
-//   text-align: right;
-// }
-// .el-form--inline .el-form-item {
-//   margin-right: 0;
-// }
-// ::v-deep .el-card__body {
-//   .el-form-item--mini.el-form-item {
-//     margin-bottom: 0;
-//   }
-// }
-// .el-breadcrumb {
-//   margin-bottom: 25px;
-// }
-// ::v-deep .el-pagination {
-//   margin: 10px 0;
-// }
-// ::v-deep .el-form-item__label {
-//   margin-right: 5px;
-// }
-// ::v-deep .el-button{
-//   color: #000;
-// }
+::v-deep .cell {
+  text-align: center;
+  line-height: 36.9px;
+}
+::v-deep .inline2_action_button_content {
+  text-align: right;
+}
+.el-form--inline .el-form-item {
+  margin-right: 0;
+}
+::v-deep .el-card__body {
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
+}
+.el-breadcrumb {
+  margin-bottom: 25px;
+}
+::v-deep .el-pagination {
+  margin: 10px 0;
+}
+::v-deep .el-form-item__label {
+  margin-right: 5px;
+}
 </style>
