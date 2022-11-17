@@ -38,39 +38,39 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="工号" prop="job_no">
+                <el-form-item label="工号" prop="jobNo">
                   <el-input
                     placeholder="工号"
-                    v-model="userEditForm.job_no"
+                    v-model="userEditForm.jobNo"
                     readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="cell_phone">
+                <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.cell_phone"
+                    v-model="userEditForm.cellPhone"
                     placeholder="手机号"
                     readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="Email">
+                <el-form-item label="邮箱" prop="email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.Email"
+                    v-model="userEditForm.email"
                     placeholder="邮箱"
                     readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="上级部门">
+                <el-form-item label="上级部门" prop="departmentup">
                   <el-select
-                    v-model="userEditForm.departmentop"
+                    v-model="userEditForm.departmentup"
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="(item) in tableData"
                       :key="item.index"
                       :label="item.department"
-                      :value="index"
+                      :value="item.department"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -81,12 +81,12 @@
                     v-model="userEditForm.address"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="部门介绍" prop="textarea">
+                <el-form-item label="部门介绍" prop="introduce">
                   <el-input
-                    type="textarea"
+                    type="introduce"
                     :rows="2"
                     placeholder="请输入内容"
-                     v-model="userEditForm.textarea"
+                    v-model="userEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { updateUser, addUser } from "@/api/user";
+import { establishDepartments, editDepartments } from "@/api/department";
 
 export default {
   props: {
@@ -141,16 +141,17 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
+        departmentId: "",
+        userId: "",
         department: "",
         responsibility: "",
-        job_no: "",
-        cell_phone: "",
+        jobNo: "",
+        cellPhone: "",
         address: "",
         retained: "",
-        Email: "",
-        departmentop: "",
-        textarea:""
+        email: "",
+        departmentup: "",
+        introduce: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -181,7 +182,7 @@ export default {
           // },
         ],
 
-        Email: [
+        email: [
           {
             required: false,
             message: "请填写邮箱",
@@ -195,14 +196,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        cell_phone: [
+        cellPhone: [
           {
             required: false,
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
         ],
-        job_no: [
+        jobNo: [
           {
             required: false,
             message: "请填工号",
@@ -216,7 +217,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        textarea: [
+        departmentup: [
+          {
+            required: false,
+            message: "请选择上级部门",
+            trigger: ["blur", "change"],
+          },
+        ],
+        introduce: [
           {
             required: false,
             message: "请填写部门介绍",
@@ -235,9 +243,9 @@ export default {
       // console.log(this.tableData[e], "+++++++++++++++");
       // this.userEditForm = this.tableData[e];
       this.userEditForm.responsibility = this.UserData[e].username;
-      this.userEditForm.cell_phone = this.UserData[e].userPhone;
-      this.userEditForm.Email = this.UserData[e].userEmail;
-      this.userEditForm.job_no = this.UserData[e].id;
+      this.userEditForm.cellPhone = this.UserData[e].userPhone;
+      this.userEditForm.email = this.UserData[e].userEmail;
+      this.userEditForm.jobNo = this.UserData[e].id;
       // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     //
@@ -319,7 +327,8 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            console.log(this.userEditForm, "新增内容带字段------");
+            establishDepartments(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
@@ -448,7 +457,6 @@ export default {
   background-color: #999 !important;
   border: 1px solid #999 !important;
 }
-
 </style>
 
 

@@ -150,6 +150,7 @@
 <script>
 // 假的
 import { reqUsers } from "@/mockjs/reqMock";
+import { queryDepartments } from "@/api/department";
 
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
@@ -203,15 +204,15 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqUsers(data).then((res) => {
+          queryDepartments(data).then((res) => {
             console.log(res, "res++++++++++");
             this.tableData = res.data; // 表格数据赋值
             console.log(this.tableData, "假的部门数据");
-            this.paginationOptions.total = 3; // 分页器赋值
-            // this.paginationOptions.total = res.data.total; // 分页器赋值
+            // this.paginationOptions.total = 3; // 分页器赋值
+            this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
           return false;
