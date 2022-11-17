@@ -585,7 +585,7 @@ export default {
     // 状态
     stateClick(row) {
       this.$refs.userStateDialogRef.openDialog(row);
-      this.list = "查看员工状态";
+      this.list = "更新员工状态";
       console.log("详情", row, row.id);
     },
     // 详情

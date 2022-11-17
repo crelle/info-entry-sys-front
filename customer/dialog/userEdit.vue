@@ -20,42 +20,36 @@
                   <el-input
                     v-model="userEditForm.username"
                     placeholder="客户名称"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="地域" prop="address">
                   <el-input type="email" placeholder="地域"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="办公地点" prop="addplace">
                   <el-input type="email" placeholder="办公地点"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="接口人" prop="userNickName">
                   <el-input
                     type="text"
                     v-model="userEditForm.userNickName"
                     placeholder="接口人"
-                    ><i class="el-icon-magic-stick" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="userPhone">
                   <el-input
                     type="tel"
                     v-model="userEditForm.userPhone"
                     placeholder="手机号"
-                    ><i class="el-icon-mobile-phone" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="userEmail">
                   <el-input
                     type="email"
                     v-model="userEditForm.userEmail"
                     placeholder="邮箱"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
 
                 <el-form-item label="介绍" prop="">
@@ -74,8 +68,7 @@
                     v-model="userEditForm.password"
                     placeholder="密码"
                     :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
+                    ></el-input>
                 </el-form-item>
               </el-form>
             </div>

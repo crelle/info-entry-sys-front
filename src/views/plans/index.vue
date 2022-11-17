@@ -9,7 +9,7 @@
           </el-breadcrumb>
           <div>
             <div class="but">
-              <el-button type="primary" @click="onEditRoleMima">
+              <el-button type="primary" v-if="reset" @click="onEditRoleMima">
                 重置密码
               </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
@@ -30,12 +30,9 @@
             >
               <div class="box">
                 <div class="boxlis">
-                  <el-form-item label="姓名 :">
+                  <el-form-item label="用户名 :">
                     <el-input v-model="form.xm"></el-input>
                   </el-form-item>
-                </div>
-                <div class="boxlis">
-                  <span>登录密码:</span> <span>******</span>
                 </div>
               </div>
               <div class="box">
@@ -92,6 +89,7 @@ export default {
       userdetail: {},
       nowMenu: "",
       //
+      reset: true,
       editbtn: true,
       displays: false,
       isInput: true,
@@ -156,6 +154,7 @@ export default {
       this.isInput = false;
       this.displays = true;
       this.editbtn = false;
+      this.reset = false;
     },
     // 取消
     cancel() {
@@ -163,6 +162,7 @@ export default {
       this.isInput = true;
       this.displays = false;
       this.editbtn = true;
+      this.reset = true;
       // 获取数据
       // this.getSave();
     },
@@ -172,6 +172,7 @@ export default {
       this.isInput = true;
       this.displays = false;
       this.editbtn = true;
+      this.reset = true;
     },
     // 编辑密码
     onEditRoleMima() {

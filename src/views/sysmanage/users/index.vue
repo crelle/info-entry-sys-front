@@ -386,4 +386,7 @@ export default {
 ::v-deep .el-form-item__label{
   margin-right: 5px;
 }
+::v-deep .el-message-box{
+   background-color: aqua !important;
+  }
 </style>

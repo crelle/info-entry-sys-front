@@ -1,6 +1,6 @@
 <template>
   <div class="roles_content">
-     <el-breadcrumb separator-class="el-icon-arrow-right">
+    <el-breadcrumb separator-class="el-icon-arrow-right">
       <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>地域管理</el-breadcrumb-item>
@@ -35,9 +35,7 @@
           >
             <el-form-item>
               <el-button type="primary" @click="queryRoles">查询</el-button>
-              <el-button type="primary" @click="addClick"
-                >新增</el-button
-              >
+              <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -68,7 +66,7 @@
           min-width="100"
           fixed
         ></el-table-column>
-      
+
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
@@ -117,7 +115,7 @@
 // // 假的
 // import { reqMockUser } from "@/mockjs/reqMock";
 // 真的地域接口
-import { query,deletes } from "@/api/region";
+import { query, deletes } from "@/api/region";
 
 import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
@@ -198,9 +196,10 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deletes(row.id).then((res) => {
+          deletes(row.regionId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
+              this.queryRoles();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -264,7 +263,7 @@ export default {
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
-    line-height: 36.9px;
+  line-height: 36.9px;
 }
 ::v-deep .inline2_action_button_content {
   text-align: right;
@@ -280,10 +279,10 @@ export default {
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination{
+::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   margin-right: 5px;
 }
 </style>
