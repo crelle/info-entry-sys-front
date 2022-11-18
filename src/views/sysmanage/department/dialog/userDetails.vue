@@ -18,15 +18,14 @@
                       ><span>{{ userEditForm.department }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span
-                      ><span>{{ userEditForm.responsibility }}</span>
+                      <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cell_phone }}</span>
+                      ><span>{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
                     <li>
                       <span>部门总部地址:</span
@@ -36,7 +35,7 @@
                   <ul>
                     <li class="new">
                       <span>部门介绍:</span>
-                      <span>{{ textarea }}</span>
+                      <span>{{ userEditForm.introduce }}</span>
                     </li>
                   </ul>
                   <div>
@@ -63,7 +62,11 @@
                             width="150"
                           >
                           </el-table-column>
-                          <el-table-column prop="address" label="地域" width="150">
+                          <el-table-column
+                            prop="address"
+                            label="地域"
+                            width="150"
+                          >
                           </el-table-column>
                           <el-table-column prop="project" label="所在项目">
                           </el-table-column>
@@ -236,14 +239,14 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        department: "",
-        responsibility: "",
-        job_no: "",
-        cell_phone: "",
         address: "",
-        retained: "",
-        Email: "",
+        cellPhone: "",
+        department: "",
+        departmentId: "",
+        email: "",
+        introduce: "",
+        jobNo: "",
+        userId: "",
       },
       initFormData: {},
     };
@@ -334,7 +337,6 @@ export default {
       width: 80%;
       span:nth-child(1) {
         display: block;
-        width: 215px;
       }
       span:nth-child(2) {
         margin-right: 40px;

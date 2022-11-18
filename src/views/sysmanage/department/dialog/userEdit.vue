@@ -23,12 +23,13 @@
                     placeholder="部门名"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="负责人" prop="responsibility">
+                <el-form-item label="负责人" prop="userId">
                   <el-select
-                    v-model="userEditForm.responsibility"
+                    v-model="userEditForm.userId"
                     placeholder="请选择负责人"
                     filterable
                     @change="queryson"
+                    clearable
                   >
                     <el-option
                       v-for="(item, index) in UserData"
@@ -61,16 +62,13 @@
                     readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="上级部门" prop="departmentup">
-                  <el-select
-                    v-model="userEditForm.departmentup"
-                    @change="queryson"
-                  >
+                <el-form-item label="上级部门" prop="departmentUp">
+                  <el-select v-model="userEditForm.departmentUp" clearable>
                     <el-option
-                      v-for="(item) in tableData"
+                      v-for="item in tableData"
                       :key="item.index"
                       :label="item.department"
-                      :value="item.department"
+                      :value="item.departmentId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -142,15 +140,13 @@ export default {
       // baseURL: BaseURL,
       userEditForm: {
         departmentId: "",
-        userId: "",
         department: "",
-        responsibility: "",
+        userId: "",
         jobNo: "",
         cellPhone: "",
         address: "",
-        retained: "",
         email: "",
-        departmentup: "",
+        departmentUp: "",
         introduce: "",
       },
       initFormData: {},
@@ -160,12 +156,6 @@ export default {
             required: true,
             message: "请输部门名",
             trigger: ["blur", "change"],
-          },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
           },
         ],
         password: [
@@ -189,7 +179,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        responsibility: [
+        userId: [
           {
             required: true,
             message: "请选择负责人",
@@ -217,7 +207,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        departmentup: [
+        departmentUp: [
           {
             required: false,
             message: "请选择上级部门",
@@ -238,20 +228,22 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      this.userEditForm.responsibility = this.UserData[e].username;
-      this.userEditForm.cellPhone = this.UserData[e].userPhone;
-      this.userEditForm.email = this.UserData[e].userEmail;
-      this.userEditForm.jobNo = this.UserData[e].id;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      if (this.UserData[e]) {
+        console.log(this.UserData[e], "+++++++++++++++");
+        // this.userEditForm = this.tableData[e];
+        this.userEditForm.userId = this.UserData[e].username;
+        this.userEditForm.cellPhone = this.UserData[e].userPhone;
+        this.userEditForm.email = this.UserData[e].userEmail;
+        this.userEditForm.jobNo = this.UserData[e].id;
+        // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      } else {
+        return;
+      }
     },
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       // 查询部门列表
       console.log(this.tableData, "------父亲传来的");
@@ -263,7 +255,18 @@ export default {
         });
       } else {
         console.log("我是新增");
-        // this.initForm("");
+        console.log(this.userEditForm.departmentId, "----不能有值");
+
+        this.userEditForm.departmentId = "";
+        this.userEditForm.department = "";
+        this.userEditForm.userId = "";
+        this.userEditForm.jobNo = "";
+        this.userEditForm.cellPhone = "";
+        this.userEditForm.address = "";
+        this.userEditForm.email = "";
+        this.userEditForm.departmentUp = "";
+        this.userEditForm.introduce = "";
+        console.log(this.userEditForm,"-----新增的初始数据");
       }
     },
     initForm(data) {
@@ -294,28 +297,28 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
-        this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
+      if (this.initFormData.departmentId) {
         console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
+          this.initFormData.departmentId,
+          "--xxxxx--this.initFormData.id-"
         );
+        // this.userEditForm.departmentId = this.initFormData.departmentId;
+        this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            console.log(
+              this.userEditForm,
+              this.userEditForm.departmentId,
+              "ID未空"
+            );
+            editDepartments(this.userEditForm).then((res) => {
               console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
+              if (res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗隐藏
               }
             });
           } else {
@@ -324,6 +327,7 @@ export default {
         });
       } else {
         console.log("增加了...");
+        
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           if (valid) {
@@ -331,11 +335,9 @@ export default {
             establishDepartments(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.resetForm();
+                this.$parent.queryUserList();
               }
             });
           } else {

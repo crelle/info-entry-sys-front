@@ -15,6 +15,12 @@ const queryDepartments = (data) =>
     url: BaseURL + "/app/department/pageByCondition",
     data,
   });
+//查询上级部门
+const queryDepartmentsUP = () =>
+  Request({
+    method: "get",
+    url: BaseURL + "/app/department/queryDepartmentUp",
+  });
 // 编辑部门
 const editDepartments = (data) =>
   Request({
@@ -28,7 +34,7 @@ const deletesDepartments = (data) =>
   Request({
     method: "DELETE",
     url: BaseURL + "/app/department/deleteById/" + data,
-    data,
+    
   });
 
-export { establishDepartments, queryDepartments, editDepartments, deletesDepartments };
+export { establishDepartments, queryDepartments, editDepartments, deletesDepartments,queryDepartmentsUP };
