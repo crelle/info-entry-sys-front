@@ -104,7 +104,7 @@
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
             <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >详情</el-button
+              >查看</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button

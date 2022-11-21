@@ -25,7 +25,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 定</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -122,7 +122,7 @@ ul,li{
       span{
         display: block;
         margin-right: 15px;
-        font-size: 16px;
+        font-size: 14px;
       }
     }
   }

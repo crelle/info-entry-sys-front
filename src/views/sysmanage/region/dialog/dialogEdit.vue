@@ -276,4 +276,10 @@ export default {
 ::v-deep .el-dialog__body{
   padding: 20px 20px 0;
 }
+::v-deep .el-form-item--mini.el-form-item{
+  margin-bottom: 0;
+}
+::v-deep .el-dialog__footer{
+  padding: 20px;
+}
 </style>

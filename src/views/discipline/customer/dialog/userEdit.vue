@@ -392,7 +392,7 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 50px;
+  padding: 10px 50px 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -418,7 +418,8 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+   font-family: "微软雅黑";
 }
 ::v-deep .el-dialog {
   width: 30%;
@@ -427,7 +428,7 @@ export default {
   background-color: #999 !important;
   border: 1px solid #999 !important;
 }
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 0px 20px;
 }
 </style>

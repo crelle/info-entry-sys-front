@@ -218,7 +218,7 @@
               >状态</el-button
             >
             <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >详情</el-button
+              >查看</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button

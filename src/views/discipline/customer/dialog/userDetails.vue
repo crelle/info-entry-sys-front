@@ -278,4 +278,11 @@ export default {
     margin-left: 52px;
   }
 }
+::v-deep .el-dialog__footer {
+  padding: 20px 0;
+}
+::v-deep .el-textarea__inner {
+  font-size: 14px;
+  font-family: "微软雅黑";
+}
 </style>

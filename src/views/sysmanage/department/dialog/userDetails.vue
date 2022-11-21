@@ -308,7 +308,7 @@ export default {
   > span {
     display: block;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     padding: 20px 0;
     color: #409eff;
@@ -324,7 +324,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     li {
-      font-size: 12px;
+      font-size: 14px;
       width: 50%;
       margin: 10px 0;
       display: flex;
@@ -369,9 +369,12 @@ export default {
   text-align: center;
 }
 ::v-deep .el-table {
-  font-size: 12px;
+  font-size: 14px;
 }
 ::v-deep .el-dialog__body {
   padding: 0;
+}
+::v-deep .el-dialog__footer{
+  padding: 20px 0;
 }
 </style>

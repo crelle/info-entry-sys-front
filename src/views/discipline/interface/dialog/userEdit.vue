@@ -467,7 +467,9 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+  font-family: "微软雅黑";
+
 }
 ::v-deep .el-dialog {
   width: 30%;

@@ -81,7 +81,7 @@
                 </el-form-item>
                 <el-form-item label="部门介绍" prop="introduce">
                   <el-input
-                    type="introduce"
+                    type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
                     v-model="userEditForm.introduce"
@@ -139,15 +139,15 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        departmentId: "",
-        department: "",
-        userId: "",
-        jobNo: "",
-        cellPhone: "",
         address: "",
-        email: "",
+        cellPhone: "",
+        department: "",
+        departmentId: "",
         departmentUp: "",
+        email: "",
         introduce: "",
+        jobNo: "",
+        userId: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -255,18 +255,7 @@ export default {
         });
       } else {
         console.log("我是新增");
-        console.log(this.userEditForm.departmentId, "----不能有值");
-
-        this.userEditForm.departmentId = "";
-        this.userEditForm.department = "";
-        this.userEditForm.userId = "";
-        this.userEditForm.jobNo = "";
-        this.userEditForm.cellPhone = "";
-        this.userEditForm.address = "";
-        this.userEditForm.email = "";
-        this.userEditForm.departmentUp = "";
-        this.userEditForm.introduce = "";
-        console.log(this.userEditForm,"-----新增的初始数据");
+        delete this.userEditForm.departmentId;
       }
     },
     initForm(data) {
@@ -297,24 +286,12 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.initFormData.departmentId) {
-        console.log(
-          this.initFormData.departmentId,
-          "--xxxxx--this.initFormData.id-"
-        );
-        // this.userEditForm.departmentId = this.initFormData.departmentId;
+      if (this.userEditForm.departmentId) {
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            console.log(
-              this.userEditForm,
-              this.userEditForm.departmentId,
-              "ID未空"
-            );
             editDepartments(this.userEditForm).then((res) => {
-              console.log(res, "res11111");
               if (res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.$parent.queryUserList();
@@ -326,18 +303,14 @@ export default {
           }
         });
       } else {
-        console.log("增加了...");
-        
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
             console.log(this.userEditForm, "新增内容带字段------");
             establishDepartments(this.userEditForm).then((res) => {
-              console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
-                this.dialogClose();
-                this.$parent.queryUserList();
+                // this.dialogClose();
+                // this.$parent.queryUserList();
               }
             });
           } else {
@@ -424,7 +397,7 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 50px;
+  padding: 10px 50px 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -450,7 +423,8 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+  font-family: "微软雅黑";
 }
 ::v-deep .el-dialog {
   width: 30%;
@@ -458,6 +432,9 @@ export default {
 .cancel {
   background-color: #999 !important;
   border: 1px solid #999 !important;
+}
+::v-deep .el-dialog__body {
+  padding: 0;
 }
 </style>
 

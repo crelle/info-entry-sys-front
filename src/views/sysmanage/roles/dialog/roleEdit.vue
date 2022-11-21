@@ -5,7 +5,6 @@
       :visible.sync="dialogFormVisible"
       lock-scroll
       @close="closeDialog"
-      class="showAll_dialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -30,7 +29,7 @@
                   ></el-input>
                 </el-form-item>
                 <span>角色权限配置</span>
-                <div>
+                <div class="aaa">
                   <div class="configuration">
                     <div class="sbox">
                       <span>菜单权限</span>
@@ -55,7 +54,7 @@
                           :data="data1"
                           show-checkbox
                           node-key="id"
-                          :default-expanded-keys="[3]"
+                          :default-expanded-keys="[0]"
                           ref="tree_t"
                           highlight-current
                           :props="defaultProps"
@@ -106,23 +105,23 @@ export default {
               label: "用户管理",
               children: [
                 {
-                  id: 9,
+                  id: 6,
                   label: "新增",
                 },
                 {
-                  id: 10,
+                  id: 7,
                   label: "编辑",
                 },
                 {
-                  id: 11,
+                  id: 8,
                   label: "查看",
                 },
                 {
-                  id: 12,
+                  id: 9,
                   label: "角色配置",
                 },
                 {
-                  id: 13,
+                  id: 10,
                   label: "停用启用",
                 },
               ],
@@ -132,19 +131,19 @@ export default {
               label: "角色管理",
               children: [
                 {
-                  id: 5,
+                  id: 11,
                   label: "新增",
                 },
                 {
-                  id: 6,
+                  id: 12,
                   label: "编辑",
                 },
                 {
-                  id: 7,
+                  id: 13,
                   label: "查看",
                 },
                 {
-                  id: 8,
+                  id: 14,
                   label: "删除",
                 },
               ],
@@ -154,19 +153,19 @@ export default {
               label: "地域管理",
               children: [
                 {
-                  id: 7,
+                  id: 15,
                   label: "新增",
                 },
                 {
-                  id: 8,
+                  id: 16,
                   label: "编辑",
                 },
                 {
-                  id: 9,
+                  id: 17,
                   label: "查看",
                 },
                 {
-                  id: 10,
+                  id: 18,
                   label: "删除",
                 },
               ],
@@ -176,19 +175,19 @@ export default {
               label: "部门管理",
               children: [
                 {
-                  id: 7,
+                  id: 19,
                   label: "新增",
                 },
                 {
-                  id: 8,
+                  id: 20,
                   label: "编辑",
                 },
                 {
-                  id: 9,
+                  id: 21,
                   label: "查看",
                 },
                 {
-                  id: 10,
+                  id: 22,
                   label: "删除",
                 },
               ],
@@ -206,11 +205,11 @@ export default {
               label: "孵化使能部",
               children: [
                 {
-                  id: 9,
+                  id: 5,
                   label: "合同管理",
                 },
                 {
-                  id: 10,
+                  id: 6,
                   label: "平台管理",
                 },
               ],
@@ -271,30 +270,11 @@ export default {
       },
       initFormData: {},
       userEditFormRules: {
-        // name: [
-        //   {
-        //     required: true,
-        //     message: "请输入角色编码",
-        //     trigger: ["blur", "change"],
-        //   },
-        //   {
-        //     min: 1,
-        //     max: 100,
-        //     message: "用户名长度在 3 到 10 个字符",
-        //     trigger: "blur",
-        //   },
-        // ],
         nameZh: [
           {
             required: true,
             message: "请填写角色名称",
             trigger: ["blur", "change"],
-          },
-          {
-            min: 1,
-            max: 100,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
           },
         ],
       },
@@ -326,6 +306,7 @@ export default {
     },
     // 树形控件清空
     resetChecked() {
+      console.log("zty---清空");
       this.$refs.tree_n.setCheckedKeys([]);
       this.$refs.tree_t.setCheckedKeys([]);
     },
@@ -347,7 +328,6 @@ export default {
       } else {
         // 树形控件清空
         console.log("我是新增");
-        this.resetChecked();
         // this.$refs.tree_n.setCheckedKeys([]);
         // this.$refs.tree_t.setCheckedKeys([]);
         // this.initForm("");
@@ -370,6 +350,7 @@ export default {
     dialogClose() {
       this.dialogFormVisible = false;
       console.log(this.userEditForm, "取消231取消3131");
+      this.resetChecked();
     },
     // 重置表单
     resetForm(formName) {
@@ -435,10 +416,17 @@ export default {
 </script>
 
 <style lang="less" scoped>
+ul,
+li {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
 @deep: ~">>>";
 @{deep} .register_form_main {
+  margin: 10px 40px;
   position: relative;
-  min-width: 50%;
+  min-width: 40%;
   overflow: hidden;
   > span {
     display: block;
@@ -450,136 +438,57 @@ export default {
     background-color: #383f49;
     text-shadow: 0 1px -3px #409eff;
   }
-  .grid-content-left {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    .avatar-uploader .el-upload {
-      border: 1px dashed #8c939d;
-      border-radius: 50%;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409eff;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width: 178px;
-      height: 178px;
-      display: block;
-    }
-    .el-scrollbar__wrap {
-      overflow-x: hidden !important;
-    }
-    .demo-image__lazy {
-      height: 88px;
-      .el-image {
-        width: 80px;
-        height: 80px;
-        border: 1px solid #eee;
-        margin: 2px;
-      }
-      .default_img_chioce {
-        &::before {
-          width: 80px;
-          height: 80px;
-          background-color: rgba(139, 197, 252, 0.5);
-          position: absolute;
-          display: block;
-          top: 0;
-          left: 0;
-          content: "已选";
-          color: #409eff;
-          font-size: 12px;
-        }
-      }
-    }
-  }
 }
-.el-form {
-  padding: 6px 40px;
-  .el-input-group__append {
-    padding: 0 2px;
+.regionbox {
+  ul {
+    li {
+      display: flex;
+      margin: 10px 0;
+      span {
+        display: block;
+        margin-right: 15px;
+        font-size: 16px;
+      }
+    }
   }
 }
 .configuration {
-  min-height: 215px;
   display: flex;
   justify-content: space-around;
-  padding: 15px 20px 0;
-  margin-top: 15px;
-  border: 1px solid #eee;
+  padding: 5px 20px 0;
+
   .sbox {
-    padding-bottom: 30px;
+    width: 120px;
     span {
       display: block;
       margin: 10px 0;
     }
-    // .menubox {
-    //   // display: flex;
-    //   // justify-content: space-around;
-    // }
   }
-}
-::v-deep .el-dialog__body {
-  padding: 10px;
 }
 
-.el-form-item {
-  display: flex;
-  .el-form-item__label {
-    width: 80px;
-  }
-}
-// 修改对话框高度 滚动条
-.showAll_dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  ::v-deep .el-dialog {
-    margin: 0 auto !important;
-    height: 50%;
-    overflow: hidden;
-    .el-dialog__body {
-      position: absolute;
-      left: 0;
-      top: 54px;
-      bottom: 0;
-      right: 0;
-      padding: 0;
-      z-index: 1;
-      overflow: hidden;
-      overflow-y: auto;
-      // 下边设置字体，我的需求是黑底白字
-      color: #606266;
-      line-height: 30px;
-      padding: 0 15px;
-    }
-  }
+::v-deep .el-form-item {
+  text-align: right;
+  margin: 20px 0;
 }
 .dialog-footer {
+  text-align: center;
+}
+.aaa {
+  margin-top: 20px;
+  height: 265px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  line-height: 30px;
+  border: 1px solid #eee;
+}
+.aaa::-webkit-scrollbar {
+  display: none;
+}
+::v-deep .el-dialog__body {
+  padding: 0;
+}
+::v-deep .is-required {
   display: flex;
-  justify-content: end;
-  align-items: center;
-  margin-top: 30px;
 }
-::v-deep .el-form-item__label {
-  margin-right: 25px;
-}
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 </style>

@@ -229,7 +229,8 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 14px;
+  font-family: "微软雅黑";
 }
 ::v-deep .el-dialog {
   width: 30%;
@@ -245,7 +246,7 @@ export default {
   span {
     display: block;
     width: 250px;
-    background-color: #f0f0f0;
+    // background-color: #f0f0f0;
     padding: 0 10px;
     //超出两行省略号
     text-overflow: -o-ellipsis-lastline;
@@ -257,5 +258,7 @@ export default {
     -webkit-box-orient: vertical;
   }
 }
-
+::v-deep .el-dialog__body{
+  padding: 0;
+}
 </style>
