@@ -49,7 +49,12 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="角色">
-              <el-select v-model="quanxian" placeholder="请选择角色">
+              <el-select
+                v-model="quanxian"
+                clearable
+                filterable
+                placeholder="请选择角色"
+              >
                 <el-option label="管理员" :value="true"></el-option>
                 <el-option label="普通用户" :value="false"></el-option>
                 <el-option label="访客" :value="false"></el-option>
@@ -292,7 +297,7 @@ export default {
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "删除用户", {
         confirmButtonText: "确定",
-         cancelButtonText: "取消",
+        cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
@@ -371,7 +376,7 @@ export default {
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
-    line-height: 36.9px;
+  line-height: 36.9px;
 }
 ::v-deep .nextline_action_button_content {
   text-align: right;
@@ -387,13 +392,13 @@ export default {
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination{
+::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   margin-right: 5px;
 }
-::v-deep .el-message-box{
-   background-color: aqua !important;
-  }
+::v-deep .el-message-box {
+  background-color: aqua !important;
+}
 </style>

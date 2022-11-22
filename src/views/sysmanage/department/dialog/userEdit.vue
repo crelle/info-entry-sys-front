@@ -4,6 +4,7 @@
       :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -43,7 +44,7 @@
                   <el-input
                     placeholder="工号"
                     v-model="userEditForm.jobNo"
-                    readonly
+                    disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="cellPhone">
@@ -51,7 +52,7 @@
                     type="tel"
                     v-model="userEditForm.cellPhone"
                     placeholder="手机号"
-                    readonly
+                    disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
@@ -59,7 +60,7 @@
                     type="email"
                     v-model="userEditForm.email"
                     placeholder="邮箱"
-                    readonly
+                    disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="上级部门" prop="departmentUp">

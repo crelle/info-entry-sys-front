@@ -212,7 +212,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="140">
+        <el-table-column fixed="right" label="操作" min-width="190">
           <template slot-scope="{ row, $index }">
             <el-button @click="stateClick(row)" type="primary" size="mini"
               >状态</el-button

@@ -33,3 +33,4 @@ const deletesCustomer = (data) =>
   });
 
 export { establishCustomer, queryCustomer, editCustomer, deletesCustomer };
+

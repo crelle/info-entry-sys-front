@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"

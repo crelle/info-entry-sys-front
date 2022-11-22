@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -469,7 +470,6 @@ export default {
       span:nth-child(2) {
         padding-left: 10px;
         width: 150px;
-        background-color: #f0f0f0;
       }
     }
   }

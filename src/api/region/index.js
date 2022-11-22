@@ -2,21 +2,21 @@ import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
 
 //创建地域
-const establish = (data) =>
+const establishRegion = (data) =>
   Request({
     method: "post",
     url: BaseURL + "/app/region/create",
     data,
   });
 // 分页查询地域
-const query = (data) =>
+const queryRegion = (data) =>
   Request({
     method: "post",
     url: BaseURL + "/app/region/pageByCondition",
     data,
   });
 // 编辑地域
-const edit = (data) =>
+const editRegion = (data) =>
   Request({
     method: "put",
     url: BaseURL + "/app/region/updateById",
@@ -24,11 +24,11 @@ const edit = (data) =>
   });
 
 //删除地域
-const deletes = (data) =>
+const deletesRegion = (data) =>
   Request({
     method: "DELETE",
     url: BaseURL + "/app/region/deleteById/" + data,
     data,
   });
 
-export { establish, query, edit, deletes };
+export { establishRegion, queryRegion, editRegion, deletesRegion };

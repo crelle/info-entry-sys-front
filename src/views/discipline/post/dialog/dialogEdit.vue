@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" lock-scroll>
+    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" :close-on-click-modal='false' lock-scroll   @close="closeDialog">
       <div class="register_form_main">
         <el-row style="height: 100%">
           <el-col :span="24">
@@ -72,7 +72,7 @@
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <el-form-item label="最晚到岗时间" prop="birthday">
+                <el-form-item label="最晚到岗时间" prop="date_do">
                   <el-col :span="11">
                     <el-date-picker
                       type="date"
@@ -84,10 +84,18 @@
                 </el-form-item>
 
                 <el-form-item label="办公地点 :" prop="place">
+                  <el-cascader
+                    size="large"
+                    :options="options"
+                    v-model="userEditForm.place"
+                  >
+                  </el-cascader>
+                </el-form-item>
+                <el-form-item label="详细地址 :" prop="detail">
                   <el-input
                     type="text"
-                    v-model="userEditForm.place"
-                    placeholder="办公地点"
+                    v-model="userEditForm.detail"
+                    placeholder="详细地址"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位职责 :" prop="duty">
@@ -127,6 +135,7 @@
 
 <script>
 import { updateRole, deleteRole } from "@/api/role";
+import { regionData, CodeToText } from "element-china-area-data";
 
 export default {
   props: {
@@ -140,6 +149,7 @@ export default {
         fileType: 0,
       },
       nowIndex: -1,
+      options:regionData,
       // baseURL: BaseURL,
       skill: [
         {
@@ -163,6 +173,7 @@ export default {
         date: "",
         region: "",
         place: "",
+        detail:'',
         duty: "",
         requirement: "",
       },
@@ -221,6 +232,13 @@ export default {
           {
             required: false,
             message: "请填写完成时间",
+            trigger: ["blur", "change"],
+          },
+        ],
+        date_do: [
+          {
+            required: false,
+            message: "请填最晚到岗时间",
             trigger: ["blur", "change"],
           },
         ],

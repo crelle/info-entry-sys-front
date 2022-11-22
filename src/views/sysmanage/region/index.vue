@@ -112,12 +112,9 @@
 </template>
 
 <script>
-// // 假的
-// import { reqMockUser } from "@/mockjs/reqMock";
 // 真的地域接口
-import { query, deletes } from "@/api/region";
+import { queryRegion, deletesRegion } from "@/api/region";
 
-import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
 import RoleDataDialog from "@/views/sysmanage/region/dialog/dialogDetails.vue";
 export default {
@@ -174,7 +171,7 @@ export default {
           data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          query(data).then((res) => {
+          queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryRoleRef"); // 重置表单
@@ -198,7 +195,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deletes(row.regionId).then((res) => {
+          deletesRegion(row.regionId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               this.queryRoles();

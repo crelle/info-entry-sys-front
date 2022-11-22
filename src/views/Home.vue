@@ -42,7 +42,7 @@
               >
                 <template slot="title">
                   <i
-                    :class="item.iconCls ? item.iconCls : `el-icon-setting`"
+                    :class="item.iconLs ? item.iconLs : `el-icon-setting`"
                   ></i>
                   <span>{{ item.name }}</span>
                 </template>
@@ -56,7 +56,7 @@
                 </el-menu-item-group>
               </el-submenu>
               <el-menu-item v-else :index="item.path">
-                <i :class="item.iconCls ? item.iconCls : `el-icon-setting`"></i>
+                <i :class="item.iconLs ? item.iconLs : `el-icon-setting`"></i>
                 <span slot="title">{{ item.name }}</span>
               </el-menu-item>
             </div>

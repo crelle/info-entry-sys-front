@@ -156,7 +156,7 @@
           prop="number"
           fixed
         ></el-table-column>
-        <el-table-column label="操作" min-width="120" fixed>
+        <el-table-column label="操作" min-width="218" fixed>
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
               >查看</el-button

@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -47,7 +48,7 @@
 <script>
 
 // 新增 * 编辑
-import { establish,edit } from "@/api/region";
+import { establishRegion,editRegion } from "@/api/region";
 
 export default {
   props: {
@@ -137,7 +138,7 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            edit(this.userEditForm, this.userEditForm.regionId).then((res) => {
+            editRegion(this.userEditForm, this.userEditForm.regionId).then((res) => {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
@@ -160,7 +161,7 @@ export default {
             "*******----------地域"
           );
           if (valid) {
-            establish(this.userEditForm, this.userEditForm.regionId).then((res) => {
+            establishRegion(this.userEditForm, this.userEditForm.regionId).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();

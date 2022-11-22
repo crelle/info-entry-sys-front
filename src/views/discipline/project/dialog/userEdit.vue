@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -26,11 +27,13 @@
                   <!--  必填属性 required -->
                   <el-select
                     v-model="userEditForm.status"
+                    clearable
+                    filterable
                     placeholder="请选择项目状态"
                   >
-                    <el-option label="开发中" :value="true"></el-option>
-                    <el-option label="前期投入" :value="false"></el-option>
-                    <el-option label="交付阶段" :value="false"></el-option>
+                    <el-option label="开发中" value="开发中"></el-option>
+                    <el-option label="前期投入" value="前期投入"></el-option>
+                    <el-option label="交付阶段" value="交付阶段"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="立项时间" prop="time">
@@ -43,32 +46,34 @@
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <el-form-item label="地域" prop="address">
+                <el-form-item label="地域" prop="regionId">
                   <el-select
-                    v-model="userEditForm.address"
+                    v-model="userEditForm.regionId"
                     placeholder="地域"
+                    clearable
                     filterable
                   >
                     <el-option
-                      v-for="(item, index) in MockUser"
+                      v-for="item in MockUser"
                       :key="item.index"
                       :label="item.region"
-                      :value="index"
+                      :value="item.regionId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="接口人" prop="name">
+                <el-form-item label="接口人" prop="interfaceId">
                   <el-select
-                    v-model="userEditForm.name"
+                    v-model="userEditForm.interfaceId"
                     placeholder="请选择接口人"
+                    clearable
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in Interface"
+                      v-for="item in Interface"
                       :key="item.index"
                       :label="item.name"
-                      :value="index"
+                      :value="item.interfaceId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -94,13 +99,14 @@
                   <el-select
                     v-model="userEditForm.departmentId"
                     placeholder="部门名称"
+                    clearable
                     filterable
                   >
                     <el-option
-                      v-for="(item, index) in Users"
+                      v-for="item in Users"
                       :key="item.index"
                       :label="item.department"
-                      :value="index"
+                      :value="item.departmentId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -109,29 +115,19 @@
                     v-model="userEditForm.cooperation"
                     placeholder="请选择合作模式"
                   >
-                    <el-option label="TM" :value="true"></el-option>
-                    <el-option label="OD" :value="false"></el-option>
+                    <el-option label="TM" value="TM"></el-option>
+                    <el-option label="OD" value="OD"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="介绍" prop="">
+                <el-form-item label="介绍" prop="introduce">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                    v-model="userEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
-                <!-- <el-form-item label="" prop="password">
-                  <el-input
-                    class="passwordat"
-                    type="email"
-                    v-model="userEditForm.password"
-                    placeholder="密码"
-                    :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
@@ -155,9 +151,7 @@
 
 <script>
 //创建项目
-import { establish } from "@/api/project";
-
-import { updateUser, addUser } from "@/api/user";
+import { establishProject } from "@/api/project";
 
 export default {
   props: {
@@ -168,6 +162,22 @@ export default {
     Users: "",
   },
   data() {
+    let validateTel = (rule, value, callback) => {
+    	// 判断传入的值是否可以通过校验
+        if (!/^1[3-9]\d{9}$/.test(value)) {
+        callback(new Error('手机号格式不正确'))
+      	} else {
+        callback()
+      	}
+   	};
+    let validateMail = (rule, value, callback) => {
+    	// 判断传入的值是否可以通过校验
+        if (!/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)) {
+        callback(new Error('邮箱格式不正确'))
+      	} else {
+        callback()
+      	}
+   	};
     return {
       textarea: "",
       dialogFormVisible: false,
@@ -176,41 +186,28 @@ export default {
       },
       imageUrl: "",
       nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
-        introduce: "",
-        jobNo: "",
-        userId: "",
-
-        //
-        id: "",
         name: "",
-        gender: "",
         cellPhone: "",
         email: "",
         customer: "",
-        status: "",
-        departmentId: "",
-        project: "",
-        address: "",
-        time: "",
         cooperation: "",
-        number: "",
+        departmentId: "",
+        interfaceId: "",
+        introduce: "",
+        project: "",
+        regionId: "",
+        status: "",
+        time: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
+        interfaceId: [
           {
             required: true,
             message: "请输入接口人",
             trigger: ["blur", "change"],
           },
-          // {
-          //   min: 3,
-          //   max: 10,
-          //   message: "用户名长度在 3 到 10 个字符",
-          //   trigger: "blur",
-          // },
         ],
         gender: [
           {
@@ -225,6 +222,7 @@ export default {
             message: "请输入手机号",
             trigger: ["blur", "change"],
           },
+           { validator: validateTel, trigger: 'blur' }
         ],
         email: [
           {
@@ -232,6 +230,7 @@ export default {
             message: "请输入邮箱",
             trigger: ["blur", "change"],
           },
+           { validator: validateMail, trigger: 'blur' }
         ],
         customer: [
           {
@@ -261,7 +260,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        address: [
+        regionId: [
           {
             required: false,
             message: "请选泽地域",
@@ -282,20 +281,29 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+        introduce: [
+          {
+            required: false,
+            message: "请填写介绍",
+            trigger: ["blur", "change"],
+          },
+        ],
       },
     };
   },
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      this.userEditForm.customer = this.Interface[e].customer;
-      this.userEditForm.email = this.Interface[e].Email;
-      this.userEditForm.cellPhone = this.Interface[e].cell_phone;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      if (e) {
+        console.log(e, this.Interface[e], "---------e");
+        this.userEditForm.customer = this.Interface[e].customer;
+        this.userEditForm.email = this.Interface[e].email;
+        this.userEditForm.cellPhone = this.Interface[e].cellPhone;
+      } else {
+        this.userEditForm.customer = null;
+        this.userEditForm.email = null;
+        this.userEditForm.cellPhone = null;
+      }
     },
     //
     // 弹窗
@@ -410,35 +418,37 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
-              }
-            });
+            console.log(this.userEditForm, "----保存传递的内容");
+            // updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            //   console.log(res, "res11111");
+            //   if (res && res.code && res.code === "00000") {
+            //     this.$message.success("修改成功！");
+            //     // this.dialogClose();
+            //     this.$parent.resetForm();
+            //     this.dialogFormVisible = false; // 让弹窗显
+            //   }
+            // });
           } else {
             return false;
           }
         });
       } else {
         console.log("增加了...");
+
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
-          console.log(this.userEditForm,"-----------增加的项目内容*********");
+          console.log(this.userEditForm, "-----------增加的项目内容*********");
           if (valid) {
-            establish(this.userEditForm).then((res) => {
+            console.log('this.userEditForm----',this.userEditForm);
+            establishProject(this.userEditForm).then((res) => {
               console.log(res, "增加了项目");
-              // if (res && res.code && res.code === "00000") {
-              //   // this.$parent.resetForm();
-              //   // this.nowIndex = -1; // 重置选中
-              //   this.$message.success("创建成功！");
-              //   this.dialogClose();
-              //   this.$parent.resetForm();
-              // }
+              if (res && res.code && res.code === "00000") {
+                // this.$parent.resetForm();
+                // this.nowIndex = -1; // 重置选中
+                this.$message.success("创建成功！");
+                this.dialogClose();
+                this.$parent.queryUserList();
+              }
             });
           } else {
             return false;
@@ -567,5 +577,4 @@ export default {
 ::v-deep .el-dialog__footer {
   padding: 0 20px 20px;
 }
-
 </style>

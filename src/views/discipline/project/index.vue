@@ -74,9 +74,9 @@
           <el-col :span="4">
             <el-form-item label="项目状态">
               <el-select v-model="formOptions.status" placeholder="请选择">
-                <el-option label="前期" :value="true"></el-option>
-                <el-option label="开发中" :value="false"></el-option>
-                <el-option label="交付中" :value="false"></el-option>
+                <el-option label="前期" value="前期"></el-option>
+                <el-option label="开发中" value="开发中"></el-option>
+                <el-option label="交付中" value="交付中"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
