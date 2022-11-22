@@ -212,6 +212,7 @@ import {
   reqCustomer,
 } from "@/mockjs/reqMock";
 
+import { queryProject } from "@/api/project";
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/project/dialog/userDetails.vue";
@@ -225,17 +226,18 @@ export default {
       xmzt: "",
       list: "",
       formOptions: {
-        id: "",
         name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
+        cellPhone: "",
+        email: "",
         customer: "",
-        status: "",
-        department: "",
+        cooperation: "",
+        departmentId: "",
+        interfaceId: "",
+        introduce: "",
         project: "",
-        address: "",
-        number: "",
+        regionId: "",
+        status: "",
+        time: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -342,11 +344,11 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqProject(data).then((res) => {
-            console.log(res, "res++++++++++");
+          queryProject(data).then((res) => {
+            console.log(res, "---------项目数据++++++++");
             this.tableData = res.data; // 表格数据赋值
             console.log(this.tableData, "假的项目数据");
           });

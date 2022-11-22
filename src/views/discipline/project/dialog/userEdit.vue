@@ -152,7 +152,6 @@
 <script>
 //创建项目
 import { establishProject } from "@/api/project";
-
 export default {
   props: {
     toChild: String,
