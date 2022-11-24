@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -16,23 +17,24 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="客户名称" prop="customer">
+                <el-form-item label="客户名称" prop="customerName">
                   <el-input
-                    v-model="userEditForm.customer"
+                    v-model="userEditForm.customerName"
                     placeholder="客户名称"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="地域" prop="region">
+                <el-form-item label="地域" prop="regionId">
                   <el-select
-                    v-model="userEditForm.region"
+                    v-model="userEditForm.regionId"
                     placeholder="请选择地域"
+                    clearable
                     filterable
                   >
                     <el-option
-                      v-for="(item, index) in regionData"
+                      v-for="item in regionData"
                       :key="item.index"
-                      :label="item.region"
-                      :value="index"
+                      :label="item.regionName"
+                      :value="item.regionName"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -44,10 +46,11 @@
                     v-model="userEditForm.address"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="负责人" prop="responsibility">
+                <el-form-item label="负责人" prop="userId">
                   <el-select
-                    v-model="userEditForm.responsibility"
+                    v-model="userEditForm.userId"
                     placeholder="请选择负责人"
+                    clearable
                     filterable
                     @change="queryson"
                   >
@@ -59,29 +62,29 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="手机号" prop="cell_phone">
+                <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.cell_phone"
+                    v-model="userEditForm.cellPhone"
                     placeholder="请输入手机号"
                     readonly
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="Email">
+                <el-form-item label="邮箱" prop="email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.Email"
+                    v-model="userEditForm.email"
                     placeholder="请输入邮箱"
                     readonly
                   ></el-input>
                 </el-form-item>
 
-                <el-form-item label="介绍" prop="">
+                <el-form-item label="介绍" prop="introduce">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                    v-model="userEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
@@ -107,7 +110,8 @@
 </template>
 
 <script>
-import { updateUser, addUser } from "@/api/user";
+import { establishCustomer, editCustomer } from "@/api/customer";
+import { updateUser } from "@/api/user";
 
 export default {
   props: {
@@ -117,7 +121,6 @@ export default {
   },
   data() {
     return {
-      textarea: "",
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -126,58 +129,40 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        password: "123456",
-        customer: "",
-        region: "",
-        regionwoek: "",
-        responsibility: "",
-        cell_phone: "",
-        Email: "",
+        address: "",
+        cellPhone: "",
+        customerId: "",
+        customerName: "",
+        email: "",
+        introduce: "",
+        regionId: "",
+        userId: "",
       },
       initFormData: {},
       userEditFormRules: {
-        responsibility: [
+        userId: [
           {
             required: false,
             message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
-        ],
-        password: [
-          {
-            required: true,
-            message: "请输入密码",
-            trigger: ["blur", "change"],
-          },
-          // {
-          //   min: 1,
-          //   max: 16,
-          //   message: "用户名长度在1-16 个字符",
-          //   trigger: "blur",
-          // },
         ],
 
-        Email: [
+        email: [
           {
             required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        customer: [
+        customerName: [
           {
             required: true,
             message: "请填写客户名",
             trigger: ["blur", "change"],
           },
         ],
-        cell_phone: [
+        cellPhone: [
           {
             required: false,
             message: "请填写手机号码",
@@ -204,13 +189,15 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      this.userEditForm.cell_phone = this.UserList[e].userPhone;
-      this.userEditForm.Email = this.UserList[e].userEmail;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      if (e) {
+        this.userEditForm.cellPhone = this.UserList[e].userPhone;
+        this.userEditForm.email = this.UserList[e].userEmail;
+        this.userEditForm.userId = this.UserList[e].username;
+      } else {
+        this.userEditForm.cellPhone = null;
+        this.userEditForm.email = null;
+        this.userEditForm.userId = null;
+      }
     },
     // 弹窗
     openDialog(row) {
@@ -225,18 +212,13 @@ export default {
         });
       } else {
         console.log("我是新增");
+        delete this.userEditForm.customerId;
         // this.initForm("");
       }
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        // if (item === "userAvatar") {
-        //   // 最终保存的时候 此字段（头像地址）才是最终会
-        //   // 赋值给this.userEditForm.userAvatar的值，
-        //   // 所以要初始化的时候也要赋值一次
-        //   this.imageUrl = data[item];
-        // }
       });
     },
     closeDialog() {
@@ -251,7 +233,6 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.initForm(this.initFormData);
       this.initForm(this.userEditForm);
       this.resetFormData();
     },
@@ -259,35 +240,39 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-      // // this.imageUrl = ""; // 清空头像
-      // this.nowIndex = -1; // 重置选中
     },
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.customerId) {
+        console.log(
+          this.initFormData.customerId,
+          "--xxxxx--this.initFormData.id-"
+        );
+        this.userEditForm.customerId = this.initFormData.customerId;
         this.initFormData = this.userEditForm;
         console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
+        console.log(this.userEditForm.customerId, "-----id", this.userEditForm);
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
+            console.log(
+              this.userEditForm,
+              this.userEditForm.customerId,
+              "---id---传入未空的内容-----"
+            );
+            editCustomer(this.userEditForm, this.userEditForm.customerId).then(
+              (res) => {
+                console.log(res, "res11111");
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+
+                  this.$parent.queryUserList();
+                  // this.dialogFormVisible = false; // 让弹窗显
+                  this.dialogClose();
+                }
               }
-            });
+            );
           } else {
             return false;
           }
@@ -297,14 +282,14 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            establishCustomer(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
                 // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.resetForm();
+                this.$parent.queryUserList();
               }
             });
           } else {
@@ -392,7 +377,7 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 50px;
+  padding: 10px 50px 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -418,7 +403,8 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+  font-family: "微软雅黑";
 }
 ::v-deep .el-dialog {
   width: 30%;
@@ -427,7 +413,7 @@ export default {
   background-color: #999 !important;
   border: 1px solid #999 !important;
 }
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 0px 20px;
 }
 </style>

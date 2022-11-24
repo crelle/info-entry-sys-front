@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -467,7 +468,9 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+  font-family: "微软雅黑";
+
 }
 ::v-deep .el-dialog {
   width: 30%;

@@ -3,9 +3,9 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
-      class="showAll_dialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -20,27 +20,29 @@
                     </li>
                   </ul>
                   <span>角色权限配置</span>
-                  <div class="configuration">
-                    <div class="sbox">
-                      <span>菜单权限</span>
-                      <div class="menubox">
-                        <el-tree
-                          :data="data2"
-                          :props="defaultProps"
-                          default-expand-all
-                          @node-click="handleNodeClick"
-                        ></el-tree>
+                  <div class="aaa">
+                    <div class="configuration">
+                      <div class="sbox">
+                        <span>菜单权限</span>
+                        <div class="menubox">
+                          <el-tree
+                            :data="data2"
+                            :props="defaultProps"
+                            default-expand-all
+                            @node-click="handleNodeClick"
+                          ></el-tree>
+                        </div>
                       </div>
-                    </div>
-                    <div class="sbox">
-                      <span>数据权限</span>
-                      <div class="menubox">
-                        <el-tree
-                          :data="data1"
-                          :props="defaultProps"
-                          default-expand-all
-                          @node-click="handleNodeClick"
-                        ></el-tree>
+                      <div class="sbox">
+                        <span>数据权限</span>
+                        <div class="menubox">
+                          <el-tree
+                            :data="data1"
+                            :props="defaultProps"
+                            default-expand-all
+                            @node-click="handleNodeClick"
+                          ></el-tree>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -55,7 +57,6 @@
           </el-col>
         </el-row>
       </div>
-      <div slot="footer" class="dialog-footer"></div>
     </el-dialog>
   </div>
 </template>
@@ -270,57 +271,44 @@ li {
       span {
         display: block;
         margin-right: 15px;
-        font-size: 16px;
+        font-size: 14px;
       }
     }
   }
 }
 .configuration {
-  min-height: 450px;
   display: flex;
   justify-content: space-around;
   padding: 5px 20px 0;
-  margin-top: 5px;
-  border: 1px solid #eee;
+
   .sbox {
+    width: 120px;
     span {
       display: block;
       margin: 10px 0;
     }
   }
 }
-// 修改对话框高度 滚动条
-.showAll_dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  ::v-deep .el-dialog {
-    margin: 0 auto !important;
-    height: 80%;
-    overflow: hidden;
-    .el-dialog__body {
-      position: absolute;
-      left: 0;
-      top: 54px;
-      bottom: 0;
-      right: 0;
-      padding: 0;
-      z-index: 1;
-      overflow: hidden;
-      overflow-y: auto;
-      // 下边设置字体，我的需求是黑底白字
-      color: #606266;
-      line-height: 30px;
-      padding: 0 15px;
-    }
-  }
-}
+
 ::v-deep .el-form-item {
   text-align: right;
-  margin-top: 35px;
+  margin: 20px 0;
 }
-.dialog-footer{
+.dialog-footer {
   text-align: center;
+}
+.aaa {
+  margin-top: 20px;
+  height: 265px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  line-height: 30px;
+  border: 1px solid #eee;
+}
+.aaa::-webkit-scrollbar {
+  display: none;
+}
+::v-deep .el-dialog__body{
+  padding: 0;
 }
 </style>

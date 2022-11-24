@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" lock-scroll>
+    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" :close-on-click-modal='false' lock-scroll>
       <div class="register_form_main">
         <el-row style="height: 100%">
           <el-form

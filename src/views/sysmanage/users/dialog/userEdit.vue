@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -104,6 +105,14 @@ export default {
     toChild: String,
   },
   data() {
+    let validateTel = (rule, value, callback) => {
+    	// 判断传入的值是否可以通过校验
+        if (!/^1[3-9]\d{9}$/.test(value)) {
+        callback(new Error('手机号格式不正确'))
+      	} else {
+        callback()
+      	}
+   	};
     return {
       tableData: "",
       dialogFormVisible: false,
@@ -160,6 +169,7 @@ export default {
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
+          { validator: validateTel, trigger: 'blur' }
         ],
 
         roles: [

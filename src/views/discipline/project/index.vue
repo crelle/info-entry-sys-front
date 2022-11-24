@@ -74,9 +74,9 @@
           <el-col :span="4">
             <el-form-item label="项目状态">
               <el-select v-model="formOptions.status" placeholder="请选择">
-                <el-option label="前期" :value="true"></el-option>
-                <el-option label="开发中" :value="false"></el-option>
-                <el-option label="交付中" :value="false"></el-option>
+                <el-option label="前期" value="前期"></el-option>
+                <el-option label="开发中" value="开发中"></el-option>
+                <el-option label="交付中" value="交付中"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -157,7 +157,7 @@
         <el-table-column fixed="right" label="操作" min-width="140">
           <template slot-scope="{ row, $index }">
             <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >详情</el-button
+              >查看</el-button
             >
             <el-button @click="handleClick(row)" type="primary" size="mini"
               >编辑</el-button
@@ -212,6 +212,7 @@ import {
   reqCustomer,
 } from "@/mockjs/reqMock";
 
+import { queryProject } from "@/api/project";
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/project/dialog/userDetails.vue";
@@ -225,17 +226,18 @@ export default {
       xmzt: "",
       list: "",
       formOptions: {
-        id: "",
         name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
+        cellPhone: "",
+        email: "",
         customer: "",
-        status: "",
-        department: "",
+        cooperation: "",
+        departmentId: "",
+        interfaceId: "",
+        introduce: "",
         project: "",
-        address: "",
-        number: "",
+        regionId: "",
+        status: "",
+        time: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -342,11 +344,11 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqProject(data).then((res) => {
-            console.log(res, "res++++++++++");
+          queryProject(data).then((res) => {
+            console.log(res, "---------项目数据++++++++");
             this.tableData = res.data; // 表格数据赋值
             console.log(this.tableData, "假的项目数据");
           });
@@ -487,4 +489,5 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
+
 </style>

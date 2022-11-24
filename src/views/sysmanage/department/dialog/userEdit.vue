@@ -4,6 +4,7 @@
       :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -23,12 +24,13 @@
                     placeholder="部门名"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="负责人" prop="responsibility">
+                <el-form-item label="负责人" prop="userId">
                   <el-select
-                    v-model="userEditForm.responsibility"
+                    v-model="userEditForm.userId"
                     placeholder="请选择负责人"
                     filterable
                     @change="queryson"
+                    clearable
                   >
                     <el-option
                       v-for="(item, index) in UserData"
@@ -38,39 +40,36 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="工号" prop="job_no">
+                <el-form-item label="工号" prop="jobNo">
                   <el-input
                     placeholder="工号"
-                    v-model="userEditForm.job_no"
-                    readonly
+                    v-model="userEditForm.jobNo"
+                    disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="手机号" prop="cell_phone">
+                <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.cell_phone"
+                    v-model="userEditForm.cellPhone"
                     placeholder="手机号"
-                    readonly
+                    disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="Email">
+                <el-form-item label="邮箱" prop="email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.Email"
+                    v-model="userEditForm.email"
                     placeholder="邮箱"
-                    readonly
+                    disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="上级部门">
-                  <el-select
-                    v-model="userEditForm.departmentop"
-                    @change="queryson"
-                  >
+                <el-form-item label="上级部门" prop="departmentUp">
+                  <el-select v-model="userEditForm.departmentUp" clearable>
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="item in tableData"
                       :key="item.index"
                       :label="item.department"
-                      :value="index"
+                      :value="item.departmentId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -81,12 +80,12 @@
                     v-model="userEditForm.address"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="部门介绍" prop="textarea">
+                <el-form-item label="部门介绍" prop="introduce">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                     v-model="userEditForm.textarea"
+                    v-model="userEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
@@ -122,7 +121,7 @@
 </template>
 
 <script>
-import { updateUser, addUser } from "@/api/user";
+import { establishDepartments, editDepartments } from "@/api/department";
 
 export default {
   props: {
@@ -141,16 +140,15 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        department: "",
-        responsibility: "",
-        job_no: "",
-        cell_phone: "",
         address: "",
-        retained: "",
-        Email: "",
-        departmentop: "",
-        textarea:""
+        cellPhone: "",
+        department: "",
+        departmentId: "",
+        departmentUp: "",
+        email: "",
+        introduce: "",
+        jobNo: "",
+        userId: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -159,12 +157,6 @@ export default {
             required: true,
             message: "请输部门名",
             trigger: ["blur", "change"],
-          },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
           },
         ],
         password: [
@@ -181,28 +173,28 @@ export default {
           // },
         ],
 
-        Email: [
+        email: [
           {
             required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        responsibility: [
+        userId: [
           {
             required: true,
             message: "请选择负责人",
             trigger: ["blur", "change"],
           },
         ],
-        cell_phone: [
+        cellPhone: [
           {
             required: false,
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
         ],
-        job_no: [
+        jobNo: [
           {
             required: false,
             message: "请填工号",
@@ -216,7 +208,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        textarea: [
+        departmentUp: [
+          {
+            required: false,
+            message: "请选择上级部门",
+            trigger: ["blur", "change"],
+          },
+        ],
+        introduce: [
           {
             required: false,
             message: "请填写部门介绍",
@@ -230,20 +229,22 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      this.userEditForm.responsibility = this.UserData[e].username;
-      this.userEditForm.cell_phone = this.UserData[e].userPhone;
-      this.userEditForm.Email = this.UserData[e].userEmail;
-      this.userEditForm.job_no = this.UserData[e].id;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      if (this.UserData[e]) {
+        console.log(this.UserData[e], "+++++++++++++++");
+        // this.userEditForm = this.tableData[e];
+        this.userEditForm.userId = this.UserData[e].username;
+        this.userEditForm.cellPhone = this.UserData[e].userPhone;
+        this.userEditForm.email = this.UserData[e].userEmail;
+        this.userEditForm.jobNo = this.UserData[e].id;
+        // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
+      } else {
+        return;
+      }
     },
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       // 查询部门列表
       console.log(this.tableData, "------父亲传来的");
@@ -255,7 +256,7 @@ export default {
         });
       } else {
         console.log("我是新增");
-        // this.initForm("");
+        delete this.userEditForm.departmentId;
       }
     },
     initForm(data) {
@@ -286,28 +287,16 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
-        this.userEditForm.id = this.initFormData.id;
+      if (this.userEditForm.departmentId) {
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
+            editDepartments(this.userEditForm).then((res) => {
+              if (res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗隐藏
               }
             });
           } else {
@@ -315,18 +304,14 @@ export default {
           }
         });
       } else {
-        console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "增加了...res11111");
+            console.log(this.userEditForm, "新增内容带字段------");
+            establishDepartments(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
-                this.dialogClose();
-                this.$parent.resetForm();
+                // this.dialogClose();
+                // this.$parent.queryUserList();
               }
             });
           } else {
@@ -413,7 +398,7 @@ export default {
   }
 }
 .el-form {
-  padding: 10px 50px;
+  padding: 10px 50px 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -439,7 +424,8 @@ export default {
   min-height: 120px !important;
   width: 250px;
   color: #606266;
-  font-size: inherit !important;
+  font-size: 12px;
+  font-family: "微软雅黑";
 }
 ::v-deep .el-dialog {
   width: 30%;
@@ -448,7 +434,9 @@ export default {
   background-color: #999 !important;
   border: 1px solid #999 !important;
 }
-
+::v-deep .el-dialog__body {
+  padding: 0;
+}
 </style>
 
 

@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -251,7 +252,7 @@
                   </div>
                 </div>
 
-                <el-form-item label="" prop="password">
+                <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -260,7 +261,7 @@
                     :disabled="true"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
             </div>
             <div class="btn">
@@ -816,7 +817,6 @@ export default {
 }
 .btn {
   text-align: right;
-  margin-bottom: 20px;
 }
 // 修改对话框高度 滚动条
 .showAll_dialog {
@@ -826,7 +826,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 80%;
+    height: 83%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;

@@ -18,7 +18,7 @@
           <el-col :span="5">
             <el-form-item label="客户">
               <el-input
-                v-model="formOptions.username"
+                v-model="formOptions.customerName"
                 placeholder="请填写客户名称"
               ></el-input>
             </el-form-item>
@@ -26,15 +26,16 @@
           <el-col :span="5">
             <el-form-item label="地域">
               <el-select
-                v-model="userEditForm.region"
+                v-model="formOptions.regionId"
                 placeholder="地域名称"
+                clearable
                 filterable
               >
                 <el-option
-                  v-for="(item, index) in regionData"
+                  v-for="item in regionData"
                   :key="item.index"
-                  :label="item.region"
-                  :value="index"
+                  :label="item.regionName"
+                  :value="item.regionName"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -74,14 +75,14 @@
         <el-table-column label="序号" type="index" width="55" fixed>
         </el-table-column>
         <el-table-column
-          prop="customer"
+          prop="customerName"
           label="客户"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="region"
+          prop="regionId"
           label="地域"
           min-width="100"
           show-overflow-tooltip
@@ -95,21 +96,21 @@
         >
         </el-table-column>
         <el-table-column
-          prop="responsibility"
+          prop="userId"
           label="负责人"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="cell_phone"
+          prop="cellPhone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="Email"
+          prop="email"
           label="邮箱"
           min-width="100"
           show-overflow-tooltip
@@ -162,6 +163,8 @@
 </template>
 
 <script>
+import { queryCustomer, deletesCustomer } from "@/api/customer";
+import { queryRegion } from "@/api/region";
 // 假的
 import { reqMockUser, reqCustomer, reqUsers } from "@/mockjs/reqMock";
 
@@ -224,9 +227,9 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqMockUser(data).then((res) => {
+          queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
-            this.regionData = res.data; // 表格数据赋值
+            this.regionData = res.data.records; // 表格数据赋值
             console.log(this.regionData, "假的地域数据");
           });
         } else {
@@ -234,22 +237,21 @@ export default {
         }
       });
     },
-    // 假的接口查询客户列表
+    // 接口查询客户列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqCustomer(data).then((res) => {
+          queryCustomer(data).then((res) => {
             console.log(res, "res++++++++++");
 
-            this.tableData = res.data; // 表格数据赋值
-            console.log(this.tableData, "假的客户数据");
-            this.paginationOptions.total = 10; // 分页器赋值
-            // this.paginationOptions.total = res.data.total; // 分页器赋值
+            this.tableData = res.data.records; // 表格数据赋值
+            console.log(this.tableData, "客户数据");
+            this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
           return false;
@@ -288,14 +290,12 @@ export default {
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          // 点击确认，发起后台请求，删除该客户
-          deleteMenu(row.id).then((res) => {
-            console.log(res, "点击确认，发起后台请求，删除该客户");
-            if (res.data.meta.status == 200) {
+          console.log(row, "删除--------");
+          // 点击确认，发起后台请求，删除该用户
+          deletesCustomer(row.customerId).then((res) => {
+            console.log(res, "点击确认，发起后台请求，删除");
+            if (res.code == "00000") {
+              this.queryRoles();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -364,7 +364,7 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .inline1_action_button_content {
+::v-deep .el-col-14 {
   text-align: right;
 }
 .el-form--inline .el-form-item {

@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -309,5 +310,10 @@ export default {
       padding: 0 15px;
     }
   }
+}
+::v-deep .el-textarea__inner {
+  color: #606266;
+  font-size: 14px;
+  font-family: "微软雅黑";
 }
 </style>

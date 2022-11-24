@@ -99,23 +99,23 @@ let getCustomerList = () => {
 };
 let getUserList = () => {
   let users = [
-    { id: 1, region: "南京" },
-    { id: 2, region: "北京" },
-    { id: 3, region: "西安" },
-    { id: 4, region: "武汉" },
-    { id: 5, region: "厦门" },
-    { id: 6, region: "大连" },
-    { id: 7, region: "南昌" },
-    { id: 8, region: "苏州" },
-    { id: 9, region: "深圳" },
-    { id: 10, region: "上海" },
+    { regionId: "1", region: "南京" },
+    { regionId: "2", region: "北京" },
+    { regionId: "3", region: "西安" },
+    { regionId: "4", region: "武汉" },
+    { regionId: "5", region: "厦门" },
+    { regionId: "6", region: "大连" },
+    { regionId: "7", region: "南昌" },
+    { regionId: "8", region: "苏州" },
+    { regionId: "9", region: "深圳" },
+    { regionId: "10", region: "上海" },
   ];
   return users;
 };
 let getUser = () => {
   let users = [
     {
-      id: "1",
+      departmentId: "1",
       department: "研发二部",
       responsibility: "admin",
       job_no: "2131311",
@@ -125,7 +125,7 @@ let getUser = () => {
       Email: "123@qq.com",
     },
     {
-      id: "2",
+      departmentId: "2",
       department: "研发四部",
       responsibility: "user",
       job_no: "2552341",
@@ -135,7 +135,7 @@ let getUser = () => {
       Email: "4332@qq.com",
     },
     {
-      id: "3",
+      departmentId: "3",
       department: "研发五部",
       responsibility: "guest",
       job_no: "2558758",
@@ -150,35 +150,36 @@ let getUser = () => {
 let getInterfaceList = () => {
   let users = [
     {
-      id: "1",
+      interfaceId: "0",
       name: "张三",
       gender: "男",
-      cell_phone: "1308455011",
-      Email: "123@qq.com",
+      cellPhone: "1308455011",
+      email: "123@qq.com",
       address: "江苏省南京市雨花台区云密城B栋",
       customer: "华泰",
       project: "华泰项目",
     },
     {
-      id: "2",
+      interfaceId: "1",
       name: "李四",
       gender: "男",
-      cell_phone: "1908455011",
-      Email: "122213@qq.com",
+      cellPhone: "1908455011",
+      email: "122213@qq.com",
       address: "江苏省南京市雨花台区云密城B栋",
       customer: "南京银行",
       project: "南京银行项目",
     },
     {
-      id: "3",
+      interfaceId: "2",
       name: "王五",
       gender: "男",
-      cell_phone: "1708455011",
-      Email: "122213@qq.com",
+      cellPhone: "9108455011",
+      email: "332213@qq.com",
       address: "江苏省南京市雨花台区云密城B栋",
-      customer: "移动",
-      project: "移动项目",
+      customer: "北京银行",
+      project: "北京银行项目",
     },
+    
   ];
   return users;
 };

@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
     >
@@ -18,15 +19,14 @@
                       ><span>{{ userEditForm.department }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span
-                      ><span>{{ userEditForm.responsibility }}</span>
+                      <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cell_phone }}</span>
+                      ><span>{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
                     <li>
                       <span>部门总部地址:</span
@@ -36,7 +36,7 @@
                   <ul>
                     <li class="new">
                       <span>部门介绍:</span>
-                      <span>{{ textarea }}</span>
+                      <span>{{ userEditForm.introduce }}</span>
                     </li>
                   </ul>
                   <div>
@@ -63,7 +63,11 @@
                             width="150"
                           >
                           </el-table-column>
-                          <el-table-column prop="address" label="地域" width="150">
+                          <el-table-column
+                            prop="address"
+                            label="地域"
+                            width="150"
+                          >
                           </el-table-column>
                           <el-table-column prop="project" label="所在项目">
                           </el-table-column>
@@ -236,14 +240,14 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        department: "",
-        responsibility: "",
-        job_no: "",
-        cell_phone: "",
         address: "",
-        retained: "",
-        Email: "",
+        cellPhone: "",
+        department: "",
+        departmentId: "",
+        email: "",
+        introduce: "",
+        jobNo: "",
+        userId: "",
       },
       initFormData: {},
     };
@@ -305,7 +309,7 @@ export default {
   > span {
     display: block;
     text-align: center;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     padding: 20px 0;
     color: #409eff;
@@ -321,7 +325,7 @@ export default {
     display: flex;
     flex-wrap: wrap;
     li {
-      font-size: 12px;
+      font-size: 14px;
       width: 50%;
       margin: 10px 0;
       display: flex;
@@ -334,7 +338,6 @@ export default {
       width: 80%;
       span:nth-child(1) {
         display: block;
-        width: 215px;
       }
       span:nth-child(2) {
         margin-right: 40px;
@@ -367,9 +370,12 @@ export default {
   text-align: center;
 }
 ::v-deep .el-table {
-  font-size: 12px;
+  font-size: 14px;
 }
 ::v-deep .el-dialog__body {
   padding: 0;
+}
+::v-deep .el-dialog__footer{
+  padding: 20px 0;
 }
 </style>

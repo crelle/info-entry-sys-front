@@ -18,12 +18,12 @@
           <el-col :span="5">
             <el-form-item label="部门名称">
               <el-input
-                v-model="formOptions.username"
+                v-model="formOptions.department"
                 placeholder="请输入部门名称"
               ></el-input>
             </el-form-item>
           </el-col>
-         
+
           <el-col
             :span="19"
             :class="
@@ -66,21 +66,21 @@
         >
         </el-table-column>
         <el-table-column
-          prop="responsibility"
+          prop="userId"
           label="负责人"
           min-width="80"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="job_no"
+          prop="jobNo"
           label="工号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="cell_phone"
+          prop="cellPhone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
@@ -90,6 +90,13 @@
         <el-table-column
           prop="address"
           label="部门总部地址"
+          min-width="100"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop="departmentUp"
+          label="上级部门"
           min-width="100"
           show-overflow-tooltip
         >
@@ -150,6 +157,11 @@
 <script>
 // 假的
 import { reqUsers } from "@/mockjs/reqMock";
+import {
+  queryDepartments,
+  deletesDepartments,
+  queryDepartmentsUP,
+} from "@/api/department";
 
 import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
@@ -168,6 +180,7 @@ export default {
         enabled: true,
         userPhone: "",
         username: "",
+        department: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -177,6 +190,7 @@ export default {
         total: 0,
       },
       tableData: [],
+      tableDataUp: [],
       UserData: [],
       multipleSelection: [],
       userEditForm: {
@@ -195,23 +209,34 @@ export default {
   mounted() {
     this.queryUserList();
     this.queryUser();
+    this.queryUseruUPList();
   },
   methods: {
-    // 假的查询部门列表
+    // 查询部门列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
+          data.pages = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
-          reqUsers(data).then((res) => {
+          queryDepartments(data).then((res) => {
             console.log(res, "res++++++++++");
-            this.tableData = res.data; // 表格数据赋值
-            console.log(this.tableData, "假的部门数据");
-            this.paginationOptions.total = 3; // 分页器赋值
-            // this.paginationOptions.total = res.data.total; // 分页器赋值
+            for (let item of res.data.records) {
+              if (item.departmentUp) {
+                for (let item1 of res.data.records) {
+                  if (item.departmentUp == item1.departmentId) {
+                    item.departmentUp = item1.department;
+                  }
+                }
+              } else {
+                item.departmentUp = "暂无";
+              }
+            }
+            this.tableData = res.data.records;
+            console.log(this.tableData, "查询部门数据");
+            this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
           return false;
@@ -266,6 +291,7 @@ export default {
 
     // 删除弹框
     deleteMenu(row, index) {
+      console.log(row, "------------------------*********");
       this.$confirm("此操作将永久删除该部门, 是否继续?", "删除部门", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -274,14 +300,11 @@ export default {
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
-          // 点击确认，发起后台请求，删除该部门
-          deleteMenu(row.id).then((res) => {
+          // 点击确认，发起后台请求，删除该用户
+          deletesDepartments(row.departmentId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该部门");
-            if (res.data.meta.status == 200) {
+            if (res.code == "00000") {
+              this.queryUserList();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -312,7 +335,7 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑部门信息";
-      console.log("编辑", row, row.id);
+      console.log("编辑", row, row.departmentId);
     },
     // 详情
     detailsClick(row) {
@@ -349,9 +372,9 @@ export default {
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
-    line-height: 36.9px;
+  line-height: 36.9px;
 }
-::v-deep .inline1_action_button_content {
+::v-deep .nextline_action_button_content {
   text-align: right;
 }
 .el-form--inline .el-form-item {
@@ -365,10 +388,10 @@ export default {
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination{
+::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   margin-right: 5px;
 }
 </style>

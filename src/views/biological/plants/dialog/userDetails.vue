@@ -3,6 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
+      :close-on-click-modal='false'
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -12,134 +13,105 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                <div class="userbox_n">
+                <div class="userbox_n">   
                   <ul>
                     <li>
-                      <span>姓名:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>员工姓名:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
                       <span>出生年月日:</span
                       ><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>最高学历:</span
+                      <span>联系电话:</span
                       ><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>工号:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>最高学历:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>户籍地:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>毕业时间:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>婚姻状况:</span
+                      <span>工号:</span
                       ><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>紧急联系人:</span
+                      <span>岗位:</span
                       ><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>证书:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>员工状态:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
                       <span>部门:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
+                      <span>客户:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>户籍地:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>婚姻状况:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>紧急联系人:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>证书:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      <span>性别:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>年龄:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>电子邮箱:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>毕业院校:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>工作年限:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>入职时间:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>工作技能:</span
+                      ><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
                       <span>项目:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>岗位:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>地域:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>接口人:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>现居住地:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>有无小孩:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>紧急联系人电话:</span><span>{{ userEditForm.nameZh }}</span>
+                    </li>
+                    <li>
+                      <span>兴趣爱好:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                   </ul>
-                  <div class="userbox_t">
-                    <div class="userbox_s">
-                      <ul>
-                        <li>
-                          <span>性别:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>联系电话:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>毕业院校:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>入职时间:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <span>年龄:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>电子邮箱:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>毕业时间:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>工作年限:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="current">
-                      <ul>
-                        <li>
-                          <span>现居住地</span
-                          ><span class="residence">{{
-                            userEditForm.nameZh
-                          }}</span>
-                        </li>
-                        <li>
-                          <span>有无小孩</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>紧急联系电话</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>兴趣爱好</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                      </ul>
-                    </div>
-                    <div class="userbox_f">
-                      <ul>
-                        <li>
-                          <span>地域:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>接口人:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li>
-                          <span>工作技能:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                      </ul>
-                      <ul>
-                        <li>
-                          <span>客户:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                        <li class="state">
-                          <span>员工状态:</span
-                          ><span>{{ userEditForm.nameZh }}</span>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
+                 
+                
                 </div>
               </el-form>
             </div>
@@ -481,49 +453,26 @@ export default {
   }
 }
 .userbox_n {
+  padding: 0 40px;
   display: flex;
   justify-content: space-around;
   ul {
     li {
       display: flex;
-      line-height: 40px;
       margin: 10px 0;
+      font-size: 12px;
       span {
         display: block;
       }
       span:nth-child(1) {
-        width: 100px;
+        width: 130px;
       }
       span:nth-child(2) {
         padding-left: 10px;
         width: 150px;
-        background-color: #f0f0f0;
       }
     }
   }
-}
-.userbox_s {
-  display: flex;
-  justify-content: space-around;
-  ul:nth-child(1) {
-    margin-right: 80px;
-  }
-}
-.userbox_f {
-  display: flex;
-  margin-top: -10px;
-  ul:nth-child(1) {
-    margin-right: 80px;
-  }
-}
-.residence {
-  width: 490px !important;
-}
-.state {
-  margin-top: 60px !important;
-}
-.current {
-  margin-top: -10px;
 }
 .cancel {
   background-color: #999 !important;
@@ -531,7 +480,7 @@ export default {
 }
 .btn {
   padding: 7px 15px;
-  margin-top: 30px;
+  margin: 20px;
 }
 .footbtn {
   text-align: center;
