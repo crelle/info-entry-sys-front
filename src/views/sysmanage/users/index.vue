@@ -50,14 +50,14 @@
           <el-col :span="5">
             <el-form-item label="角色">
               <el-select
-                v-model="quanxian"
+                v-model="formOptions.roles.nameZh"
                 clearable
                 filterable
                 placeholder="请选择角色"
               >
-                <el-option label="管理员" :value="true"></el-option>
-                <el-option label="普通用户" :value="false"></el-option>
-                <el-option label="访客" :value="false"></el-option>
+                <el-option label="管理员" value="管理员"></el-option>
+                <el-option label="普通用户" value="普通用户"></el-option>
+                <el-option label="访客" value="访客"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -93,7 +93,7 @@
         height="550"
       >
         <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
-        <el-table-column label="序号" type="index" width="55" fixed>
+        <el-table-column label="序号" type="index" :index="indexMethod" width="55"  fixed>
         </el-table-column>
         <el-table-column
           prop="username"
@@ -102,13 +102,6 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- <el-table-column
-          prop="userNickName"
-          label="昵称"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column> -->
         <el-table-column label="工号" min-width="100" show-overflow-tooltip>
         </el-table-column>
         <el-table-column
@@ -125,33 +118,6 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <!-- <el-table-column
-          prop="password"
-          label="密码"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column> -->
-        <!-- <el-table-column
-          prop="accountNonExpired"
-          label="账户是否未过期"
-          min-width="80"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">{{
-            scope.row.accountNonExpired ? "是" : "否"
-          }}</template>
-        </el-table-column>
-        <el-table-column
-          prop="accountNonLocked"
-          label="账户是否未被锁定"
-          min-width="90"
-          show-overflow-tooltip
-        >
-          <template slot-scope="scope">{{
-            scope.row.accountNonLocked ? "是" : "否"
-          }}</template>
-        </el-table-column> -->
         <el-table-column
           prop="enabled"
           label="状态"
@@ -243,13 +209,19 @@ export default {
         userPhone: "",
         username: "",
         jobNo: "",
+        roles: [
+          {
+            id: "",
+            name: "",
+            nameZh: "",
+          },
+        ],
       },
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
       },
       tableData: [],
       multipleSelection: [],
@@ -271,6 +243,7 @@ export default {
     this.queryUserList();
   },
   methods: {
+   
     // 查询用户列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -279,12 +252,12 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
+          console.log(data, "data---formOptions.roles.nameZh------");
           queryUser(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData);
+              console.log(this.tableData,'tzy-------------------');
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
@@ -307,6 +280,7 @@ export default {
             console.log(res, "点击确认，发起后台请求，删除该用户");
             if (res.code == "00000") {
               this.tableData.splice(index, 1);
+              this.queryUserList();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -363,6 +337,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
@@ -378,13 +355,21 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .nextline_action_button_content {
+::v-deep .el-col-4 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
   margin-right: 0;
 }
+
+@media screen and (min-width: 1700px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
 ::v-deep .el-card__body {
+  overflow-x: scroll;
+
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }
@@ -396,9 +381,12 @@ export default {
   margin: 10px 0;
 }
 ::v-deep .el-form-item__label {
-  margin-right: 5px;
+  padding-right: 25px;
 }
-::v-deep .el-message-box {
-  background-color: aqua !important;
+.el-form-item {
+  width: 251px;
+}
+::v-deep .el-col-5 {
+  overflow: hidden;
 }
 </style>

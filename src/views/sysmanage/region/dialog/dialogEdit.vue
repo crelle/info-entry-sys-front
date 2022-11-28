@@ -34,8 +34,7 @@
           >保 存</el-button
         >
         <el-button
-          class="cancel"
-          type="primary"
+          type="info"
           @click="dialogClose"
           size="mini"
           >取 消</el-button
@@ -270,10 +269,7 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 25px;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 ::v-deep .el-dialog__body{
   padding: 20px 20px 0;
 }

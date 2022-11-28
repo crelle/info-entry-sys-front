@@ -16,7 +16,7 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="接口人名称">
+            <el-form-item label="接口人">
               <el-input
                 v-model="formOptions.name"
                 placeholder="接口人姓名"
@@ -63,11 +63,11 @@
         size="mini"
         height="550"
       >
-        <el-table-column label="序号" type="index" width="55" fixed>
+        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
         </el-table-column>
         <el-table-column
           prop="name"
-          label="接口人名"
+          label="接口人"
           min-width="80"
           show-overflow-tooltip
         >
@@ -81,14 +81,14 @@
         </el-table-column>
 
         <el-table-column
-          prop="cell_phone"
+          prop="cellPhone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
-          prop="Email"
+          prop="email"
           label="邮箱"
           min-width="100"
           show-overflow-tooltip
@@ -101,7 +101,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="140">
+        <el-table-column fixed="right" label="操作" min-width="210">
           <template slot-scope="{ row, $index }">
             <el-button @click="detailsClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -175,7 +175,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
       tableData: [],
       tableCustomer: [],
@@ -331,6 +331,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
@@ -347,6 +350,7 @@ export default {
 }
 ::v-deep .el-col-14 {
   text-align: right;
+
 }
 .el-form--inline .el-form-item {
   margin-right: 0;
@@ -364,5 +368,8 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
+}
+.el-form-item{
+  width: 251px;
 }
 </style>

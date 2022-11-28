@@ -153,7 +153,7 @@
         size="mini"
         height="506"
       >
-        <el-table-column label="序号" type="index" width="55" fixed>
+        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
         </el-table-column>
         <el-table-column
           prop="job_no"
@@ -212,7 +212,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="190">
+        <el-table-column fixed="right" label="操作" min-width="278">
           <template slot-scope="{ row, $index }">
             <el-button @click="stateClick(row)" type="primary" size="mini"
               >状态</el-button
@@ -373,7 +373,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
       tableData: [],
       tableProject: [],
@@ -610,6 +610,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
@@ -630,7 +633,15 @@ export default {
 .el-form--inline .el-form-item {
   margin-right: 0;
 }
+
+@media screen and (min-width:1700px){
+ ::v-deep .el-card__body::-webkit-scrollbar {
+   display: none;
+  }
+}
 ::v-deep .el-card__body {
+  overflow-x: scroll;
+
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }
@@ -643,19 +654,16 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
+  width: 54px;
+  text-align: left;
 }
-.name {
-  margin-top: 15px;
+.el-form-item {
+  width: 252px;
 }
-.btn {
-  text-align: right;
+::v-deep .el-col-5 {
+  overflow: hidden;
 }
-::v-deep .el-form-item__content {
-  width: 193px;
-}
-.lab {
-  ::v-deep .el-form-item__label {
-    margin-right: 20px;
-  }
+.name{
+  padding-top: 10px;
 }
 </style>

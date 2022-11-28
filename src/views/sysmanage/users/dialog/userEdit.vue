@@ -4,18 +4,20 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal='false'
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
       <div class="register_form_main">
-        <el-row style="height: 100%">
+        <el-row style="height: 100%;padding: 0px 28px;">
           <el-col :span="24">
-            <div class="grid-content-right">
               <el-form
                 :model="userEditForm"
                 :rules="userEditFormRules"
                 ref="userEditRef"
-                size="mini"
+                size="small"               
+                label-position="right"
+                label-width="100px"
               >
                 <el-form-item label="用户名" prop="username">
                   <el-input
@@ -77,20 +79,18 @@
                   ></el-input>
                 </el-form-item>
               </el-form>
-            </div>
           </el-col>
         </el-row>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
         >
         <el-button
-          class="cancel"
-          type="primary"
+          type="info"
           size="mini"
           @click="dialogClose"
-          >取消</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -271,7 +271,7 @@ export default {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 // this.dialogClose();
-                this.$parent.resetForm();
+                this.$parent.queryUserList();
                 this.dialogFormVisible = false; // 让弹窗显
               }
             });
@@ -293,6 +293,7 @@ export default {
                 this.$message.success("创建成功！");
                 this.dialogClose();
                 this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗显示
               }
             });
           } else {
@@ -306,115 +307,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@deep: ~">>>";
-@{deep} .register_form_main {
-  position: relative;
-  min-width: 30%;
-  overflow: hidden;
-  > span {
-    display: block;
-    text-align: center;
-    font-size: 24px;
-    font-weight: 500;
-    padding: 20px 0;
-    color: #409eff;
-    background-color: #383f49;
-    text-shadow: 0 1px -3px #409eff;
-  }
-  .grid-content-left {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    .avatar-uploader .el-upload {
-      border: 1px dashed #8c939d;
-      border-radius: 50%;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409eff;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width: 178px;
-      height: 178px;
-      display: block;
-    }
-    .el-scrollbar__wrap {
-      overflow-x: hidden !important;
-    }
-    .demo-image__lazy {
-      height: 88px;
-      .el-image {
-        width: 80px;
-        height: 80px;
-        border: 1px solid #eee;
-        margin: 2px;
-      }
-      .default_img_chioce {
-        &::before {
-          width: 80px;
-          height: 80px;
-          background-color: rgba(139, 197, 252, 0.5);
-          position: absolute;
-          display: block;
-          top: 0;
-          left: 0;
-          content: "已选";
-          color: #409eff;
-          font-size: 12px;
-        }
-      }
-    }
-  }
-}
-.el-form {
-  padding: 10px 50px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  .el-input-group__append {
-    padding: 0 2px;
-  }
-}
+
 .passwordat {
   display: none;
 }
-.el-form-item {
-  display: flex;
-  margin-right: 50px;
-}
-::v-deep .el-form-item__label {
-  width: 95px;
-  text-align: left;
-}
-::v-deep .el-input__inner {
-  width: 250px;
-}
-::v-deep .el-textarea__inner {
-  min-height: 120px !important;
-  width: 250px;
-  color: #606266;
-  font-size: inherit !important;
-}
-::v-deep .el-dialog {
-  width: 30%;
-}
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
-.ifnoyes{
-  width: 300px;
-}
+
+
 </style>

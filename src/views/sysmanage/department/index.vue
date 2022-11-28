@@ -56,7 +56,7 @@
         size="mini"
         height="550"
       >
-        <el-table-column label="序号" type="index" width="55" fixed>
+        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
         </el-table-column>
         <el-table-column
           prop="department"
@@ -108,7 +108,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="140">
+        <el-table-column fixed="right" label="操作" min-width="210">
           <template slot-scope="{ row, $index }">
             <el-button @click="detailsClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -187,7 +187,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
       tableData: [],
       tableDataUp: [],
@@ -209,7 +209,6 @@ export default {
   mounted() {
     this.queryUserList();
     this.queryUser();
-    this.queryUseruUPList();
   },
   methods: {
     // 查询部门列表
@@ -218,7 +217,7 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.pages = this.paginationOptions.pageNo;
+          data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
           queryDepartments(data).then((res) => {
@@ -359,6 +358,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
@@ -374,7 +376,7 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .nextline_action_button_content {
+::v-deep .el-col-19 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
@@ -394,4 +396,8 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
+.el-form-item{
+  width: 251px;
+}
 </style>
+

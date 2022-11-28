@@ -14,12 +14,12 @@ const Request = axios.create({
 // request 拦截器
 Request.interceptors.request.use(
     config => {
-        console.log("--- 开始请求接口 ---" + config.url);
-        console.log(config);
+        // console.log("--- 开始请求接口 ---" + config.url);
+        // console.log(config);
         let _url = config.url;
         if (config.method === "get" && config.params) {
-            console.log("--- 入参为 ---" + JSON.stringify(config.params));
-            console.log("--- 入参数据 ---", config.params);
+            // console.log("--- 入参为 ---" + JSON.stringify(config.params));
+            // console.log("--- 入参数据 ---", config.params);
             _url += "?";
             let keys = Object.keys(config.params);
             for (let key of keys) {
@@ -28,8 +28,8 @@ Request.interceptors.request.use(
             _url = _url.substring(0, _url.length - 1)
             config.params = {}
         } else {
-            console.log("--- 入参为 ---" + JSON.stringify(config.data));
-            console.log("--- 入参数据 ---", config.data);
+            // console.log("--- 入参为 ---" + JSON.stringify(config.data));
+            // console.log("--- 入参数据 ---", config.data);
         }
         config.url = _url
         return config;
@@ -39,12 +39,12 @@ Request.interceptors.request.use(
 // respone拦截器
 Request.interceptors.response.use(
     response => {
-        console.log(response);
+        // console.log(response);
         if (response.status == "200") {
-            console.log("--- 结束请求接口 ---" + response.config.url);
-            console.log(response);
-            console.log("--- 出参为 ---" + JSON.stringify(response.data ? response.data : ""));
-            console.log("--- 出参数据为 ---", response.data ? response.data : "");
+            // console.log("--- 结束请求接口 ---" + response.config.url);
+            // console.log(response);
+            // console.log("--- 出参为 ---" + JSON.stringify(response.data ? response.data : ""));
+            // console.log("--- 出参数据为 ---", response.data ? response.data : "");
             let res = response.data ? response.data : "";
             if (res.code == "00000") {
                 return res;

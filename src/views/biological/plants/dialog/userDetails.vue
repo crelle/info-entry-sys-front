@@ -139,7 +139,7 @@
                   {{ item.textarea1 }}
                 </el-card>
               </el-timeline-item>
-              <el-timeline-item :timestamp="monthValue" placement="top">
+              <!-- <el-timeline-item :timestamp="monthValue" placement="top">
                 <el-card>
                   <div class="note_taker">
                     记录人:{{ userEditForm.username }}
@@ -152,12 +152,12 @@
                   >
                   </el-input>
                 </el-card>
-              </el-timeline-item>
+              </el-timeline-item> -->
             </el-timeline>
             <div class="preservation">
-              <el-button type="primary" @click="onCertain">保存</el-button>
+              <el-button type="primary" @click="onCertain">保 存</el-button>
               <el-button class="cancel" type="primary" @click="close"
-                >取消</el-button
+                >取 消</el-button
               >
             </div>
           </div>
@@ -474,10 +474,7 @@ export default {
     }
   }
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 .btn {
   padding: 7px 15px;
   margin: 20px;

@@ -227,7 +227,6 @@ export default {
 };
 </script>
 
-
 <style lang="less" scoped>
 * {
   list-style: none;
@@ -250,7 +249,6 @@ export default {
 }
 ::v-deep .cell {
   text-align: center;
-  line-height: 35px;
 }
 .lis {
   padding: 0;
@@ -263,14 +261,15 @@ export default {
   display: flex;
   flex-wrap: wrap;
   li {
-    width: 395px;
-    margin: 5px 0;
+    // width: 400px;
+    width: 50%;
+    margin: 10px 0;
     display: flex;
     span {
       display: block;
     }
     span:nth-child(1) {
-      width: 115px;
+      width: 100px;
     }
   }
 }
@@ -279,41 +278,26 @@ export default {
 }
 .dialog-footer {
   text-align: center;
-  margin-top: 25px;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   margin-top: 10vh !important;
 }
-// 修改对话框高度 滚动条
-.showAll_dialog {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
-  ::v-deep .el-dialog {
-    margin: 0 auto !important;
-    height: 80%;
-    overflow: hidden;
-    .el-dialog__body {
-      position: absolute;
-      left: 0;
-      top: 54px;
-      bottom: 0;
-      right: 0;
-      padding: 0;
-      z-index: 1;
-      overflow: hidden;
-      overflow-y: auto;
-      // 下边设置字体，我的需求是黑底白字
-      color: #606266;
-      line-height: 30px;
-      padding: 0 15px;
-    }
+.textarea {
+  ::v-deep .el-textarea__inner {
+    height: 100px;
+    line-height: 30px;
   }
 }
+::v-deep .dialog-footer {
+  padding: 20px 0;
+}
 ::v-deep .el-textarea__inner {
-  color: #606266;
+  margin-bottom: 20px;
+  margin-top: 5px;
   font-size: 14px;
   font-family: "微软雅黑";
+}
+::v-deep .el-form-item__label{
+  min-width: 44px;
 }
 </style>

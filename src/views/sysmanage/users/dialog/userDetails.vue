@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -19,8 +19,7 @@
                       ><span>{{ userEditForm.username }}</span>
                     </li>
                     <li>
-                      <span>工号 :</span
-                      ><span>{{  }}</span>
+                      <span>工号 :</span><span>{{}}</span>
                     </li>
                     <li>
                       <span>手机号 :</span
@@ -28,7 +27,7 @@
                     </li>
                     <li>
                       <span>邮箱 :</span
-                      ><span>{{ userEditForm.userEmail }}</span>
+                      ><span :title="userEditForm.userEmail">{{ userEditForm.userEmail }}</span>
                     </li>
                     <li>
                       <span>角色 :</span
@@ -59,7 +58,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="dialogClose"
-          >取消</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -152,7 +151,7 @@ li {
     width: 200px;
     margin: 5px 0;
     line-height: 35px;
-    font-size: 16px;
+    font-size: 14px;
     display: flex;
 
     span {
@@ -163,13 +162,16 @@ li {
     }
     span:nth-child(2) {
       padding-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }
 ::v-deep .el-dialog {
   width: 30%;
 }
-.dialog-footer{
+.dialog-footer {
   text-align: center;
 }
 </style>

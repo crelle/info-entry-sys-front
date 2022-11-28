@@ -54,7 +54,7 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="菜单顺序">
+                <el-form-item label="菜单顺序" prop="menuSort">
                   <el-input
                     type="text"
                     v-model="userEditForm.menuSort"
@@ -98,7 +98,7 @@
           >重置</el-button
         > -->
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
         >
       </div>
     </el-dialog>
@@ -166,6 +166,13 @@ export default {
           {
             required: true,
             message: "请填写前台资源地址",
+            trigger: ["blur", "change"],
+          },
+        ],
+        menuSort: [
+          {
+            required: true,
+            message: "请填写菜单顺序",
             trigger: ["blur", "change"],
           },
         ],

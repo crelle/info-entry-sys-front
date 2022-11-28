@@ -2,6 +2,12 @@ import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
 
 //查询菜单
+const queryMenuAll = () =>
+  Request({
+    method: "get",
+    url: BaseURL + "/sysmgmt/menu/all",
+  });
+//查询菜单
 const queryMenu = (data) =>
   Request({
     method: "post",
@@ -29,5 +35,11 @@ const createMenu = (data) =>
     url: BaseURL + "/sysmgmt/menu/create",
     data,
   });
-
-export { queryMenu, modifyTheMenu, createMenu, deleteMenu };
+//菜单排序
+const sortMenu = (data) =>
+  Request({
+    method: "POST",
+    url: BaseURL + "/sysmgmt/menu/updateMenu",
+    data,
+  });
+export { queryMenu,queryMenuAll, modifyTheMenu, createMenu, deleteMenu ,sortMenu};

@@ -50,7 +50,7 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" @click="dialogClose" size="mini"
-          >确 认</el-button
+          >取 消</el-button
         >
       </div>
     </el-dialog>
@@ -236,12 +236,9 @@ export default {
 ::v-deep .el-dialog {
   width: 30%;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 .dialog-footer {
-  text-align: right;
+  text-align: center;
 }
 .el-form-item__content {
   span {
@@ -261,5 +258,8 @@ export default {
 }
 ::v-deep .el-dialog__body{
   padding: 0;
+}
+.el-dialog__footer{
+  text-align: c;
 }
 </style>

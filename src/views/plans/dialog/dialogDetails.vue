@@ -39,7 +39,7 @@
               <el-button type="primary" @click="submitForm('ruleForm')"
                 >确认</el-button
               >
-              <el-button type="primary" @click="cancel()">取消</el-button>
+              <el-button type="primary" @click="cancel()">取 消</el-button>
               <!-- <el-button @click="resetForm('ruleForm')">重置</el-button> -->
             </el-form-item>
           </el-form>

@@ -18,7 +18,7 @@
           <el-col :span="5">
             <el-form-item label="岗位名称">
               <el-input
-                v-model="formOptions.pstname"
+                v-model="formOptions.postName"
                 placeholder="岗位名称"
               ></el-input>
             </el-form-item>
@@ -106,12 +106,13 @@
         <el-table-column
           label="序号"
           type="index"
+          :index="indexMethod"
           width="55"
           fixed
         ></el-table-column>
         <el-table-column
           label="岗位名称"
-          prop="pstname"
+          prop="postName"
           min-width="100"
           fixed
         ></el-table-column>
@@ -192,6 +193,7 @@
     <role-edit-dialog
       :toChild="list"
       :tableData="tableData"
+      :projectData="projectData"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
     <role-data-dialog
@@ -202,6 +204,10 @@
 </template>
 
 <script>
+// 岗位表
+import { queryPost } from "@/api/post";
+// 分页查询项目表
+import { queryProject } from "@/api/project";
 // 假的岗位表/项目表/地域表
 import { reqPost, reqProject, reqMockUser } from "@/mockjs/reqMock";
 
@@ -248,7 +254,6 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
       },
     };
   },
@@ -259,18 +264,18 @@ export default {
     this.reqMockUser();
   },
   methods: {
-    // 查询 岗位表 假的
+    // 查询 岗位表
     queryPost() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqPost(data).then((res) => {
-            console.log(res, "---------假的岗位数据");
+          queryPost(data).then((res) => {
             this.resetForm("queryRoleRef"); // 重置表单
-            this.tableData = res.data; // 表格数据赋值
+            this.tableData = res.data.records; // 表格数据赋值
+            console.log(this.tableData, "-----岗位data数据");
+
             this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
@@ -278,17 +283,17 @@ export default {
         }
       });
     },
-    // 查询 项目表 假的
+    // 查询 项目表
     reqProject() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqProject(data).then((res) => {
-            console.log(res, "---------假的项目数据");
-            this.projectData = res.data; // 表格数据赋值
+          console.log(data, "---data-传入--项目------");
+          queryProject(data).then((res) => {
+            this.projectData = res.data.records; // 表格数据赋值
+            console.log(this.projectData, "------项目数据--");
           });
         } else {
           return false;
@@ -302,7 +307,6 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
           reqMockUser(data).then((res) => {
             console.log(res, "---------假的地域数据");
             this.regionData = res.data; // 表格数据赋值
@@ -405,6 +409,13 @@ export default {
       // this.queryRoles();
       this.queryPost();
     },
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -420,13 +431,21 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .inline2_action_button_content {
+::v-deep .el-col-4 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
   margin-right: 0;
 }
+
+@media screen and (min-width: 1850px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
 ::v-deep .el-card__body {
+  overflow-x: scroll;
+
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }
@@ -439,5 +458,11 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
+}
+.el-form-item {
+  width: 275px;
+}
+::v-deep .el-col-5 {
+  overflow: hidden;
 }
 </style>
