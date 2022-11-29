@@ -93,6 +93,7 @@
                     size="large"
                     :options="options"
                     v-model="userEditForm.address"
+                    clearable
                   >
                   </el-cascader>
                 </el-form-item>
@@ -139,13 +140,13 @@
 </template>
 
 <script>
-//创建岗位
-import { establishPost } from "@/api/post";
+//创建岗位/编辑岗位
+import { establishPost, editPost } from "@/api/post";
 // 查询接口人 查客户
 import { reqgetInterface } from "@/mockjs/reqMock";
 
 import { updateRole, deleteRole } from "@/api/role";
-import { regionData, CodeToText } from "element-china-area-data";
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 
 export default {
   props: {
@@ -297,12 +298,14 @@ export default {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       // console.log(this.tableData,"-------------");
-      console.log(this.projectData, "-----项目传来--------");
+
       if (row) {
+        let editRow=JSON.parse(JSON.stringify(row))
+        editRow.address=this.getCityCode(editRow.address)
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(editRow); // 为表单赋值
         });
       } else {
         console.log("我是新增");
@@ -333,43 +336,39 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      var loc = "";
+      for (let i = 0; i < this.userEditForm.address.length; i++) {
+        loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+      }
+      console.log(loc);
+      this.userEditForm.address = loc;
+      if (this.initFormData.postId) {
+        this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
-                this.dialogClose();
-                console.log("修改成功！");
-                this.$parent.queryRoles();
+            editPost(this.userEditForm, this.userEditForm.postId).then(
+              (res) => {
+                console.log(res, "res11111");
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+                  this.dialogClose();
+                  console.log("修改成功！");
+                  this.$parent.queryPost();
+                }
               }
-            });
+            );
           } else {
             return false;
           }
         });
       } else {
-        
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(this.userEditForm, "----增加了的内容");
-          if (this.userEditForm.address) {
-            this.userEditForm.address = this.userEditForm.address.join("/");
-          }
-          console.log("增加了...",this.userEditForm);
+          console.log("增加了...", this.userEditForm);
           if (valid) {
             establishPost(this.userEditForm).then((res) => {
               console.log(res, "增加了.........");
@@ -377,7 +376,7 @@ export default {
                 this.$message.success("创建成功！");
                 this.dialogClose();
                 console.log("创建成功！");
-                // this.$parent.queryRoles();
+                this.$parent.queryPost();
               }
             });
           } else {
@@ -385,6 +384,27 @@ export default {
           }
         });
       }
+    },
+    getCityCode(cityText) {
+      var codeArray = [];
+      if (cityText != "") {
+        var cityArray = cityText.trim().split(" ");
+
+        if (cityArray.length == 1) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+        } else if (cityArray.length == 2) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+        } else if (cityArray.length == 3) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+          codeArray.push(
+            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+          );
+        }
+      }
+
+      return codeArray;
     },
   },
 };

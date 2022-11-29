@@ -20,6 +20,7 @@
               <el-input
                 v-model="formOptions.postName"
                 placeholder="岗位名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
@@ -29,28 +30,30 @@
                 v-model="formOptions.project"
                 placeholder="请选择项目名"
                 filterable
+                clearable
               >
                 <el-option
                   v-for="item in projectData"
                   :key="item.index"
                   :label="item.project"
-                  :value="item.project"
+                  :value="item.projectId"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="地域">
+            <el-form-item label="办公地点">
               <el-select
-                v-model="formOptions.region"
-                placeholder="请选择地域"
+                v-model="formOptions.address"
+                placeholder="请选择办公地点"
                 filterable
+                clearable
               >
                 <el-option
                   v-for="item in regionData"
                   :key="item.index"
-                  :label="item.region"
-                  :value="item.region"
+                  :label="item.regionName"
+                  :value="item.regionId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -61,6 +64,7 @@
                 v-model="formOptions.skill"
                 placeholder="请选择岗位技能"
                 filterable
+                clearable
               >
                 <el-option
                   v-for="item in skill"
@@ -129,9 +133,9 @@
           fixed
         ></el-table-column>
         <el-table-column
-          label="地域"
-          prop="region"
-          min-width="100"
+          label="办公地点"
+          prop="address"
+          min-width="120"
           fixed
         ></el-table-column>
         <el-table-column
@@ -141,9 +145,9 @@
           fixed
         ></el-table-column>
         <el-table-column
-          label="需求人数"
+          label="需求人数/人"
           prop="number"
-          min-width="50"
+          min-width="60"
           fixed
         ></el-table-column>
         <el-table-column
@@ -153,8 +157,9 @@
           fixed
         ></el-table-column>
         <el-table-column
-          label="截止今日岗位缺口"
+          label="截止今日岗位缺口/人"
           prop="number"
+          min-width="100"
           fixed
         ></el-table-column>
         <el-table-column label="操作" min-width="218" fixed>
@@ -204,10 +209,12 @@
 </template>
 
 <script>
-// 岗位表
-import { queryPost } from "@/api/post";
+// 岗位表/删除
+import { queryPost, deletesPost } from "@/api/post";
 // 分页查询项目表
 import { queryProject } from "@/api/project";
+// 地域
+import { queryRegion } from "@/api/region";
 // 假的岗位表/项目表/地域表
 import { reqPost, reqProject, reqMockUser } from "@/mockjs/reqMock";
 
@@ -258,10 +265,7 @@ export default {
     };
   },
   mounted() {
-    // this.queryRoles();
     this.queryPost();
-    this.reqProject();
-    this.reqMockUser();
   },
   methods: {
     // 查询 岗位表
@@ -273,9 +277,29 @@ export default {
           data.size = this.paginationOptions.pageSize;
           queryPost(data).then((res) => {
             this.resetForm("queryRoleRef"); // 重置表单
-            this.tableData = res.data.records; // 表格数据赋值
-            console.log(this.tableData, "-----岗位data数据");
-
+            //  查询 项目表
+            queryProject(data).then((res1) => {
+              // 查询 地域表
+              queryRegion(data).then((res2) => {
+                this.tableData = res.data.records; // 表格数据赋值
+                console.log(this.tableData, "++++++++++岗位数据----");
+                this.projectData = res1.data.records; // 表格数据赋值
+                console.log(this.projectData, "+++++++++项目数据----");
+                this.regionData = res2.data.records; // 表格数据赋值
+                console.log(this.regionData, "++++++++++地域数据----");
+                this.tableData.forEach((item) => {
+                  if (item.date) {
+                    item.date = item.date.split("T")[0];
+                  }
+                  item.address = item.address.split("/")[0];
+                  this.projectData.forEach((sitem) => {
+                    if (item.projectId == sitem.projectId) {
+                      item.project = sitem.project;
+                    }
+                  });
+                });
+              });
+            });
             this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
@@ -283,60 +307,6 @@ export default {
         }
       });
     },
-    // 查询 项目表
-    reqProject() {
-      this.$refs["queryRoleRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "---data-传入--项目------");
-          queryProject(data).then((res) => {
-            this.projectData = res.data.records; // 表格数据赋值
-            console.log(this.projectData, "------项目数据--");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    // 查询 地域表 假的
-    reqMockUser() {
-      this.$refs["queryRoleRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          reqMockUser(data).then((res) => {
-            console.log(res, "---------假的地域数据");
-            this.regionData = res.data; // 表格数据赋值
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    // // 查询 真的
-    // queryRoles() {
-    //   this.$refs["queryRoleRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       console.log(data, "data---------");
-    //       queryRole(data).then((res) => {
-    //         console.log(res, "res++++++++++");
-    //         if (res && res.code && res.code === "00000") {
-    //           this.resetForm("queryRoleRef"); // 重置表单
-    //           this.tableData = res.data.records; // 表格数据赋值
-    //           this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         }
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该岗位, 是否继续?", "删除岗位", {
@@ -348,7 +318,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deleteRole(row.id).then((res) => {
+          deletesPost(row.postId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               return this.$message({

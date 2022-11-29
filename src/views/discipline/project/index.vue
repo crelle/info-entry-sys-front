@@ -428,13 +428,13 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑项目信息";
-      console.log("编辑", row, row.projectId);
+      console.log("编辑-------", row.postId);
     },
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看项目详情";
-      console.log("详情", row, row.id);
+      console.log("详情", row, row.postId);
     },
     // 重置表单
 
