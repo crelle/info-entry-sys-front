@@ -89,9 +89,9 @@
                 </el-form-item>
               </div>
               <div class="preservation">
-                <el-button type="primary" @click="onCertain">保存</el-button>
+                <el-button type="primary" @click="onCertain">保 存</el-button>
                 <el-button class="cancel" type="primary" @click="close"
-                  >取消</el-button
+                  >取 消</el-button
                 >
               </div>
             </el-form>
@@ -480,10 +480,7 @@ export default {
 .current {
   margin-top: -10px;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 .btn {
   padding: 7px 15px;
   margin-top: 30px;

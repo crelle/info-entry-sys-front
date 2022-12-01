@@ -30,4 +30,11 @@ const deleteRole = (data) =>
     url: BaseURL + "/sysmgmt/role/delete/" + data,
     data,
   });
-export { queryRole, updateRole, deleteRole, addRole };
+//编辑角色权限菜单
+const updateRoleMenu = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/sysmgmt/role-menu/updateMenu",
+    data,
+  });
+export { queryRole, updateRole, deleteRole, addRole, updateRoleMenu };

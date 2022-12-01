@@ -47,6 +47,7 @@
         <el-table-column
           label="序号"
           type="index"
+          :index="indexMethod"
           width="55"
           fixed
         ></el-table-column>
@@ -96,7 +97,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
     };
   },
@@ -109,7 +110,7 @@ export default {
         if (valid) {
           let data = { condition: { ...this.formOptions } };
           data.pageNo = this.paginationOptions.pageNo;
-          data.pageSize = this.paginationOptions.pageSize;
+          data.currentize = this.paginationOptions.pageSize;
           queryRole(data).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.resetForm("queryRoleRef"); // 重置表单
@@ -141,6 +142,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryRoles();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>

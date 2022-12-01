@@ -16,10 +16,10 @@
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span>{{ userEditForm.customer }}</span>
+                      ><span>{{ userEditForm.customerName }}</span>
                     </li>
                     <li>
-                      <span>地域:</span><span>{{ userEditForm.region }}</span>
+                      <span>地域:</span><span>{{ userEditForm.regionId }}</span>
                     </li>
                     <li>
                       <span>办公地点:</span
@@ -27,14 +27,14 @@
                     </li>
                     <li>
                       <span>负责人:</span
-                      ><span>{{ userEditForm.responsibility }}</span>
+                      ><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cell_phone }}</span>
+                      ><span>{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
                   </ul>
                   <el-form-item class="textarea" label="介绍:">
@@ -42,7 +42,7 @@
                       type="textarea"
                       :rows="2"
                       placeholder="请输入内容"
-                      v-model="textarea"
+                      v-model=" userEditForm.introduce"
                     >
                     </el-input>
                   </el-form-item>
@@ -160,13 +160,14 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        Email: "",
         address: "",
-        cell_phone: "",
-        customer: "",
-        id: "",
-        region: "",
-        responsibility: "",
+        cellPhone: "",
+        customerId: "",
+        customerName: "",
+        email: "",
+        introduce: "",
+        regionId: "",
+        userId: "",
       },
       initFormData: {},
     };
@@ -250,7 +251,8 @@ export default {
   display: flex;
   flex-wrap: wrap;
   li {
-    width: 400px;
+    // width: 400px;
+    width: 50%;
     margin: 10px 0;
     display: flex;
     span {
@@ -271,12 +273,9 @@ export default {
   margin-top: 10vh !important;
 }
 .textarea {
-  display: flex;
   ::v-deep .el-textarea__inner {
-    width: 690px;
     height: 100px;
     line-height: 30px;
-    margin-left: 52px;
   }
 }
 ::v-deep .el-dialog__footer {
@@ -285,5 +284,8 @@ export default {
 ::v-deep .el-textarea__inner {
   font-size: 14px;
   font-family: "微软雅黑";
+}
+::v-deep .el-form-item__label{
+  min-width: 44px;
 }
 </style>

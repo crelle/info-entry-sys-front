@@ -13,10 +13,10 @@
                 重置密码
               </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
-                >保存</el-button
+                >保 存</el-button
               >
               <el-button type="primary" v-if="displays" @click="cancel"
-                >取消</el-button
+                >取 消</el-button
               >
               <el-button type="primary" v-if="editbtn" @click="edit"
                 >编辑</el-button
@@ -43,7 +43,7 @@
                 </div>
                 <div class="boxlis">
                   <el-form-item label="角色 :">
-                    <el-input v-model="form.js"></el-input>
+                    <el-input disabled v-model="form.js"></el-input>
                   </el-form-item>
                 </div>
               </div>

@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -26,24 +26,24 @@
                         <span>菜单权限</span>
                         <div class="menubox">
                           <el-tree
+                            :data="datas"
+                            :props="defaultProps"
+                            default-expand-all
+                            @node-click="handleNodeClick"
+                          ></el-tree>
+                        </div>
+                      </div>
+                      <!-- <div class="sbox">
+                        <span>数据权限</span>
+                        <div class="menubox">
+                          <el-tree
                             :data="data2"
                             :props="defaultProps"
                             default-expand-all
                             @node-click="handleNodeClick"
                           ></el-tree>
                         </div>
-                      </div>
-                      <div class="sbox">
-                        <span>数据权限</span>
-                        <div class="menubox">
-                          <el-tree
-                            :data="data1"
-                            :props="defaultProps"
-                            default-expand-all
-                            @node-click="handleNodeClick"
-                          ></el-tree>
-                        </div>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -62,43 +62,16 @@
 </template>
 
 <script>
+// 查询角色菜单
+import { queryRoleMenu } from "@/api/rolemenu";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
+      datas: [],
       // 多选权限
-      data1: [
-        {
-          id: 1,
-          label: "ALL",
-        },
-        {
-          id: 2,
-          label: "业务部",
-          children: [
-            {
-              id: 4,
-              label: "孵化使能部",
-              children: [
-                {
-                  id: 5,
-                  label: "合同管理",
-                },
-                {
-                  id: 6,
-                  label: "平台管理",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 3,
-          label: "零售部",
-        },
-      ],
       data2: [
         {
           id: 1,
@@ -178,8 +151,8 @@ export default {
         },
       ],
       defaultProps: {
-        children: "children",
-        label: "label",
+        children: "childrenMenus",
+        label: "name",
       },
       //
       dialogFormVisible: false,
@@ -201,6 +174,16 @@ export default {
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
+        // 查询菜单
+        let data = { records: [{ ...this.userEditForm }] };
+        data.id = this.initFormData.id;
+        console.log(data, "---查询角色菜单data---------");
+        queryRoleMenu(data).then((res) => {
+          if (res && res.code && res.code === "00000") {
+            console.log(res.data, "----查询角色菜单数据成功了");
+            this.datas = res.data.menus;
+          }
+        });
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
@@ -308,7 +291,7 @@ li {
 .aaa::-webkit-scrollbar {
   display: none;
 }
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 0;
 }
 </style>

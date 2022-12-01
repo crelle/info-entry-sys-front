@@ -7,10 +7,10 @@
     </el-breadcrumb>
     <el-card>
       <el-form
-        :inline="true"
         class="demo-form-inline"
         size="mini"
         label-position="right"
+        label-width="auto"
         ref="queryMenuRef"
         :model="formOptions"
       >
@@ -24,7 +24,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="是否需要鉴权">
+            <el-form-item label="是否需要鉴权" style="margin-left:20px;">
               <el-select v-model="formOptions.requireAuth" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
@@ -39,8 +39,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="9">
-            <el-form-item>
+          <el-col :span="7">
+            <el-form-item style="float:right;">
               <el-button type="primary" @click="queryMenus">查询</el-button>
               <el-button
                 class="filter-item"
@@ -49,6 +49,14 @@
                 @click="addClick()"
               >
                 添加
+              </el-button>
+              <el-button
+                class="filter-item"
+                style="margin-left: 10px"
+                type="primary"
+               @click="sortClick"
+              >
+                编辑
               </el-button>
             </el-form-item>
           </el-col>
@@ -70,6 +78,7 @@
         <el-table-column
           label="序号"
           type="index"
+          :index="indexMethod"
           width="55"
           fixed
         ></el-table-column>
@@ -172,15 +181,17 @@
       :toChild="list"
       ref="menusEditDialogRef"
     ></user-edit-dialog>
+    <menusSort ref="menusSortRef"></menusSort>
   </div>
 </template>
 
 <script>
 import { queryMenu, deleteMenu } from "@/api/menu";
 import UserEditDialog from "@/views/sysmanage/menus/dialog/menusEdit.vue";
+import menusSort from './dialog/menusSort.vue'
 export default {
   components: {
-    UserEditDialog,
+    UserEditDialog,menusSort
   },
   data() {
     return {
@@ -294,6 +305,12 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryMenus();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    },
+    sortClick(){
+      this.$refs.menusSortRef.dialogFormVisible=true
+    }
   },
 };
 </script>
@@ -304,28 +321,7 @@ export default {
 }
 </style>
 <style lang="less" scoped>
-::v-deep .cell {
-  text-align: center;
-  line-height: 36.9px;
-}
-::v-deep .el-col-9 {
-  text-align: right;
-}
-.el-form--inline .el-form-item {
-  margin-right: 0;
-}
-::v-deep .el-card__body {
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
 .el-breadcrumb {
   margin-bottom: 25px;
-}
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
-::v-deep .el-form-item__label {
-  margin-right: 5px;
 }
 </style>

@@ -793,7 +793,7 @@ export default {
   margin-right: 50px;
 }
 ::v-deep .el-form-item__label {
-  width: 125px;
+  width: 125px !important;
   text-align: left;
 }
 ::v-deep .el-input__inner {
@@ -808,10 +808,7 @@ export default {
 ::v-deep .el-dialog {
   width: 50%;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 ::v-deep .el-dialog__body {
   padding: 0 20px;
 }

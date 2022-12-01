@@ -31,9 +31,9 @@
                     filterable
                     placeholder="请选择项目状态"
                   >
-                    <el-option label="开发中" value="开发中"></el-option>
-                    <el-option label="前期投入" value="前期投入"></el-option>
-                    <el-option label="交付阶段" value="交付阶段"></el-option>
+                    <el-option label="开发中" value="1"></el-option>
+                    <el-option label="前期投入" value="2"></el-option>
+                    <el-option label="交付阶段" value="3"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="立项时间" prop="time">
@@ -56,7 +56,7 @@
                     <el-option
                       v-for="item in MockUser"
                       :key="item.index"
-                      :label="item.region"
+                      :label="item.regionName"
                       :value="item.regionId"
                     ></el-option>
                   </el-select>
@@ -81,18 +81,21 @@
                   <el-input
                     v-model="userEditForm.cellPhone"
                     placeholder="手机号"
+                    disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
+                <el-form-item label="邮箱" prop="email" >
                   <el-input
                     v-model="userEditForm.email"
                     placeholder="邮箱"
+                    disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="客户名称" prop="customer">
                   <el-input
                     v-model="userEditForm.customer"
                     placeholder="客户名称"
+                    disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="部门名称" prop="departmentId">
@@ -135,11 +138,10 @@
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button type="primary" size="mini" @click="onCertain"
-          >保存</el-button
+          >保 存</el-button
         >
         <el-button
-          class="cancel"
-          type="primary"
+          type="info"
           @click="dialogClose"
           size="mini"
           >取 消</el-button
@@ -150,8 +152,8 @@
 </template>
 
 <script>
-//创建项目
-import { establishProject } from "@/api/project";
+//创建项目、编辑
+import { establishProject,editProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
@@ -215,29 +217,6 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        cellPhone: [
-          {
-            required: true,
-            message: "请输入手机号",
-            trigger: ["blur", "change"],
-          },
-           { validator: validateTel, trigger: 'blur' }
-        ],
-        email: [
-          {
-            required: true,
-            message: "请输入邮箱",
-            trigger: ["blur", "change"],
-          },
-           { validator: validateMail, trigger: 'blur' }
-        ],
-        customer: [
-          {
-            required: true,
-            message: "请选择客户",
-            trigger: ["blur", "change"],
-          },
-        ],
         status: [
           {
             required: false,
@@ -284,6 +263,27 @@ export default {
           {
             required: false,
             message: "请填写介绍",
+            trigger: ["blur", "change"],
+          },
+        ],
+        cellPhone: [
+          {
+            required: false,
+            message: "请填手机号",
+            trigger: ["blur", "change"],
+          },
+        ],
+        email: [
+          {
+            required: false,
+            message: "请填邮箱号",
+            trigger: ["blur", "change"],
+          },
+        ],
+        customer: [
+          {
+            required: false,
+            message: "请填客户名称",
             trigger: ["blur", "change"],
           },
         ],
@@ -403,37 +403,30 @@ export default {
 
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.projectId) {
+        console.log(this.initFormData.projectId, "--xxxxx--this.initFormData.projectId-");
+        this.userEditForm.projectId = this.initFormData.projectId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
             console.log(this.userEditForm, "----保存传递的内容");
-            // updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-            //   console.log(res, "res11111");
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message.success("修改成功！");
-            //     // this.dialogClose();
-            //     this.$parent.resetForm();
-            //     this.dialogFormVisible = false; // 让弹窗显
-            //   }
-            // });
+            editProject(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "---编辑调取了接口");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                // this.dialogClose();
+                this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗显
+              }
+            });
           } else {
             return false;
           }
         });
       } else {
         console.log("增加了...");
-
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
           console.log(this.userEditForm, "-----------增加的项目内容*********");
@@ -545,9 +538,10 @@ export default {
 .passwordat {
   display: none;
 }
-.el-form-item {
+::v-deep.el-form-item {
   display: flex;
   margin-right: 50px;
+  margin-bottom: 18px !important;
 }
 ::v-deep .el-form-item__label {
   width: 125px;
@@ -566,10 +560,7 @@ export default {
 ::v-deep .el-dialog {
   width: 30%;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 ::v-deep .el-dialog__body {
   padding: 0 20px;
 }

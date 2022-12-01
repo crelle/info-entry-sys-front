@@ -15,14 +15,6 @@
         :model="formOptions"
       >
         <el-row>
-          <!-- <el-col :span="5">
-            <el-form-item label="角色编码">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="请输入角色编码"
-              ></el-input>
-            </el-form-item>
-          </el-col> -->
           <el-col :span="5">
             <el-form-item label="角色名称">
               <el-input
@@ -67,6 +59,7 @@
         <el-table-column
           label="序号"
           type="index"
+          :index="indexMethod"
           width="55"
           fixed
         ></el-table-column>
@@ -133,6 +126,7 @@
 </template>
 
 <script>
+
 import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
 import RoleDataDialog from "@/views/sysmanage/roles/dialog/roleDetails.vue";
@@ -154,7 +148,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
     };
   },
@@ -253,9 +247,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryRoles();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
+
 <style lang='less'>
 .btn-custom-cancel {
   float: right;
@@ -265,9 +263,9 @@ export default {
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
-    line-height: 36.9px;
+  line-height: 36.9px;
 }
-::v-deep .inline1_action_button_content {
+::v-deep .el-col-19 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
@@ -281,10 +279,14 @@ export default {
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination{
+::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   margin-right: 5px;
 }
+.el-form-item{
+  width: 251px;
+}
 </style>
+

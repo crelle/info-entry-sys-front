@@ -1,6 +1,12 @@
 <template>
   <div>
-    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" :close-on-click-modal='false' lock-scroll   @close="closeDialog">
+    <el-dialog
+      :title="toChild"
+      :visible.sync="dialogFormVisible"
+      :close-on-click-modal="false"
+      lock-scroll
+      @close="closeDialog"
+    >
       <div class="register_form_main">
         <el-row style="height: 100%">
           <el-col :span="24">
@@ -11,10 +17,10 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="岗位名称 :" prop="pstname">
+                <el-form-item label="岗位名称 :" prop="postName">
                   <el-input
                     type="text"
-                    v-model="userEditForm.pstname"
+                    v-model="userEditForm.postName"
                     placeholder="请填写岗位名称"
                   ></el-input>
                 </el-form-item>
@@ -23,7 +29,6 @@
                     v-model="userEditForm.skill"
                     placeholder="请选择岗位技能"
                     filterable
-                    @change="queryson"
                   >
                     <el-option
                       v-for="item in skill"
@@ -33,18 +38,18 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="项目 :" prop="project">
+                <el-form-item label="项目 :" prop="projectId">
                   <el-select
-                    v-model="userEditForm.project"
+                    v-model="userEditForm.projectId"
                     placeholder="请选择接项目"
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableData"
+                      v-for="item in projectData"
                       :key="item.index"
-                      :label="item.nameZh"
-                      :value="index"
+                      :label="item.project"
+                      :value="item.projectId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -72,43 +77,44 @@
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <el-form-item label="最晚到岗时间" prop="date_do">
+                <el-form-item label="最晚到岗时间" prop="dateDo">
                   <el-col :span="11">
                     <el-date-picker
                       type="date"
                       placeholder="选择日期"
-                      v-model="userEditForm.date_do"
+                      v-model="userEditForm.dateDo"
                       style="width: 100%"
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
 
-                <el-form-item label="办公地点 :" prop="place">
+                <el-form-item label="办公地点 :" prop="address">
                   <el-cascader
                     size="large"
                     :options="options"
-                    v-model="userEditForm.place"
+                    v-model="userEditForm.address"
+                    clearable
                   >
                   </el-cascader>
                 </el-form-item>
-                <el-form-item label="详细地址 :" prop="detail">
+                <el-form-item label="详细地址 :" prop="detailed">
                   <el-input
                     type="text"
-                    v-model="userEditForm.detail"
+                    v-model="userEditForm.detailed"
                     placeholder="详细地址"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="岗位职责 :" prop="duty">
+                <el-form-item label="岗位职责 :" prop="position">
                   <el-input
                     type="textarea"
-                    v-model="userEditForm.duty"
+                    v-model="userEditForm.position"
                     placeholder="请输入岗位职责..."
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="岗位要求 :" prop="requirement">
+                <el-form-item label="岗位要求 :" prop="requirements">
                   <el-input
                     type="textarea"
-                    v-model="userEditForm.requirement"
+                    v-model="userEditForm.requirements"
                     placeholder="请输入岗位要求..."
                   ></el-input>
                 </el-form-item>
@@ -118,7 +124,7 @@
         </el-row>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" size="mini" @click="onCertain"
-            >保存</el-button
+            >保 存</el-button
           >
           <el-button
             class="cancel"
@@ -134,13 +140,19 @@
 </template>
 
 <script>
+//创建岗位/编辑岗位
+import { establishPost, editPost } from "@/api/post";
+// 查询接口人 查客户
+import { reqgetInterface } from "@/mockjs/reqMock";
+
 import { updateRole, deleteRole } from "@/api/role";
-import { regionData, CodeToText } from "element-china-area-data";
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 
 export default {
   props: {
     toChild: String,
     tableData: "",
+    projectData: "",
   },
   data() {
     return {
@@ -149,7 +161,7 @@ export default {
         fileType: 0,
       },
       nowIndex: -1,
-      options:regionData,
+      options: regionData,
       // baseURL: BaseURL,
       skill: [
         {
@@ -163,30 +175,28 @@ export default {
         },
       ],
       userEditForm: {
-        id: "",
-        pstname: "",
-        skill: "",
-        project: "",
+        address: "",
         customer: "",
-        number: "",
-        date_do: "",
         date: "",
-        region: "",
-        place: "",
-        detail:'',
-        duty: "",
-        requirement: "",
+        dateDo: "",
+        number: "",
+        position: "",
+        postId: "",
+        postName: "",
+        projectId: "",
+        requirements: "",
+        skill: "",
       },
       initFormData: {},
       userEditFormRules: {
-        pstname: [
+        postName: [
           {
             required: true,
             message: "请填写岗位名称",
             trigger: ["blur", "change"],
           },
         ],
-        duty: [
+        position: [
           {
             required: false,
             message: "请填写岗位职责",
@@ -200,7 +210,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        requirement: [
+        requirements: [
           {
             required: false,
             message: "请填写岗位需求",
@@ -235,17 +245,25 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        date_do: [
+        dateDo: [
           {
             required: false,
             message: "请填最晚到岗时间",
             trigger: ["blur", "change"],
           },
         ],
-        place: [
+        address: [
           {
             required: false,
             message: "请填写办公地点",
+            trigger: ["blur", "change"],
+          },
+        ],
+
+        detailed: [
+          {
+            required: false,
+            message: "请填写详细地址",
             trigger: ["blur", "change"],
           },
         ],
@@ -255,16 +273,24 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      this.userEditForm.id = this.tableData[e].id;
-      console.log(
-        this.userEditForm,
-        "----this.userEditForm-this.tableData[e]",
-        this.tableData[e]
-      );
+      this.projectData.forEach((item) => {
+        if (item.projectId == e) {
+          // 项目
+          let projectData = item;
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = 100;
+          // //  假数据接口人查询方法
+          reqgetInterface(data).then((res) => {
+            res.data.forEach((item) => {
+              if (item.interfaceId == projectData.interfaceId) {
+                let names = item;
+                this.userEditForm.customer = names.name;
+              }
+            });
+          });
+        }
+      });
     },
     //
     // 弹窗
@@ -272,11 +298,14 @@ export default {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       // console.log(this.tableData,"-------------");
+
       if (row) {
+        let editRow=JSON.parse(JSON.stringify(row))
+        editRow.address=this.getCityCode(editRow.address)
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(editRow); // 为表单赋值
         });
       } else {
         console.log("我是新增");
@@ -307,56 +336,75 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      var loc = "";
+      for (let i = 0; i < this.userEditForm.address.length; i++) {
+        loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+      }
+      console.log(loc);
+      this.userEditForm.address = loc;
+      if (this.initFormData.postId) {
+        this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
+            editPost(this.userEditForm, this.userEditForm.postId).then(
+              (res) => {
+                console.log(res, "res11111");
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+                  this.dialogClose();
+                  console.log("修改成功！");
+                  this.$parent.queryPost();
+                }
+              }
+            );
+          } else {
+            return false;
+          }
+        });
+      } else {
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log("增加了...", this.userEditForm);
+          if (valid) {
+            establishPost(this.userEditForm).then((res) => {
+              console.log(res, "增加了.........");
               if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
+                this.$message.success("创建成功！");
                 this.dialogClose();
-                console.log("修改成功！");
-                this.$parent.queryRoles();
+                console.log("创建成功！");
+                this.$parent.queryPost();
               }
             });
           } else {
             return false;
           }
         });
-      } else {
-        return false;
       }
-      // else {
-      //   console.log("增加了...");
-      //   this.$refs["userEditRef"].validate((valid) => {
-      //     console.log(valid, "增加了的valid");
-      //     if (valid) {
-      //       addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-      //         console.log(res, "增加了...res11111");
-      //         if (res && res.code && res.code === "00000") {
-      //           // this.$parent.resetForm();
-      //           // this.nowIndex = -1; // 重置选中
-      //           this.$message.success("创建成功！");
-      //         }
-      //       });
-      //     } else {
-      //       return false;
-      //     }
-      //   });
-      // }
+    },
+    getCityCode(cityText) {
+      var codeArray = [];
+      if (cityText != "") {
+        var cityArray = cityText.trim().split(" ");
+
+        if (cityArray.length == 1) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+        } else if (cityArray.length == 2) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+        } else if (cityArray.length == 3) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+          codeArray.push(
+            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+          );
+        }
+      }
+
+      return codeArray;
     },
   },
 };
@@ -468,10 +516,7 @@ export default {
 ::v-deep .el-dialog {
   width: 30%;
 }
-.cancel {
-  background-color: #999 !important;
-  border: 1px solid #999 !important;
-}
+
 .dialog-footer {
   text-align: right;
   padding: 10px 20px 20px;

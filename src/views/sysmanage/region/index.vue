@@ -57,6 +57,7 @@
         <el-table-column
           label="序号"
           type="index"
+          :index="indexMethod"
           width="55"
           fixed
         ></el-table-column>
@@ -134,7 +135,7 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        total: 0,
+        
       },
     };
   },
@@ -168,7 +169,7 @@ export default {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
-          data.pages = this.paginationOptions.pageNo;
+          data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
           queryRegion(data).then((res) => {
@@ -255,6 +256,9 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryRoles();
     },
+    indexMethod(index){
+      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    }
   },
 };
 </script>
@@ -270,7 +274,7 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .inline2_action_button_content {
+::v-deep .el-col-19 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
@@ -289,5 +293,8 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
+}
+.el-form-item{
+  width: 251px;
 }
 </style>

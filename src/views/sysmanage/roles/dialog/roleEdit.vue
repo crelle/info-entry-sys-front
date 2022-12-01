@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -37,10 +37,10 @@
                       <div class="menubox">
                         <!-- default-expand-all展开所有 -->
                         <el-tree
-                          :data="data"
+                          :data="tableData"
                           show-checkbox
                           node-key="id"
-                          :default-expanded-keys="datas"
+                          :default-expanded-keys="[0]"
                           ref="tree_n"
                           highlight-current
                           :props="defaultProps"
@@ -48,7 +48,7 @@
                         </el-tree>
                       </div>
                     </div>
-                    <div class="sbox">
+                    <!-- <div class="sbox">
                       <span>数据权限</span>
                       <div class="menubox">
                         <el-tree
@@ -62,7 +62,7 @@
                         >
                         </el-tree>
                       </div>
-                    </div>
+                    </div> -->
                   </div>
                 </div>
                 <el-form-item class="dialog-footer">
@@ -87,7 +87,12 @@
 </template>
 
 <script>
-import { updateRole, addRole } from "@/api/role";
+// 查询菜单
+import { queryMenuAll } from "@/api/menu";
+// 查询角色菜单
+import { queryRoleMenu } from "@/api/rolemenu";
+
+import { updateRole, updateRoleMenu, addRole } from "@/api/role";
 
 export default {
   props: {
@@ -95,168 +100,12 @@ export default {
   },
   data() {
     return {
+      tableData: [],
       datas: [],
-      data: [
-        {
-          id: 1,
-          label: "系统管理",
-          children: [
-            {
-              id: 2,
-              label: "用户管理",
-              children: [
-                {
-                  id: 6,
-                  label: "新增",
-                },
-                {
-                  id: 7,
-                  label: "编辑",
-                },
-                {
-                  id: 8,
-                  label: "查看",
-                },
-                {
-                  id: 9,
-                  label: "角色配置",
-                },
-                {
-                  id: 10,
-                  label: "停用启用",
-                },
-              ],
-            },
-            {
-              id: 3,
-              label: "角色管理",
-              children: [
-                {
-                  id: 11,
-                  label: "新增",
-                },
-                {
-                  id: 12,
-                  label: "编辑",
-                },
-                {
-                  id: 13,
-                  label: "查看",
-                },
-                {
-                  id: 14,
-                  label: "删除",
-                },
-              ],
-            },
-            {
-              id: 4,
-              label: "地域管理",
-              children: [
-                {
-                  id: 15,
-                  label: "新增",
-                },
-                {
-                  id: 16,
-                  label: "编辑",
-                },
-                {
-                  id: 17,
-                  label: "查看",
-                },
-                {
-                  id: 18,
-                  label: "删除",
-                },
-              ],
-            },
-            {
-              id: 5,
-              label: "部门管理",
-              children: [
-                {
-                  id: 19,
-                  label: "新增",
-                },
-                {
-                  id: 20,
-                  label: "编辑",
-                },
-                {
-                  id: 21,
-                  label: "查看",
-                },
-                {
-                  id: 22,
-                  label: "删除",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      data1: [
-        {
-          id: 1,
-          label: "业务部",
-          children: [
-            {
-              id: 4,
-              label: "孵化使能部",
-              children: [
-                {
-                  id: 5,
-                  label: "合同管理",
-                },
-                {
-                  id: 6,
-                  label: "平台管理",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          id: 2,
-          label: "零售部",
-        },
-        {
-          id: 3,
-          label: "系统管理",
-          children: [
-            {
-              id: 7,
-              label: "用户管理",
-              children: [
-                {
-                  id: 8,
-                  label: "新增",
-                },
-                {
-                  id: 9,
-                  label: "编辑",
-                },
-                {
-                  id: 10,
-                  label: "查看",
-                },
-                {
-                  id: 11,
-                  label: "角色配置",
-                },
-                {
-                  id: 12,
-                  label: "停用启用",
-                },
-              ],
-            },
-          ],
-        },
-      ],
+
       defaultProps: {
-        children: "children",
-        label: "label",
+        children: "childrenMenus",
+        label: "name",
       },
       // 多选权限
       // ----
@@ -267,7 +116,9 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
+        id: "",
         nameZh: "",
+        menus: [],
       },
       initFormData: {},
       userEditFormRules: {
@@ -282,60 +133,57 @@ export default {
     };
   },
   methods: {
+    // 查询菜单
+    queryMenuAll() {
+      queryMenuAll().then((res) => {
+        console.log(res, "res++++++++++");
+        if (res && res.code && res.code === "00000") {
+          this.tableData = res.data; // 表格数据赋值
+          console.log(this.tableData, "----所有菜单");
+          this.queryRoleMenu();
+        }
+      });
+    },
+    // 查询权限菜单
+    queryRoleMenu() {
+      let data = { records: [{ ...this.userEditForm }] };
+      data.id = this.userEditForm.id;
+      console.log(data, "---查询角色菜单data---------");
+      queryRoleMenu(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data, "----查询角色菜单数据成功了");
+          this.datas = res.data.menus;
+          this.setCheckedNodes();
+        }
+      });
+    },
     // 树形控件赋值
     setCheckedNodes() {
-      this.$refs.tree_n.setCheckedNodes([
-        {
-          id: 5,
-          label: "二级 2-1",
-        },
-        {
-          id: 9,
-          label: "三级 1-1-1",
-        },
-      ]);
-      this.$refs.tree_t.setCheckedNodes([
-        {
-          id: 5,
-          label: "二级 2-1",
-        },
-        {
-          id: 9,
-          label: "三级 1-1-1",
-        },
-      ]);
+      this.$refs.tree_n.setCheckedNodes(this.datas);
+      console.log(this.datas, "----------赋值菜单数据");
     },
     // 树形控件清空
     resetChecked() {
-      console.log("zty---清空");
       this.$refs.tree_n.setCheckedKeys([]);
-      this.$refs.tree_t.setCheckedKeys([]);
+      // this.$refs.tree_t.setCheckedKeys([]);
     },
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.$nextTick(() => {
-        // 这个要加上
-        this.datas = [1];
-      });
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
-          this.setCheckedNodes();
           console.log("我是编辑");
+          // 查询角色菜单
+          this.queryMenuAll();
         });
       } else {
         // 树形控件清空
         console.log("我是新增");
-        // this.$refs.tree_n.setCheckedKeys([]);
-        // this.$refs.tree_t.setCheckedKeys([]);
-        // this.initForm("");
-        //  this.check1="",
-        //  this.check2="",
-        //  this.check3="",
-        //  this.check4="",
+        // 查询角色菜单
+        this.queryMenuAll();
       }
     },
     initForm(data) {
@@ -361,7 +209,6 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-
       console.log("初始化了");
     },
 
@@ -370,18 +217,39 @@ export default {
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            console.log(this.userEditForm, "---修改传递的内容111111111----");
+            updateRole(this.userEditForm).then((res) => {
               console.log(res, "res11111");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                this.dialogClose();
+                console.log("修改成功！");
+                this.$parent.queryRoles();
+              }
+            });
+            updateRole(this.userEditForm.id, this.userEditForm.nameZh).then(
+              (res) => {
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+                  this.dialogClose();
+                  console.log("修改成功！");
+                  this.$parent.queryRoles();
+                }
+              }
+            );
+            (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
+              // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+              console.log(
+                this.userEditForm,
+                this.userEditForm.menus,
+                "---修改传递的内容22222222----"
+              );
+            updateRoleMenu(this.userEditForm).then((res) => {
+              console.log(res, "-----------角色菜单权限修改");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.dialogClose();
@@ -396,13 +264,11 @@ export default {
       } else {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
             addRole(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                this.dialogClose();
-                console.log("增加成功！");
+                console.log("成功增加--用户！");
                 this.$parent.queryRoles();
               }
             });
@@ -491,5 +357,4 @@ li {
 ::v-deep .is-required {
   display: flex;
 }
-
 </style>
