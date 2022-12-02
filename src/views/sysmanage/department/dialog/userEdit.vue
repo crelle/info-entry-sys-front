@@ -164,12 +164,6 @@ export default {
             message: "请输入密码",
             trigger: ["blur", "change"],
           },
-          // {
-          //   min: 1,
-          //   max: 16,
-          //   message: "用户名长度在1-16 个字符",
-          //   trigger: "blur",
-          // },
         ],
 
         email: [
@@ -275,7 +269,6 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.initForm(this.initFormData);
       this.initForm(this.userEditForm);
       this.resetFormData();
     },

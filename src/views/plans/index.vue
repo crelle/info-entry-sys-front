@@ -10,7 +10,7 @@
           <div>
             <div class="but">
               <el-button type="primary" v-if="reset" @click="onEditRoleMima">
-                重置密码
+                修改密码
               </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
                 >保 存</el-button
@@ -72,6 +72,7 @@
 </template>
 
 <script>
+
 import { Decrypt } from "@/util/crypto/secret";
 import RoleDataDialog from "@/views/plans/dialog/dialogDetails.vue";
 export default {

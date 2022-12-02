@@ -7,6 +7,12 @@ import Request from "@/util/axios/request";
 //     url: BaseURL + '/logout',
 //     params
 // })
+// 修改密码  /sysmgmt/user/{{id}}/password/{{password}}
+
+const changePassword = (data)=>Request({
+    method: 'put',
+    url: BaseURL + '/sysmgmt/user/'+data.id+'/password/'+data.password,
+})
 
 // 分页查询用户
 const queryUser = (data) =>
@@ -39,4 +45,4 @@ const deleteMenu = (data) =>
     url: BaseURL + "/sysmgmt/user/delete/" + data,
     data,
   });
-export { queryUser, updateUser, addUser, deleteMenu };
+export { queryUser, updateUser, addUser, deleteMenu,changePassword };

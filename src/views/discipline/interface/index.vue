@@ -18,7 +18,7 @@
           <el-col :span="5">
             <el-form-item label="接口人">
               <el-input
-                v-model="formOptions.name"
+                v-model="formOptions.interfaceName"
                 placeholder="接口人姓名"
               ></el-input>
             </el-form-item>
@@ -26,7 +26,7 @@
           <el-col :span="5">
             <el-form-item label="客户">
               <el-input
-                v-model="formOptions.customer"
+                v-model="formOptions.customerName"
                 placeholder="客户姓名"
               ></el-input>
             </el-form-item>
@@ -63,10 +63,16 @@
         size="mini"
         height="550"
       >
-        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
+        <el-table-column
+          label="序号"
+          type="index"
+          :index="indexMethod"
+          width="55"
+          fixed
+        >
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="interfaceName"
           label="接口人"
           min-width="80"
           show-overflow-tooltip
@@ -95,7 +101,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="customer"
+          prop="customerName"
           label="客户名"
           min-width="80"
           show-overflow-tooltip
@@ -148,10 +154,12 @@
 </template>
 
 <script>
-// 假的接口人表
-import { reqgetInterface, reqCustomer } from "@/mockjs/reqMock";
+// 接口人表/删除
+import { queryInterface, deletesInterface } from "@/api/interface";
 
-import { queryUser, deleteMenu } from "@/api/user";
+// 客户查询
+import { queryCustomer } from "@/api/customer";
+
 import UserEditDialog from "@/views/discipline/interface/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/interface/dialog/userDetails.vue";
 export default {
@@ -163,61 +171,48 @@ export default {
     return {
       list: "",
       formOptions: {
-        name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
         address: "",
-        customer: "",
+        cellPhone: "",
+        customerId: "",
+        email: "",
+        gender: "",
+        interfaceId: "",
+        interfaceName: "",
+        introduce: "",
       },
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        
       },
       tableData: [],
       tableCustomer: [],
       multipleSelection: [],
-      userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-      },
     };
   },
   mounted() {
     this.queryUserList();
-    this.queryCustomerList();
+    // this.queryCustomerList();
   },
   methods: {
-    // 查询客户列表 假的
-    queryCustomerList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqCustomer(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.tableCustomer = res.data; // 表格数据赋值
-            console.log(this.tableCustomer, "假的客户数据表");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    // 查询接口人列表 假的
+    // // 查询客户列表
+    // queryCustomerList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       queryCustomer(data).then((res) => {
+    //         this.tableCustomer = res.data.records; // 表格数据赋值
+    //         console.log(this.tableCustomer, "----------客户数据表-------");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+    // 查询接口人列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -225,40 +220,25 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqgetInterface(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.tableData = res.data; // 表格数据赋值
-            console.log(this.tableData, "假的接口人数据表");
-            this.paginationOptions.total = res.data.total; // 分页器赋值
+          queryInterface(data).then((res) => {
+            queryCustomer(data).then((res1) => {
+              this.tableData = res.data.records; // 接口人表格数据赋值
+              this.tableCustomer = res1.data.records; //客户表格数据赋值
+              this.tableData.forEach((item) => {
+                this.tableCustomer.forEach((sitem) => {
+                  if (item.customerId == sitem.customerId) {
+                    item.customerName = sitem.customerName;
+                  }
+                });
+              });
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            });
           });
         } else {
           return false;
         }
       });
     },
-    // // 查询接口人列表 真的
-    // queryUserList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       console.log(valid, "validvalidvalid");
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       console.log(data, "data---------");
-    //       queryUser(data).then((res) => {
-    //         console.log(res, "res++++++++++");
-    //         if (res && res.code && res.code === "00000") {
-    //           this.tableData = res.data.records; // 表格数据赋值
-    //           console.log(this.tableData);
-    //           this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         }
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该接口人, 是否继续?", "删除接口人", {
@@ -269,14 +249,10 @@ export default {
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
           // 点击确认，发起后台请求，删除该接口人
-          deleteMenu(row.id).then((res) => {
+          deletesInterface(row.interfaceId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该接口人");
-            if (res.data.meta.status == 200) {
+            if (res.code == "00000") {
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -307,13 +283,13 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑接口人信息";
-      console.log("编辑", row, row.id);
+      console.log("编辑", row, row.interfaceId);
     },
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看接口人详情";
-      console.log("详情", row, row.id);
+      console.log("详情", row, row.interfaceId);
     },
     // 重置表单
 
@@ -331,9 +307,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -350,7 +330,6 @@ export default {
 }
 ::v-deep .el-col-14 {
   text-align: right;
-
 }
 .el-form--inline .el-form-item {
   margin-right: 0;
@@ -369,7 +348,7 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
-.el-form-item{
+.el-form-item {
   width: 251px;
 }
 </style>

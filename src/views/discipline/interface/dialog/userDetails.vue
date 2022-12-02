@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -16,40 +16,32 @@
                 <div class="userbox">
                   <ul class="lis">
                     <li>
-                      <span>接口人名:</span><span>{{ userEditForm.name }}</span>
+                      <span>接口人名:</span
+                      ><span>{{ userEditForm.interfaceName }}</span>
                     </li>
                     <li>
                       <span>性别:</span><span>{{ userEditForm.gender }}</span>
                     </li>
                     <li>
-                      <span>客户:</span><span>{{ userEditForm.customer }}</span>
+                      <span>客户:</span
+                      ><span>{{ userEditForm.customerName }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cell_phone }}</span>
+                      ><span>{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.Email }}</span>
+                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
                     <li>
                       <span>接口人办公地址:</span>
                       <span>{{ userEditForm.address }}</span>
                     </li>
                     <li>
-                      <span>负责项目:</span>
-                      <span>{{ userEditForm.project }}</span>
+                      <span>介绍:</span>
+                      <span>{{ userEditForm.introduce }}</span>
                     </li>
                   </ul>
-                  <div>
-                    <span>介绍:</span>
-                    <el-input
-                      type="textarea"
-                      :rows="2"
-                      placeholder="请输入内容"
-                      v-model="textarea"
-                    >
-                    </el-input>
-                  </div>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="项目表" name="first">
@@ -74,7 +66,6 @@
                           </el-table-column>
                           <el-table-column prop="gap" label="项目缺口">
                           </el-table-column>
-                         
                         </el-table>
                       </el-tab-pane>
                     </el-tabs>
@@ -85,12 +76,11 @@
           </el-col>
         </el-row>
         <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
+          <el-button type="primary" @click="dialogClose" size="mini"
+            >取 消</el-button
+          >
+        </div>
       </div>
-      </div>
-      
     </el-dialog>
   </div>
 </template>
@@ -113,8 +103,8 @@ export default {
           project: "开发中",
           person: "aaa",
           derson: "ergfdd",
-          people:"22人",
-          gap:"4人",
+          people: "22人",
+          gap: "4人",
         },
         {
           number: "2",
@@ -125,8 +115,8 @@ export default {
           project: "开发中",
           person: "bbb",
           derson: "ytht",
-           people:"20人",
-          gap:"1人",
+          people: "20人",
+          gap: "1人",
         },
         {
           number: "3",
@@ -137,8 +127,8 @@ export default {
           project: "暂停中",
           person: "ccc",
           derson: "xsad",
-           people:"30人",
-          gap:"4人",
+          people: "30人",
+          gap: "4人",
         },
         {
           number: "4",
@@ -149,8 +139,8 @@ export default {
           project: "交付中",
           person: "ddd",
           derson: "jfgtr",
-           people:"10人",
-          gap:"2人",
+          people: "10人",
+          gap: "2人",
         },
       ],
       // 假数据
@@ -165,15 +155,15 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
+        customerName: "",
         address: "",
-        customer: "",
-        customer: "",
-        project: "",
+        cellPhone: "",
+        customerId: "",
+        email: "",
+        gender: "",
+        interfaceId: "",
+        interfaceName: "",
+        introduce: "",
       },
       initFormData: {},
     };
@@ -269,7 +259,7 @@ export default {
       display: block;
     }
     span:nth-child(1) {
-      width: 100px;
+      width: 120px;
     }
   }
 }
@@ -297,7 +287,12 @@ export default {
   font-size: 14px;
   font-family: "微软雅黑";
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   min-width: 44px;
+}
+.introduce {
+  display: block;
+  display: flex;
+  width: 200px;
 }
 </style>
