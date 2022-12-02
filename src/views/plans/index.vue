@@ -24,38 +24,38 @@
             </div>
             <el-form
               ref="form"
-              :model="form"
+              :model="userdetail"
               :disabled="isInput"
               label-width="100px"
             >
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="用户名 :">
-                    <el-input v-model="form.xm"></el-input>
+                    <el-input v-model="userdetail.username"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="工号 :">
-                    <el-input v-model="form.gh"></el-input>
+                    <el-input v-model="userdetail.jobNo"></el-input>
                   </el-form-item>
                 </div>
                 <div class="boxlis">
                   <el-form-item label="角色 :">
-                    <el-input disabled v-model="form.js"></el-input>
+                    <el-input disabled v-model="userdetail.roles[0].nameZh"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="邮箱 :">
-                    <el-input v-model="form.yx"></el-input>
+                    <el-input v-model="userdetail.userEmail"></el-input>
                   </el-form-item>
                 </div>
                 <div class="boxlis">
                   <el-form-item label="电话 :">
-                    <el-input v-model="form.dh"></el-input>
+                    <el-input v-model="userdetail.userPhone"></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -72,7 +72,6 @@
 </template>
 
 <script>
-
 import { Decrypt } from "@/util/crypto/secret";
 import RoleDataDialog from "@/views/plans/dialog/dialogDetails.vue";
 export default {
@@ -94,15 +93,6 @@ export default {
       editbtn: true,
       displays: false,
       isInput: true,
-      form: {
-        xm: "zs",
-        gh: "123123",
-        yx: "12312@qe",
-        dh: "13912313",
-        desc: "",
-        password: "",
-        js: "管理员",
-      },
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -141,13 +131,7 @@ export default {
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
     // console.log(window.localStorage.getItem("userdetail"));
-    console.log(this.userdetail, "我是 当前用户信息");
-    if (Object.keys(this.userdetail).length === 0) {
-      this.$message.warning("用户信息失效，请重新登录！");
-      return this.$router.push("/login");
-    }
-    // 刷新时 菜单定位到当前路由
-    this.nowMenu = this.$route.path;
+    console.log(this.userdetail, "我是 当前----用户");
   },
   methods: {
     // 编辑

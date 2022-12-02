@@ -25,10 +25,10 @@
                     placeholder="请输入用户名"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="工号" prop="userNickName">
+                <el-form-item label="工号" prop="jobNo">
                   <el-input
                     type="text"
-                    v-model="userEditForm.userNickName"
+                    v-model="userEditForm.jobNo"
                     placeholder="请输入用户工号"
                   ></el-input>
                 </el-form-item>
@@ -123,7 +123,7 @@ export default {
         password: "123456",
         userAvatar: "",
         userEmail: "",
-        userNickName: "",
+        jobNo: "",
         userPhone: "",
         username: "",
         roles: [
@@ -156,7 +156,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        userNickName: [
+        jobNo: [
           {
             required: true,
             message: "请填写工号",
