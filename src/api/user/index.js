@@ -11,7 +11,8 @@ import Request from "@/util/axios/request";
 
 const changePassword = (data)=>Request({
     method: 'put',
-    url: BaseURL + '/sysmgmt/user/'+data.id+'/password/'+data.password,
+    url: BaseURL + '/sysmgmt/user/password/'+data.newpassword,
+    data
 })
 
 // 分页查询用户

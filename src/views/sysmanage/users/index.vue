@@ -93,7 +93,13 @@
         height="550"
       >
         <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
-        <el-table-column label="序号" type="index" :index="indexMethod" width="55"  fixed>
+        <el-table-column
+          label="序号"
+          type="index"
+          :index="indexMethod"
+          width="55"
+          fixed
+        >
         </el-table-column>
         <el-table-column
           prop="username"
@@ -102,7 +108,12 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column label="工号" min-width="100" show-overflow-tooltip>
+        <el-table-column
+          prop="jobNo"
+          label="工号"
+          min-width="100"
+          show-overflow-tooltip
+        >
         </el-table-column>
         <el-table-column
           prop="userPhone"
@@ -243,7 +254,6 @@ export default {
     this.queryUserList();
   },
   methods: {
-   
     // 查询用户列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -257,7 +267,7 @@ export default {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData,'tzy-------------------');
+              console.log(this.tableData, "tzy-------------------");
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
@@ -337,9 +347,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
