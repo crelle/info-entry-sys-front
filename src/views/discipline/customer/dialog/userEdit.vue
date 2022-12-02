@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -97,10 +97,7 @@
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >
-        <el-button
-          type="info"
-          @click="dialogClose"
-          size="mini"
+        <el-button type="info" @click="dialogClose" size="mini"
           >取 消</el-button
         >
       </div>
@@ -200,7 +197,7 @@ export default {
     },
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       console.log(this.UserList, "父亲传来的用户表----------");
       if (row) {

@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -33,10 +33,7 @@
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >
-        <el-button
-          type="info"
-          @click="dialogClose"
-          size="mini"
+        <el-button type="info" @click="dialogClose" size="mini"
           >取 消</el-button
         >
       </div>
@@ -45,9 +42,8 @@
 </template>
 
 <script>
-
 // 新增 * 编辑
-import { establishRegion,editRegion } from "@/api/region";
+import { establishRegion, editRegion } from "@/api/region";
 
 export default {
   props: {
@@ -84,7 +80,7 @@ export default {
   },
   methods: {
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -115,6 +111,7 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.initForm(this.userEditForm);
+      this.resetFormData();
     },
 
     // 初始化页面数据 重置
@@ -137,15 +134,17 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            editRegion(this.userEditForm, this.userEditForm.regionId).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
-                this.dialogClose();
-                console.log("修改成功！");
-                this.$parent.queryRoles();
+            editRegion(this.userEditForm, this.userEditForm.regionId).then(
+              (res) => {
+                console.log(res, "res11111");
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+                  this.dialogClose();
+                  console.log("修改成功！");
+                  this.$parent.queryRoles();
+                }
               }
-            });
+            );
           } else {
             return false;
           }
@@ -160,21 +159,22 @@ export default {
             "*******----------地域"
           );
           if (valid) {
-            establishRegion(this.userEditForm, this.userEditForm.regionId).then((res) => {
-              console.log(res, "增加了...res11111");
-              if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
-                this.dialogFormVisible = false; // 让弹窗隐藏
-                this.$message.success("创建成功！");
-                 this.$parent.queryRoles();
+            establishRegion(this.userEditForm, this.userEditForm.regionId).then(
+              (res) => {
+                console.log(res, "增加了...res11111");
+                if (res && res.code && res.code === "00000") {
+                  // this.$parent.resetForm();
+                  // this.nowIndex = -1; // 重置选中
+                  this.dialogFormVisible = false; // 让弹窗隐藏
+                  this.$message.success("创建成功！");
+                  this.$parent.queryRoles();
+                }
               }
-            });
+            );
           } else {
             return false;
           }
         });
-      
       }
     },
   },
@@ -270,13 +270,13 @@ export default {
   margin-right: 25px;
 }
 
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 20px 20px 0;
 }
-::v-deep .el-form-item--mini.el-form-item{
+::v-deep .el-form-item--mini.el-form-item {
   margin-bottom: 0;
 }
-::v-deep .el-dialog__footer{
+::v-deep .el-dialog__footer {
   padding: 20px;
 }
 </style>

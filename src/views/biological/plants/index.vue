@@ -113,7 +113,7 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="技能">
-              <el-select v-model="value" placeholder="请选择技能">
+              <el-select v-model="formOptions.skill" placeholder="请选择技能">
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -126,7 +126,7 @@
           </el-col>
           <el-col :span="5">
             <el-form-item class="lab" label="状态">
-              <el-select v-model="label" placeholder="请选择">
+              <el-select v-model="formOptions.state" placeholder="请选择">
                 <el-option
                   v-for="item in state"
                   :key="item.value"
@@ -147,7 +147,6 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         border
         stripe
         size="mini"
@@ -156,7 +155,7 @@
         <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
         </el-table-column>
         <el-table-column
-          prop="job_no"
+          prop="jobNo"
           label="工号"
           min-width="80"
           show-overflow-tooltip
@@ -170,7 +169,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="cell_phone"
+          prop="cellPhone"
           label="手机号"
           min-width="100"
           show-overflow-tooltip
@@ -276,7 +275,7 @@ import {
   reqCustomer,
 } from "@/mockjs/reqMock";
 
-import { queryUser, deleteMenu } from "@/api/user";
+import { queryEmployee,createEmployee,deleteEmployee,updateEmployee } from "@/api/employee";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
 import UserStateDialog from "@/views/biological/plants/dialog/state.vue";
@@ -334,46 +333,21 @@ export default {
       xmzt: "",
       list: "",
       formOptions: {
-        id: "",
-        job_no: "",
-        name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
-        customer: "",
-        status: "",
-        department: "",
-        project: "",
-        address: "",
-        time: "",
-        cooperation: "",
-        Interface: "",
-        // 详情
-        age: "",
-        birthday: "",
-        politics: "",
-        Native: "",
-        residence: "",
-        emergency: "",
-        emergency_telephone: "",
-        education: "",
-        school: "",
-        school_time: "",
-        working_hours: "",
-        marriage: "",
-        child: "",
-        certificate: "",
-        hobby: "",
-        skill: "",
-        Induction: "",
-        post: "",
+        name:'',
+        department:'',
+        region:'',
+        Interface:'',
+        customer:'',
+        project:'',
+        skill:'',
+        state:''
       },
+      formClear:'',
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        layout: "total, sizes, prev, pager, next, jumper",
-        
+        total:0
       },
       tableData: [],
       tableProject: [],
@@ -385,7 +359,8 @@ export default {
     };
   },
   mounted() {
-    this.queryUserList();
+    this.formClear=JSON.parse(JSON.stringify(this.formOptions))
+    this.queryTableList();
     this.queryProjectList();
     this.queryUsers();
     this.queryMockUser();
@@ -393,6 +368,27 @@ export default {
     this.queryCustomerList();
   },
   methods: {
+    //table数据
+    queryTableList(){
+      let data = {records: [{ ...this.formOptions }]};
+          data.current = this.paginationOptions.pageNo;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, "data---------");
+          queryEmployee(data).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              this.tableData = res.data.records; // 表格数据赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            }
+          });
+    },
+    resetForm(){
+      this.paginationOptions.pageNo=1
+      this.formOptions=JSON.parse(JSON.stringify(this.formClear))
+    },
+
+
+
+
     //  假数据客户查询方法
     queryCustomerList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -469,27 +465,7 @@ export default {
         }
       });
     },
-    // 查询接口人列表 假的
-    queryUserList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqStaff(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.tableData = res.data; // 表格数据赋值
-            console.log(this.tableData, "假的员工表数据表");
-            // this.paginationOptions.total = res.data.total; // 分页器赋值
-            this.paginationOptions.total = 3; // 分页器赋值
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    
     // 项目表
     queryProjectList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -510,28 +486,16 @@ export default {
       });
     },
 
-    // // 查询接口人列表 真的
-    // queryUserList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       console.log(valid, "validvalidvalid");
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       console.log(data, "data---------");
-    //       queryUser(data).then((res) => {
-    //         console.log(res, "res++++++++++");
-    //         if (res && res.code && res.code === "00000") {
-    //           this.tableData = res.data.records; // 表格数据赋值
-    //           console.log(this.tableData);
-    //           this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         }
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
+    queryUserList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+         this.paginationOptions.pageNo=1
+          this.queryTableList()
+        } else {
+          return false;
+        }
+      });
+    },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该员工, 是否继续?", "删除员工", {
@@ -541,15 +505,10 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.tableData.splice(index, 1);
-          this.$message({
-            type: "success",
-            message: "删除成功!",
-          });
           // 点击确认，发起后台请求，删除该接口人
-          deleteMenu(row.id).then((res) => {
-            console.log(res, "点击确认，发起后台请求，删除该接口人");
-            if (res.data.meta.status == 200) {
+          deleteEmployee(row.jobNo).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              this.queryTableList()
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -574,7 +533,6 @@ export default {
     addClick() {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加员工";
-      console.log("我要添加");
     },
     // 编辑
     handleClick(row) {
@@ -594,21 +552,16 @@ export default {
       this.list = "查看员工详情";
       console.log("详情", row, row.id);
     },
-    // 重置表单
 
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
-      this.queryUserList();
+      this.queryTableList();
     },
     // 分页器 页码变更行为
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
-      this.queryUserList();
+      this.queryTableList();
     },
     indexMethod(index){
       return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
@@ -616,12 +569,6 @@ export default {
   },
 };
 </script>
-<style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
-</style>
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;

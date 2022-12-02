@@ -16,80 +16,80 @@
                 <div class="userbox_n">   
                   <ul>
                     <li>
-                      <span>员工姓名:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>员工姓名:</span><span>{{ userEditForm.name }}</span>
                     </li>
                     <li>
                       <span>出生年月日:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.birthday }}</span>
                     </li>
                     <li>
                       <span>联系电话:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>最高学历:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>最高学历:</span><span>{{ userEditForm.education }}</span>
                     </li>
                     <li>
-                      <span>毕业时间:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>毕业时间:</span><span>{{ userEditForm.schoolTime }}</span>
                     </li>
                     <li>
                       <span>工号:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.jobNo }}</span>
                     </li>
                     <li>
                       <span>岗位:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.postId }}</span>
                     </li>
                     <li>
-                      <span>员工状态:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>员工状态:</span><span>{{ userEditForm.status }}</span>
                     </li>
                     <li>
-                      <span>部门:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>部门:</span><span>{{ userEditForm.department }}</span>
                     </li>
                     <li>
-                      <span>客户:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>客户:</span><span>{{ userEditForm.customer }}</span>
                     </li>
                     <li>
-                      <span>户籍地:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>户籍地:</span><span>{{ userEditForm.nativeAddress }}</span>
                     </li>
                     <li>
-                      <span>婚姻状况:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>婚姻状况:</span><span>{{ userEditForm.marriage }}</span>
                     </li>
                     <li>
-                      <span>紧急联系人:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>紧急联系人:</span><span>{{ userEditForm.emergency }}</span>
                     </li>
                     <li>
-                      <span>证书:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>证书:</span><span>{{ userEditForm.certificate }}</span>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <span>性别:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>性别:</span><span>{{ userEditForm.gender }}</span>
                     </li>
                     <li>
                       <span>年龄:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.age }}</span>
                     </li>
                     <li>
                       <span>电子邮箱:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.email }}</span>
                     </li>
                     <li>
-                      <span>毕业院校:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>毕业院校:</span><span>{{ userEditForm.school }}</span>
                     </li>
                     <li>
-                      <span>工作年限:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>工作年限:</span><span>{{ userEditForm.workingHours }}</span>
                     </li>
                     <li>
                       <span>入职时间:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.time }}</span>
                     </li>
                     <li>
                       <span>工作技能:</span
-                      ><span>{{ userEditForm.nameZh }}</span>
+                      ><span>{{ userEditForm.shill }}</span>
                     </li>
                     <li>
-                      <span>项目:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>项目:</span><span>{{ userEditForm.projectId }}</span>
                     </li>
                     <li>
                       <span>地域:</span><span>{{ userEditForm.nameZh }}</span>
@@ -98,16 +98,16 @@
                       <span>接口人:</span><span>{{ userEditForm.nameZh }}</span>
                     </li>
                     <li>
-                      <span>现居住地:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>现居住地:</span><span>{{ userEditForm.residence }}</span>
                     </li>
                     <li>
-                      <span>有无小孩:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>有无小孩:</span><span>{{ userEditForm.child }}</span>
                     </li>
                     <li>
-                      <span>紧急联系人电话:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>紧急联系人电话:</span><span>{{ userEditForm.emergencyTelephone }}</span>
                     </li>
                     <li>
-                      <span>兴趣爱好:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>兴趣爱好:</span><span>{{ userEditForm.hobby }}</span>
                     </li>
                   </ul>
                  
@@ -172,6 +172,7 @@ import { updateUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    tableData:Array
   },
   data() {
     return {

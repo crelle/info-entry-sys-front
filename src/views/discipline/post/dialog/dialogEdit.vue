@@ -77,12 +77,12 @@
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <el-form-item label="最晚到岗时间" prop="dateDo">
+                <el-form-item label="最晚到岗时间" prop="latestArrivalTime">
                   <el-col :span="11">
                     <el-date-picker
                       type="date"
                       placeholder="选择日期"
-                      v-model="userEditForm.dateDo"
+                      v-model="userEditForm.latestArrivalTime"
                       style="width: 100%"
                     ></el-date-picker>
                   </el-col>
@@ -97,10 +97,10 @@
                   >
                   </el-cascader>
                 </el-form-item>
-                <el-form-item label="详细地址 :" prop="detailed">
+                <el-form-item label="详细地址 :" prop="detailAddress">
                   <el-input
                     type="text"
-                    v-model="userEditForm.detailed"
+                    v-model="userEditForm.detailAddress"
                     placeholder="详细地址"
                   ></el-input>
                 </el-form-item>
@@ -145,7 +145,6 @@ import { establishPost, editPost } from "@/api/post";
 // 查询接口人 查客户
 import { reqgetInterface } from "@/mockjs/reqMock";
 
-import { updateRole, deleteRole } from "@/api/role";
 import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 
 export default {
@@ -178,7 +177,8 @@ export default {
         address: "",
         customer: "",
         date: "",
-        dateDo: "",
+        detailAddress: "",
+        latestArrivalTime: "",
         number: "",
         position: "",
         postId: "",
@@ -245,7 +245,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        dateDo: [
+        latestArrivalTime: [
           {
             required: false,
             message: "请填最晚到岗时间",
@@ -259,8 +259,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-
-        detailed: [
+        detailAddress: [
           {
             required: false,
             message: "请填写详细地址",
@@ -295,13 +294,12 @@ export default {
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+     console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       // console.log(this.tableData,"-------------");
-
       if (row) {
-        let editRow=JSON.parse(JSON.stringify(row))
-        editRow.address=this.getCityCode(editRow.address)
+        let editRow = JSON.parse(JSON.stringify(row));
+        editRow.address = this.getCityCode(editRow.address);
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
@@ -330,8 +328,8 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
       this.initForm(this.userEditForm);
+      this.resetFormData();
     },
-
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;

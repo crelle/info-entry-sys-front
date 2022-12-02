@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -36,10 +36,10 @@
                         ></el-date-picker>
                       </el-col>
                     </el-form-item>
-                    <el-form-item label="联系电话" prop="cell_phone">
+                    <el-form-item label="联系电话" prop="cellPhone">
                       <el-input
                         placeholder="联系电话"
-                        v-model="userEditForm.cell_phone"
+                        v-model="userEditForm.cellPhone"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="最高学历" prop="education">
@@ -48,34 +48,39 @@
                         v-model="userEditForm.education"
                         placeholder="最高学历"
                       >
-                        <el-option label="博士研究生" :value="true"></el-option>
+                        <el-option
+                          label="博士研究生"
+                          value="博士研究生"
+                        ></el-option>
                         <el-option
                           label="硕士研究生"
-                          :value="false"
+                          value="硕士研究生"
                         ></el-option>
-                        <el-option label="本科" :value="false"></el-option>
-                        <el-option label="专科" :value="false"></el-option>
+                        <el-option label="本科" value="本科"></el-option>
+                        <el-option label="专科" value="本科"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="毕业时间" prop="school_time">
+                    <el-form-item label="毕业时间" prop="schoolTime">
                       <el-col :span="11">
                         <el-date-picker
                           type="date"
                           placeholder="选择日期"
-                          v-model="userEditForm.school_time"
+                          format="yyyy 年 MM 月dd日"
+                          value-format="yyyy-MM-dd"
+                          v-model="userEditForm.schoolTime"
                           style="width: 100%"
                         ></el-date-picker>
                       </el-col>
                     </el-form-item>
-                    <el-form-item label="工号" prop="job_no">
+                    <el-form-item label="工号" prop="jobNo">
                       <el-input
                         placeholder="工号"
-                        v-model="userEditForm.job_no"
+                        v-model="userEditForm.jobNo"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="岗位" prop="post">
+                    <el-form-item label="岗位" prop="postId">
                       <el-select
-                        v-model="userEditForm.post"
+                        v-model="userEditForm.postId"
                         placeholder="请选择岗位"
                       >
                         <el-option label="Web" value="Web"></el-option>
@@ -84,9 +89,9 @@
                         <el-option label="测试" value="测试"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="员工状态" prop="employee_status">
+                    <el-form-item label="员工状态" prop="status">
                       <el-select
-                        v-model="userEditForm.employee_status"
+                        v-model="userEditForm.status"
                         placeholder="请选择状态"
                       >
                         <el-option label="在岸" value="在岸"></el-option>
@@ -95,22 +100,24 @@
                         <el-option label="离职" value="离职"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="部门" prop="department">
+                    <el-form-item label="部门" >
                       <el-input
                         v-model="userEditForm.department"
                         placeholder="部门"
+                        disabled
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="客户" prop="customer">
+                    <el-form-item label="客户" >
                       <el-input
                         v-model="userEditForm.customer"
                         placeholder="客户"
+                        disabled
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="户籍地" prop="Native">
+                    <el-form-item label="户籍地" prop="native">
                       <el-input
                         placeholder="户籍地"
-                        v-model="userEditForm.Native"
+                        v-model="userEditForm.native"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="婚姻状况" prop="marriage">
@@ -149,10 +156,10 @@
                     <el-form-item label="年龄" prop="age">
                       <el-input v-model="userEditForm.age"></el-input>
                     </el-form-item>
-                    <el-form-item label="电子邮箱" prop="Email">
+                    <el-form-item label="电子邮箱" prop="email">
                       <el-input
                         placeholder="电子邮箱"
-                        v-model="userEditForm.Email"
+                        v-model="userEditForm.email"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="毕业院校" prop="school">
@@ -161,18 +168,20 @@
                         v-model="userEditForm.school"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="工作年限" prop="working_hours">
+                    <el-form-item label="工作年限" prop="workingHours">
                       <el-input
                         placeholder="工作年限"
-                        v-model="userEditForm.working_hours"
+                        v-model="userEditForm.workingHours"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="入职时间" prop="Induction">
+                    <el-form-item label="入职时间" prop="time">
                       <el-col :span="11">
                         <el-date-picker
                           type="date"
                           placeholder="选择日期"
-                          v-model="userEditForm.Induction"
+                          format="yyyy 年 MM 月dd日"
+                          value-format="yyyy-MM-dd"
+                          v-model="userEditForm.time"
                           style="width: 100%"
                         ></el-date-picker>
                       </el-col>
@@ -188,9 +197,9 @@
                         <el-option label="测试" value="测试"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="项目" prop="project">
+                    <el-form-item label="项目" prop="projectId">
                       <el-select
-                        v-model="userEditForm.project"
+                        v-model="userEditForm.projectId"
                         placeholder="请选择接项目"
                         filterable
                         @change="queryson"
@@ -203,19 +212,19 @@
                         ></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="地域" prop="region">
-                      <el-select
+                    <el-form-item label="地域" >
+                      <el-input
                         v-model="userEditForm.region"
-                        placeholder="请选择地域"
+                        placeholder="地域"
+                        disabled
                       >
-                        <el-option label="W地域eb" value="We地域b"></el-option>
-                        <el-option label="U地域I" value="U地域I"></el-option>
-                      </el-select>
+                      </el-input>
                     </el-form-item>
-                    <el-form-item label="接口人" prop="Interface">
+                    <el-form-item label="接口人" >
                       <el-input
                         v-model="userEditForm.Interface"
                         placeholder="接口人"
+                        disabled
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="现居住地" prop="residence">
@@ -236,11 +245,11 @@
                     </el-form-item>
                     <el-form-item
                       label="紧急联系人电话"
-                      prop="emergency_telephone"
+                      prop="emergencyTelephone"
                     >
                       <el-input
                         placeholder="请输入紧急联系人电话"
-                        v-model="userEditForm.emergency_telephone"
+                        v-model="userEditForm.emergencyTelephone"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="兴趣爱好" prop="hobby">
@@ -271,7 +280,7 @@
               <el-button
                 class="cancel"
                 type="primary"
-                @click="dialogClose"
+                @click="closeDialog"
                 size="mini"
                 >取 消</el-button
               >
@@ -284,7 +293,12 @@
 </template>
 
 <script>
-import { updateUser, addUser } from "@/api/user";
+import {
+  queryEmployee,
+  createEmployee,
+  deleteEmployee,
+  updateEmployee,
+} from "@/api/employee";
 export default {
   props: {
     toChild: String,
@@ -304,54 +318,38 @@ export default {
           post: "java",
         },
       ],
-      textarea: "",
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        job_no: "",
-        name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
-        customer: "",
-        status: "",
-        department: "",
-        project: "",
-        address: "",
-        time: "",
-        cooperation: "",
-        Interface: "",
-        // 详情
-        age: "",
+        age: null,
         birthday: "",
-        politics: "",
-        Native: "",
-        residence: "",
-        emergency: "",
-        emergency_telephone: "",
-        education: "",
-        school: "",
-        school_time: "",
-        working_hours: "",
-        marriage: "",
-        child: "",
+        cellPhone: "",
         certificate: "",
+        child: "",
+        education: "",
+        email: "",
+        emergency: "",
+        emergencyTelephone: "",
+        gender: "",
         hobby: "",
+        jobNo: "",
+        marriage: "",
+        name: "",
+        nativeAddress: "",
+        postId: "",
+        projectId: "",
+        residence: "",
+        school: "",
+        schoolTime: "",
         skill: "",
-        Induction: "",
-        post: "",
-        employee_status: "",
-        region: "",
+        time: "",
+        status:"",
+        department:"",
+        projectId:'',
+        workingHours: 0,
       },
       initFormData: {},
       userEditFormRules: {
-        job_no: [
+        jobNo: [
           {
             required: true,
             message: "请输入工号",
@@ -378,14 +376,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        cell_phone: [
+        cellPhone: [
           {
             required: true,
             message: "请输入手机号",
             trigger: ["blur", "change"],
           },
         ],
-        Email: [
+        email: [
           {
             required: true,
             message: "请输入邮箱",
@@ -406,20 +404,6 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        department: [
-          {
-            required: true,
-            message: "请选择部门",
-            trigger: ["blur", "change"],
-          },
-        ],
-        project: [
-          {
-            required: true,
-            message: "请选择项目",
-            trigger: ["blur", "change"],
-          },
-        ],
         address: [
           {
             required: false,
@@ -427,25 +411,11 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        time: [
-          {
-            required: false,
-            message: "请输入毕业日期",
-            trigger: ["blur", "change"],
-          },
-        ],
-        Interface: [
-          {
-            required: false,
-            message: "请选择接口人",
-            trigger: ["blur", "change"],
-          },
-        ],
         age: [
           {
             required: false,
             message: "请输入年龄/岁",
-            trigger: ["blur", "change"],
+            trigger: ["blur"],
           },
         ],
         birthday: [
@@ -462,7 +432,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        Native: [
+        native: [
           {
             required: false,
             message: "请输入籍贯",
@@ -483,7 +453,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        emergency_telephone: [
+        emergencyTelephone: [
           {
             required: true,
             message: "请输入紧急联系人电话",
@@ -504,14 +474,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        school_time: [
+        schoolTime: [
           {
             required: true,
             message: "请输入毕业时间",
             trigger: ["blur", "change"],
           },
         ],
-        working_hours: [
+        workingHours: [
           {
             required: true,
             message: "请输入工作年限/年",
@@ -553,14 +523,14 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        Induction: [
+        time: [
           {
             required: true,
             message: "请输入入职时间",
             trigger: ["blur", "change"],
           },
         ],
-        post: [
+        postId: [
           {
             required: true,
             message: "请选择岗位",
@@ -571,13 +541,6 @@ export default {
           {
             required: true,
             message: "请选择状态",
-            trigger: ["blur", "change"],
-          },
-        ],
-        region: [
-          {
-            required: true,
-            message: "请选择地域",
             trigger: ["blur", "change"],
           },
         ],
@@ -594,20 +557,14 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
       this.userEditForm.department = this.tableProject[e].department;
       this.userEditForm.Interface = this.tableProject[e].name;
       this.userEditForm.department = this.tableProject[e].department;
       this.userEditForm.customer = this.tableProject[e].customer;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
     },
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -615,8 +572,6 @@ export default {
           // 这个要加上
           this.initForm(row); // 为表单赋值
         });
-      } else {
-        console.log("我是新增");
       }
     },
     initForm(data) {
@@ -625,52 +580,25 @@ export default {
       });
     },
     closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
-    },
-    // 取消
-    dialogClose() {
+      this.$refs["userEditRef"].resetFields();
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
-    },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      // this.initForm(this.initFormData);
-      this.initForm(this.userEditForm);
-      this.resetFormData();
-    },
-
-    // 初始化页面数据 重置
-    resetFormData() {
-      this.ifLogin = true;
-      this.userEditForm.roles = [];
     },
 
     /* 保存  */
     onCertain() {
+      console.log(this.userEditForm);
       if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
         this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
                 this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.$parent.queryTableList();
+                this.dialogFormVisible = false;
               }
             });
           } else {
@@ -678,18 +606,14 @@ export default {
           }
         });
       } else {
-        console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "增加了...res11111");
+            createEmployee(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
-                this.dialogClose();
                 this.$parent.resetForm();
+                this.$parent.queryTableList();
+                this.closeDialog();
               }
             });
           } else {
@@ -846,8 +770,6 @@ export default {
   padding-top: 15px;
   display: flex;
   justify-content: space-around;
-  .box_li {
-    margin: 0 30px;
-  }
+
 }
 </style>

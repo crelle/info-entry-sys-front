@@ -13,7 +13,7 @@
             <div class="grid-content-right">
               <el-form ref="userEditRef" size="mini">
                 <el-form-item label="岗位名称 :">
-                  <span>{{ initFormData.pstname }}</span>
+                  <span>{{ initFormData.postName }}</span>
                 </el-form-item>
                 <el-form-item label="岗位技能 :">
                   <span>{{ initFormData.skill }}</span>
@@ -31,16 +31,16 @@
                   <span>{{ initFormData.date }}</span></el-form-item
                 >
                 <el-form-item label="办公地点 :" prop="place">
-                  <span>{{ initFormData.place }}</span></el-form-item
+                  <span>{{ initFormData.address }}</span></el-form-item
                 >
                 <el-form-item label="岗位职责 :" prop="duty">
-                  <span :title="initFormData.duty" class="duty">
-                    {{ initFormData.duty }}
+                  <span :title="initFormData.position" class="duty">
+                    {{ initFormData.position }}
                   </span></el-form-item
                 >
                 <el-form-item label="岗位要求 :" prop="requirement">
-                  <span :title="initFormData.requirement" class="requirement">{{
-                    initFormData.requirement
+                  <span :title="initFormData.requirements" class="requirement">{{
+                    initFormData.requirements
                   }}</span>
                 </el-form-item>
               </el-form>

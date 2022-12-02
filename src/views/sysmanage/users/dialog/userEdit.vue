@@ -69,7 +69,7 @@
                   >
                   </el-switch>
                 </el-form-item>
-                <el-form-item label="" prop="password">
+                <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -77,7 +77,7 @@
                     placeholder="密码"
                     :disabled="true"
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
               </el-form>
           </el-col>
         </el-row>

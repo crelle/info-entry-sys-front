@@ -1,6 +1,11 @@
 <template>
   <div>
-    <el-dialog :title="toChild" :visible.sync="dialogFormVisible" :close-on-click-modal='false' lock-scroll>
+    <el-dialog
+      :title="toChild"
+      :visible.sync="dialogFormVisible"
+      :close-on-click-modal="false"
+      lock-scroll
+    >
       <div class="register_form_main">
         <el-row style="height: 100%">
           <el-form
@@ -55,6 +60,10 @@
 </template>
 
 <script>
+// 当前用户
+import { Decrypt } from "@/util/crypto/secret";
+
+import { changePassword } from "@/api/user";
 export default {
   props: {
     toChild: String,
@@ -108,6 +117,13 @@ export default {
       //
       dialogFormVisible: false,
     };
+  },
+  created() {
+    this.userdetail = window.localStorage.getItem("userdetail")
+      ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+      : {};
+    // console.log(window.localStorage.getItem("userdetail"));
+    console.log(this.userdetail, "我是 当前----用户");
   },
   methods: {
     // 表单验证 确定
@@ -183,10 +199,10 @@ export default {
   margin-left: 80px !important;
   text-align: right;
 }
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 30px 50px 0;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   width: 25% !important;
   font-size: 12px;
 }

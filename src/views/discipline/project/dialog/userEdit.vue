@@ -307,7 +307,7 @@ export default {
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -323,12 +323,6 @@ export default {
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        // if (item === "userAvatar") {
-        //   // 最终保存的时候 此字段（头像地址）才是最终会
-        //   // 赋值给this.userEditForm.userAvatar的值，
-        //   // 所以要初始化的时候也要赋值一次
-        //   this.imageUrl = data[item];
-        // }
       });
     },
     closeDialog() {
@@ -343,7 +337,6 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.initForm(this.initFormData);
       this.initForm(this.userEditForm);
       this.resetFormData();
     },
@@ -352,8 +345,6 @@ export default {
     resetFormData() {
       this.ifLogin = true;
       this.userEditForm.roles = [];
-      // // this.imageUrl = ""; // 清空头像
-      // this.nowIndex = -1; // 重置选中
     },
     // // 头像上传相关
     // handleAvatarSuccess(res, file) {

@@ -419,10 +419,10 @@ export default {
   align-items: center;
   margin-bottom: 20px;
 }
-::v-deep .el-form-item__label {
-  width: 100px !important;
-  text-align: left;
-}
+// ::v-deep .el-form-item__label {
+//   width: 100px !important;
+//   text-align: left;
+// }
 ::v-deep .el-textarea__inner {
   min-height: 130px !important;
 }
@@ -504,6 +504,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-left: 10px;
 }
 ::v-deep .preservation {
   margin-bottom: 0;

@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -17,36 +17,37 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="接口人名称" prop="name">
+                <el-form-item label="接口人名称" prop="interfaceName">
                   <el-input
-                    v-model="userEditForm.name"
+                    v-model="userEditForm.interfaceName"
                     placeholder="接口人名称"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="gender">
                   <el-select v-model="userEditForm.gender" placeholder="请选择">
-                    <el-option label="男" :value="true"></el-option>
-                    <el-option label="女" :value="false"></el-option>
+                    <el-option label="男" value="男"></el-option>
+                    <el-option label="女" value="女"></el-option>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="接口人办公地址" prop="address">
-                  <el-input
-                    type="email"
+                  <el-cascader
+                    size="large"
+                    :options="options"
                     v-model="userEditForm.address"
-                    placeholder="接口人办公地址"
-                  ></el-input>
+                    clearable
+                  ></el-cascader>
                 </el-form-item>
-                <el-form-item label="手机号" prop="cell_phone">
+                <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.cell_phone"
+                    v-model="userEditForm.cellPhone"
                     placeholder="手机号"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="Email">
+                <el-form-item label="邮箱" prop="email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.Email"
+                    v-model="userEditForm.email"
                     placeholder="邮箱"
                   ></el-input>
                 </el-form-item>
@@ -55,40 +56,30 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item> -->
-                <el-form-item label="客户" prop="customer">
+                <el-form-item label="客户" prop="customerId">
                   <el-select
-                    v-model="userEditForm.customer"
+                    v-model="userEditForm.customerId"
                     placeholder="请选择客户"
                     filterable
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in tableCustomer"
+                      v-for="item in tableCustomer"
                       :key="item.index"
-                      :label="item.customer"
-                      :value="index"
+                      :label="item.customerName"
+                      :value="item.customerId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="介绍" prop="">
+                <el-form-item label="介绍" prop="introduce">
                   <el-input
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                    v-model="userEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
-                <!-- <el-form-item label="" prop="password">
-                  <el-input
-                    class="passwordat"
-                    type="email"
-                    v-model="userEditForm.password"
-                    placeholder="密码"
-                    :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
@@ -111,8 +102,12 @@
 </template>
 
 <script>
+//创建接口人/编辑接口人
+import { establishInterface,editInterface } from "@/api/interface";
+
 import { updateUser, addUser } from "@/api/user";
 
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   props: {
     toChild: String,
@@ -121,6 +116,7 @@ export default {
   },
   data() {
     return {
+      options: regionData,
       xingbie: "",
       textarea: "",
       dialogFormVisible: false,
@@ -131,17 +127,18 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        id: "",
-        name: "",
-        gender: "",
-        cell_phone: "",
-        Email: "",
         address: "",
-        customer: "",
+        cellPhone: "",
+        customerId: "",
+        email: "",
+        gender: "",
+        interfaceId: "",
+        interfaceName: "",
+        introduce: "",
       },
       initFormData: {},
       userEditFormRules: {
-        name: [
+        interfaceName: [
           {
             required: true,
             message: "请输入用户名",
@@ -160,22 +157,16 @@ export default {
             message: "请输入密码",
             trigger: ["blur", "change"],
           },
-          // {
-          //   min: 1,
-          //   max: 16,
-          //   message: "用户名长度在1-16 个字符",
-          //   trigger: "blur",
-          // },
         ],
 
-        Email: [
+        email: [
           {
             required: true,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
         ],
-        gender: [
+        interfaceName: [
           {
             required: false,
             message: "请选择性别",
@@ -189,7 +180,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        cell_phone: [
+        cellPhone: [
           {
             required: true,
             message: "请填写手机号码",
@@ -200,6 +191,13 @@ export default {
           {
             required: false,
             message: "请填写地域",
+            trigger: ["blur", "change"],
+          },
+        ],
+        introduce: [
+          {
+            required: false,
+            message: "请填介绍",
             trigger: ["blur", "change"],
           },
         ],
@@ -219,13 +217,15 @@ export default {
     //
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
+        let editRow = JSON.parse(JSON.stringify(row));
+        editRow.address = this.getCityCode(editRow.address);
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(editRow); // 为表单赋值
         });
       } else {
         console.log("我是新增");
@@ -235,12 +235,6 @@ export default {
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
-        // if (item === "userAvatar") {
-        //   // 最终保存的时候 此字段（头像地址）才是最终会
-        //   // 赋值给this.userEditForm.userAvatar的值，
-        //   // 所以要初始化的时候也要赋值一次
-        //   this.imageUrl = data[item];
-        // }
       });
     },
     closeDialog() {
@@ -255,16 +249,12 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      // this.initForm(this.initFormData);
       this.initForm(this.userEditForm);
       this.resetFormData();
     },
-
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
-      // // this.imageUrl = ""; // 清空头像
-      // this.nowIndex = -1; // 重置选中
     },
     // // 头像上传相关
     // handleAvatarSuccess(res, file) {
@@ -314,30 +304,29 @@ export default {
 
     /* 保存  */
     onCertain() {
-      if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
-        this.userEditForm.id = this.initFormData.id;
+      var loc = "";
+      for (let i = 0; i < this.userEditForm.address.length; i++) {
+        loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+      }
+      console.log(loc);
+      this.userEditForm.address = loc;
+
+      if (this.initFormData.interfaceId) {
+        this.userEditForm.interfaceId = this.initFormData.interfaceId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "res11111");
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.resetForm();
-                this.dialogFormVisible = false; // 让弹窗显
+            editInterface(this.userEditForm, this.userEditForm.interfaceId).then(
+              (res) => {
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("修改成功！");
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗显
+                }
               }
-            });
+            );
           } else {
             return false;
           }
@@ -345,16 +334,14 @@ export default {
       } else {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "增加了...res11111");
+            console.log(this.userEditForm, "新增的内容字段------------");
+            establishInterface(this.userEditForm).then((res) => {
+              console.log(res, "增加了........");
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.resetForm();
+                this.$parent.queryUserList();
               }
             });
           } else {
@@ -362,6 +349,26 @@ export default {
           }
         });
       }
+    },
+    getCityCode(cityText) {
+      var codeArray = [];
+      if (cityText != "") {
+        var cityArray = cityText.trim().split(" ");
+        if (cityArray.length == 1) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+        } else if (cityArray.length == 2) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+        } else if (cityArray.length == 3) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+          codeArray.push(
+            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+          );
+        }
+      }
+
+      return codeArray;
     },
   },
 };
@@ -470,13 +477,12 @@ export default {
   color: #606266;
   font-size: 12px;
   font-family: "微软雅黑";
-
 }
 ::v-deep .el-dialog {
   width: 30%;
 }
 
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 0px 20px;
 }
 </style>

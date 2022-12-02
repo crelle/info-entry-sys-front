@@ -215,10 +215,7 @@ import { queryPost, deletesPost } from "@/api/post";
 import { queryProject } from "@/api/project";
 // 地域
 import { queryRegion } from "@/api/region";
-// 假的岗位表/项目表/地域表
-import { reqPost, reqProject, reqMockUser } from "@/mockjs/reqMock";
 
-import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/discipline/post/dialog/dialogEdit.vue";
 import RoleDataDialog from "@/views/discipline/post/dialog/dialogDetails.vue";
 export default {
@@ -242,16 +239,18 @@ export default {
       ],
       list: "",
       formOptions: {
-        id: "",
-        pstname: "",
-        skill: "",
-        project: "",
-        number: "",
+        address: "",
+        customer: "",
         date: "",
-        region: "",
-        place: "",
-        duty: "",
-        requirement: "",
+        detailAddress: "",
+        latestArrivalTime: "",
+        number: "",
+        position: "",
+        postId: "",
+        postName: "",
+        projectId: "",
+        requirements: "",
+        skill: "",
       },
       tableData: [],
       projectData: [],
@@ -276,7 +275,6 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           queryPost(data).then((res) => {
-            this.resetForm("queryRoleRef"); // 重置表单
             //  查询 项目表
             queryProject(data).then((res1) => {
               // 查询 地域表
@@ -290,8 +288,9 @@ export default {
                 this.tableData.forEach((item) => {
                   if (item.date) {
                     item.date = item.date.split("T")[0];
+                    item.address = item.address.split("/")[0];
                   }
-                  item.address = item.address.split("/")[0];
+
                   this.projectData.forEach((sitem) => {
                     if (item.projectId == sitem.projectId) {
                       item.project = sitem.project;
@@ -357,7 +356,7 @@ export default {
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
       this.list = "编辑岗位信息";
-      console.log("编辑", row, row.id);
+      console.log("编辑", row, row.postId);
     },
     // 重置表单
     resetForm(formName) {
@@ -370,13 +369,11 @@ export default {
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
-      // this.queryRoles();
       this.queryPost();
     },
     // 分页器 页码变更行为
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
-      // this.queryRoles();
       this.queryPost();
     },
     indexMethod(index) {
