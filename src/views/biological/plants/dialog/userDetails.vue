@@ -208,7 +208,7 @@ export default {
         name: "",
         gender: "",
         cell_phone: "",
-        Email: "",
+        email: "",
         customer: "",
         status: "",
         department: "",

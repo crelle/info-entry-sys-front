@@ -152,7 +152,13 @@
         size="mini"
         height="506"
       >
-        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
+        <el-table-column
+          label="序号"
+          type="index"
+          :index="indexMethod"
+          width="55"
+          fixed
+        >
         </el-table-column>
         <el-table-column
           prop="jobNo"
@@ -274,8 +280,13 @@ import {
   reqgetInterface,
   reqCustomer,
 } from "@/mockjs/reqMock";
-
-import { queryEmployee,createEmployee,deleteEmployee,updateEmployee } from "@/api/employee";
+import { queryProject } from "@/api/project";
+import {
+  queryEmployee,
+  createEmployee,
+  deleteEmployee,
+  updateEmployee,
+} from "@/api/employee";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
 import UserStateDialog from "@/views/biological/plants/dialog/state.vue";
@@ -333,21 +344,21 @@ export default {
       xmzt: "",
       list: "",
       formOptions: {
-        name:'',
-        department:'',
-        region:'',
-        Interface:'',
-        customer:'',
-        project:'',
-        skill:'',
-        state:''
+        name: "",
+        department: "",
+        region: "",
+        Interface: "",
+        customer: "",
+        project: "",
+        skill: "",
+        state: "",
       },
-      formClear:'',
+      formClear: "",
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        total:0
+        total: 0,
       },
       tableData: [],
       tableProject: [],
@@ -359,7 +370,7 @@ export default {
     };
   },
   mounted() {
-    this.formClear=JSON.parse(JSON.stringify(this.formOptions))
+    this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
     this.queryUsers();
@@ -369,25 +380,46 @@ export default {
   },
   methods: {
     //table数据
-    queryTableList(){
-      let data = {records: [{ ...this.formOptions }]};
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          queryEmployee(data).then((res) => {
-            if (res && res.code && res.code === "00000") {
-              this.tableData = res.data.records; // 表格数据赋值
-              this.paginationOptions.total = res.data.total; // 分页器赋值
-            }
-          });
+    queryTableList() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = this.paginationOptions.pageNo;
+      data.size = this.paginationOptions.pageSize;
+      console.log(data, "data---------");
+      queryEmployee(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.tableData = res.data.records; // 表格数据赋值
+          this.paginationOptions.total = res.data.total; // 分页器赋值
+        }
+      });
     },
-    resetForm(){
-      this.paginationOptions.pageNo=1
-      this.formOptions=JSON.parse(JSON.stringify(this.formClear))
+    resetForm() {
+      this.paginationOptions.pageNo = 1;
+      this.formOptions = JSON.parse(JSON.stringify(this.formClear));
     },
-
-
-
+    queryProjectList() {
+      queryProject({
+        current: 1,
+        size: 1000000,
+        records: [
+          {
+            name: "",
+            cellPhone: "",
+            email: "",
+            customer: "",
+            cooperation: "",
+            departmentId: "",
+            interfaceId: "",
+            introduce: "",
+            project: "",
+            regionId: "",
+            status: "",
+            time: "",
+          },
+        ],
+      }).then((res) => {
+        console.log(res, "queryProjectList");
+      });
+    },
 
     //  假数据客户查询方法
     queryCustomerList() {
@@ -465,32 +497,32 @@ export default {
         }
       });
     },
-    
+
     // 项目表
-    queryProjectList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqProject(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.tableProject = res.data; // 表格数据赋值
-            console.log(this.tableProject, "假的项目数据表");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // queryProjectList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqProject(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         this.tableProject = res.data; // 表格数据赋值
+    //         console.log(this.tableProject, "假的项目数据表");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
 
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-         this.paginationOptions.pageNo=1
-          this.queryTableList()
+          this.paginationOptions.pageNo = 1;
+          this.queryTableList();
         } else {
           return false;
         }
@@ -508,7 +540,7 @@ export default {
           // 点击确认，发起后台请求，删除该接口人
           deleteEmployee(row.jobNo).then((res) => {
             if (res && res.code && res.code === "00000") {
-              this.queryTableList()
+              this.queryTableList();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -563,9 +595,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryTableList();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -581,9 +617,9 @@ export default {
   margin-right: 0;
 }
 
-@media screen and (min-width:1700px){
- ::v-deep .el-card__body::-webkit-scrollbar {
-   display: none;
+@media screen and (min-width: 1700px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
   }
 }
 ::v-deep .el-card__body {
@@ -610,7 +646,7 @@ export default {
 ::v-deep .el-col-5 {
   overflow: hidden;
 }
-.name{
+.name {
   padding-top: 10px;
 }
 </style>

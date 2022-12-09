@@ -36,16 +36,10 @@
                     <li>
                       <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
+                    <li>
+                      <span>介绍:</span><span>{{ userEditForm.introduce }}</span>
+                    </li>
                   </ul>
-                  <el-form-item class="textarea" label="介绍:">
-                    <el-input
-                      type="textarea"
-                      :rows="2"
-                      placeholder="请输入内容"
-                      v-model=" userEditForm.introduce"
-                    >
-                    </el-input>
-                  </el-form-item>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="客户项目" name="first">

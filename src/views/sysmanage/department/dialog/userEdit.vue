@@ -228,7 +228,7 @@ export default {
         this.userEditForm.userId = this.UserData[e].username;
         this.userEditForm.cellPhone = this.UserData[e].userPhone;
         this.userEditForm.email = this.UserData[e].userEmail;
-        this.userEditForm.jobNo = this.UserData[e].id;
+        this.userEditForm.jobNo = this.UserData[e].jobNo;
         // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
       } else {
         return;
@@ -302,8 +302,8 @@ export default {
             establishDepartments(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
-                // this.dialogClose();
-                // this.$parent.queryUserList();
+                this.dialogClose();
+                this.$parent.queryUserList();
               }
             });
           } else {

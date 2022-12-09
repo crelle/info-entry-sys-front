@@ -11,6 +11,7 @@
           <el-form
             :model="ruleForm"
             status-icon
+            :rules="rules"
             ref="ruleForm"
             label-width="100px"
             class="demo-ruleForm"
@@ -18,7 +19,7 @@
             <el-form-item label="旧密码" prop="password">
               <el-input
                 type="password"
-                v-model.number="ruleForm.password"
+                v-model="ruleForm.password"
                 placeholder="请输入旧密码"
               ></el-input>
             </el-form-item>
@@ -59,9 +60,6 @@
 </template>
 
 <script>
-// 当前用户
-import { Decrypt } from "@/util/crypto/secret";
-
 import { changePassword } from "@/api/user";
 export default {
   props: {
@@ -71,15 +69,9 @@ export default {
     var validatePass1 = (rule, value, callback) => {
       if (!value) {
         return callback(new Error("旧密码不能为空"));
+      } else {
+        callback();
       }
-
-      setTimeout(() => {
-        if (!Number.isInteger(value)) {
-          callback(new Error("请输入密码"));
-        } else {
-          callback();
-        }
-      }, 1000);
     };
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -94,7 +86,7 @@ export default {
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.ruleForm.pass) {
+      } else if (value !== this.ruleForm.newpassword) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -108,50 +100,41 @@ export default {
         newpassword: "",
         checkPass: "",
       },
-      // rules: {
-      //   newpassword: [{ validator: validatePass, trigger: "blur" }],
-      //   checkPass: [{ validator: validatePass2, trigger: "blur" }],
-      //   password: [{ validator: validatePass1, trigger: "blur" }],
-      // },
+      rules: {
+        password: [{ validator: validatePass1, trigger: "blur" }],
+        newpassword: [{ validator: validatePass, trigger: "blur" }],
+        checkPass: [{ validator: validatePass2, trigger: "blur" }],
+      },
 
       //
       dialogFormVisible: false,
     };
   },
-
   methods: {
+    // 表单验证 确定
     // 表单验证 确定
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           let data = this.ruleForm;
           data.id = this.userId;
-          console.log(data, "-----xtq---000--------");
-
           changePassword(data).then((res) => {
-            console.log(res, "----修改密码----");
+            if (res.code == "00000") {
+              this.del();
+              this.dialogFormVisible = false; // 让弹窗显示
+            } else {
+              this.del();
+            }
           });
-          // if (this.ruleForm.password == 123) {
-          //   // this.ruleForm.age == 123;
-          //   console.log(valid);
-          //   alert("修改成功!");
-          //   this.del();
-          //   this.dialogFormVisible = false; // 让弹窗显示
-          // } else {
-          //   alert("修改失败!密码不正确,请重新输入!");
-          //   this.del();
-          // }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
-
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields();
+    // },
+    //
     openDialog(row) {
       console.log(row, "当前账户信息");
       this.userId = row.id;

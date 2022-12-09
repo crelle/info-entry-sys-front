@@ -278,7 +278,7 @@ export default {
     this.queryCustomerList();
   },
   methods: {
-    // 查询客户列表 假的
+    // 查询客户列表 
     queryCustomerList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -315,8 +315,8 @@ export default {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
+          data.current =1;
+          data.size = 999;
           queryRegion(data).then((res) => {
             this.MockUser = res.data.records; // 表格数据赋值
             console.log(this.MockUser, "-------假地域数据-------");
