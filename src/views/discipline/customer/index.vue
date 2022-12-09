@@ -72,7 +72,13 @@
         size="mini"
         height="550"
       >
-        <el-table-column label="序号" type="index" :index="indexMethod" width="55" fixed>
+        <el-table-column
+          label="序号"
+          type="index"
+          :index="indexMethod"
+          width="55"
+          fixed
+        >
         </el-table-column>
         <el-table-column
           prop="customerName"
@@ -191,7 +197,6 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        
       },
       tableData: [],
       // 地域
@@ -224,13 +229,13 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
+          data.current = 1;
+          data.size = 999;
           console.log(data, "data---------");
           queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
             this.regionData = res.data.records; // 表格数据赋值
-            console.log(this.regionData, "假的地域数据");
+            console.log(this.regionData, "----地域数据");
           });
         } else {
           return false;
@@ -264,8 +269,8 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
+          data.current = 1;
+          data.size = 999;
           console.log(data, "data---------");
           queryUser(data).then((res) => {
             console.log(res, "res++++++++++");
@@ -350,9 +355,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -369,7 +378,6 @@ export default {
 }
 ::v-deep .el-col-14 {
   text-align: right;
-
 }
 .el-form--inline .el-form-item {
   margin-right: 0;
@@ -388,7 +396,7 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
-.el-form-item{
+.el-form-item {
   width: 251px;
 }
 </style>

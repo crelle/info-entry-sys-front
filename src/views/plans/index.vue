@@ -43,7 +43,10 @@
                 </div>
                 <div class="boxlis">
                   <el-form-item label="角色 :">
-                    <el-input disabled v-model="userdetail.roles[0].nameZh"></el-input>
+                    <el-input
+                      disabled
+                      v-model="userdetail.roles[0].nameZh"
+                    ></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -72,6 +75,7 @@
 </template>
 
 <script>
+import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
 import RoleDataDialog from "@/views/plans/dialog/dialogDetails.vue";
 export default {
@@ -104,7 +108,7 @@ export default {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        password: "123456",
+        password: "",
         userAvatar: "",
         userEmail: "",
         userNickName: "",
@@ -151,14 +155,46 @@ export default {
       // 获取数据
       // this.getSave();
     },
-    // 保存
+    // --------
+    /* 保存  */
     onSubmit() {
+      // ------
       console.log("submit!", this.form);
       this.isInput = true;
       this.displays = false;
       this.editbtn = true;
       this.reset = true;
+      // ------
+      if (this.userdetail.id) {
+        console.log(this.userdetail.id, "--xxxxx--this.initFormData.id-");
+        this.userEditForm.id = this.userdetail.id;
+        this.userEditForm = this.userdetail;
+        console.log(this.userEditForm, "userEditFormuserEditForm123");
+        console.log(
+          this.userEditForm.id,
+          this.userEditForm,
+          "当前用户的id和数据"
+        );
+        // 修改
+        this.$refs["userEditRef"].validate((valid) => {
+          console.log(valid, "修改的valid");
+          if (valid) {
+            console.log(this.userdetail.password, "密码不能空");
+            console.log(this.userEditForm, "--传入的东西0");
+            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "----修改了当前用户后----");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                
+              }
+            });
+          } else {
+            return false;
+          }
+        });
+      }
     },
+    // --------
     // 编辑密码
     onEditRoleMima() {
       this.$refs.roleDataDialogRef.openDialog(this.userdetail);

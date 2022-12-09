@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -15,8 +15,12 @@
                 <div class="userbox">
                   <ul class="lis">
                     <li>
+                      <span>项目名称:</span
+                      ><span>{{ userEditForm.project }}</span>
+                    </li>
+                    <li>
                       <span>项目人数:</span
-                      ><span>{{ userEditForm.number }}</span>
+                      ><span>{{ userEditForm.number }} 人</span>
                     </li>
                     <li>
                       <span>所属部门:</span
@@ -29,7 +33,8 @@
                       <span>接口人:</span><span>{{ userEditForm.name }}</span>
                     </li>
                     <li>
-                      <span>立项时间:</span><span>{{ userEditForm.time }}</span>
+                      <span>立项时间:</span
+                      ><span>{{ userEditForm.createTime }}</span>
                     </li>
                     <li>
                       <span>合作模式:</span
@@ -39,17 +44,11 @@
                       <span>当前状态:</span
                       ><span>{{ userEditForm.status }}</span>
                     </li>
+                    <li>
+                      <span>介绍:</span
+                      ><span>{{ userEditForm.introduce }}</span>
+                    </li>
                   </ul>
-                  <div>
-                    <span>介绍:</span>
-                    <el-input
-                      type="textarea"
-                      :rows="2"
-                      placeholder="请输入内容"
-                      v-model="textarea"
-                    >
-                    </el-input>
-                  </div>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="项目人员" name="first">
@@ -168,9 +167,10 @@ export default {
         department: "",
         project: "",
         address: "",
-        time: "",
+        createTime: "",
         cooperation: "",
         number: "",
+        introduce: "",
       },
       initFormData: {},
     };
@@ -180,7 +180,10 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
     },
+
     openDialog(row) {
+      // 修改时间格式
+      row.createTime = row.createTime.split("T")[0];
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
@@ -188,6 +191,9 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
+          // 项目人数
+          console.log(this.tableData1.length, "----项目人数");
+          this.userEditForm.number = this.tableData1.length;
         });
       }
     },
@@ -273,14 +279,13 @@ export default {
   text-align: center;
   margin-top: 20px;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   margin-top: 10vh !important;
 }
-::v-deep .el-textarea__inner{
+::v-deep .el-textarea__inner {
   margin: 15px 0;
-    color: #606266;
+  color: #606266;
   font-size: 14px;
   font-family: "微软雅黑";
 }
-
 </style>

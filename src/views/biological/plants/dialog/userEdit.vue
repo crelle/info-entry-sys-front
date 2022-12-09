@@ -345,7 +345,7 @@ export default {
         status:"",
         department:"",
         projectId:'',
-        workingHours: 0,
+        workingHours: null,
       },
       initFormData: {},
       userEditFormRules: {

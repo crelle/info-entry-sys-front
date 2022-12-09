@@ -249,8 +249,8 @@ export default {
         if (valid) {
           console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
+          data.current = 1;
+          data.size = 999;
           console.log(data, "data---------");
           queryUser(data).then((res) => {
             console.log(res, "res++++++++++");

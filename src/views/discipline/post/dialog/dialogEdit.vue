@@ -294,7 +294,7 @@ export default {
     //
     // 弹窗
     openDialog(row) {
-     console.log(row, "表单的数据");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       // console.log(this.tableData,"-------------");
       if (row) {
@@ -336,12 +336,16 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      var loc = "";
-      for (let i = 0; i < this.userEditForm.address.length; i++) {
-        loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+      console.log(this.userEditForm.address, "-----徐-----");
+      if (this.userEditForm.address) {
+        var loc = "";
+        for (let i = 0; i < this.userEditForm.address.length; i++) {
+          loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+
+          this.userEditForm.address = loc;
+        }
       }
-      console.log(loc);
-      this.userEditForm.address = loc;
+      
       if (this.initFormData.postId) {
         this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;
@@ -355,6 +359,7 @@ export default {
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
                   this.dialogClose();
+                  this.resetForm();
                   console.log("修改成功！");
                   this.$parent.queryPost();
                 }
@@ -387,7 +392,6 @@ export default {
       var codeArray = [];
       if (cityText != "") {
         var cityArray = cityText.trim().split(" ");
-
         if (cityArray.length == 1) {
           codeArray.push(TextToCode[cityArray[0]].code);
         } else if (cityArray.length == 2) {
