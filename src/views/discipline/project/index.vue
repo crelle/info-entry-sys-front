@@ -66,10 +66,10 @@
                 filterable
               >
                 <el-option
-                  v-for="(item, index) in Interface"
+                  v-for="item in Interface"
                   :key="item.index"
-                  :label="item.name"
-                  :value="index"
+                  :label="item.interfaceName"
+                  :value="item.interfaceId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -126,7 +126,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="name"
+          prop="interfaceName"
           label="接口人"
           min-width="80"
           show-overflow-tooltip
@@ -154,7 +154,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="customer"
+          prop="customerName"
           label="客户"
           min-width="80"
           show-overflow-tooltip
@@ -206,6 +206,7 @@
       :Interface="Interface"
       :MockUser="MockUser"
       :Users="Users"
+      :tableCustomer="tableCustomer"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
@@ -216,22 +217,18 @@
 </template>
 
 <script>
-// 假的项目表/接口人表/地域/部门
-import {
-  reqProject,
-  reqgetInterface,
-  reqMockUser,
-  reqUsers,
-  reqCustomer,
-} from "@/mockjs/reqMock";
+
 // 客户查询
 import { queryCustomer } from "@/api/customer";
 // 地域
 import { queryRegion } from "@/api/region";
+// 接口人
+import { queryInterface } from "@/api/interface";
+// 部门
+import { queryDepartments } from "@/api/department";
 // 项目
 import { queryProject, deletesProject } from "@/api/project";
 
-import { queryUser, deleteMenu } from "@/api/user";
 import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/project/dialog/userDetails.vue";
 export default {
@@ -247,7 +244,7 @@ export default {
         name: "",
         cellPhone: "",
         email: "",
-        customer: "",
+        customerName: "",
         cooperation: "",
         departmentId: "",
         interfaceId: "",
@@ -255,7 +252,6 @@ export default {
         project: "",
         regionId: "",
         status: "",
-        time: "",
       },
       paginationOptions: {
         pageNo: 1,
@@ -274,11 +270,11 @@ export default {
   mounted() {
     this.queryUserList();
     this.queryMockUser();
-    this.queryUsers();
+    // this.queryUsers();
     this.queryCustomerList();
   },
   methods: {
-    // 查询客户列表 
+    // 查询客户列表
     queryCustomerList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -287,46 +283,30 @@ export default {
           data.size = this.paginationOptions.pageSize;
           queryCustomer(data).then((res) => {
             this.tableCustomer = res.data.records; // 表格数据赋值
-            console.log(this.tableCustomer, "----------客户数据表-------");
+            // console.log(this.tableCustomer, "----------客户数据表-------");
           });
         } else {
           return false;
         }
       });
     },
-    //  假数据部门查询方法
-    queryUsers() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          reqUsers(data).then((res) => {
-            this.Users = res.data; // 表格数据赋值
-            console.log(this.Users, "-------假部门数据-------");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    //  假数据地域查询方法
+    //  数据地域查询方法
     queryMockUser() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
-          data.current =1;
+          data.current = 1;
           data.size = 999;
           queryRegion(data).then((res) => {
             this.MockUser = res.data.records; // 表格数据赋值
-            console.log(this.MockUser, "-------假地域数据-------");
+            // console.log(this.MockUser, "-------地域数据-------");
           });
         } else {
           return false;
         }
       });
     },
-    //  假数据拿取查询方法
+    //  数据拿取查询方法
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
@@ -335,41 +315,50 @@ export default {
           data.size = this.paginationOptions.pageSize;
           // 项目表格数据
           queryProject(data).then((res) => {
-            // let data = { records: [{ ...this.formOptions }] };
-            // data.current = this.paginationOptions.pageNo;
-            // data.size = this.paginationOptions.pageSize;
-            // //  假数据接口人查询方法
-            reqgetInterface(data).then((res1) => {
+            data.current = 1;
+            data.size = 999;
+            // //  数据接口人查询方法
+            queryInterface(data).then((res1) => {
               // 部门表格数据
-              reqUsers(data).then((res2) => {
-                this.Users = res2.data; // 部门表格数据赋值
-                this.Interface = res1.data; // 接口人表格数据赋值
+              queryDepartments(data).then((res2) => {
+                this.Users = res2.data.records; // 部门表格数据赋值
+                this.Interface = res1.data.records; // 接口人表格数据赋值
                 this.tableData = res.data.records; // 项目表格数据赋值
                 console.log(this.Users, "部门表格数据");
                 console.log(this.Interface, "接口人表格数据");
-                console.log(this.tableData, "项目表格数据");
+                console.log(this.tableData, "------项目表格数据");
                 this.tableData.forEach((item) => {
                   if (item.status == 1) {
-                    item.status = "前期";
-                  }
-                  if (item.status == 2) {
                     item.status = "开发中";
                   }
+                  if (item.status == 2) {
+                    item.status = "前期投入";
+                  }
                   if (item.status == 3) {
-                    item.status = "交付中";
+                    item.status = "交付阶段";
                   }
                   this.Interface.forEach((sitem) => {
                     if (item.interfaceId == sitem.interfaceId) {
-                      item.name = sitem.name;
+                      item.interfaceName = sitem.interfaceName;
                       item.cellPhone = sitem.cellPhone;
                       item.email = sitem.email;
-                      item.customer = sitem.customer;
+                      // 客户
+                      this.tableCustomer.forEach((items) => {
+                        if (sitem.customerId == items.customerId) {
+                          item.customerName = items.customerName;
+                          item.customerId = items.customerId;
+                        }
+                      });
                     }
-                  });
-                  this.Users.forEach((sitem) => {
-                    if (item.departmentId == sitem.departmentId) {
-                      item.department = sitem.department;
-                    }
+
+                    this.Users.forEach((itemis) => {
+                      if (item.departmentId == itemis.departmentId) {
+                        item.department = itemis.department;
+                      }
+                      if (sitem.customerId == itemis.customerId) {
+                        item.customerName = itemis.customerName;
+                      }
+                    });
                   });
                 });
                 this.paginationOptions.total = res.data.total; // 分页器赋值
@@ -428,13 +417,14 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑项目信息";
-      console.log("编辑-------", row.postId);
+      console.log("编辑-------", row);
     },
     // 详情
     detailsClick(row) {
+      console.log(row,"------查看");
       this.$refs.userDaitDialogRef.openDialog(row);
-      this.list = "查看项目详情";
-      console.log("详情", row, row.postId);
+      // this.list = "查看项目详情";
+      // console.log("详情", row);
     },
     // 重置表单
 
@@ -475,22 +465,21 @@ export default {
 }
 ::v-deep .cell {
   text-align: center;
-   line-height: 36.9px;
+  line-height: 36.9px;
 }
-::v-deep .el-form-item__content{
+::v-deep .el-form-item__content {
   text-align: right;
-
 }
 ::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item{
+::v-deep .el-form-item {
   margin-bottom: 0;
 }
-::v-deep .el-col-4{
-  padding-right:40px;
+::v-deep .el-col-4 {
+  padding-right: 40px;
 }
-::v-deep .btn{
-    padding-right:0 !important;
+::v-deep .btn {
+  padding-right: 0 !important;
 }
 </style>

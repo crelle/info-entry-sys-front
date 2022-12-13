@@ -31,14 +31,6 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="5">
-            <el-form-item label="用户状态" required>
-              <el-select v-model="formOptions.enabled" placeholder="请选择状态">
-                <el-option label="启用" :value="true"></el-option>
-                <el-option label="禁用" :value="false"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col> -->
           <el-col :span="5">
             <el-form-item label="状态">
               <el-select v-model="formOptions.enabled" placeholder="请选择状态">
@@ -50,14 +42,17 @@
           <el-col :span="5">
             <el-form-item label="角色">
               <el-select
-                v-model="formOptions.roles.nameZh"
+                v-model="formOptions.roles[0].id"
+                placeholder="请选择角色"
                 clearable
                 filterable
-                placeholder="请选择角色"
               >
-                <el-option label="管理员" value="管理员"></el-option>
-                <el-option label="普通用户" value="普通用户"></el-option>
-                <el-option label="访客" value="访客"></el-option>
+                <el-option
+                  v-for="item in queryRoleData"
+                  :key="item.index"
+                  :label="item.nameZh"
+                  :value="item.id"
+                ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -201,6 +196,7 @@
 
 <script>
 import { queryUser, deleteMenu } from "@/api/user";
+import { queryRole } from "@/api/role";
 import UserEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
 export default {
@@ -234,6 +230,7 @@ export default {
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
       },
+      queryRoleData: [],
       tableData: [],
       multipleSelection: [],
       userEditForm: {
@@ -252,23 +249,41 @@ export default {
   },
   mounted() {
     this.queryUserList();
+    this.queryRoleList();
   },
   methods: {
     // 查询用户列表
     queryUserList() {
+      console.log(this.formOptions.roles, "----------角色地=id---");
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---formOptions.roles.nameZh------");
+          console.log(data,"data---------");
           queryUser(data).then((res) => {
-            console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
-              console.log(this.tableData, "tzy-------------------");
               this.paginationOptions.total = res.data.total; // 分页器赋值
+              console.log(this.tableData, "查询用户列表++++++");
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 查询角色列表
+    queryRoleList() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = 999;
+          queryRole(data).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              this.queryRoleData = res.data.records; // 表格数据赋值
+              console.log(this.queryRoleData, "查询用户列表++++++");
             }
           });
         } else {
@@ -321,11 +336,11 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑用户信息";
-      console.log("编辑----", row, row.id);
+      console.log("编辑----", row);
     },
     // 详情
     detailsClick(row) {
-      console.log("详情", row, row.id);
+      console.log("详情", row);
       this.list = "查看用户详情";
       this.$refs.userDaitDialogRef.openDialog(row);
     },

@@ -195,12 +195,22 @@ export default {
             message: "请填写岗位名称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         position: [
           {
             required: false,
             message: "请填写岗位职责",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         skill: [
@@ -216,12 +226,22 @@ export default {
             message: "请填写岗位需求",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         project: [
           {
             required: false,
             message: "请填写项目名称",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         customer: [
@@ -230,6 +250,11 @@ export default {
             message: "请填写客户名称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         number: [
           {
@@ -237,18 +262,23 @@ export default {
             message: "请填写需求人数",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         date: [
           {
             required: false,
-            message: "请填写完成时间",
+            message: "请选择完成时间",
             trigger: ["blur", "change"],
           },
         ],
         latestArrivalTime: [
           {
             required: false,
-            message: "请填最晚到岗时间",
+            message: "请选择最晚到岗时间",
             trigger: ["blur", "change"],
           },
         ],
@@ -258,12 +288,22 @@ export default {
             message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         detailAddress: [
           {
             required: false,
             message: "请填写详细地址",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
       },
@@ -336,16 +376,14 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log(this.userEditForm.address, "-----徐-----");
       if (this.userEditForm.address) {
         var loc = "";
         for (let i = 0; i < this.userEditForm.address.length; i++) {
           loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
-
-          this.userEditForm.address = loc;
         }
+        this.userEditForm.address = loc;
       }
-      
+
       if (this.initFormData.postId) {
         this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;

@@ -142,6 +142,11 @@ export default {
             message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
 
         email: [
@@ -150,6 +155,11 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         customerName: [
           {
@@ -157,12 +167,22 @@ export default {
             message: "请填写客户名",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         cellPhone: [
           {
             required: false,
             message: "请填写手机号码",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
           },
         ],
         address: [
@@ -177,6 +197,11 @@ export default {
             required: false,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
       },

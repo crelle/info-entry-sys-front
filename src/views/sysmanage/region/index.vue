@@ -143,27 +143,6 @@ export default {
     this.queryRoles();
   },
   methods: {
-    // // // //  假数据拿取查询方法
-    // queryRoles() {
-    //   this.$refs["queryRoleRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       console.log(data, "data---------");
-    //       reqMockUser(data).then((res) => {
-    //         console.log(res, "res-假的****");
-    //         this.resetForm("queryRoleRef"); // 重置表单
-    //         this.tableData = res.data; // 表格数据赋值
-    //         this.paginationOptions.total = 10; // 分页器赋值
-    //         // this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         console.log(this.tableData, "假的tableData////");
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
     // 真的方法
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {
@@ -171,7 +150,7 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
+          console.log(data,data.current,data.size, "data----xu-----");
           queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
@@ -204,6 +183,7 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
+              
             } else {
               this.$message({
                 type: "success",

@@ -140,12 +140,22 @@ export default {
             message: "请输入用户名",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         password: [
           {
             required: true,
             message: "请输入密码",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
 
@@ -155,12 +165,22 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         jobNo: [
           {
             required: true,
             message: "请填写工号",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         userPhone: [

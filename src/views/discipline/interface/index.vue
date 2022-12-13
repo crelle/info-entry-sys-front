@@ -1,7 +1,6 @@
 <template>
   <div class="users_content">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>需求管理</el-breadcrumb-item>
       <el-breadcrumb-item>接口人管理</el-breadcrumb-item>
     </el-breadcrumb>
@@ -23,12 +22,21 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
+          <el-col :span="4">
             <el-form-item label="客户">
-              <el-input
-                v-model="formOptions.customerName"
-                placeholder="客户姓名"
-              ></el-input>
+              <el-select
+                v-model="formOptions.customerId"
+                placeholder="请选择客户名称"
+                clearable
+                filterable
+              >
+                <el-option
+                  v-for="item in tableCustomer"
+                  :key="item.index"
+                  :label="item.customerName"
+                  :value="item.customerId"
+                ></el-option>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col
@@ -44,7 +52,6 @@
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
-              <!-- <el-button @click="resetForm('formOptions')">重置</el-button> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -220,7 +227,11 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
+          // 接口人表
           queryInterface(data).then((res) => {
+            data.current = 1;
+            data.size = 999;
+            // 客户表
             queryCustomer(data).then((res1) => {
               this.tableData = res.data.records; // 接口人表格数据赋值
               this.tableCustomer = res1.data.records; //客户表格数据赋值

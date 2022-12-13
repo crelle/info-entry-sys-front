@@ -17,11 +17,6 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <!-- <el-form-item label="角色编码">
-                  <el-input v-model="userEditForm.name" placeholder="角色编码"
-                    ><i class="el-icon-user" slot="prepend"></i
-                  ></el-input>
-                </el-form-item> -->
                 <el-form-item label="角色名称" prop="nameZh">
                   <el-input
                     type="text"
@@ -128,40 +123,16 @@ export default {
             message: "请填写角色名称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
       },
     };
   },
   methods: {
-    // 查询菜单
-    queryMenuAll() {
-      queryMenuAll().then((res) => {
-        console.log(res, "res++++++++++");
-        if (res && res.code && res.code === "00000") {
-          this.tableData = res.data; // 表格数据赋值
-          console.log(this.tableData, "----所有菜单");
-          this.queryRoleMenu();
-        }
-      });
-    },
-    // 查询权限菜单
-    queryRoleMenu() {
-      let data = { records: [{ ...this.userEditForm }] };
-      data.id = this.userEditForm.id;
-      console.log(data, "---查询角色菜单data---------");
-      queryRoleMenu(data).then((res) => {
-        if (res && res.code && res.code === "00000") {
-          console.log(res.data, "----查询角色菜单数据成功了");
-          this.datas = res.data.menus;
-          this.setCheckedNodes();
-        }
-      });
-    },
-    // 树形控件赋值
-    setCheckedNodes() {
-      this.$refs.tree_n.setCheckedNodes(this.datas);
-      console.log(this.datas, "----------赋值菜单数据");
-    },
     // 树形控件清空
     resetChecked() {
       this.$refs.tree_n.setCheckedKeys([]);
@@ -169,21 +140,55 @@ export default {
     },
     openDialog(row) {
       console.log(this.userEditForm, "001001");
-      this.dialogFormVisible = true; // 让弹窗显示
+      //  this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
           console.log("我是编辑");
-          // 查询角色菜单
-          this.queryMenuAll();
+        });
+        //查询菜单名字
+        queryMenuAll().then((res) => {
+          console.log(res, "res++++++++++");
+          if (res && res.code && res.code === "00000") {
+            this.tableData = res.data; // 表格数据赋值
+            console.log(this.tableData, "----所有菜单---");
+            let data = { records: [{ ...this.userEditForm }] };
+            data.id = this.userEditForm.id;
+            console.log(data, "---查询角色菜单data---------");
+            // 查询 菜单当前是否选中
+            queryRoleMenu(data).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                console.log(res.data, "----查询角色菜单数据成功了");
+                this.datas = res.data.menus;
+                // 为选中的菜单赋值
+                this.dialogFormVisible = true; // 让弹窗显示
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
+                });
+              }
+            });
+          }
         });
       } else {
-        // 树形控件清空
         console.log("我是新增");
-        // 查询角色菜单
-        this.queryMenuAll();
+
+        delete this.userEditForm.id;
+        // -------
+        // 查询菜单名字
+        queryMenuAll().then((res) => {
+          console.log(res, "res++++++++++");
+          if (res && res.code && res.code === "00000") {
+            this.dialogFormVisible = true; // 让弹窗显示
+            this.$nextTick(() => {
+              // 这个要加上
+              this.tableData = res.data; // 表格数据赋值
+            });
+            console.log(this.tableData, "----所有菜单---");
+          }
+        });
       }
     },
     initForm(data) {
@@ -198,8 +203,9 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
-      this.resetChecked();
+      this.userEditForm.id = "";
+      this.$refs.tree_n.setCheckedKeys([]);
+      console.log(this.userEditForm, "关闭弹窗");
     },
     // 重置表单
     resetForm(formName) {
@@ -217,30 +223,19 @@ export default {
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
+        console.log(this.initFormData, "----保存de 内容");
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
             console.log(this.userEditForm, "---修改传递的内容111111111----");
-            updateRole(this.userEditForm).then((res) => {
-              console.log(res, "res11111");
+            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "-----------角色菜单名称修改");
               if (res && res.code && res.code === "00000") {
-                this.$message.success("修改成功！");
                 this.dialogClose();
-                console.log("修改成功！");
                 this.$parent.queryRoles();
               }
             });
-            updateRole(this.userEditForm.id, this.userEditForm.nameZh).then(
-              (res) => {
-                if (res && res.code && res.code === "00000") {
-                  this.$message.success("修改成功！");
-                  this.dialogClose();
-                  console.log("修改成功！");
-                  this.$parent.queryRoles();
-                }
-              }
-            );
             (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
               // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
               console.log(
@@ -253,7 +248,6 @@ export default {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.dialogClose();
-                console.log("修改成功！");
                 this.$parent.queryRoles();
               }
             });

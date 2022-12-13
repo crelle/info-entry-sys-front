@@ -35,7 +35,7 @@
                   v-for="item in regionData"
                   :key="item.index"
                   :label="item.regionName"
-                  :value="item.regionName"
+                  :value="item.regionId"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -300,7 +300,7 @@ export default {
           deletesCustomer(row.customerId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
-              this.queryRoles();
+              this.queryUserList();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
