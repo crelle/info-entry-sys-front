@@ -3,73 +3,73 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       width="30%"
       lock-scroll
       @close="closeDialog"
     >
       <div class="register_form_main">
-        <el-row style="height: 100%;padding: 0px 28px;">
+        <el-row style="height: 100%; padding: 0px 28px">
           <el-col :span="24">
-              <el-form
-                :model="userEditForm"
-                :rules="userEditFormRules"
-                ref="userEditRef"
-                size="small"               
-                label-position="right"
-                label-width="100px"
-              >
-                <el-form-item label="用户名" prop="username">
-                  <el-input
-                    v-model="userEditForm.username"
-                    placeholder="请输入用户名"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="工号" prop="jobNo">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.jobNo"
-                    placeholder="请输入用户工号"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="手机号" prop="userPhone">
-                  <el-input
-                    type="tel"
-                    v-model="userEditForm.userPhone"
-                    placeholder="请输入用户手机号"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="userEmail">
-                  <el-input
-                    type="email"
-                    v-model="userEditForm.userEmail"
-                    placeholder="请输入用户邮箱"
-                  ></el-input>
-                </el-form-item>
+            <el-form
+              :model="userEditForm"
+              :rules="userEditFormRules"
+              ref="userEditRef"
+              size="small"
+              label-position="right"
+              label-width="100px"
+            >
+              <el-form-item label="用户名" prop="username">
+                <el-input
+                  v-model="userEditForm.username"
+                  placeholder="请输入用户名"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="工号" prop="jobNo">
+                <el-input
+                  type="text"
+                  v-model="userEditForm.jobNo"
+                  placeholder="请输入用户工号"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="手机号" prop="userPhone">
+                <el-input
+                  type="tel"
+                  v-model="userEditForm.userPhone"
+                  placeholder="请输入用户手机号"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="邮箱" prop="userEmail">
+                <el-input
+                  type="email"
+                  v-model="userEditForm.userEmail"
+                  placeholder="请输入用户邮箱"
+                ></el-input>
+              </el-form-item>
 
-                <el-form-item label="角色权限" prop="roles">
-                  <el-select
-                    v-model="userEditForm.roles[0].nameZh"
-                    placeholder="请选择角色权限"
-                    filterable
-                  >
-                    <el-option
-                      v-for="(item, index) in tableData"
-                      :key="item.index"
-                      :label="item.nameZh"
-                      :value="index"
-                    ></el-option>
-                  </el-select>
-                </el-form-item>
-                <el-form-item class="ifnoyes" label="是否可用" prop="enabled">
-                  <el-switch
-                    v-model="userEditForm.enabled"
-                    active-text="启用"
-                    inactive-text="禁用"
-                  >
-                  </el-switch>
-                </el-form-item>
-                <!-- <el-form-item label="" prop="password">
+              <el-form-item label="角色权限" prop="roles">
+                <el-select
+                  v-model="userEditForm.roles[0].nameZh"
+                  placeholder="请选择角色权限"
+                  filterable
+                >
+                  <el-option
+                    v-for="(item, index) in tableData"
+                    :key="item.index"
+                    :label="item.nameZh"
+                    :value="index"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item class="ifnoyes" label="是否可用" prop="enabled">
+                <el-switch
+                  v-model="userEditForm.enabled"
+                  active-text="启用"
+                  inactive-text="禁用"
+                >
+                </el-switch>
+              </el-form-item>
+              <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
                     type="email"
@@ -78,7 +78,7 @@
                     :disabled="true"
                   ></el-input>
                 </el-form-item> -->
-              </el-form>
+            </el-form>
           </el-col>
         </el-row>
       </div>
@@ -86,10 +86,7 @@
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >
-        <el-button
-          type="info"
-          size="mini"
-          @click="dialogClose"
+        <el-button type="info" size="mini" @click="dialogClose"
           >取 消</el-button
         >
       </div>
@@ -105,14 +102,6 @@ export default {
     toChild: String,
   },
   data() {
-    let validateTel = (rule, value, callback) => {
-    	// 判断传入的值是否可以通过校验
-        if (!/^1[3-9]\d{9}$/.test(value)) {
-        callback(new Error('手机号格式不正确'))
-      	} else {
-        callback()
-      	}
-   	};
     return {
       tableData: "",
       dialogFormVisible: false,
@@ -166,8 +155,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
             trigger: "blur",
           },
         ],
@@ -182,6 +171,11 @@ export default {
             message: "首尾不能为空格",
             trigger: "blur",
           },
+          {
+            pattern: /^[0-9a-zA-Z]{1,}$/,
+            message: "工号格式不正确",
+            trigger: "blur",
+          },
         ],
         userPhone: [
           {
@@ -189,7 +183,11 @@ export default {
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
-          { validator: validateTel, trigger: 'blur' }
+           {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
+          },
         ],
 
         roles: [
@@ -327,10 +325,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-
 .passwordat {
   display: none;
 }
-
-
 </style>

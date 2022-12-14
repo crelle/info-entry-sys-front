@@ -24,6 +24,13 @@
                     placeholder="角色名称"
                   ></el-input>
                 </el-form-item>
+                <el-form-item label="英文名称" prop="name">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.name"
+                    placeholder="英文名称"
+                  ></el-input>
+                </el-form-item>
                 <span>角色权限配置</span>
                 <div class="aaa">
                   <div class="configuration">
@@ -113,6 +120,7 @@ export default {
       userEditForm: {
         id: "",
         nameZh: "",
+        name: "",
         menus: [],
       },
       initFormData: {},
@@ -126,6 +134,43 @@ export default {
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
             message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?!_+).*(?<!_)$/,
+            message: "首尾不能为下划线",
+            trigger: "blur",
+          },
+        ],
+        name: [
+          {
+            required: true,
+            message: "请填写角色英文",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?!_+).*(?<!_)$/,
+            message: "首尾不能为下划线",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^[ROLE_][0-9a-zA-Z_]{1,}$/,
+            message: "请 ROLE_ 开头 + 英文&&数字",
             trigger: "blur",
           },
         ],
@@ -259,10 +304,18 @@ export default {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
+            (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
+              // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+              console.log(
+                this.userEditForm,
+                this.userEditForm.menus,
+                "---增加传递的内容22222222----"
+              );
             addRole(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 console.log("成功增加--用户！");
+                this.dialogClose();
                 this.$parent.queryRoles();
               }
             });
