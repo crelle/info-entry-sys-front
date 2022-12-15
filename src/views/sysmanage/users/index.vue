@@ -185,6 +185,7 @@
     </el-card>
     <user-edit-dialog
       :toChild="list"
+      :queryRoleData="queryRoleData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
@@ -197,12 +198,12 @@
 <script>
 import { queryUser, deleteMenu } from "@/api/user";
 import { queryRole } from "@/api/role";
-import UserEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
+import userEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
+import userDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
 export default {
   components: {
-    UserEditDialog,
-    UserDaitDialog,
+    userEditDialog,
+    userDaitDialog,
   },
   data() {
     return {
@@ -260,7 +261,7 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data,"data---------");
+          console.log(data, "data---------");
           queryUser(data).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
@@ -283,7 +284,7 @@ export default {
           queryRole(data).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.queryRoleData = res.data.records; // 表格数据赋值
-              console.log(this.queryRoleData, "查询用户列表++++++");
+              console.log(this.queryRoleData, "查询角色列表++++++");
             }
           });
         } else {

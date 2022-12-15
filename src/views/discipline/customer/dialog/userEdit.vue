@@ -67,6 +67,7 @@
                     type="tel"
                     v-model="userEditForm.cellPhone"
                     placeholder="请输入手机号"
+                    :disabled="true"
                     readonly
                   ></el-input>
                 </el-form-item>
@@ -75,6 +76,7 @@
                     type="email"
                     v-model="userEditForm.email"
                     placeholder="请输入邮箱"
+                    :disabled="true"
                     readonly
                   ></el-input>
                 </el-form-item>
@@ -107,7 +109,6 @@
 
 <script>
 import { establishCustomer, editCustomer } from "@/api/customer";
-import { updateUser } from "@/api/user";
 
 export default {
   props: {
@@ -172,6 +173,16 @@ export default {
             message: "首尾不能为空格",
             trigger: "blur",
           },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
         ],
         cellPhone: [
           {
@@ -188,19 +199,39 @@ export default {
         address: [
           {
             required: false,
-            message: "请填写地域",
-            trigger: ["blur", "change"],
-          },
-        ],
-        address: [
-          {
-            required: false,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
             message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9_-])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
+        ],
+        introduce: [
+          {
+            required: false,
+            message: "请填写介绍",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
             trigger: "blur",
           },
         ],

@@ -28,7 +28,7 @@
                   <el-input
                     type="text"
                     v-model="userEditForm.name"
-                    placeholder="英文名称"
+                    placeholder="请以  ROLE_  开头"
                   ></el-input>
                 </el-form-item>
                 <span>角色权限配置</span>

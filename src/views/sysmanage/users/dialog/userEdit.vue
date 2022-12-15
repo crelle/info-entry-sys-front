@@ -54,10 +54,10 @@
                   filterable
                 >
                   <el-option
-                    v-for="(item, index) in tableData"
+                    v-for="item in queryRoleData"
                     :key="item.index"
                     :label="item.nameZh"
-                    :value="index"
+                    :value="item.nameZh"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -96,20 +96,18 @@
 
 <script>
 import { updateUser, addUser } from "@/api/user";
-import { queryRole } from "@/api/role";
 export default {
   props: {
     toChild: String,
+    queryRoleData: "",
   },
   data() {
     return {
-      tableData: "",
       dialogFormVisible: false,
       userEditForm: {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        password: "123456",
         userAvatar: "",
         userEmail: "",
         jobNo: "",
@@ -117,7 +115,9 @@ export default {
         username: "",
         roles: [
           {
+            id: "",
             nameZh: "",
+            name: "",
           },
         ],
       },
@@ -132,6 +132,16 @@ export default {
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
             message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
+            message: "请输入中文名称",
             trigger: "blur",
           },
         ],
@@ -155,7 +165,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
             message: "邮箱格式不正确",
             trigger: "blur",
           },
@@ -183,7 +194,7 @@ export default {
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
-           {
+          {
             pattern: /^1[3-9]\d{9}$/,
             message: "手机号格式不正确",
             trigger: "blur",
@@ -207,28 +218,12 @@ export default {
       },
     };
   },
-  mounted() {
-    this.queryRoles();
-  },
+  mounted() {},
   methods: {
-    // 查询权限
-    queryRoles() {
-      let data = { records: [{ ...this.formOptions }] };
-      console.log(data, "data---------");
-      queryRole(data).then((res) => {
-        console.log(res, "res++++++++++");
-        if (res && res.code && res.code === "00000") {
-          // this.resetForm("queryRoleRef"); // 重置表单
-          this.tableData = res.data.records; // 表格数据赋值
-          console.log(this.tableData, "20221104this.tableData");
-        }
-      });
-    },
     // 弹窗
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "ROW");
       this.dialogFormVisible = true; // 让弹窗显示
-
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -251,7 +246,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
+      console.log(this.userEditForm, "取消");
     },
     // 重置表单
     resetForm(formName) {
@@ -268,21 +263,21 @@ export default {
 
     /* 保存  */
     onCertain() {
+      this.queryRoleData.forEach((item) => {
+        // console.log(item,"--------循环的item");
+        // console.log(this.userEditForm.roles[0].id,"------选择的id");
+        if (this.userEditForm.roles[0].nameZh == item.nameZh) {
+          console.log(item, "==============xtq");
+          this.userEditForm.roles[0] = item;
+          // console.log(this.userEditForm.roles[0], "------roles[0]-----");
+          console.log(this.userEditForm, "------roles-----");
+        }
+      });
       if (this.initFormData.id) {
-        console.log(this.initFormData.id, "--xxxxx--this.initFormData.id-");
         this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.id"
-        );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm.password, "密码未空");
             console.log(this.userEditForm, "--传入的东西0");
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "----res11111");
