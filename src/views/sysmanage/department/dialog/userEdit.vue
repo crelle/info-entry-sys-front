@@ -4,7 +4,7 @@
       :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -22,6 +22,7 @@
                   <el-input
                     v-model="userEditForm.department"
                     placeholder="部门名"
+                    @change="queryson"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人" prop="userId">
@@ -108,10 +109,7 @@
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >
-        <el-button
-          type="info"
-          @click="dialogClose"
-          size="mini"
+        <el-button type="info" @click="dialogClose" size="mini"
           >取 消</el-button
         >
       </div>
@@ -156,6 +154,21 @@ export default {
             required: true,
             message: "请输部门名",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+           {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
           },
         ],
         password: [
@@ -223,7 +236,6 @@ export default {
     //自动选择
     queryson(e) {
       if (this.UserData[e]) {
-        console.log(this.UserData[e], "+++++++++++++++");
         // this.userEditForm = this.tableData[e];
         this.userEditForm.userId = this.UserData[e].username;
         this.userEditForm.cellPhone = this.UserData[e].userPhone;
@@ -249,6 +261,7 @@ export default {
         });
       } else {
         console.log("我是新增");
+        // 指定删除的
         delete this.userEditForm.departmentId;
       }
     },
@@ -284,6 +297,7 @@ export default {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
+            console.log(this.userEditForm, "传入修改的内容");
             editDepartments(this.userEditForm).then((res) => {
               if (res.code === "00000") {
                 this.$message.success("修改成功！");
@@ -291,11 +305,10 @@ export default {
                 this.dialogFormVisible = false; // 让弹窗隐藏
               }
             });
-          } else {
-            return false;
           }
         });
       } else {
+        console.log("新增了");
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
             console.log(this.userEditForm, "新增内容带字段------");

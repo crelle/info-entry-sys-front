@@ -67,6 +67,7 @@
                     type="tel"
                     v-model="userEditForm.cellPhone"
                     placeholder="请输入手机号"
+                    :disabled="true"
                     readonly
                   ></el-input>
                 </el-form-item>
@@ -75,6 +76,7 @@
                     type="email"
                     v-model="userEditForm.email"
                     placeholder="请输入邮箱"
+                    :disabled="true"
                     readonly
                   ></el-input>
                 </el-form-item>
@@ -107,7 +109,6 @@
 
 <script>
 import { establishCustomer, editCustomer } from "@/api/customer";
-import { updateUser } from "@/api/user";
 
 export default {
   props: {
@@ -142,6 +143,11 @@ export default {
             message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
 
         email: [
@@ -150,12 +156,32 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         customerName: [
           {
             required: true,
             message: "请填写客户名",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
           },
         ],
         cellPhone: [
@@ -164,12 +190,10 @@ export default {
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
-        ],
-        address: [
           {
-            required: false,
-            message: "请填写地域",
-            trigger: ["blur", "change"],
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
           },
         ],
         address: [
@@ -177,6 +201,38 @@ export default {
             required: false,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9_-])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
+        ],
+        introduce: [
+          {
+            required: false,
+            message: "请填写介绍",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^(?![0-9]).*$/,
+            message: "不能以数字开头",
+            trigger: "blur",
           },
         ],
       },

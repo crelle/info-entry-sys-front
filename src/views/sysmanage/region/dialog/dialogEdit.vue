@@ -17,12 +17,14 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="地域名称" prop="regionName">
-                  <el-input
-                    type="text"
+                <el-form-item label="地域名称 :" prop="regionName">
+                  <el-cascader
+                    size="large"
+                    :options="options"
                     v-model="userEditForm.regionName"
-                    placeholder="请填写地域名称"
-                  ></el-input>
+                    clearable
+                  >
+                  </el-cascader>
                 </el-form-item>
               </el-form>
             </div>
@@ -44,13 +46,15 @@
 <script>
 // 新增 * 编辑
 import { establishRegion, editRegion } from "@/api/region";
-
+// 地图
+import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
+      options: regionData,
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -83,6 +87,8 @@ export default {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
+        let editRow = JSON.parse(JSON.stringify(row));
+        editRow.regionName = this.getCityCode(editRow.regionName);
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
@@ -121,6 +127,17 @@ export default {
 
     /* 保存  */
     onCertain() {
+      console.log("保存了------",this.userEditForm.regionName);
+      if (this.userEditForm.regionName) {
+        var loc = "";
+        for (let i = 0; i < this.userEditForm.regionName.length; i++) {
+          loc = loc + CodeToText[this.userEditForm.regionName[i]] + " ";
+          
+        }
+        this.userEditForm.regionName = loc;
+         console.log("保存了------",this.userEditForm.regionName);
+      }
+
       if (this.initFormData.regionId) {
         this.userEditForm.regionId = this.initFormData.regionId;
         this.initFormData = this.userEditForm;
@@ -156,7 +173,7 @@ export default {
           console.log(
             this.userEditForm,
             this.userEditForm.regionId,
-            "*******----------地域"
+            "----------地域"
           );
           if (valid) {
             establishRegion(this.userEditForm, this.userEditForm.regionId).then(
@@ -176,6 +193,25 @@ export default {
           }
         });
       }
+    },
+    getCityCode(cityText) {
+      var codeArray = [];
+      if (cityText != "") {
+        var cityArray = cityText.trim().split(" ");
+        if (cityArray.length == 1) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+        } else if (cityArray.length == 2) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+        } else if (cityArray.length == 3) {
+          codeArray.push(TextToCode[cityArray[0]].code);
+          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+          codeArray.push(
+            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+          );
+        }
+      }
+      return codeArray;
     },
   },
 };

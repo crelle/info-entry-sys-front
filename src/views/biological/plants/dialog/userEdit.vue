@@ -78,17 +78,7 @@
                         v-model="userEditForm.jobNo"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="岗位" prop="postId">
-                      <el-select
-                        v-model="userEditForm.postId"
-                        placeholder="请选择岗位"
-                      >
-                        <el-option label="Web" value="Web"></el-option>
-                        <el-option label="UI" value="UI"></el-option>
-                        <el-option label="Java" value="Java"></el-option>
-                        <el-option label="测试" value="测试"></el-option>
-                      </el-select>
-                    </el-form-item>
+
                     <el-form-item label="员工状态" prop="status">
                       <el-select
                         v-model="userEditForm.status"
@@ -100,14 +90,29 @@
                         <el-option label="离职" value="离职"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="部门" >
+                    <el-form-item label="项目" prop="projectId">
+                      <el-select
+                        v-model="userEditForm.projectId"
+                        placeholder="请选择接项目"
+                        filterable
+                        @change="queryson"
+                      >
+                        <el-option
+                          v-for="(item, index) in tableProject"
+                          :key="item.index"
+                          :label="item.project"
+                          :value="index"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                    <el-form-item label="部门">
                       <el-input
                         v-model="userEditForm.department"
                         placeholder="部门"
                         disabled
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="客户" >
+                    <el-form-item label="客户">
                       <el-input
                         v-model="userEditForm.customer"
                         placeholder="客户"
@@ -197,22 +202,18 @@
                         <el-option label="测试" value="测试"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="项目" prop="projectId">
+                    <el-form-item label="岗位" prop="postId">
                       <el-select
-                        v-model="userEditForm.projectId"
-                        placeholder="请选择接项目"
-                        filterable
-                        @change="queryson"
+                        v-model="userEditForm.postId"
+                        placeholder="请选择岗位"
                       >
-                        <el-option
-                          v-for="(item, index) in tableProject"
-                          :key="item.index"
-                          :label="item.project"
-                          :value="index"
-                        ></el-option>
+                        <el-option label="Web" value="Web"></el-option>
+                        <el-option label="UI" value="UI"></el-option>
+                        <el-option label="Java" value="Java"></el-option>
+                        <el-option label="测试" value="测试"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="地域" >
+                    <el-form-item label="地域">
                       <el-input
                         v-model="userEditForm.region"
                         placeholder="地域"
@@ -220,7 +221,7 @@
                       >
                       </el-input>
                     </el-form-item>
-                    <el-form-item label="接口人" >
+                    <el-form-item label="接口人">
                       <el-input
                         v-model="userEditForm.Interface"
                         placeholder="接口人"
@@ -342,9 +343,9 @@ export default {
         schoolTime: "",
         skill: "",
         time: "",
-        status:"",
-        department:"",
-        projectId:'',
+        status: "",
+        department: "",
+        projectId: "",
         workingHours: null,
       },
       initFormData: {},
@@ -361,6 +362,11 @@ export default {
             required: true,
             message: "请输入员工姓名",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
           // {
           //   min: 3,
@@ -770,6 +776,5 @@ export default {
   padding-top: 15px;
   display: flex;
   justify-content: space-around;
-
 }
 </style>

@@ -16,37 +16,39 @@
                   <ul class="lis">
                     <li>
                       <span>项目名称:</span
-                      ><span>{{ userEditForm.project }}</span>
+                      ><span>{{ initFormData.project }}</span>
                     </li>
                     <li>
                       <span>项目人数:</span
-                      ><span>{{ userEditForm.number }} 人</span>
+                      ><span>{{ initFormData.number }} 人</span>
                     </li>
                     <li>
                       <span>所属部门:</span
-                      ><span>{{ userEditForm.department }}</span>
+                      ><span>{{ initFormData.department }}</span>
                     </li>
                     <li>
-                      <span>客户:</span><span>{{ userEditForm.customer }}</span>
+                      <span>客户:</span
+                      ><span>{{ initFormData.customerName }}</span>
                     </li>
                     <li>
-                      <span>接口人:</span><span>{{ userEditForm.name }}</span>
+                      <span>接口人:</span
+                      ><span>{{ initFormData.interfaceName }}</span>
                     </li>
                     <li>
                       <span>立项时间:</span
-                      ><span>{{ userEditForm.createTime }}</span>
+                      ><span>{{ initFormData.updateTime }}</span>
                     </li>
                     <li>
                       <span>合作模式:</span
-                      ><span>{{ userEditForm.cooperation }}</span>
+                      ><span>{{ initFormData.cooperation }}</span>
                     </li>
                     <li>
                       <span>当前状态:</span
-                      ><span>{{ userEditForm.status }}</span>
+                      ><span>{{ initFormData.status }}</span>
                     </li>
                     <li>
                       <span>介绍:</span
-                      ><span>{{ userEditForm.introduce }}</span>
+                      ><span>{{ initFormData.introduce }}</span>
                     </li>
                   </ul>
                   <div>
@@ -172,7 +174,9 @@ export default {
         number: "",
         introduce: "",
       },
-      initFormData: {},
+      initFormData: {
+        number: "",
+      },
     };
   },
   methods: {
@@ -183,18 +187,12 @@ export default {
 
     openDialog(row) {
       // 修改时间格式
-      row.createTime = row.createTime.split("T")[0];
-      console.log(this.userEditForm, "001001");
+      row.updateTime = row.updateTime.split("T")[0];
+      // console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
-        this.$nextTick(() => {
-          // 这个要加上
-          this.initForm(row); // 为表单赋值
-          // 项目人数
-          console.log(this.tableData1.length, "----项目人数");
-          this.userEditForm.number = this.tableData1.length;
-        });
+        this.initFormData.number = this.tableData1.length;
       }
     },
     initForm(data) {
@@ -209,7 +207,7 @@ export default {
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "确定231确定3131");
+      console.log(this.userEditForm, "确定 ");
     },
     // 重置表单
     resetForm(formName) {

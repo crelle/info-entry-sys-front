@@ -141,6 +141,11 @@ export default {
             message: "请输入菜单名称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
           // {
           //   min: 3,
           //   max: 10,
@@ -153,6 +158,11 @@ export default {
             required: true,
             message: "请输入后台资源地址",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
           // {
           //   min: 1,

@@ -83,7 +83,7 @@
         ></el-table-column>
         <el-table-column label="操作" min-width="120" fixed>
           <template slot-scope="{ row, $index }">
-             <el-button @click="lookClick(row)" type="primary" size="mini"
+            <el-button @click="lookClick(row)" type="primary" size="mini"
               >查看</el-button
             >
             <el-button @click="onEditRole(row)" type="primary" size="mini"
@@ -118,7 +118,7 @@
       :toChild="list"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
-     <role-data-dialog
+    <role-data-dialog
       :toChild="list"
       ref="roleDataDialogRef"
     ></role-data-dialog>
@@ -126,14 +126,13 @@
 </template>
 
 <script>
-
 import { queryRole, deleteRole } from "@/api/role";
 import RoleEditDialog from "@/views/sysmanage/roles/dialog/roleEdit.vue";
 import RoleDataDialog from "@/views/sysmanage/roles/dialog/roleDetails.vue";
 export default {
   components: {
     RoleEditDialog,
-    RoleDataDialog
+    RoleDataDialog,
   },
   data() {
     return {
@@ -148,7 +147,6 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        
       },
     };
   },
@@ -181,7 +179,7 @@ export default {
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该角色, 是否继续?", "删除当前角色", {
         confirmButtonText: "确定",
-         cancelButtonText: "取消",
+        cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
       })
@@ -191,11 +189,13 @@ export default {
           deleteRole(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
+              this.queryRoles();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
               });
             } else {
+              this.queryRoles();
               this.$message({
                 type: "success",
                 message: "删除失败!",
@@ -217,7 +217,7 @@ export default {
       this.list = "添加角色";
       console.log("我要添加");
     },
-       // 查看
+    // 查看
     lookClick(row) {
       this.$refs.roleDataDialogRef.openDialog(row);
       this.list = "查看角色详情";
@@ -247,9 +247,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryRoles();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -285,7 +289,7 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
-.el-form-item{
+.el-form-item {
   width: 251px;
 }
 </style>

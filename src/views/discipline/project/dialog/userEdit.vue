@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -72,7 +72,7 @@
                     <el-option
                       v-for="item in Interface"
                       :key="item.index"
-                      :label="item.name"
+                      :label="item.interfaceName"
                       :value="item.interfaceId"
                     ></el-option>
                   </el-select>
@@ -84,16 +84,16 @@
                     disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email" >
+                <el-form-item label="邮箱" prop="email">
                   <el-input
                     v-model="userEditForm.email"
                     placeholder="邮箱"
                     disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="客户名称" prop="customer">
+                <el-form-item label="客户名称" prop="customerName">
                   <el-input
-                    v-model="userEditForm.customer"
+                    v-model="userEditForm.customerName"
                     placeholder="客户名称"
                     disabled
                   ></el-input>
@@ -140,10 +140,7 @@
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >
-        <el-button
-          type="info"
-          @click="dialogClose"
-          size="mini"
+        <el-button type="info" @click="dialogClose" size="mini"
           >取 消</el-button
         >
       </div>
@@ -153,7 +150,7 @@
 
 <script>
 //创建项目、编辑
-import { establishProject,editProject } from "@/api/project";
+import { establishProject, editProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
@@ -161,24 +158,29 @@ export default {
     Interface: "",
     MockUser: "",
     Users: "",
+    tableCustomer: "",
   },
   data() {
     let validateTel = (rule, value, callback) => {
-    	// 判断传入的值是否可以通过校验
-        if (!/^1[3-9]\d{9}$/.test(value)) {
-        callback(new Error('手机号格式不正确'))
-      	} else {
-        callback()
-      	}
-   	};
+      // 判断传入的值是否可以通过校验
+      if (!/^1[3-9]\d{9}$/.test(value)) {
+        callback(new Error("手机号格式不正确"));
+      } else {
+        callback();
+      }
+    };
     let validateMail = (rule, value, callback) => {
-    	// 判断传入的值是否可以通过校验
-        if (!/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(value)) {
-        callback(new Error('邮箱格式不正确'))
-      	} else {
-        callback()
-      	}
-   	};
+      // 判断传入的值是否可以通过校验
+      if (
+        !/^[A-Za-z0-9\u4e00-\u9fa5]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(
+          value
+        )
+      ) {
+        callback(new Error("邮箱格式不正确"));
+      } else {
+        callback();
+      }
+    };
     return {
       textarea: "",
       dialogFormVisible: false,
@@ -188,10 +190,9 @@ export default {
       imageUrl: "",
       nowIndex: -1,
       userEditForm: {
-        name: "",
         cellPhone: "",
         email: "",
-        customer: "",
+        customerName: "",
         cooperation: "",
         departmentId: "",
         interfaceId: "",
@@ -208,6 +209,11 @@ export default {
             required: true,
             message: "请输入接口人",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         gender: [
@@ -237,6 +243,11 @@ export default {
             message: "请填写项目名称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         regionId: [
           {
@@ -265,12 +276,22 @@ export default {
             message: "请填写介绍",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         cellPhone: [
           {
             required: false,
             message: "请填手机号",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "请填正确的手机号",
+            trigger: "blur",
           },
         ],
         email: [
@@ -280,7 +301,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        customer: [
+        customerName: [
           {
             required: false,
             message: "请填客户名称",
@@ -293,13 +314,23 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
+      console.log(e, "---eee");
       if (e) {
-        console.log(e, this.Interface[e], "---------e");
-        this.userEditForm.customer = this.Interface[e].customer;
-        this.userEditForm.email = this.Interface[e].email;
-        this.userEditForm.cellPhone = this.Interface[e].cellPhone;
+        this.Interface.forEach((sitem) => {
+          if (e == sitem.interfaceId) {
+            this.userEditForm.email = sitem.email;
+            this.userEditForm.cellPhone = sitem.cellPhone;
+            // sitem.customerId = e;
+            this.tableCustomer.forEach((items) => {
+              if (sitem.customerId == items.customerId) {
+                this.userEditForm.customerName = items.customerName;
+                this.userEditForm.customerId = items.customerId;
+              }
+            });
+          }
+        });
       } else {
-        this.userEditForm.customer = null;
+        this.userEditForm.customerName = null;
         this.userEditForm.email = null;
         this.userEditForm.cellPhone = null;
       }
@@ -307,7 +338,7 @@ export default {
     //
     // 弹窗
     openDialog(row) {
-       console.log(row, "表单的数据");
+      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -332,7 +363,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
+      console.log(this.userEditForm, "取消");
     },
     // 重置表单
     resetForm(formName) {
@@ -395,13 +426,20 @@ export default {
     /* 保存  */
     onCertain() {
       if (this.initFormData.projectId) {
-        console.log(this.initFormData.projectId, "--xxxxx--this.initFormData.projectId-");
         this.userEditForm.projectId = this.initFormData.projectId;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
+            // 删除指定的 对象 （delete）
+            delete this.userEditForm.customerName;
+            if (this.initFormData.status == "开发中") {
+              this.initFormData.status = 1;
+            } else if (this.initFormData.status == "前期投入") {
+              this.initFormData.status = 2;
+            } else if (this.initFormData.status == "交付阶段") {
+              this.initFormData.status = 3;
+            }
             console.log(this.userEditForm, "----保存传递的内容");
             editProject(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "---编辑调取了接口");
@@ -422,7 +460,7 @@ export default {
           console.log(valid, "增加了的valid");
           console.log(this.userEditForm, "-----------增加的项目内容*********");
           if (valid) {
-            console.log('this.userEditForm----',this.userEditForm);
+            console.log("this.userEditForm----", this.userEditForm);
             establishProject(this.userEditForm).then((res) => {
               console.log(res, "增加了项目");
               if (res && res.code && res.code === "00000") {

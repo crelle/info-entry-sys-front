@@ -103,9 +103,7 @@
 
 <script>
 //创建接口人/编辑接口人
-import { establishInterface,editInterface } from "@/api/interface";
-
-import { updateUser, addUser } from "@/api/user";
+import { establishInterface, editInterface } from "@/api/interface";
 
 import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
@@ -145,6 +143,11 @@ export default {
             trigger: ["blur", "change"],
           },
           {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
             min: 3,
             max: 10,
             message: "用户名长度在 3 到 10 个字符",
@@ -157,6 +160,11 @@ export default {
             message: "请输入密码",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
 
         email: [
@@ -165,12 +173,22 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         interfaceName: [
           {
-            required: false,
-            message: "请选择性别",
+            required: true,
+            message: "请填写接口人名称",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         userNickName: [
@@ -179,12 +197,22 @@ export default {
             message: "请填写昵称",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
         ],
         cellPhone: [
           {
             required: true,
             message: "请填写手机号码",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         address: [
@@ -199,6 +227,11 @@ export default {
             required: false,
             message: "请填介绍",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
       },
@@ -256,61 +289,18 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-    // // 头像上传相关
-    // handleAvatarSuccess(res, file) {
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    //   this.nowIndex = -1; // 取消默认头像选中样式
-    //   console.log(this.imageUrl);
-    // },
-    // beforeAvatarUpload(file) {
-    //   console.log(file.type);
-    //   // 判断上传文件的类型
-    //   if (/^image\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 0;
-    //   } else if (/^video\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 1;
-    //   } else if (/^audio\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 2;
-    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
-    //     this.fileType.fileType = 3;
-    //   } else {
-    //     this.$message.error("此文件类型不支持!");
-    //     return false;
-    //   }
-
-    //   const isLt2M = file.size / 1024 / 1024 < 100;
-
-    //   // if (!isJPG) {
-    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
-    //   // }
-    //   if (!isLt2M) {
-    //     this.$message.error("上传头像图片大小不能超过 100MB!");
-    //   }
-    //   // return isJPG && isLt2M;
-    //   return isLt2M;
-    // },
-    // // 选择默认头像
-    // choosedefaultImg(index, url) {
-    //   if (index !== this.nowIndex) {
-    //     console.log(this.nowIndex);
-    //     this.nowIndex = index;
-    //     this.imageUrl = url;
-    //   } else {
-    //     console.log(this.nowIndex, -1);
-    //     this.nowIndex = -1;
-    //     this.imageUrl = "";
-    //   }
-    // },
 
     /* 保存  */
     onCertain() {
-      var loc = "";
-      for (let i = 0; i < this.userEditForm.address.length; i++) {
-        loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
-      }
-      console.log(loc);
-      this.userEditForm.address = loc;
+      // ---
+      if (this.userEditForm.address) {
+        var loc = "";
+        for (let i = 0; i < this.userEditForm.address.length; i++) {
+          loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
 
+          this.userEditForm.address = loc;
+        }
+      }
       if (this.initFormData.interfaceId) {
         this.userEditForm.interfaceId = this.initFormData.interfaceId;
         this.initFormData = this.userEditForm;
@@ -318,15 +308,16 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            editInterface(this.userEditForm, this.userEditForm.interfaceId).then(
-              (res) => {
-                if (res && res.code && res.code === "00000") {
-                  this.$message.success("修改成功！");
-                  this.$parent.queryUserList();
-                  this.dialogFormVisible = false; // 让弹窗显
-                }
+            editInterface(
+              this.userEditForm,
+              this.userEditForm.interfaceId
+            ).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗显
               }
-            );
+            });
           } else {
             return false;
           }
