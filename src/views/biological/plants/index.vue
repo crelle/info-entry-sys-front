@@ -17,7 +17,7 @@
         <el-row>
           <el-col :span="5">
             <el-form-item label="姓名">
-              <el-input
+              <el-input class="namecss"
                 v-model="formOptions.name"
                 placeholder="姓名"
               ></el-input>
@@ -641,12 +641,15 @@ export default {
   text-align: left;
 }
 .el-form-item {
-  width: 252px;
+  width: 253px;
 }
 ::v-deep .el-col-5 {
   overflow: hidden;
 }
 .name {
   padding-top: 10px;
+}
+.namecss{
+  width: 193.89px;
 }
 </style>
