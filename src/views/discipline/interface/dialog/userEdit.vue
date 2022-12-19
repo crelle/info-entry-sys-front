@@ -296,10 +296,10 @@ export default {
       if (this.userEditForm.address) {
         var loc = "";
         for (let i = 0; i < this.userEditForm.address.length; i++) {
-          loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
-
-          this.userEditForm.address = loc;
+          loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
         }
+        loc = loc.slice(0, loc.length - 1);
+        this.userEditForm.address = loc;
       }
       if (this.initFormData.interfaceId) {
         this.userEditForm.interfaceId = this.initFormData.interfaceId;

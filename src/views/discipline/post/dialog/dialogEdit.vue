@@ -362,7 +362,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
+      // console.log(this.userEditForm, "取消231取消3131");
     },
     // 重置表单
     resetForm(formName) {
@@ -379,11 +379,11 @@ export default {
       if (this.userEditForm.address) {
         var loc = "";
         for (let i = 0; i < this.userEditForm.address.length; i++) {
-          loc = loc + CodeToText[this.userEditForm.address[i]] + " ";
+          loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
         }
+        loc = loc.slice(0, loc.length - 1);
         this.userEditForm.address = loc;
       }
-
       if (this.initFormData.postId) {
         this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;

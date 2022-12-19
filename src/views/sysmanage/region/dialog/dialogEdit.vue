@@ -23,6 +23,7 @@
                     :options="options"
                     v-model="userEditForm.regionName"
                     clearable
+                    filterable
                   >
                   </el-cascader>
                 </el-form-item>
@@ -124,20 +125,18 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-
     /* 保存  */
     onCertain() {
-      console.log("保存了------",this.userEditForm.regionName);
+      console.log("保存了------", this.userEditForm.regionName);
       if (this.userEditForm.regionName) {
         var loc = "";
         for (let i = 0; i < this.userEditForm.regionName.length; i++) {
-          loc = loc + CodeToText[this.userEditForm.regionName[i]] + " ";
-          
+          loc = loc + CodeToText[this.userEditForm.regionName[i]] + "/";
         }
+        loc = loc.slice(0, loc.length - 1);
         this.userEditForm.regionName = loc;
-         console.log("保存了------",this.userEditForm.regionName);
+        console.log("保存了------", this.userEditForm.regionName);
       }
-
       if (this.initFormData.regionId) {
         this.userEditForm.regionId = this.initFormData.regionId;
         this.initFormData = this.userEditForm;
@@ -314,5 +313,12 @@ export default {
 }
 ::v-deep .el-dialog__footer {
   padding: 20px;
+}
+::v-deep .el-form-item {
+  display: flex;
+  align-items: center;
+}
+::v-deep .el-input__inner {
+  height: 30px;
 }
 </style>

@@ -91,7 +91,6 @@
             <el-form-item>
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
-              <!-- <el-button @click="resetForm('formOptions')">重置</el-button> -->
             </el-form-item>
           </el-col>
         </el-row>
