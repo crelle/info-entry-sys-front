@@ -225,13 +225,6 @@ export default {
       nowIndex: -1,
       defaultImgs: [
         "http://1.116.79.69:80/fes/picture/2021-4-27-e9a33f87-ab85-464a-a4b4-5fcd196eea51.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-5da50eea-9146-40e5-836c-42ee5eb29092.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-137171c6-5a54-4025-8e84-877cbab6c355.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-d9b3fe51-6e70-4ffa-970d-2d517a7bdc7a.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-a16b1069-2665-4f4a-85b5-c9607f65a00a.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-90c64b39-d069-4644-8bef-3dc4e3e5ab55.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-905ea61e-dac4-472f-bce5-24a9bcedac66.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-8c5ba8c3-bcfc-4d8b-9bac-6566d53d5173.png",
       ],
       baseURL: BaseURL,
       rules: {
