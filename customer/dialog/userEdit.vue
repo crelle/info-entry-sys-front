@@ -124,6 +124,11 @@ export default {
             trigger: ["blur", "change"],
           },
           {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
             min: 3,
             max: 10,
             message: "用户名长度在 3 到 10 个字符",

@@ -142,8 +142,8 @@
 <script>
 //创建岗位/编辑岗位
 import { establishPost, editPost } from "@/api/post";
-// 查询接口人 查客户
-import { reqgetInterface } from "@/mockjs/reqMock";
+// 假的 查询接口人 查客户
+// import { reqgetInterface } from "@/mockjs/reqMock";
 
 import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 
@@ -319,15 +319,15 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
           data.size = 100;
-          // //  假数据接口人查询方法
-          reqgetInterface(data).then((res) => {
-            res.data.forEach((item) => {
-              if (item.interfaceId == projectData.interfaceId) {
-                let names = item;
-                this.userEditForm.customer = names.name;
-              }
-            });
-          });
+          // // //  假数据接口人查询方法
+          // reqgetInterface(data).then((res) => {
+          //   res.data.forEach((item) => {
+          //     if (item.interfaceId == projectData.interfaceId) {
+          //       let names = item;
+          //       this.userEditForm.customer = names.name;
+          //     }
+          //   });
+          // });
         }
       });
     },

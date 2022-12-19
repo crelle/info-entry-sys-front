@@ -271,21 +271,17 @@
 </template>
 
 <script>
-// 假的员工表/项目表/地域/部门/接口人表/客户
-import {
-  reqStaff,
-  reqProject,
-  reqMockUser,
-  reqUsers,
-  reqgetInterface,
-  reqCustomer,
-} from "@/mockjs/reqMock";
+// // 假的员工表/项目表/地域/部门/接口人表/客户
+// import {
+//   reqMockUser,
+//   reqUsers,
+//   reqgetInterface,
+//   reqCustomer,
+// } from "@/mockjs/reqMock";
 import { queryProject } from "@/api/project";
 import {
   queryEmployee,
-  createEmployee,
   deleteEmployee,
-  updateEmployee,
 } from "@/api/employee";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
@@ -373,10 +369,10 @@ export default {
     this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
-    this.queryUsers();
-    this.queryMockUser();
-    this.queryInterface();
-    this.queryCustomerList();
+    // this.queryUsers();
+    // this.queryMockUser();
+    // this.queryInterface();
+    // this.queryCustomerList();
   },
   methods: {
     //table数据
@@ -421,82 +417,82 @@ export default {
       });
     },
 
-    //  假数据客户查询方法
-    queryCustomerList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqCustomer(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.tableCustomer = res.data; // 表格数据赋值
-            console.log(this.tableCustomer, "假的客户数据表");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    //  假数据部门查询方法
-    queryUsers() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqUsers(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.Users = res.data; // 表格数据赋值
-            console.log(this.Users, "假部门数据");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    //  假数据地域查询方法
-    queryMockUser() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqMockUser(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.MockUser = res.data; // 表格数据赋值
-            console.log(this.MockUser, "假地域数据");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    //  假数据接口人查询方法
-    queryInterface() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          console.log(valid, "validvalidvalid");
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
-          reqgetInterface(data).then((res) => {
-            console.log(res, "res++++++++++");
-            this.Interface = res.data; // 表格数据赋值
-            console.log(this.Interface, "假接口人数据");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // //  假数据客户查询方法
+    // queryCustomerList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqCustomer(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         this.tableCustomer = res.data; // 表格数据赋值
+    //         console.log(this.tableCustomer, "假的客户数据表");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+    // //  假数据部门查询方法
+    // queryUsers() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqUsers(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         this.Users = res.data; // 表格数据赋值
+    //         console.log(this.Users, "假部门数据");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+    // //  假数据地域查询方法
+    // queryMockUser() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqMockUser(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         this.MockUser = res.data; // 表格数据赋值
+    //         console.log(this.MockUser, "假地域数据");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
+    // //  假数据接口人查询方法
+    // queryInterface() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       console.log(valid, "validvalidvalid");
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = this.paginationOptions.pageNo;
+    //       data.size = this.paginationOptions.pageSize;
+    //       console.log(data, "data---------");
+    //       reqgetInterface(data).then((res) => {
+    //         console.log(res, "res++++++++++");
+    //         this.Interface = res.data; // 表格数据赋值
+    //         console.log(this.Interface, "假接口人数据");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
 
     // 项目表
     // queryProjectList() {

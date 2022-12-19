@@ -19,7 +19,7 @@
                       ><span>{{ userEditForm.username }}</span>
                     </li>
                     <li>
-                      <span>工号 :</span><span>{{}}</span>
+                      <span>工号 :</span><span>{{ userEditForm.jobNo }}</span>
                     </li>
                     <li>
                       <span>手机号 :</span
@@ -27,7 +27,9 @@
                     </li>
                     <li>
                       <span>邮箱 :</span
-                      ><span :title="userEditForm.userEmail">{{ userEditForm.userEmail }}</span>
+                      ><span :title="userEditForm.userEmail">{{
+                        userEditForm.userEmail
+                      }}</span>
                     </li>
                     <li>
                       <span>角色 :</span
@@ -90,6 +92,7 @@ export default {
         userPhone: "",
         username: "",
         roles: "",
+        jobNo: "",
       },
       initFormData: {},
     };

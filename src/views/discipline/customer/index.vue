@@ -171,10 +171,7 @@
 <script>
 import { queryCustomer, deletesCustomer } from "@/api/customer";
 import { queryRegion } from "@/api/region";
-// 假的
-import { reqMockUser, reqCustomer, reqUsers } from "@/mockjs/reqMock";
-
-import { queryUser, deleteMenu } from "@/api/user";
+import { queryUser } from "@/api/user";
 import UserEditDialog from "@/views/discipline/customer/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/customer/dialog/userDetails.vue";
 export default {
