@@ -290,7 +290,7 @@ export default {
   margin-right: 5px;
 }
 .el-form-item {
-  width: 251px;
+  width: 252px;
 }
 </style>
 

@@ -155,15 +155,13 @@
 </template>
 
 <script>
-// 假的
-import { reqUsers } from "@/mockjs/reqMock";
+
 import {
   queryDepartments,
   deletesDepartments,
-  queryDepartmentsUP,
 } from "@/api/department";
 
-import { queryUser, deleteMenu } from "@/api/user";
+import { queryUser } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/sysmanage/department/dialog/userDetails.vue";
 export default {
@@ -264,30 +262,6 @@ export default {
         }
       });
     },
-    // 真的
-    // // 查询部门列表
-    // queryUserList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       console.log(valid, "validvalidvalid");
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       console.log(data, "data---------");
-    //       queryUser(data).then((res) => {
-    //         console.log(res, "res++++++++++");
-    //         if (res && res.code && res.code === "00000") {
-    //           this.tableData = res.data.records; // 表格数据赋值
-    //           console.log(this.tableData);
-    //           this.paginationOptions.total = res.data.total; // 分页器赋值
-    //         }
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
-
     // 删除弹框
     deleteMenu(row, index) {
       console.log(row, "------------------------*********");
@@ -397,7 +371,7 @@ export default {
   margin-right: 5px;
 }
 .el-form-item{
-  width: 251px;
+  width: 252px;
 }
 </style>
 

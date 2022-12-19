@@ -73,7 +73,6 @@
     ></role-data-dialog>
   </div>
 </template>
-
 <script>
 import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";

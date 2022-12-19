@@ -25,4 +25,4 @@ new Vue({
 }).$mount("#app");
 
 // 引入mockjs
-require('./mockjs/mock')
+// require('./mockjs/mock')
