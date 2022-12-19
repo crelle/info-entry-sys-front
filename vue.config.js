@@ -17,8 +17,8 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://10.10.10.192:8084/",
-        // target: "http://localhost:8084/",
+        // target: "http://10.10.10.192:8084/",
+        target: "http://localhost:8084/",
         changeOrigin: true, // 是否允许跨域
         ws: true, // webSocket全双工通信
         pathRewrite: {
