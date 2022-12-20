@@ -21,6 +21,7 @@
                   <el-input
                     placeholder="项目名称"
                     v-model="userEditForm.project"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="项目状态" prop="status">
@@ -117,6 +118,7 @@
                   <el-select
                     v-model="userEditForm.cooperation"
                     placeholder="请选择合作模式"
+                    clearable
                   >
                     <el-option label="TM" value="TM"></el-option>
                     <el-option label="OD" value="OD"></el-option>

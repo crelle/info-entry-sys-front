@@ -20,6 +20,7 @@
               <el-input
                 v-model="formOptions.project"
                 placeholder="项目名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>

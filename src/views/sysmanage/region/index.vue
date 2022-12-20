@@ -16,7 +16,7 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="地域名称">
+            <el-form-item label="地域名称" prop="regionName">
               <el-input
                 v-model="formOptions.regionName"
                 placeholder="请输入地域名称"
@@ -34,6 +34,9 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('queryRoleRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryRoles">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -135,8 +138,9 @@ export default {
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
-        
       },
+      // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -150,7 +154,7 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data,data.current,data.size, "data----xu-----");
+          console.log(data, data.current, data.size, "data----xu-----");
           queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
@@ -183,7 +187,6 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-              
             } else {
               this.$message({
                 type: "success",
@@ -236,9 +239,13 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryRoles();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
-    }
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
+    },
   },
 };
 </script>
@@ -274,7 +281,7 @@ export default {
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }
-.el-form-item{
+.el-form-item {
   width: 252px;
 }
 </style>

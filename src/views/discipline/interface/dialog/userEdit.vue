@@ -21,6 +21,7 @@
                   <el-input
                     v-model="userEditForm.interfaceName"
                     placeholder="接口人名称"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="性别" prop="gender">
@@ -35,6 +36,7 @@
                     :options="options"
                     v-model="userEditForm.address"
                     clearable
+                    filterable
                   ></el-cascader>
                 </el-form-item>
                 <el-form-item label="手机号" prop="cellPhone">
@@ -42,6 +44,7 @@
                     type="tel"
                     v-model="userEditForm.cellPhone"
                     placeholder="手机号"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="邮箱" prop="email">
@@ -49,6 +52,7 @@
                     type="email"
                     v-model="userEditForm.email"
                     placeholder="邮箱"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <!-- <el-form-item label="负责项目">
@@ -61,6 +65,7 @@
                     v-model="userEditForm.customerId"
                     placeholder="请选择客户"
                     filterable
+                    clearable
                     @change="queryson"
                   >
                     <el-option

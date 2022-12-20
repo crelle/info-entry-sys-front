@@ -13,34 +13,41 @@
         size="mini"
         ref="userQueryRef"
         label-position="right"
+        :rules="rules"
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="用户名">
+            <el-form-item label="用户名" prop="username">
               <el-input
                 v-model="formOptions.username"
                 placeholder="请输入用户名"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="手机号">
+            <el-form-item label="手机号" prop="userPhone">
               <el-input
                 v-model="formOptions.userPhone"
                 placeholder="请输入用户手机号码"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="状态">
-              <el-select v-model="formOptions.enabled" placeholder="请选择状态">
+            <el-form-item label="状态"  >
+              <el-select
+                v-model="formOptions.enabled"
+                placeholder="请选择状态"
+                prop="enabled"
+              >
                 <el-option label="启用" :value="true"></el-option>
                 <el-option label="禁用" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="角色">
+            <el-form-item label="角色" prop="roles[0].id">
               <el-select
                 v-model="formOptions.roles[0].id"
                 placeholder="请选择角色"
@@ -67,6 +74,9 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -246,6 +256,8 @@ export default {
         username: "",
         roles: "",
       },
+      // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -347,6 +359,7 @@ export default {
     },
     // 重置表单
     resetForm(formName) {
+      console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
     // 表格复选动作
@@ -414,7 +427,7 @@ export default {
   padding-right: 25px;
 }
 .el-form-item {
-  width: 251px;
+  width: 261px;
 }
 ::v-deep .el-col-5 {
   overflow: hidden;

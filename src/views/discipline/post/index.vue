@@ -16,7 +16,7 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="岗位名称">
+            <el-form-item label="岗位名称" prop="postName">
               <el-input
                 v-model="formOptions.postName"
                 placeholder="岗位名称"
@@ -25,7 +25,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="项目名">
+            <el-form-item label="项目名" prop="project">
               <el-select
                 v-model="formOptions.project"
                 placeholder="请选择项目名"
@@ -42,7 +42,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="办公地点">
+            <el-form-item label="办公地点" prop="address">
               <el-select
                 v-model="formOptions.address"
                 placeholder="请选择办公地点"
@@ -59,7 +59,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="岗位技能">
+            <el-form-item label="岗位技能" prop="skill">
               <el-select
                 v-model="formOptions.skill"
                 placeholder="请选择岗位技能"
@@ -87,6 +87,9 @@
             "
           >
             <el-form-item>
+               <el-button type="primary" @click="resetForm('queryRoleRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryPost">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -261,6 +264,8 @@ export default {
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
       },
+       // 验证
+      rules: {},
     };
   },
   mounted() {

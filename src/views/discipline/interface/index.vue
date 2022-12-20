@@ -15,15 +15,16 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="接口人">
+            <el-form-item label="接口人" prop="interfaceName">
               <el-input
                 v-model="formOptions.interfaceName"
                 placeholder="接口人姓名"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="客户">
+            <el-form-item label="客户" prop="customerId">
               <el-select
                 v-model="formOptions.customerId"
                 placeholder="请选择客户名称"
@@ -50,6 +51,9 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -303,7 +307,10 @@ export default {
       console.log("详情", row, row.interfaceId);
     },
     // 重置表单
-
+    resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+    },
     // 表格复选动作
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -360,6 +367,6 @@ export default {
   margin-right: 5px;
 }
 .el-form-item {
-  width: 251px;
+  width: 253px;
 }
 </style>

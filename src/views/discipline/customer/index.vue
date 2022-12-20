@@ -16,15 +16,16 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="客户">
+            <el-form-item label="客户" prop="customerName">
               <el-input
                 v-model="formOptions.customerName"
                 placeholder="请填写客户名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="地域">
+            <el-form-item label="地域" prop="regionId">
               <el-select
                 v-model="formOptions.regionId"
                 placeholder="地域名称"
@@ -51,6 +52,9 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -211,6 +215,8 @@ export default {
         userPhone: "",
         username: "",
       },
+      // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -326,7 +332,10 @@ export default {
       console.log("详情", row, row.id);
     },
     // 重置表单
-
+    resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+    },
     // 表格复选动作
     handleSelectionChange(val) {
       this.multipleSelection = val;

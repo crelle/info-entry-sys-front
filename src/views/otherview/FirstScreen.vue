@@ -2,19 +2,19 @@
   <div class="firstscreen_content">
     <el-row :gutter="24">
       <el-col :span="8">
-        <div class="echarts_map ">
+        <div class="echarts_map">
           <!-- 部门人数 -->
           <e-charts class="chart" :option="department" />
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="echarts_map ">
+        <div class="echarts_map">
           <!-- 地域人数 -->
           <e-charts class="chart" :option="area" />
         </div>
       </el-col>
       <el-col :span="8">
-        <div class="echarts_map " >
+        <div class="echarts_map">
           <!-- 技能人数 -->
           <e-charts class="chart" :option="skill" />
         </div>
@@ -27,23 +27,24 @@
       </div>
       <div class="notch">
         <!-- 项目缺口 -->
-        <div class="label">
-          项目缺口
-        </div>
-        <el-table :data="tableData" border show-summary :height="313" :summary-method="getSummaries" stripe
-          :header-cell-style="{ background: '#5a9bd5', color: 'white' }" style="width: 100%;">
+        <div class="label">项目缺口</div>
+        <el-table
+          :data="tableData"
+          border
+          show-summary
+          :height="313"
+          :summary-method="getSummaries"
+          stripe
+          :header-cell-style="{ background: '#5a9bd5', color: 'white' }"
+          style="width: 100%"
+        >
           <el-table-column prop="id" label="" width="130"> </el-table-column>
           <el-table-column prop="amount1" label="产品"> </el-table-column>
-          <el-table-column prop="amount2" label="测试">
-          </el-table-column>
-          <el-table-column prop="amount3" label="前端">
-          </el-table-column>
-          <el-table-column prop="amount4" label="C">
-          </el-table-column>
-          <el-table-column prop="amount5" label="JAVA">
-          </el-table-column>
-          <el-table-column prop="total" label="合计">
-          </el-table-column>
+          <el-table-column prop="amount2" label="测试"> </el-table-column>
+          <el-table-column prop="amount3" label="前端"> </el-table-column>
+          <el-table-column prop="amount4" label="C"> </el-table-column>
+          <el-table-column prop="amount5" label="JAVA"> </el-table-column>
+          <el-table-column prop="total" label="合计"> </el-table-column>
         </el-table>
         <div class="tit">
           注：0/4,0为当前技能人员数，4为当前项目所需技能人员数
@@ -61,8 +62,8 @@ export default {
     return {
       departmentData: this.getRandomDatabt(),
       skillData: this.getRandomData(),
-      areaData:[],
-      projectData:[],
+      areaData: [],
+      projectData: [],
       tableData: [],
       userdetail: {},
     };
@@ -82,16 +83,18 @@ export default {
     //   this.initEcharts();
     // });
     this.setArea();
-    this.setNotch()
-    this.setProject()
-    setInterval(() => {
-      this.departmentData = this.getRandomDatabt();
-      this.skillData = this.getRandomData();
-    }, 3000);
+    this.setNotch();
+    this.setProject();
+    this.departmentData = this.getRandomDatabt();
+    this.skillData = this.getRandomData();
+    // setInterval(() => {
+    //   this.departmentData = this.getRandomDatabt();
+    //   this.skillData = this.getRandomData();
+    // }, 3000);
   },
   methods: {
     setArea() {
-     this.areaData=[
+      this.areaData = [
         {
           name: "南京",
           value: 120,
@@ -115,11 +118,11 @@ export default {
         {
           name: "深圳",
           value: 110,
-        }
+        },
       ];
     },
-    setProject(){
-      this.projectData=[
+    setProject() {
+      this.projectData = [
         {
           name: "合同管理",
           value: 12,
@@ -151,64 +154,77 @@ export default {
         {
           name: "畅联",
           value: 6,
-        }
-      ]
+        },
+      ];
     },
     getSummaries(param) {
-        const { columns, data } = param;
-        const sums = [];
-        columns.forEach((column, index) => {
-          if (index === 0) {
-            sums[index] = '合计';
-            return;
-          }
-          const values = data.map(item => item[column.property].split('/'));
-          sums[index] = values.reduce((prev, curr) => {return prev +Number(curr[0]) },0)+'/'+values.reduce((prev, curr) => {return prev +Number( curr[1])},0)
-        })
-        return sums;
-      },
+      const { columns, data } = param;
+      const sums = [];
+      columns.forEach((column, index) => {
+        if (index === 0) {
+          sums[index] = "合计";
+          return;
+        }
+        const values = data.map((item) => item[column.property].split("/"));
+        sums[index] =
+          values.reduce((prev, curr) => {
+            return prev + Number(curr[0]);
+          }, 0) +
+          "/" +
+          values.reduce((prev, curr) => {
+            return prev + Number(curr[1]);
+          }, 0);
+      });
+      return sums;
+    },
     setNotch() {
-      this.tableData = [{
-        id: '华为项目A',
-        amount1: '3/4',
-        amount2: '3/4',
-        amount3: '3/4',
-        amount4: '3/4',
-        amount5: '3/4',
-        total: '15/20'
-      }, {
-        id: '华为项目B',
-        amount1: '3/4',
-        amount2: '3/4',
-        amount3: '3/4',
-        amount4: '3/4',
-        amount5: '3/4',
-        total: '15/20'
-      }, {
-        id: '华为项目C',
-        amount1: '3/4',
-        amount2: '3/4',
-        amount3: '3/4',
-        amount4: '3/4',
-        amount5: '3/4',
-        total: '15/20'
-      },{
-        id: '华为项目D',
-        amount1: '3/4',
-        amount2: '3/4',
-        amount3: '3/4',
-        amount4: '3/4',
-        amount5: '3/4',
-        total: '15/20'
-      },{
-        id: '华为项目E',
-        amount1: '3/4',
-        amount2: '3/4',
-        amount3: '3/4',
-        amount4: '3/4',
-        amount5: '3/4',
-        total: '15/20'
-      }]
+      this.tableData = [
+        {
+          id: "华为项目A",
+          amount1: "3/4",
+          amount2: "3/4",
+          amount3: "3/4",
+          amount4: "3/4",
+          amount5: "3/4",
+          total: "15/20",
+        },
+        {
+          id: "华为项目B",
+          amount1: "3/4",
+          amount2: "3/4",
+          amount3: "3/4",
+          amount4: "3/4",
+          amount5: "3/4",
+          total: "15/20",
+        },
+        {
+          id: "华为项目C",
+          amount1: "3/4",
+          amount2: "3/4",
+          amount3: "3/4",
+          amount4: "3/4",
+          amount5: "3/4",
+          total: "15/20",
+        },
+        {
+          id: "华为项目D",
+          amount1: "3/4",
+          amount2: "3/4",
+          amount3: "3/4",
+          amount4: "3/4",
+          amount5: "3/4",
+          total: "15/20",
+        },
+        {
+          id: "华为项目E",
+          amount1: "3/4",
+          amount2: "3/4",
+          amount3: "3/4",
+          amount4: "3/4",
+          amount5: "3/4",
+          total: "15/20",
+        },
+      ];
     },
     // 饼图 // 随机数据
     getRandomDatabt() {
@@ -236,7 +252,7 @@ export default {
         {
           name: "部门6",
           value: Math.round(Math.random() * 1000),
-        }
+        },
       ];
     },
     // 图表 //随机数据
@@ -261,7 +277,7 @@ export default {
         {
           time: "产品",
           value: Math.round(Math.random() * 1000),
-        }
+        },
       ];
     },
   },
@@ -278,23 +294,22 @@ export default {
         },
         legend: {
           show: false,
-
         },
         series: [
           {
             name: "部门",
             type: "pie",
             label: {
-          show: true,
-            position: 'outside',
-            normal: {
-          formatter: '{b}\n{c}',
-          fontSize: '14',
-          fontWeight: 'bold'
-        }
+              show: true,
+              position: "outside",
+              normal: {
+                formatter: "{b}\n{c}",
+                fontSize: "14",
+                fontWeight: "bold",
+              },
             },
             labelLine: {
-              show: true
+              show: true,
             },
             radius: ["40%", "55%"],
             data: this.departmentData,
@@ -320,7 +335,7 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "shadow",
-          }
+          },
         },
         xAxis: {
           type: "value",
@@ -347,7 +362,7 @@ export default {
             name: "技能",
             type: "bar",
             data: this.skillData.map((d) => d.value),
-            barWidth : 30,
+            barWidth: 30,
             label: {
               show: true, // 开启显示
               position: "right", // 在上方显示
@@ -358,15 +373,15 @@ export default {
             itemStyle: {
               normal: {
                 //这里是颜色
-                color: '#5a9bd5'
+                color: "#5a9bd5",
               },
             },
           },
         ],
       };
     },
-    project(){
-      return{
+    project() {
+      return {
         title: {
           text: "项目人数分析",
           left: "center",
@@ -375,39 +390,38 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "shadow",
-          }
+          },
         },
         xAxis: {
           type: "category",
-          data: this.projectData.map(item=>item.name),
-          axisLabel: {  
-					interval:0,
-          rotate:50  //倾斜的程度
-          }
+          data: this.projectData.map((item) => item.name),
+          axisLabel: {
+            interval: 0,
+            rotate: 50, //倾斜的程度
+          },
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            name:'项目',
-            data: this.projectData.map(item=>item.value),
+            name: "项目",
+            data: this.projectData.map((item) => item.value),
             type: "bar",
-            barWidth : 30,
-            
+            barWidth: 30,
+
             itemStyle: {
               normal: {
                 //这里是颜色
-                color: '#5a9bd5'
+                color: "#5a9bd5",
               },
             },
           },
-
         ],
       };
     },
-    area(){
-      return{
+    area() {
+      return {
         title: {
           text: "地域人数分析",
           left: "center",
@@ -416,47 +430,48 @@ export default {
           trigger: "axis",
           axisPointer: {
             type: "shadow",
-          }
+          },
         },
         xAxis: {
           type: "category",
-          data: this.areaData.map(item=>item.name),
+          data: this.areaData.map((item) => item.name),
         },
         yAxis: {
           type: "value",
         },
         series: [
           {
-            name:'地域',
-            data: this.areaData.map(item=>item.value),
+            name: "地域",
+            data: this.areaData.map((item) => item.value),
             type: "bar",
-            barWidth : 20,
+            barWidth: 20,
             itemStyle: {
               normal: {
                 //这里是颜色
-                color: '#5a9bd5',               
-								label: {
-									show: true, //开启显示
-									position: 'top', //在上方显示
-									textStyle: { //数值样式
-										color: '#696969',
-										fontSize: 16
-									}
-								}
+                color: "#5a9bd5",
+                label: {
+                  show: true, //开启显示
+                  position: "top", //在上方显示
+                  textStyle: {
+                    //数值样式
+                    color: "#696969",
+                    fontSize: 16,
+                  },
+                },
               },
             },
           },
-
         ],
       };
-    }
+    },
   },
 };
 </script>
 
 <style lang="less" scoped>
-/deep/ .el-table td, .el-table th{
-    padding: 10px 0;
+/deep/ .el-table td,
+.el-table th {
+  padding: 10px 0;
 }
 .el-main {
   background-color: #f3f3f3;
@@ -465,12 +480,12 @@ export default {
 .echarts_map {
   min-width: 200px;
   height: 400px;
- box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-    background-color: white;
-    border: 1px solid #EBEEF5;
-    border-radius: 4px;
-    padding: 20px 10px;
-    box-sizing: border-box;
+  box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+  background-color: white;
+  border: 1px solid #ebeef5;
+  border-radius: 4px;
+  padding: 20px 10px;
+  box-sizing: border-box;
 }
 
 .chart {
@@ -489,28 +504,26 @@ export default {
     height: 100%;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
     background-color: white;
-    border: 1px solid #EBEEF5;
+    border: 1px solid #ebeef5;
     border-radius: 4px;
     padding: 20px 10px;
     box-sizing: border-box;
-    
   }
-  .notch{
+  .notch {
     padding-left: 25px;
     padding-right: 25px;
-    .label{
+    .label {
       text-align: center;
-    font-size: 18px;
-    font-weight: 700;
-    margin-bottom: 10px;
-    letter-spacing: 1px;
-    color: #464646;
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+      color: #464646;
     }
-    .tit{
+    .tit {
       text-align: right;
       color: grey;
     }
   }
-
 }
 </style>

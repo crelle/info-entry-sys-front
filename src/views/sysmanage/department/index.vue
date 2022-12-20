@@ -16,10 +16,11 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="部门名称">
+            <el-form-item label="部门名称" prop="department">
               <el-input
                 v-model="formOptions.department"
                 placeholder="请输入部门名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
@@ -35,6 +36,9 @@
             "
           >
             <el-form-item>
+               <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -201,6 +205,8 @@ export default {
         userPhone: "",
         username: "",
       },
+        // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -316,7 +322,10 @@ export default {
       console.log("详情", row, row.id);
     },
     // 重置表单
-
+  resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+    },
     // 表格复选动作
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -370,7 +379,7 @@ export default {
   margin-right: 5px;
 }
 .el-form-item{
-  width: 252px;
+  width: 267px;
 }
 </style>
 

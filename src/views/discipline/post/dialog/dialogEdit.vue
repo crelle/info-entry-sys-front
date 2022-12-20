@@ -22,12 +22,14 @@
                     type="text"
                     v-model="userEditForm.postName"
                     placeholder="请填写岗位名称"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位技能 :" prop="skill">
                   <el-select
                     v-model="userEditForm.skill"
                     placeholder="请选择岗位技能"
+                    clearable
                     filterable
                   >
                     <el-option
@@ -43,6 +45,7 @@
                     v-model="userEditForm.projectId"
                     placeholder="请选择接项目"
                     filterable
+                    clearable
                     @change="queryson"
                   >
                     <el-option
@@ -58,6 +61,7 @@
                     type="text"
                     v-model="userEditForm.customer"
                     placeholder="客户"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位需求人数 :" prop="number">
@@ -74,6 +78,8 @@
                       placeholder="计划满足日期"
                       v-model="userEditForm.date"
                       style="width: 100%"
+                      filterable
+                      clearable
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
@@ -84,6 +90,8 @@
                       placeholder="选择日期"
                       v-model="userEditForm.latestArrivalTime"
                       style="width: 100%"
+                      filterable
+                      clearable
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
@@ -102,6 +110,7 @@
                     type="text"
                     v-model="userEditForm.detailAddress"
                     placeholder="详细地址"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位职责 :" prop="position">
@@ -109,6 +118,7 @@
                     type="textarea"
                     v-model="userEditForm.position"
                     placeholder="请输入岗位职责..."
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位要求 :" prop="requirements">
@@ -116,6 +126,8 @@
                     type="textarea"
                     v-model="userEditForm.requirements"
                     placeholder="请输入岗位要求..."
+                    clearable
+                    filterable
                   ></el-input>
                 </el-form-item>
               </el-form>

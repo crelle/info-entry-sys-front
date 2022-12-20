@@ -16,10 +16,11 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="角色名称">
+            <el-form-item label="角色名称"  prop="nameZh">
               <el-input
                 v-model="formOptions.nameZh"
                 placeholder="请输入角色名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
@@ -34,6 +35,9 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('queryRoleRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryRoles">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -148,6 +152,8 @@ export default {
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
       },
+         // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -229,8 +235,9 @@ export default {
       this.list = "编辑角色信息";
       console.log("编辑", row, row.id);
     },
-    // 重置表单
+   // 重置表单
     resetForm(formName) {
+      console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
     // 表格复选动作
@@ -290,7 +297,7 @@ export default {
   margin-right: 5px;
 }
 .el-form-item {
-  width: 252px;
+  width: 267px;
 }
 </style>
 

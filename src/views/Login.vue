@@ -46,7 +46,8 @@
             v-model="ruleForm.code"
             maxlength="4"
             placeholder="验证码"
-            @keyup.enter="submitForm('ruleForm')"
+            @keyup.enter.native="submitForm('ruleForm')"
+
           >
             <i class="el-iconfont-yanzhengma" slot="prepend"></i>
             <el-image
@@ -62,7 +63,10 @@
           <el-button @click="resetForm('ruleForm')" size="mini" type="primary"
             >重置</el-button
           >
-          <el-button type="primary" size="mini" @click="submitForm('ruleForm')"
+          <el-button
+            type="primary"
+            size="mini"
+            @click="submitForm('ruleForm')"
             >登录</el-button
           >
           <el-button @click="submitForm('ruleForm')" size="mini" type="text"

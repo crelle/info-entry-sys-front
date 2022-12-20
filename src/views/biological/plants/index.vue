@@ -16,7 +16,7 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="姓名">
+            <el-form-item label="姓名" prop="name">
               <el-input
                 class="namecss"
                 v-model="formOptions.name"
@@ -25,7 +25,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="部门">
+            <el-form-item label="部门" prop="department">
               <el-select
                 v-model="formOptions.department"
                 placeholder="请选择接部门"
@@ -41,7 +41,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="地域">
+            <el-form-item label="地域" prop="region">
               <el-select
                 v-model="formOptions.region"
                 placeholder="请选择接地域名称"
@@ -57,7 +57,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="接口人">
+            <el-form-item label="接口人" prop="Interface">
               <el-select
                 v-model="formOptions.Interface"
                 placeholder="请选择接口人"
@@ -74,6 +74,9 @@
           </el-col>
           <el-col :span="4" class="btn">
             <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
@@ -81,7 +84,7 @@
         </el-row>
         <el-row class="name">
           <el-col :span="5">
-            <el-form-item label="客户">
+            <el-form-item label="客户" prop="customer">
               <el-select
                 v-model="formOptions.customer"
                 placeholder="请选择客户名称"
@@ -97,7 +100,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="项目">
+            <el-form-item label="项目" prop="project">
               <el-select
                 v-model="formOptions.project"
                 placeholder="请选择项目名称"
@@ -113,7 +116,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="技能">
+            <el-form-item label="技能" prop="skill">
               <el-select v-model="formOptions.skill" placeholder="请选择技能">
                 <el-option
                   v-for="item in options"
@@ -126,7 +129,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item class="lab" label="状态">
+            <el-form-item class="lab" label="状态" prop="state">
               <el-select v-model="formOptions.state" placeholder="请选择">
                 <el-option
                   v-for="item in state"
@@ -370,6 +373,8 @@ export default {
       MockUser: [],
       Interface: [],
       tableCustomer: [],
+      // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -569,7 +574,11 @@ export default {
       this.list = "查看员工详情";
       console.log("详情", row, row.id);
     },
-
+    // 重置表单
+    resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+    },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
