@@ -54,7 +54,7 @@
               <el-button type="primary" @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserList">查询</el-button>
+              <el-button type="primary" @click="queryUserListlis">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -223,6 +223,37 @@ export default {
     //     }
     //   });
     // },
+    // 查询
+    queryUserListlis() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          console.log(valid, "validvalidvalid");
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = this.paginationOptions.pageSize;
+          // 接口人表
+          queryInterface(data).then((res) => {
+            data.current = 1;
+            data.size = 999;
+            // 客户表
+            queryCustomer(data).then((res1) => {
+              this.tableData = res.data.records; // 接口人表格数据赋值
+              this.tableCustomer = res1.data.records; //客户表格数据赋值
+              this.tableData.forEach((item) => {
+                this.tableCustomer.forEach((sitem) => {
+                  if (item.customerId == sitem.customerId) {
+                    item.customerName = sitem.customerName;
+                  }
+                });
+              });
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            });
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     // 查询接口人列表
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {

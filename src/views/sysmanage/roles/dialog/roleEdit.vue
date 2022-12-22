@@ -221,8 +221,9 @@ export default {
         });
       } else {
         console.log("我是新增");
-
         delete this.userEditForm.id;
+        this.userEditForm.name = "";
+        this.userEditForm.nameZh = "";
         // -------
         // 查询菜单名字
         queryMenuAll().then((res) => {

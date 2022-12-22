@@ -31,7 +31,7 @@
               </el-select>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click="queryMenus">查询</el-button>
+              <el-button type="primary" @click="queryMenuslist">查询</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -184,6 +184,27 @@ export default {
     this.queryMenus();
   },
   methods: {
+    // 查询中
+    queryMenuslist() {
+      this.$refs["queryMenuRef"].validate((valid) => {
+        if (valid) {
+          let data = { condition: { ...this.formOptions } };
+          data.pageNo = this.paginationOptions.pageNo;
+          data.pageSize = this.paginationOptions.pageSize;
+          queryMenu(data).then((res) => {
+            console.log(res, "我是res");
+            if (res && res.code && res.code === "00000") {
+              this.resetForm("queryMenuRef"); // 重置表单
+              this.tableData = res.data.content; // 表格数据赋值
+              console.log(this.tableData, "我是tableData");
+              this.paginationOptions.total = res.data.totalElements; // 分页器赋值
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     queryMenus() {
       this.$refs["queryMenuRef"].validate((valid) => {
         if (valid) {

@@ -50,7 +50,7 @@
                 <el-form-item label="地域" prop="regionId">
                   <el-select
                     v-model="userEditForm.regionId"
-                    placeholder="地域"
+                    placeholder="请选择地域"
                     clearable
                     filterable
                   >
@@ -209,13 +209,8 @@ export default {
         interfaceId: [
           {
             required: true,
-            message: "请输入接口人",
+            message: "请选择接口人",
             trigger: ["blur", "change"],
-          },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
           },
         ],
         gender: [
@@ -247,7 +242,7 @@ export default {
           },
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            message: "项目名称不能为空格",
             trigger: "blur",
           },
         ],
@@ -280,7 +275,7 @@ export default {
           },
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            message: "内容不能为空格",
             trigger: "blur",
           },
         ],

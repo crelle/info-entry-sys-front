@@ -37,7 +37,7 @@
               <el-button type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryRoles">查询</el-button>
+              <el-button type="primary" @click="queryRoleslis">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -147,6 +147,27 @@ export default {
     this.queryRoles();
   },
   methods: {
+    // 查询
+    queryRoleslis() {
+      this.$refs["queryRoleRef"].validate((valid) => {
+        if (valid) {
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = this.paginationOptions.pageSize;
+          console.log(data, data.current, data.size, "data----xu-----");
+          queryRegion(data).then((res) => {
+            console.log(res, "res++++++++++");
+            if (res && res.code && res.code === "00000") {
+              this.resetForm("queryRoleRef"); // 重置表单
+              this.tableData = res.data.records; // 表格数据赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     // 真的方法
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {

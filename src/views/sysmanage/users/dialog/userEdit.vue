@@ -140,11 +140,6 @@ export default {
             message: "不能以数字开头",
             trigger: "blur",
           },
-          {
-            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
-            message: "请输入中文名称",
-            trigger: "blur",
-          },
         ],
         password: [
           {

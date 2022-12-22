@@ -159,7 +159,10 @@
                       </el-select>
                     </el-form-item>
                     <el-form-item label="年龄" prop="age">
-                      <el-input v-model="userEditForm.age"></el-input>
+                      <el-input
+                        v-model="userEditForm.age"
+                        placeholder="请输入年龄"
+                      ></el-input>
                     </el-form-item>
                     <el-form-item label="电子邮箱" prop="email">
                       <el-input
@@ -356,6 +359,16 @@ export default {
             message: "请输入工号",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
+          },
+          {
+            pattern: /^[0-9a-zA-Z]{1,}$/,
+            message: "工号格式不正确",
+            trigger: "blur",
+          },
         ],
         name: [
           {
@@ -388,12 +401,23 @@ export default {
             message: "请输入手机号",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
+          },
         ],
         email: [
           {
             required: true,
             message: "请输入邮箱",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
+            trigger: "blur",
           },
         ],
         customer: [
@@ -420,14 +444,19 @@ export default {
         age: [
           {
             required: false,
-            message: "请输入年龄/岁",
-            trigger: ["blur"],
+            message: "请输入年龄",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/,
+            message: "请输入有效年龄",
+            trigger: "blur",
           },
         ],
         birthday: [
           {
             required: true,
-            message: "请输入出生日期",
+            message: "请选择出生日期",
             trigger: ["blur", "change"],
           },
         ],
@@ -444,12 +473,22 @@ export default {
             message: "请输入籍贯",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9_-])*$/,
+            message: "用户名格式不正确",
+            trigger: "blur",
+          },
         ],
         residence: [
           {
             required: true,
             message: "请输入住址",
             trigger: ["blur", "change"],
+          },
+           {
+            pattern: /^([aA-zZ]|[\u4E00-\u9FA5]|[0-9_-])*$/,
+            message: "用户名格式不正确",
+            trigger: "blur",
           },
         ],
         emergency: [
@@ -458,12 +497,22 @@ export default {
             message: "请输入紧急联系人",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^([\u4E00-\u9FA5])*$/,
+            message: "紧急联系人格式不正确",
+            trigger: "blur",
+          },
         ],
         emergencyTelephone: [
           {
             required: true,
             message: "请输入紧急联系人电话",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
           },
         ],
         education: [
@@ -478,6 +527,11 @@ export default {
             required: true,
             message: "请输入学校",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9_/-])*$/,
+            message: "学校名格式不正确",
+            trigger: "blur",
           },
         ],
         schoolTime: [
@@ -514,12 +568,22 @@ export default {
             message: "请输入证书",
             trigger: ["blur", "change"],
           },
+          {
+            pattern: /^([\u4E00-\u9FA5]|[0-9_/-])*$/,
+            message: "证书名格式不正确",
+            trigger: "blur",
+          },
         ],
         hobby: [
           {
             required: false,
             message: "请输入爱好",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^(?!\s+).*(?<!\s)$/,
+            message: "首尾不能为空格",
+            trigger: "blur",
           },
         ],
         skill: [
@@ -555,6 +619,11 @@ export default {
             required: true,
             message: "请输入电话号码",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
+            trigger: "blur",
           },
         ],
       },

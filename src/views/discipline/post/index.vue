@@ -87,10 +87,10 @@
             "
           >
             <el-form-item>
-               <el-button type="primary" @click="resetForm('queryRoleRef')"
+              <el-button type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryPost">查询</el-button>
+              <el-button type="primary" @click="queryPostlist">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -264,7 +264,7 @@ export default {
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
       },
-       // 验证
+      // 验证
       rules: {},
     };
   },
@@ -272,6 +272,45 @@ export default {
     this.queryPost();
   },
   methods: {
+    // 查询
+    queryPostlist() {
+      this.$refs["queryRoleRef"].validate((valid) => {
+        if (valid) {
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = this.paginationOptions.pageSize;
+          queryPost(data).then((res) => {
+            //  查询 项目表
+            queryProject(data).then((res1) => {
+              // 查询 地域表
+              queryRegion(data).then((res2) => {
+                this.tableData = res.data.records; // 表格数据赋值
+                console.log(this.tableData, "++++++++++岗位数据----");
+                this.projectData = res1.data.records; // 表格数据赋值
+                console.log(this.projectData, "+++++++++项目数据----");
+                this.regionData = res2.data.records; // 表格数据赋值
+                console.log(this.regionData, "++++++++++地域数据----");
+                this.tableData.forEach((item) => {
+                  if (item.date) {
+                    item.date = item.date.split("T")[0];
+                    item.address = item.address.split("/")[0];
+                  }
+
+                  this.projectData.forEach((sitem) => {
+                    if (item.projectId == sitem.projectId) {
+                      item.project = sitem.project;
+                    }
+                  });
+                });
+              });
+            });
+            this.paginationOptions.total = res.data.total; // 分页器赋值
+          });
+        } else {
+          return false;
+        }
+      });
+    },
     // 查询 岗位表
     queryPost() {
       this.$refs["queryRoleRef"].validate((valid) => {
