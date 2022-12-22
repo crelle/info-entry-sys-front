@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -109,9 +109,8 @@
               >
                 <div class="note_taker">记录人:{{ userEditForm.name }}</div>
                 <el-card>
-                  {{ item.text }} : {{ item.textarea1 }} ;
-                  {{ item.times }} :  {{ item.time }} ; 
-                  {{ item.cycles }} : {{ item.cycle }}
+                  {{ item.text }} : {{ item.textarea1 }} ; {{ item.times }} :
+                  {{ item.time }} ; {{ item.cycles }} : {{ item.cycle }}
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -418,10 +417,9 @@ export default {
   align-items: center;
   margin-bottom: 20px;
 }
-// ::v-deep .el-form-item__label {
-//   width: 100px !important;
-//   text-align: left;
-// }
+::v-deep .el-form-item__label {
+  width: 96px !important;
+}
 ::v-deep .el-textarea__inner {
   min-height: 130px !important;
 }
@@ -504,6 +502,8 @@ export default {
   justify-content: space-between;
   align-items: center;
   margin-left: 10px;
+  border-top: 2px solid #eee;
+  padding-top: 15px;
 }
 ::v-deep .preservation {
   margin-bottom: 0;
