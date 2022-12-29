@@ -14,9 +14,6 @@
         <el-button type="primary" @click="dialogClose" size="mini"
           >取 消</el-button
         >
-        <!-- <el-button type="primary" @click="resetForm('userEditRef')" size="mini"
-            >重置</el-button
-          > -->
         <el-button type="primary" size="mini" @click="onCertain"
           >保 存</el-button
         >

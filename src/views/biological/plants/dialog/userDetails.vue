@@ -280,7 +280,6 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
-      console.log(this.userEditForm, "001001详情详情详情详情详情");
       this.empty(); //清空内容
       this.cancel();
       this.dialogFormVisible = true; // 让弹窗显示

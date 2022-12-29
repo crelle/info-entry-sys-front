@@ -22,6 +22,7 @@
                     type="text"
                     v-model="userEditForm.nameZh"
                     placeholder="角色名称"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="英文名称" prop="name">
@@ -29,6 +30,7 @@
                     type="text"
                     v-model="userEditForm.name"
                     placeholder="请以  ROLE_  开头"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <span>角色权限配置</span>
@@ -219,8 +221,9 @@ export default {
         });
       } else {
         console.log("我是新增");
-
         delete this.userEditForm.id;
+        this.userEditForm.name = "";
+        this.userEditForm.nameZh = "";
         // -------
         // 查询菜单名字
         queryMenuAll().then((res) => {

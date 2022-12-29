@@ -23,6 +23,7 @@
                     v-model="userEditForm.department"
                     placeholder="部门名"
                     @change="queryson"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="负责人" prop="userId">
@@ -65,7 +66,7 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="上级部门" prop="departmentUp">
-                  <el-select v-model="userEditForm.departmentUp" clearable>
+                  <el-select v-model="userEditForm.departmentUp" clearable  filterable>
                     <el-option
                       v-for="item in tableData"
                       :key="item.index"
@@ -79,6 +80,7 @@
                     type="email"
                     placeholder="部门总部地址"
                     v-model="userEditForm.address"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="部门介绍" prop="introduce">

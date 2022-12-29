@@ -21,6 +21,7 @@
                   <el-input
                     placeholder="项目名称"
                     v-model="userEditForm.project"
+                    clearable
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="项目状态" prop="status">
@@ -49,7 +50,7 @@
                 <el-form-item label="地域" prop="regionId">
                   <el-select
                     v-model="userEditForm.regionId"
-                    placeholder="地域"
+                    placeholder="请选择地域"
                     clearable
                     filterable
                   >
@@ -117,6 +118,7 @@
                   <el-select
                     v-model="userEditForm.cooperation"
                     placeholder="请选择合作模式"
+                    clearable
                   >
                     <el-option label="TM" value="TM"></el-option>
                     <el-option label="OD" value="OD"></el-option>
@@ -207,13 +209,8 @@ export default {
         interfaceId: [
           {
             required: true,
-            message: "请输入接口人",
+            message: "请选择接口人",
             trigger: ["blur", "change"],
-          },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
           },
         ],
         gender: [
@@ -245,7 +242,7 @@ export default {
           },
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            message: "项目名称不能为空格",
             trigger: "blur",
           },
         ],
@@ -278,7 +275,7 @@ export default {
           },
           {
             pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            message: "内容不能为空格",
             trigger: "blur",
           },
         ],

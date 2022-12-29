@@ -213,7 +213,7 @@ export default {
             trigger: "blur",
           },
           {
-            pattern: /^([\u4E00-\u9FA5]|[0-9_-])*$/,
+            pattern: /^([aA-zZ]|[\u4E00-\u9FA5]|[0-9_-])*$/,
             message: "请输入中文名称",
             trigger: "blur",
           },

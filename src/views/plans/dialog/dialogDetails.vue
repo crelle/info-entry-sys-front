@@ -21,6 +21,7 @@
                 type="password"
                 v-model="ruleForm.password"
                 placeholder="请输入旧密码"
+                clearable
               ></el-input>
             </el-form-item>
             <el-form-item label="密码" prop="newpassword">
@@ -29,6 +30,7 @@
                 v-model="ruleForm.newpassword"
                 placeholder="请输入新密码"
                 autocomplete="off"
+                clearable
               ></el-input>
             </el-form-item>
             <el-form-item label="确认密码" prop="checkPass">
@@ -37,6 +39,7 @@
                 v-model="ruleForm.checkPass"
                 placeholder="请再次输入新密码"
                 autocomplete="off"
+                clearable
               ></el-input>
             </el-form-item>
 
@@ -172,12 +175,6 @@ export default {
     text-shadow: 0 1px -3px #409eff;
   }
 }
-::v-deep .el-button {
-  color: #fff;
-  background-color: #409eff;
-  border-color: #409eff;
-}
-
 ::v-deep .el-form-item__label {
   width: 70px !important;
 }

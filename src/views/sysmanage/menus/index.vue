@@ -39,7 +39,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="7">
+          <el-col :span="9">
             <el-form-item style="float:right;">
               <el-button type="primary" @click="queryMenus">查询</el-button>
               <el-button

@@ -31,14 +31,14 @@
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="用户名 :">
-                    <el-input v-model="userdetail.username"></el-input>
+                    <el-input clearable v-model="userdetail.username"></el-input>
                   </el-form-item>
                 </div>
               </div>
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="工号 :">
-                    <el-input v-model="userdetail.jobNo"></el-input>
+                    <el-input clearable v-model="userdetail.jobNo"></el-input>
                   </el-form-item>
                 </div>
                 <div class="boxlis">
@@ -46,6 +46,7 @@
                     <el-input
                       disabled
                       v-model="userdetail.roles[0].nameZh"
+                      clearable
                     ></el-input>
                   </el-form-item>
                 </div>
@@ -53,12 +54,12 @@
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="邮箱 :">
-                    <el-input v-model="userdetail.userEmail"></el-input>
+                    <el-input clearable v-model="userdetail.userEmail"></el-input>
                   </el-form-item>
                 </div>
                 <div class="boxlis">
                   <el-form-item label="电话 :">
-                    <el-input v-model="userdetail.userPhone"></el-input>
+                    <el-input clearable v-model="userdetail.userPhone"></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -73,6 +74,7 @@
     ></role-data-dialog>
   </div>
 </template>
+
 <script>
 import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
@@ -217,7 +219,6 @@ export default {
     text-align: center;
     font-size: 24px;
     font-weight: 500;
-    // padding: 20px 0;
     color: #409eff;
     background-color: #383f49;
     text-shadow: 0 1px -3px #409eff;
@@ -236,7 +237,6 @@ export default {
   display: flex;
   justify-content: right;
   align-items: center;
-  margin: 20px 0;
 }
 ::v-deep .el-input__inner {
   color: rgb(0, 0, 0) !important;
@@ -279,13 +279,5 @@ export default {
 ::v-deep .el-form-item__content {
   margin-left: 80px;
   border: none;
-}
-.btn {
-  height: 30px;
-  margin-left: 10px;
-  background-color: #66b1ff;
-  border: none;
-  border-radius: 8px;
-  color: #fff;
 }
 </style>

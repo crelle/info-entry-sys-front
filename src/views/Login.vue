@@ -22,7 +22,10 @@
         label-width="20px"
         size="mini"
       >
-        <el-form-item style="display: flex; justify-content: flex-end">
+        <el-form-item
+          style="display: flex; justify-content: flex-end"
+          class="noregister"
+        >
           <el-button type="primary" @click="goRegister"
             >还没有账号？注册一个</el-button
           >
@@ -46,7 +49,7 @@
             v-model="ruleForm.code"
             maxlength="4"
             placeholder="验证码"
-            @keyup.enter="submitForm('ruleForm')"
+            @keyup.enter.native="submitForm('ruleForm')"
           >
             <i class="el-iconfont-yanzhengma" slot="prepend"></i>
             <el-image
@@ -65,7 +68,11 @@
           <el-button type="primary" size="mini" @click="submitForm('ruleForm')"
             >登录</el-button
           >
-          <el-button @click="submitForm('ruleForm')" size="mini" type="text"
+          <el-button
+            @click="submitForm('ruleForm')"
+            size="mini"
+            type="text"
+            class="loginpassword"
             >忘记密码？</el-button
           >
         </el-form-item>
@@ -73,7 +80,7 @@
     </div>
     <div class="register_form_main" v-show="!ifLogin">
       <span>账号注册</span>
-      <el-row style="height: 100%">
+      <el-row class="account" style="height: 100%">
         <el-col :span="12">
           <div class="grid-content-left">
             <el-upload
@@ -225,13 +232,6 @@ export default {
       nowIndex: -1,
       defaultImgs: [
         "http://1.116.79.69:80/fes/picture/2021-4-27-e9a33f87-ab85-464a-a4b4-5fcd196eea51.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-5da50eea-9146-40e5-836c-42ee5eb29092.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-137171c6-5a54-4025-8e84-877cbab6c355.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-d9b3fe51-6e70-4ffa-970d-2d517a7bdc7a.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-a16b1069-2665-4f4a-85b5-c9607f65a00a.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-90c64b39-d069-4644-8bef-3dc4e3e5ab55.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-905ea61e-dac4-472f-bce5-24a9bcedac66.png",
-        "http://1.116.79.69:80/fes/picture/2021-4-27-8c5ba8c3-bcfc-4d8b-9bac-6566d53d5173.png",
       ],
       baseURL: BaseURL,
       rules: {
@@ -480,7 +480,7 @@ export default {
     rgba(0, 255, 0, 0.2),
     rgba(255, 100, 50, 0.4)
   );
-  background-image: url(https://api.xygeng.cn/Bing/);
+  background-image: url(https://www.archermind.com/wp-content/uploads/2020/04/Partner.jpg);
   background-size: 100%;
   .sys_info {
     position: absolute;
@@ -498,11 +498,11 @@ export default {
   }
   .login_form_main {
     min-height: 24%;
-    min-width: 30%;
+    min-width: 25%;
     position: relative;
     border-radius: 10px;
     overflow: hidden;
-    background-color: rgba(255, 255, 255);
+    background-color: rgba(0, 40, 99, 0.63);
     box-shadow: 2px -2px 4px rgb(0, 0, 0), -2px 2px 4px rgb(0, 0, 0);
     > span {
       display: block;
@@ -510,9 +510,9 @@ export default {
       font-size: 24px;
       font-weight: 500;
       padding: 20px 0;
-      color: #409eff;
-      background-color: #383f49;
-      text-shadow: 0 1px -3px #409eff;
+      color: #fff;
+      background-color: #00214c;
+      text-shadow: 0 1px -3px #000e2b;
     }
   }
   .register_form_main {
@@ -528,8 +528,8 @@ export default {
       font-size: 24px;
       font-weight: 500;
       padding: 20px 0;
-      color: #409eff;
-      background-color: #383f49;
+      color: #fff;
+      background-color: #00214c;
       text-shadow: 0 1px -3px #409eff;
     }
     .grid-content-left {
@@ -595,5 +595,25 @@ export default {
       padding: 0 2px;
     }
   }
+}
+.loginpassword {
+  color: #fff;
+}
+.el-button--primary {
+  background-color: #00235d;
+}
+@{deep} .el-button--mini {
+  font-size: 14px;
+}
+@{deep} .el-input__inner {
+  background-color: #012e69;
+  color: #fff;
+}
+@{deep} .el-input-group__prepend {
+  background-color: #012e69;
+  color: #fff;
+}
+.account{
+     background-color: rgba(0, 40, 99, 0.63);
 }
 </style>

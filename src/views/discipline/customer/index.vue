@@ -16,15 +16,16 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="客户">
+            <el-form-item label="客户" prop="customerName">
               <el-input
                 v-model="formOptions.customerName"
                 placeholder="请填写客户名称"
+                clearable
               ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="地域">
+            <el-form-item label="地域" prop="regionId">
               <el-select
                 v-model="formOptions.regionId"
                 placeholder="地域名称"
@@ -51,9 +52,11 @@
             "
           >
             <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
               <el-button type="primary" @click="queryUserList">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
-              <!-- <el-button @click="resetForm('formOptions')">重置</el-button> -->
             </el-form-item>
           </el-col>
         </el-row>
@@ -212,6 +215,8 @@ export default {
         userPhone: "",
         username: "",
       },
+      // 验证
+      rules: {},
     };
   },
   mounted() {
@@ -228,9 +233,7 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
           data.size = 999;
-          console.log(data, "data---------");
           queryRegion(data).then((res) => {
-            console.log(res, "res++++++++++");
             this.regionData = res.data.records; // 表格数据赋值
             console.log(this.regionData, "----地域数据");
           });
@@ -243,14 +246,10 @@ export default {
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
           queryCustomer(data).then((res) => {
-            console.log(res, "res++++++++++");
-
             this.tableData = res.data.records; // 表格数据赋值
             console.log(this.tableData, "客户数据");
             this.paginationOptions.total = res.data.total; // 分页器赋值
@@ -264,13 +263,10 @@ export default {
     queryUser() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
           data.size = 999;
-          console.log(data, "data---------");
           queryUser(data).then((res) => {
-            console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               this.UserList = res.data.records; // 表格数据赋值
               console.log(this.UserList);
@@ -292,7 +288,6 @@ export default {
       })
         .then(() => {
           this.tableData.splice(index, 1);
-          console.log(row, "删除--------");
           // 点击确认，发起后台请求，删除该用户
           deletesCustomer(row.customerId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
@@ -337,7 +332,10 @@ export default {
       console.log("详情", row, row.id);
     },
     // 重置表单
-
+    resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+    },
     // 表格复选动作
     handleSelectionChange(val) {
       this.multipleSelection = val;
