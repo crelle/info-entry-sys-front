@@ -10,5 +10,4 @@ let loginout = () => {
         }
     });
 }
-
 export { loginout }
