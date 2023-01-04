@@ -96,7 +96,7 @@
                   </el-col>
                 </el-form-item>
 
-                <el-form-item label="办公地点 :" prop="address">
+                <!-- <el-form-item label="办公地点 :" prop="address">
                   <el-cascader
                     size="large"
                     :options="options"
@@ -104,6 +104,14 @@
                     clearable
                   >
                   </el-cascader>
+                </el-form-item> -->
+                 <el-form-item label="办公地点 :" prop="address">
+                  <el-input
+                    type="text"
+                    v-model="userEditForm.address"
+                    placeholder="办公地点"
+                    clearable
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="详细地址 :" prop="detailAddress">
                   <el-input
@@ -156,8 +164,8 @@
 import { establishPost, editPost } from "@/api/post";
 // 假的 查询接口人 查客户
 // import { reqgetInterface } from "@/mockjs/reqMock";
-
-import { regionData, CodeToText, TextToCode } from "element-china-area-data";
+// 地区选择
+// import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 
 export default {
   props: {
@@ -172,7 +180,7 @@ export default {
         fileType: 0,
       },
       nowIndex: -1,
-      options: regionData,
+      // options: regionData,
       // baseURL: BaseURL,
       skill: [
         {
@@ -350,12 +358,12 @@ export default {
       this.dialogFormVisible = true; // 让弹窗显示
       // console.log(this.tableData,"-------------");
       if (row) {
-        let editRow = JSON.parse(JSON.stringify(row));
-        editRow.address = this.getCityCode(editRow.address);
+        // let editRow = JSON.parse(JSON.stringify(row));
+        // editRow.address = this.getCityCode(editRow.address);
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(editRow); // 为表单赋值
+          this.initForm(row); // 为表单赋值
         });
       } else {
         console.log("我是新增");
@@ -379,8 +387,8 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
-      this.resetFormData();
+      // this.initForm(this.userEditForm);
+      // this.resetFormData();
     },
     // 初始化页面数据 重置
     resetFormData() {
@@ -388,14 +396,14 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.userEditForm.address) {
-        var loc = "";
-        for (let i = 0; i < this.userEditForm.address.length; i++) {
-          loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
-        }
-        loc = loc.slice(0, loc.length - 1);
-        this.userEditForm.address = loc;
-      }
+      // if (this.userEditForm.address) {
+      //   var loc = "";
+      //   for (let i = 0; i < this.userEditForm.address.length; i++) {
+      //     loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
+      //   }
+      //   loc = loc.slice(0, loc.length - 1);
+      //   this.userEditForm.address = loc;
+      // }
       if (this.initFormData.postId) {
         this.userEditForm.postId = this.initFormData.postId;
         this.initFormData = this.userEditForm;
@@ -409,7 +417,7 @@ export default {
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
                   this.dialogClose();
-                  this.resetForm();
+                  // this.resetForm();
                   console.log("修改成功！");
                   this.$parent.queryPost();
                 }
@@ -438,26 +446,25 @@ export default {
         });
       }
     },
-    getCityCode(cityText) {
-      var codeArray = [];
-      if (cityText != "") {
-        var cityArray = cityText.trim().split(" ");
-        if (cityArray.length == 1) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-        } else if (cityArray.length == 2) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-        } else if (cityArray.length == 3) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-          codeArray.push(
-            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
-          );
-        }
-      }
-
-      return codeArray;
-    },
+    // getCityCode(cityText) {
+    //   var codeArray = [];
+    //   if (cityText != "") {
+    //     var cityArray = cityText.trim().split(" ");
+    //     if (cityArray.length == 1) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //     } else if (cityArray.length == 2) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+    //     } else if (cityArray.length == 3) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+    //       codeArray.push(
+    //         TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+    //       );
+    //     }
+    //   }
+    //   return codeArray;
+    // },
   },
 };
 </script>

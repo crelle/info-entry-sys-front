@@ -227,7 +227,6 @@ export default {
         // -------
         // 查询菜单名字
         queryMenuAll().then((res) => {
-          console.log(res, "res++++++++++");
           if (res && res.code && res.code === "00000") {
             this.dialogFormVisible = true; // 让弹窗显示
             this.$nextTick(() => {
@@ -314,7 +313,7 @@ export default {
                 this.userEditForm.menus,
                 "---增加传递的内容22222222----"
               );
-            addRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            addRole(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 console.log("成功增加--用户！");
