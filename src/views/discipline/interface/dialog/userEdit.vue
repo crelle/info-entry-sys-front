@@ -268,7 +268,7 @@ export default {
       if (row) {
         // let editRow = JSON.parse(JSON.stringify(row));
         // editRow.address = this.getCityCode(editRow.address);
-        // this.initFormData = row;
+        this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
@@ -319,7 +319,7 @@ export default {
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
+          console.log(valid, "修改的valid-----");
           if (valid) {
             editInterface(
               this.userEditForm,

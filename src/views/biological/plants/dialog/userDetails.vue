@@ -38,7 +38,7 @@
                       <span>工号:</span><span>{{ initFormData.jobNo }}</span>
                     </li>
                     <li>
-                      <span>岗位:</span><span>{{ initFormData.postId }}</span>
+                      <span>岗位:</span><span>{{ initFormData.postName }}</span>
                     </li>
                     <li>
                       <span>员工状态:</span

@@ -57,7 +57,7 @@
                           value="硕士研究生"
                         ></el-option>
                         <el-option label="本科" value="本科"></el-option>
-                        <el-option label="专科" value="本科"></el-option>
+                        <el-option label="专科" value="专科"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="毕业时间" prop="schoolTime">
@@ -223,9 +223,9 @@
                       </el-select>
                     </el-form-item>
 
-                    <el-form-item label="地域" prop="address">
+                    <el-form-item label="地域" prop="regionName">
                       <el-input
-                        v-model="userEditForm.address"
+                        v-model="userEditForm.regionName"
                         placeholder="地域"
                         disabled
                       >
@@ -324,6 +324,8 @@ export default {
     tableCustomer: "",
     // 岗位
     tableyPost: "",
+    // 地域
+    MockUser: "",
   },
   data() {
     return {
@@ -368,6 +370,7 @@ export default {
         department: "",
         projectId: "",
         workingHours: null,
+        regionId: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -459,7 +462,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        address: [
+        regionName: [
           {
             required: false,
             message: "请输入地域",
@@ -662,24 +665,36 @@ export default {
     };
   },
   methods: {
-    //自动选择
+    //编辑项目的自动选择
     queryson(e) {
       this.userEditForm.postId = "";
       console.log(this.tableProject, "自动选择", "---选择的", e);
-      console.log(this.tableCustomer, "----客户");
+      // console.log(this.tableCustomer, "----客户");
+      // 项目
       this.tableProject.forEach((item) => {
         if (item.projectId == e) {
+          // 部门
+          // console.log(item, "----------------------项目1111111");
           this.Users.forEach((items) => {
             if (item.departmentId == items.departmentId) {
               this.userEditForm.department = items.department;
               this.userEditForm.departmentId = items.departmentId;
             }
           });
+          // 地域
+          this.MockUser.forEach((itemock) => {
+            if (item.regionId == itemock.regionId) {
+              // console.log(itemock, "我的地域---------");
+              this.userEditForm.regionName = itemock.regionName;
+              this.userEditForm.regionId = itemock.regionId;
+            }
+          });
+          // 接口人
           this.Interface.forEach((itemli) => {
             if (item.interfaceId == itemli.interfaceId) {
-              this.userEditForm.address = itemli.address;
               this.userEditForm.interfaceName = itemli.interfaceName;
               this.userEditForm.interfaceId = itemli.interfaceId;
+              // 客户
               this.tableCustomer.forEach((itemlis) => {
                 if (itemli.customerId == itemlis.customerId) {
                   this.userEditForm.customerName = itemlis.customerName;
@@ -694,10 +709,57 @@ export default {
       this.tableyPostlist = [];
       this.tableyPost.forEach((itempro) => {
         if (itempro.projectId == e) {
-          console.log(itempro, "77777");
           this.tableyPostlist.push(itempro);
+          console.log(itempro,"--------岗位---");
         }
-        console.log(this.tableyPostlist, "------");
+      });
+    },
+    //初始编辑的自动选择
+    querysonss(e) {
+      console.log(this.tableProject, "自动选择", "---选择的", e);
+      // console.log(this.tableCustomer, "----客户");
+      // 项目
+      this.tableProject.forEach((item) => {
+        if (item.projectId == e) {
+          // 部门
+          // console.log(item, "----------------------项目1111111");
+          this.Users.forEach((items) => {
+            if (item.departmentId == items.departmentId) {
+              this.userEditForm.department = items.department;
+              this.userEditForm.departmentId = items.departmentId;
+            }
+          });
+          // 地域
+          this.MockUser.forEach((itemock) => {
+            if (item.regionId == itemock.regionId) {
+              // console.log(itemock, "我的地域---------");
+              this.userEditForm.regionName = itemock.regionName;
+              this.userEditForm.regionId = itemock.regionId;
+            }
+          });
+          // 接口人
+          this.Interface.forEach((itemli) => {
+            if (item.interfaceId == itemli.interfaceId) {
+              this.userEditForm.interfaceName = itemli.interfaceName;
+              this.userEditForm.interfaceId = itemli.interfaceId;
+              // 客户
+              this.tableCustomer.forEach((itemlis) => {
+                if (itemli.customerId == itemlis.customerId) {
+                  this.userEditForm.customerName = itemlis.customerName;
+                  this.userEditForm.customerId = itemlis.customerId;
+                }
+              });
+            }
+          });
+        }
+      });
+      //  根据项目 查询 岗位
+      this.tableyPostlist = [];
+      this.tableyPost.forEach((itempro) => {
+        if (itempro.projectId == e) {
+          this.tableyPostlist.push(itempro);
+          console.log(itempro,"--------岗位---");
+        }
       });
     },
     //
@@ -709,7 +771,7 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
-          this.queryson(row.projectId);
+          this.querysonss(row.projectId);
         });
       }
     },
@@ -726,13 +788,14 @@ export default {
     /* 保存  */
     onCertain() {
       console.log(this.userEditForm);
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.jobNo) {
+        this.userEditForm.jobNo = this.initFormData.jobNo;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            console.log(this.userEditForm, "修改---------");
+            updateEmployee(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.$parent.queryTableList();

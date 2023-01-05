@@ -264,6 +264,7 @@
       :Interface="Interface"
       :tableCustomer="tableCustomer"
       :tableyPost="tableyPost"
+      :MockUser="MockUser"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
@@ -388,7 +389,7 @@ export default {
     this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
-    this.queryPostList();
+    // this.queryPostList();
   },
   methods: {
     //table数据
@@ -405,39 +406,52 @@ export default {
               queryInterface(data).then((res3) => {
                 queryRegion(data).then((res4) => {
                   queryCustomer(data).then((res5) => {
-                    this.tableData = res.data.records; // 表格数据赋值
-                    console.log(this.tableData, "员工表格数据赋值");
-                    this.tableProject = res1.data.records; // 项目表格数据赋值
-                    this.Users = res2.data.records; // 部门数据表格数据赋值
-                    this.Interface = res3.data.records; // 接口人表格数据赋值
-                    this.MockUser = res4.data.records; // 地域数据表格数据赋值
-                    this.tableCustomer = res5.data.records; // 客户表格数据赋值
-                    this.tableData.forEach((item) => {
-                      this.tableProject.forEach((items) => {
-                        if (item.projectId == items.projectId) {
-                          // console.log(items, "------------111");
-                          item.project = items.project; //根据项目id给项目名称赋值
-                          this.Users.forEach((itemli) => {
-                            if (items.departmentId == itemli.departmentId) {
-                              item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
-                            }
-                          });
-                          this.Interface.forEach((itemis) => {
-                            if (items.interfaceId == itemis.interfaceId) {
-                              item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
-                              this.tableCustomer.forEach((itemiss) => {
-                                if (itemis.customerId == itemiss.customerId) {
-                                  item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
-                                }
-                              });
-                            }
-                          });
-                          this.MockUser.forEach((itemlis) => {
-                            if (items.regionId == itemlis.regionId) {
-                              item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
-                            }
-                          });
-                        }
+                    //  数据岗位查询方法
+                    queryPost(data).then((res6) => {
+                      this.tableyPost = res6.data.records; // 岗位表格数据赋值
+                      console.log(this.tableyPost, "----------岗位数据");
+
+                      this.tableData = res.data.records; // 表格数据赋值
+                      console.log(this.tableData, "员工表格数据赋值");
+                      this.tableProject = res1.data.records; // 项目表格数据赋值
+                      this.Users = res2.data.records; // 部门数据表格数据赋值
+                      this.Interface = res3.data.records; // 接口人表格数据赋值
+                      this.MockUser = res4.data.records; // 地域数据表格数据赋值
+                      this.tableCustomer = res5.data.records; // 客户表格数据赋值
+                      this.tableData.forEach((item) => {
+                        this.tableProject.forEach((items) => {
+                          if (item.projectId == items.projectId) {
+                            // console.log(items, "------------111");
+                            item.project = items.project; //根据项目id给项目名称赋值
+                            this.Users.forEach((itemli) => {
+                              if (items.departmentId == itemli.departmentId) {
+                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
+                              }
+                            });
+                            this.Interface.forEach((itemis) => {
+                              if (items.interfaceId == itemis.interfaceId) {
+                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+                                this.tableCustomer.forEach((itemiss) => {
+                                  if (itemis.customerId == itemiss.customerId) {
+                                    item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
+                                  }
+                                });
+                              }
+                            });
+                            this.MockUser.forEach((itemlis) => {
+                              if (items.regionId == itemlis.regionId) {
+                                item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
+                              }
+                            });
+                          }
+                        });
+                        this.tableyPost.forEach((itemls) => {
+                          if (item.postId == itemls.postId) {
+                            console.log(itemls, "岗位-----");
+                            item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
+                            item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
+                          }
+                        });
                       });
                     });
                   });
@@ -478,22 +492,22 @@ export default {
       });
     },
 
-    //  数据岗位查询方法
-    queryPostList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          queryPost(data).then((res) => {
-            this.tableyPost = res.data.records; // 岗位表格数据赋值
-            console.log(this.tableyPost, "----------岗位数据");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // //  数据岗位查询方法
+    // queryPostList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = 1;
+    //       data.size = 999;
+    //       queryPost(data).then((res) => {
+    //         this.tableyPost = res.data.records; // 岗位表格数据赋值
+    //         console.log(this.tableyPost, "----------岗位数据");
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
 
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -547,7 +561,7 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑员工信息";
-      console.log("编辑", row, row.id);
+      console.log("编辑", row);
     },
     // 状态
     stateClick(row) {
