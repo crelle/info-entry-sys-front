@@ -26,9 +26,9 @@
           style="display: flex; justify-content: flex-end"
           class="noregister"
         >
-          <el-button type="primary" @click="goRegister"
+          <!-- <el-button type="primary" @click="goRegister"
             >还没有账号？注册一个</el-button
-          >
+          > -->
         </el-form-item>
         <el-form-item label="" prop="username">
           <el-input v-model="ruleForm.username" placeholder="用户名"

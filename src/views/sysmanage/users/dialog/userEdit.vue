@@ -263,10 +263,10 @@ export default {
         // console.log(item,"--------循环的item");
         // console.log(this.userEditForm.roles[0].id,"------选择的id");
         if (this.userEditForm.roles[0].nameZh == item.nameZh) {
-          console.log(item, "==============xtq");
+          // console.log(item, "==============xtq");
           this.userEditForm.roles[0] = item;
           // console.log(this.userEditForm.roles[0], "------roles[0]-----");
-          console.log(this.userEditForm, "------roles-----");
+          // console.log(this.userEditForm, "------roles-----");
         }
       });
       if (this.initFormData.id) {
@@ -274,9 +274,9 @@ export default {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "--传入的东西0");
+            // console.log(this.userEditForm, "--传入的东西0");
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "----res11111");
+              // console.log(res, "----res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 // this.dialogClose();

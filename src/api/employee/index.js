@@ -1,14 +1,14 @@
 import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
 
-//创建部门
+//创建员工
 const createEmployee = (data) =>
   Request({
     method: "post",
     url: BaseURL + "/app/employee/create",
     data,
   });
-// 分页查询部门
+// 分页查询员工
 const queryEmployee = (data) =>
   Request({
     method: "post",
@@ -16,7 +16,7 @@ const queryEmployee = (data) =>
     data,
   });
 
-// 编辑部门
+// 编辑员工
 const updateEmployee = (data) =>
   Request({
     method: "put",
@@ -24,7 +24,7 @@ const updateEmployee = (data) =>
     data,
   });
 
-//删除部门
+//删除员工
 const deleteEmployee = (data) =>
   Request({
     method: "DELETE",

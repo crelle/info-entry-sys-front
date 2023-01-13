@@ -75,7 +75,7 @@
                   >
                   <el-button
                     class="cancel"
-                    type="primary"
+                    type="info"
                     @click="dialogClose"
                     size="mini"
                     >取 消</el-button
@@ -186,7 +186,7 @@ export default {
       // this.$refs.tree_t.setCheckedKeys([]);
     },
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "----传来的row");
       //  this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -208,7 +208,7 @@ export default {
             queryRoleMenu(data).then((res) => {
               if (res && res.code && res.code === "00000") {
                 console.log(res.data, "----查询角色菜单数据成功了");
-                this.datas = res.data.menus;
+                this.datas = res.data;
                 // 为选中的菜单赋值
                 this.dialogFormVisible = true; // 让弹窗显示
                 this.$nextTick(() => {
@@ -227,12 +227,11 @@ export default {
         // -------
         // 查询菜单名字
         queryMenuAll().then((res) => {
-          console.log(res, "res++++++++++");
           if (res && res.code && res.code === "00000") {
-            this.dialogFormVisible = true; // 让弹窗显示
             this.$nextTick(() => {
               // 这个要加上
               this.tableData = res.data; // 表格数据赋值
+              this.dialogFormVisible = true; // 让弹窗显示
             });
             console.log(this.tableData, "----所有菜单---");
           }
@@ -244,6 +243,7 @@ export default {
         this.userEditForm[item] = data[item] ? data[item] : null;
       });
     },
+    // 弹窗执行了
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
       this.resetForm("userEditRef"); // 重置表单
@@ -251,9 +251,9 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      this.userEditForm.id = "";
-      this.$refs.tree_n.setCheckedKeys([]);
-      console.log(this.userEditForm, "关闭弹窗");
+      // this.userEditForm.id = "";
+      // this.$refs.tree_n.setCheckedKeys([]);
+      // console.log(this.userEditForm, "关闭弹窗");
     },
     // 重置表单
     resetForm(formName) {
@@ -263,6 +263,7 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
+      this.userEditForm.id = "";
       console.log("初始化了");
     },
 
@@ -314,7 +315,7 @@ export default {
                 this.userEditForm.menus,
                 "---增加传递的内容22222222----"
               );
-            addRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            addRole(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 console.log("成功增加--用户！");
@@ -388,7 +389,7 @@ li {
   margin: 20px 0;
 }
 .dialog-footer {
-  text-align: center;
+  text-align: right;
 }
 .aaa {
   margin-top: 20px;

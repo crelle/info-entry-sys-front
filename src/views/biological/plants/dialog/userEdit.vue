@@ -57,7 +57,7 @@
                           value="硕士研究生"
                         ></el-option>
                         <el-option label="本科" value="本科"></el-option>
-                        <el-option label="专科" value="本科"></el-option>
+                        <el-option label="专科" value="专科"></el-option>
                       </el-select>
                     </el-form-item>
                     <el-form-item label="毕业时间" prop="schoolTime">
@@ -95,13 +95,14 @@
                         v-model="userEditForm.projectId"
                         placeholder="请选择接项目"
                         filterable
+                        clearable
                         @change="queryson"
                       >
                         <el-option
-                          v-for="(item, index) in tableProject"
+                          v-for="item in tableProject"
                           :key="item.index"
                           :label="item.project"
-                          :value="index"
+                          :value="item.projectId"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -112,17 +113,17 @@
                         disabled
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="客户">
+                    <el-form-item label="客户" prop="customerName">
                       <el-input
-                        v-model="userEditForm.customer"
+                        v-model="userEditForm.customerName"
                         placeholder="客户"
                         disabled
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="户籍地" prop="native">
+                    <el-form-item label="户籍地" prop="nativeAddress">
                       <el-input
                         placeholder="户籍地"
-                        v-model="userEditForm.native"
+                        v-model="userEditForm.nativeAddress"
                       ></el-input>
                     </el-form-item>
                     <el-form-item label="婚姻状况" prop="marriage">
@@ -205,28 +206,34 @@
                         <el-option label="测试" value="测试"></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="岗位" prop="postId">
+
+                    <el-form-item label="岗位 :" prop="postId">
                       <el-select
                         v-model="userEditForm.postId"
                         placeholder="请选择岗位"
+                        filterable
+                        clearable
                       >
-                        <el-option label="Web" value="Web"></el-option>
-                        <el-option label="UI" value="UI"></el-option>
-                        <el-option label="Java" value="Java"></el-option>
-                        <el-option label="测试" value="测试"></el-option>
+                        <el-option
+                          v-for="item in tableyPostlist"
+                          :key="item.index"
+                          :label="item.postName"
+                          :value="item.postId"
+                        ></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="地域">
+
+                    <el-form-item label="地域" prop="regionName">
                       <el-input
-                        v-model="userEditForm.region"
+                        v-model="userEditForm.regionName"
                         placeholder="地域"
                         disabled
                       >
                       </el-input>
                     </el-form-item>
-                    <el-form-item label="接口人">
+                    <el-form-item label="接口人" prop="interfaceName">
                       <el-input
-                        v-model="userEditForm.Interface"
+                        v-model="userEditForm.interfaceName"
                         placeholder="接口人"
                         disabled
                       ></el-input>
@@ -307,10 +314,23 @@ export default {
   props: {
     toChild: String,
     tableData: "",
+    // 项目
     tableProject: "",
+    // 部门
+    Users: "",
+    // 接口人
+    Interface: "",
+    // 客户
+    tableCustomer: "",
+    // 岗位
+    tableyPost: "",
+    // 地域
+    MockUser: "",
   },
   data() {
     return {
+      // 岗位：
+      tableyPostlist: [],
       post: [
         {
           post: "web",
@@ -350,6 +370,7 @@ export default {
         department: "",
         projectId: "",
         workingHours: null,
+        regionId: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -427,6 +448,13 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
+        interfaceName: [
+          {
+            required: false,
+            message: "请输入接口人",
+            trigger: ["blur", "change"],
+          },
+        ],
         status: [
           {
             required: false,
@@ -434,10 +462,17 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        address: [
+        regionName: [
           {
             required: false,
             message: "请输入地域",
+            trigger: ["blur", "change"],
+          },
+        ],
+        customerName: [
+          {
+            required: false,
+            message: "请输入客户",
             trigger: ["blur", "change"],
           },
         ],
@@ -467,7 +502,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        native: [
+        nativeAddress: [
           {
             required: false,
             message: "请输入籍贯",
@@ -485,7 +520,7 @@ export default {
             message: "请输入住址",
             trigger: ["blur", "change"],
           },
-           {
+          {
             pattern: /^([aA-zZ]|[\u4E00-\u9FA5]|[0-9_-])*$/,
             message: "用户名格式不正确",
             trigger: "blur",
@@ -602,7 +637,7 @@ export default {
         ],
         postId: [
           {
-            required: true,
+            required: false,
             message: "请选择岗位",
             trigger: ["blur", "change"],
           },
@@ -630,12 +665,102 @@ export default {
     };
   },
   methods: {
-    //自动选择
+    //编辑项目的自动选择
     queryson(e) {
-      this.userEditForm.department = this.tableProject[e].department;
-      this.userEditForm.Interface = this.tableProject[e].name;
-      this.userEditForm.department = this.tableProject[e].department;
-      this.userEditForm.customer = this.tableProject[e].customer;
+      this.userEditForm.postId = "";
+      console.log(this.tableProject, "自动选择", "---选择的", e);
+      // console.log(this.tableCustomer, "----客户");
+      // 项目
+      this.tableProject.forEach((item) => {
+        if (item.projectId == e) {
+          // 部门
+          // console.log(item, "----------------------项目1111111");
+          this.Users.forEach((items) => {
+            if (item.departmentId == items.departmentId) {
+              this.userEditForm.department = items.department;
+              this.userEditForm.departmentId = items.departmentId;
+            }
+          });
+          // 地域
+          this.MockUser.forEach((itemock) => {
+            if (item.regionId == itemock.regionId) {
+              // console.log(itemock, "我的地域---------");
+              this.userEditForm.regionName = itemock.regionName;
+              this.userEditForm.regionId = itemock.regionId;
+            }
+          });
+          // 接口人
+          this.Interface.forEach((itemli) => {
+            if (item.interfaceId == itemli.interfaceId) {
+              this.userEditForm.interfaceName = itemli.interfaceName;
+              this.userEditForm.interfaceId = itemli.interfaceId;
+              // 客户
+              this.tableCustomer.forEach((itemlis) => {
+                if (itemli.customerId == itemlis.customerId) {
+                  this.userEditForm.customerName = itemlis.customerName;
+                  this.userEditForm.customerId = itemlis.customerId;
+                }
+              });
+            }
+          });
+        }
+      });
+      //  根据项目 查询 岗位
+      this.tableyPostlist = [];
+      this.tableyPost.forEach((itempro) => {
+        if (itempro.projectId == e) {
+          this.tableyPostlist.push(itempro);
+          console.log(itempro,"--------岗位---");
+        }
+      });
+    },
+    //初始编辑的自动选择
+    querysonss(e) {
+      console.log(this.tableProject, "自动选择", "---选择的", e);
+      // console.log(this.tableCustomer, "----客户");
+      // 项目
+      this.tableProject.forEach((item) => {
+        if (item.projectId == e) {
+          // 部门
+          // console.log(item, "----------------------项目1111111");
+          this.Users.forEach((items) => {
+            if (item.departmentId == items.departmentId) {
+              this.userEditForm.department = items.department;
+              this.userEditForm.departmentId = items.departmentId;
+            }
+          });
+          // 地域
+          this.MockUser.forEach((itemock) => {
+            if (item.regionId == itemock.regionId) {
+              // console.log(itemock, "我的地域---------");
+              this.userEditForm.regionName = itemock.regionName;
+              this.userEditForm.regionId = itemock.regionId;
+            }
+          });
+          // 接口人
+          this.Interface.forEach((itemli) => {
+            if (item.interfaceId == itemli.interfaceId) {
+              this.userEditForm.interfaceName = itemli.interfaceName;
+              this.userEditForm.interfaceId = itemli.interfaceId;
+              // 客户
+              this.tableCustomer.forEach((itemlis) => {
+                if (itemli.customerId == itemlis.customerId) {
+                  this.userEditForm.customerName = itemlis.customerName;
+                  this.userEditForm.customerId = itemlis.customerId;
+                }
+              });
+            }
+          });
+        }
+      });
+      //  根据项目 查询 岗位
+      this.tableyPostlist = [];
+      this.tableyPost.forEach((itempro) => {
+        if (itempro.projectId == e) {
+          this.tableyPostlist.push(itempro);
+          console.log(itempro,"--------岗位---");
+        }
+      });
     },
     //
     // 弹窗
@@ -646,6 +771,7 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
+          this.querysonss(row.projectId);
         });
       }
     },
@@ -662,16 +788,16 @@ export default {
     /* 保存  */
     onCertain() {
       console.log(this.userEditForm);
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
+      if (this.initFormData.jobNo) {
+        this.userEditForm.jobNo = this.initFormData.jobNo;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            console.log(this.userEditForm, "修改---------");
+            updateEmployee(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                this.$parent.resetForm();
                 this.$parent.queryTableList();
                 this.dialogFormVisible = false;
               }
@@ -681,12 +807,13 @@ export default {
           }
         });
       } else {
+        // 创建
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
+            console.log(this.userEditForm, "-----------创建传入的内容");
             createEmployee(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
-                this.$parent.resetForm();
                 this.$parent.queryTableList();
                 this.closeDialog();
               }
@@ -822,7 +949,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 83%;
+    height: 75%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;

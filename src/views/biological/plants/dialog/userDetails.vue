@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -12,106 +12,115 @@
         <el-tab-pane label="基础信息" name="first">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                <div class="userbox_n">   
+              <el-form :model="initFormData" ref="userEditRef" size="mini">
+                <div class="userbox_n">
                   <ul>
                     <li>
-                      <span>员工姓名:</span><span>{{ userEditForm.name }}</span>
+                      <span>员工姓名:</span><span>{{ initFormData.name }}</span>
                     </li>
                     <li>
                       <span>出生年月日:</span
-                      ><span>{{ userEditForm.birthday }}</span>
+                      ><span>{{ initFormData.birthday }}</span>
                     </li>
                     <li>
                       <span>联系电话:</span
-                      ><span>{{ userEditForm.cellPhone }}</span>
+                      ><span>{{ initFormData.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>最高学历:</span><span>{{ userEditForm.education }}</span>
+                      <span>最高学历:</span
+                      ><span>{{ initFormData.education }}</span>
                     </li>
                     <li>
-                      <span>毕业时间:</span><span>{{ userEditForm.schoolTime }}</span>
+                      <span>毕业时间:</span
+                      ><span>{{ initFormData.schoolTime }}</span>
                     </li>
                     <li>
-                      <span>工号:</span
-                      ><span>{{ userEditForm.jobNo }}</span>
+                      <span>工号:</span><span>{{ initFormData.jobNo }}</span>
                     </li>
                     <li>
-                      <span>岗位:</span
-                      ><span>{{ userEditForm.postId }}</span>
+                      <span>岗位:</span><span>{{ initFormData.postName }}</span>
                     </li>
                     <li>
-                      <span>员工状态:</span><span>{{ userEditForm.status }}</span>
+                      <span>员工状态:</span
+                      ><span>{{ initFormData.status }}</span>
                     </li>
                     <li>
-                      <span>部门:</span><span>{{ userEditForm.department }}</span>
+                      <span>部门:</span
+                      ><span>{{ initFormData.department }}</span>
                     </li>
                     <li>
-                      <span>客户:</span><span>{{ userEditForm.customer }}</span>
+                      <span>客户:</span><span>{{ initFormData.customerName }}</span>
                     </li>
                     <li>
-                      <span>户籍地:</span><span>{{ userEditForm.nativeAddress }}</span>
+                      <span>户籍地:</span
+                      ><span>{{ initFormData.nativeAddress }}</span>
                     </li>
                     <li>
-                      <span>婚姻状况:</span><span>{{ userEditForm.marriage }}</span>
+                      <span>婚姻状况:</span
+                      ><span>{{ initFormData.marriage }}</span>
                     </li>
                     <li>
-                      <span>紧急联系人:</span><span>{{ userEditForm.emergency }}</span>
+                      <span>紧急联系人:</span
+                      ><span>{{ initFormData.emergency }}</span>
                     </li>
                     <li>
-                      <span>证书:</span><span>{{ userEditForm.certificate }}</span>
+                      <span>证书:</span
+                      ><span>{{ initFormData.certificate }}</span>
                     </li>
                   </ul>
                   <ul>
                     <li>
-                      <span>性别:</span><span>{{ userEditForm.gender }}</span>
+                      <span>性别:</span><span>{{ initFormData.gender }}</span>
                     </li>
                     <li>
-                      <span>年龄:</span
-                      ><span>{{ userEditForm.age }}</span>
+                      <span>年龄:</span><span>{{ initFormData.age }}</span>
                     </li>
                     <li>
                       <span>电子邮箱:</span
-                      ><span>{{ userEditForm.email }}</span>
+                      ><span>{{ initFormData.email }}</span>
                     </li>
                     <li>
-                      <span>毕业院校:</span><span>{{ userEditForm.school }}</span>
+                      <span>毕业院校:</span
+                      ><span>{{ initFormData.school }}</span>
                     </li>
                     <li>
-                      <span>工作年限:</span><span>{{ userEditForm.workingHours }}</span>
+                      <span>工作年限:</span
+                      ><span>{{ initFormData.workingHours }}</span>
                     </li>
                     <li>
-                      <span>入职时间:</span
-                      ><span>{{ userEditForm.time }}</span>
+                      <span>入职时间:</span><span>{{ initFormData.time }}</span>
                     </li>
                     <li>
                       <span>工作技能:</span
-                      ><span>{{ userEditForm.shill }}</span>
+                      ><span>{{ initFormData.skill }}</span>
                     </li>
                     <li>
-                      <span>项目:</span><span>{{ userEditForm.projectId }}</span>
+                      <span>项目:</span
+                      ><span>{{ initFormData.project }}</span>
                     </li>
                     <li>
-                      <span>地域:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>地域:</span><span>{{ initFormData.regionName }}</span>
                     </li>
                     <li>
-                      <span>接口人:</span><span>{{ userEditForm.nameZh }}</span>
+                      <span>接口人:</span><span>{{ initFormData.interfaceName }}</span>
                     </li>
                     <li>
-                      <span>现居住地:</span><span>{{ userEditForm.residence }}</span>
+                      <span>现居住地:</span
+                      ><span>{{ initFormData.residence }}</span>
                     </li>
                     <li>
-                      <span>有无小孩:</span><span>{{ userEditForm.child }}</span>
+                      <span>有无小孩:</span
+                      ><span>{{ initFormData.child }}</span>
                     </li>
                     <li>
-                      <span>紧急联系人电话:</span><span>{{ userEditForm.emergencyTelephone }}</span>
+                      <span>紧急联系人电话:</span
+                      ><span>{{ initFormData.emergencyTelephone }}</span>
                     </li>
                     <li>
-                      <span>兴趣爱好:</span><span>{{ userEditForm.hobby }}</span>
+                      <span>兴趣爱好:</span
+                      ><span>{{ initFormData.hobby }}</span>
                     </li>
                   </ul>
-                 
-                
                 </div>
               </el-form>
             </div>
@@ -172,7 +181,7 @@ import { updateUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
-    tableData:Array
+    tableData: Array,
   },
   data() {
     return {
@@ -203,41 +212,36 @@ export default {
       displays: true,
       isInput: false,
       userEditForm: {
-        id: "",
-        job_no: "",
-        name: "",
-        gender: "",
-        cell_phone: "",
-        email: "",
-        customer: "",
-        status: "",
-        department: "",
-        project: "",
-        address: "",
-        time: "",
-        cooperation: "",
-        Interface: "",
-        // 详情
         age: "",
         birthday: "",
-        politics: "",
-        Native: "",
-        residence: "",
-        emergency: "",
-        emergency_telephone: "",
-        education: "",
-        school: "",
-        school_time: "",
-        working_hours: "",
-        marriage: "",
-        child: "",
+        cellPhone: "",
         certificate: "",
+        child: "",
+        createBy: "",
+        createTime: "",
+        education: "",
+        email: "",
+        emergency: "",
+        emergencyTelephone: "",
+        enabled: "",
+        gender: "",
         hobby: "",
+        jobNo: "",
+        marriage: "",
+        name: "",
+        nativeAddress: "",
+        postId: "",
+        projectId: "",
+        registeredResidence: "",
+        residence: "",
+        school: "",
+        schoolTime: "",
         skill: "",
-        Induction: "",
-        post: "",
-        enable_feactivate: "",
-        employee_status: "",
+        time: "",
+        tpprojectId: "",
+        updateBy: "",
+        updateTime: "",
+        workingHours: "",
       },
       dialogFormVisible: false,
       fileType: {
@@ -280,7 +284,7 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
-      this.empty(); //清空内容
+      // this.empty(); //清空内容
       this.cancel();
       this.dialogFormVisible = true; // 让弹窗显示
 
@@ -305,9 +309,18 @@ export default {
       this.monthValue = toMonth;
       if (row) {
         this.initFormData = row;
+        // 处理时间格式
+        this.initFormData.birthday = this.initFormData.birthday.split("T")[0];
+        this.initFormData.projectId = this.initFormData.projectId.split("T")[0];
+        this.initFormData.schoolTime =
+          this.initFormData.schoolTime.split("T")[0];
+        this.initFormData.time = this.initFormData.time.split("T")[0];
+        this.initFormData.updateTime =
+          this.initFormData.updateTime.split("T")[0];
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(this.initFormData); // 为表单赋值
+          console.log( this.initFormData,"--------------");
         });
       }
     },
@@ -340,7 +353,7 @@ export default {
         if (this.datanew.textarea1 != "") {
           console.log(this.datanew, "内容和日期-用户名");
           alert("保存成功");
-          this.empty();
+          // this.empty();
         } else {
           return false;
         }
@@ -348,11 +361,11 @@ export default {
         alert("内容为空,请输入内容!");
       }
     },
-    //
-    empty() {
-      console.log("清空!");
-      this.textarea = "";
-    },
+    // //
+    // empty() {
+    //   console.log("清空!");
+    //   this.textarea = "";
+    // },
   },
 };
 </script>
@@ -403,7 +416,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 80%;
+    height: 75%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;

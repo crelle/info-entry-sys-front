@@ -30,7 +30,7 @@
                     <el-option label="女" value="女"></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="接口人办公地址" prop="address">
+                <!-- <el-form-item label="接口人办公地址" prop="address">
                   <el-cascader
                     size="large"
                     :options="options"
@@ -38,6 +38,14 @@
                     clearable
                     filterable
                   ></el-cascader>
+                </el-form-item> -->
+                <el-form-item label="接口人办公地址" prop="address">
+                  <el-input
+                    type="tel"
+                    v-model="userEditForm.address"
+                    placeholder="请输入地址"
+                    clearable
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="cellPhone">
                   <el-input
@@ -110,7 +118,7 @@
 //创建接口人/编辑接口人
 import { establishInterface, editInterface } from "@/api/interface";
 
-import { regionData, CodeToText, TextToCode } from "element-china-area-data";
+// import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   props: {
     toChild: String,
@@ -119,7 +127,7 @@ export default {
   },
   data() {
     return {
-      options: regionData,
+      // options: regionData,
       xingbie: "",
       textarea: "",
       dialogFormVisible: false,
@@ -258,12 +266,12 @@ export default {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
-        let editRow = JSON.parse(JSON.stringify(row));
-        editRow.address = this.getCityCode(editRow.address);
+        // let editRow = JSON.parse(JSON.stringify(row));
+        // editRow.address = this.getCityCode(editRow.address);
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(editRow); // 为表单赋值
+          this.initForm(row); // 为表单赋值
         });
       } else {
         console.log("我是新增");
@@ -297,21 +305,21 @@ export default {
 
     /* 保存  */
     onCertain() {
-      // ---
-      if (this.userEditForm.address) {
-        var loc = "";
-        for (let i = 0; i < this.userEditForm.address.length; i++) {
-          loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
-        }
-        loc = loc.slice(0, loc.length - 1);
-        this.userEditForm.address = loc;
-      }
+      // // ---
+      // if (this.userEditForm.address) {
+      //   var loc = "";
+      //   for (let i = 0; i < this.userEditForm.address.length; i++) {
+      //     loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
+      //   }
+      //   loc = loc.slice(0, loc.length - 1);
+      //   this.userEditForm.address = loc;
+      // }
       if (this.initFormData.interfaceId) {
         this.userEditForm.interfaceId = this.initFormData.interfaceId;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
+          console.log(valid, "修改的valid-----");
           if (valid) {
             editInterface(
               this.userEditForm,
@@ -346,26 +354,25 @@ export default {
         });
       }
     },
-    getCityCode(cityText) {
-      var codeArray = [];
-      if (cityText != "") {
-        var cityArray = cityText.trim().split(" ");
-        if (cityArray.length == 1) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-        } else if (cityArray.length == 2) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-        } else if (cityArray.length == 3) {
-          codeArray.push(TextToCode[cityArray[0]].code);
-          codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-          codeArray.push(
-            TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
-          );
-        }
-      }
-
-      return codeArray;
-    },
+    // getCityCode(cityText) {
+    //   var codeArray = [];
+    //   if (cityText != "") {
+    //     var cityArray = cityText.trim().split(" ");
+    //     if (cityArray.length == 1) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //     } else if (cityArray.length == 2) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+    //     } else if (cityArray.length == 3) {
+    //       codeArray.push(TextToCode[cityArray[0]].code);
+    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
+    //       codeArray.push(
+    //         TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
+    //       );
+    //     }
+    //   }
+    //   return codeArray;
+    // },
   },
 };
 </script>

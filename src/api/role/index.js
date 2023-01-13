@@ -9,6 +9,13 @@ const queryRole = (data) =>
     url: BaseURL + "/sysmgmt/role/page",
     data,
   });
+// // // 手动分页查询角色
+// const queryRole = (data) =>
+//   Request({
+//     method: "post",
+//     url: BaseURL + "/sysmgmt/menu/manualPage",
+//     data,
+//   });
 // 更新角色（编辑）
 const updateRole = (data, id) =>
   Request({
