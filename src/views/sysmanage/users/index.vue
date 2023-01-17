@@ -35,7 +35,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="状态"  >
+            <el-form-item label="状态">
               <el-select
                 v-model="formOptions.enabled"
                 placeholder="请选择状态"
@@ -77,7 +77,9 @@
               <el-button type="primary" @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserList">查询</el-button>
+              <el-button type="primary" @click="queryUserListclick"
+                >查询</el-button
+              >
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -109,6 +111,13 @@
         <el-table-column
           prop="username"
           label="用户名"
+          min-width="80"
+          show-overflow-tooltip
+        >
+        </el-table-column>
+        <el-table-column
+          prop=""
+          label="姓名"
           min-width="80"
           show-overflow-tooltip
         >
@@ -160,7 +169,7 @@
             >
           </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="220">
+        <el-table-column fixed="right" label="操作" min-width="310">
           <template slot-scope="{ row, $index }">
             <el-button @click="detailsClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -175,6 +184,9 @@
             >
               删除
             </el-button>
+            <el-button @click="resetpassword(row)" type="primary" size="mini"
+              >重置密码</el-button
+            >
           </template>
         </el-table-column>
       </el-table>
@@ -265,6 +277,18 @@ export default {
     this.queryRoleList();
   },
   methods: {
+    //手动 查询用户列表
+    queryUserListclick() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          this.paginationOptions.pageNo = 1;
+          this.queryUserList();
+        } else {
+          return false;
+        }
+      });
+    },
+
     // 查询用户列表
     queryUserList() {
       console.log(this.formOptions.roles, "----------角色地=id---");
@@ -339,10 +363,55 @@ export default {
           });
         });
     },
+    // 重置密码弹框
+    resetpassword(row, index) {
+      this.$confirm(
+        "此操作将重置该用户的登录密码, 是否继续?",
+        "重置用户登录密码",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          cancelButtonClass: "btn-custom-cancel",
+          type: "warning",
+        }
+      )
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "重置密码成功! 初始密码为：[ 123456 ]",
+          });
+        })
+        // .then(() => {
+        //   // 点击确认，发起后台请求，
+        //   deleteMenu(row.id).then((res) => {
+        //     console.log(res, "点击确认，发起后台请求");
+        //     if (res.code == "00000") {
+        //       this.tableData.splice(index, 1);
+        //       this.queryUserList();
+        //       return this.$message({
+        //         type: "success",
+        //         message: "成功!",
+        //       });
+        //     } else {
+        //       this.$message({
+        //         type: "success",
+        //         message: "失败!",
+        //       });
+        //     }
+        //   });
+        // })
+        .catch(() => {
+          // 点击取消，取消该操作
+          this.$message({
+            type: "info",
+            message: "已取消",
+          });
+        });
+    },
     // 添加
     addClick() {
       this.$refs.userEditDialogRef.openDialog();
-      this.list = "新增用户";
+      this.list = "添加用户";
       console.log("我要添加");
     },
     // 编辑
@@ -431,5 +500,8 @@ export default {
 }
 ::v-deep .el-col-5 {
   overflow: hidden;
+}
+.demo-form-inline {
+  min-width: 1300px;
 }
 </style>

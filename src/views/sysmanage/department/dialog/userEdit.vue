@@ -5,6 +5,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -66,9 +67,13 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="上级部门" prop="departmentUp">
-                  <el-select v-model="userEditForm.departmentUp" clearable  filterable>
+                  <el-select
+                    v-model="userEditForm.departmentUp"
+                    clearable
+                    filterable
+                  >
                     <el-option
-                      v-for="item in tableData"
+                      v-for="item in tableDataUp"
                       :key="item.index"
                       :label="item.department"
                       :value="item.departmentId"
@@ -125,7 +130,7 @@ import { establishDepartments, editDepartments } from "@/api/department";
 export default {
   props: {
     toChild: String,
-    tableData: "",
+    tableDataUp: "",
     UserData: "",
   },
   data() {
@@ -158,18 +163,13 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
-          },
-           {
-            pattern: /^(?![0-9]).*$/,
-            message: "不能以数字开头",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
           {
-            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
-            message: "请输入中文名称",
+            pattern: /^([\u4E00-\u9FA5]).*$/,
+            message: "请以中文名称开头",
             trigger: "blur",
           },
         ],
@@ -186,6 +186,12 @@ export default {
             required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
+            trigger: "blur",
           },
         ],
         userId: [
@@ -254,7 +260,7 @@ export default {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       // 查询部门列表
-      console.log(this.tableData, "------父亲传来的");
+      console.log(this.tableDataUp, "------父亲传来的部门");
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -279,7 +285,6 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
     },
     // 重置表单
     resetForm(formName) {
@@ -418,7 +423,6 @@ export default {
 }
 .el-form-item {
   display: flex;
-  margin-right: 50px;
 }
 ::v-deep .el-form-item__label {
   width: 110px;
@@ -426,6 +430,7 @@ export default {
 }
 ::v-deep .el-input__inner {
   width: 250px;
+  color: #606266 !important;
 }
 ::v-deep .el-textarea__inner {
   min-height: 120px !important;
@@ -437,9 +442,11 @@ export default {
 ::v-deep .el-dialog {
   width: 30%;
 }
-
 ::v-deep .el-dialog__body {
   padding: 0;
+}
+::v-deep .el-dialog{
+  min-width:400px;
 }
 </style>
 

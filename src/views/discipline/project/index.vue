@@ -7,16 +7,16 @@
     </el-breadcrumb>
     <el-card>
       <el-form
+        :inline="true"
         :model="formOptions"
         class="demo-form-inline"
         size="mini"
         ref="userQueryRef"
-        label-position="right"
-        label-width="auto"
+        label-position="left"
       >
         <el-row>
-          <el-col :span="4">
-            <el-form-item label="项目名称">
+          <el-col :span="7">
+            <el-form-item label="项目名称" prop="project">
               <el-input
                 v-model="formOptions.project"
                 placeholder="项目名称"
@@ -24,8 +24,8 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="客户">
+          <el-col :span="7">
+            <el-form-item label="客户" prop="customer">
               <el-select
                 v-model="formOptions.customer"
                 placeholder="请选择客户名称"
@@ -41,8 +41,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="地域">
+          <el-col :span="6">
+            <el-form-item label="地域" prop="region">
               <el-select
                 v-model="formOptions.region"
                 placeholder="请选择地域"
@@ -58,8 +58,35 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="接口人">
+
+          <el-col :span="4" class="btn">
+            <el-form-item>
+              <el-button type="primary" @click="resetForm('userQueryRef')"
+                >重置</el-button
+              >
+              <el-button type="primary" @click="queryUserListclick"
+                >查询</el-button
+              >
+              <el-button type="primary" @click="addClick">新增</el-button>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row class="searchinpt">
+          <el-col :span="7">
+            <el-form-item label="项目状态" prop="status">
+              <el-select
+                v-model="formOptions.status"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option label="前期" value="1"></el-option>
+                <el-option label="开发中" value="2"></el-option>
+                <el-option label="交付中" value="3"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col :span="7">
+            <el-form-item label="接口人" prop="name">
               <el-select
                 v-model="formOptions.name"
                 placeholder="请选择接口人姓名"
@@ -75,23 +102,22 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="项目状态">
+
+          <el-col :span="6">
+            <el-form-item label="所属部门" prop="department">
               <el-select
-                v-model="formOptions.status"
+                v-model="formOptions.department"
+                placeholder="所属部门"
                 clearable
-                placeholder="请选择"
+                filterable
               >
-                <el-option label="前期" value="1"></el-option>
-                <el-option label="开发中" value="2"></el-option>
-                <el-option label="交付中" value="3"></el-option>
+                <el-option
+                  v-for="item in Users"
+                  :key="item.index"
+                  :label="item.department"
+                  :value="item.departmentId"
+                ></el-option>
               </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" class="btn">
-            <el-form-item>
-              <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -211,13 +237,14 @@
     ></user-edit-dialog>
     <user-dait-dialog
       :toChild="list"
+      :tableDatastaff="tableDatastaff"
+      :MockUser="MockUser"
       ref="userDaitDialogRef"
     ></user-dait-dialog>
   </div>
 </template>
 
 <script>
-
 // 客户查询
 import { queryCustomer } from "@/api/customer";
 // 地域
@@ -228,7 +255,10 @@ import { queryInterface } from "@/api/interface";
 import { queryDepartments } from "@/api/department";
 // 项目
 import { queryProject, deletesProject } from "@/api/project";
-
+// 员工
+import { queryEmployee } from "@/api/employee";
+// 岗位
+import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/project/dialog/userDetails.vue";
 export default {
@@ -265,42 +295,23 @@ export default {
       Users: [],
       multipleSelection: [],
       tableCustomer: [],
+      // 全部员工
+      tableDatastaff: [],
     };
   },
   mounted() {
     this.queryUserList();
-    this.queryMockUser();
+    this.queryTableList();
+    // this.queryMockUser();
     // this.queryUsers();
-    this.queryCustomerList();
   },
   methods: {
-    // 查询客户列表
-    queryCustomerList() {
+    // 手动  数据拿取查询方法
+    queryUserListclick() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          queryCustomer(data).then((res) => {
-            this.tableCustomer = res.data.records; // 表格数据赋值
-            // console.log(this.tableCustomer, "----------客户数据表-------");
-          });
-        } else {
-          return false;
-        }
-      });
-    },
-    //  数据地域查询方法
-    queryMockUser() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          queryRegion(data).then((res) => {
-            this.MockUser = res.data.records; // 表格数据赋值
-            // console.log(this.MockUser, "-------地域数据-------");
-          });
+          this.paginationOptions.pageNo = 1;
+          this.queryUserList();
         } else {
           return false;
         }
@@ -321,52 +332,128 @@ export default {
             queryInterface(data).then((res1) => {
               // 部门表格数据
               queryDepartments(data).then((res2) => {
-                this.Users = res2.data.records; // 部门表格数据赋值
-                this.Interface = res1.data.records; // 接口人表格数据赋值
-                this.tableData = res.data.records; // 项目表格数据赋值
-                console.log(this.Users, "部门表格数据");
-                console.log(this.Interface, "接口人表格数据");
-                console.log(this.tableData, "------项目表格数据");
-                this.tableData.forEach((item) => {
-                  if (item.status == 1) {
-                    item.status = "开发中";
-                  }
-                  if (item.status == 2) {
-                    item.status = "前期投入";
-                  }
-                  if (item.status == 3) {
-                    item.status = "交付阶段";
-                  }
-                  this.Interface.forEach((sitem) => {
-                    if (item.interfaceId == sitem.interfaceId) {
-                      item.interfaceName = sitem.interfaceName;
-                      item.cellPhone = sitem.cellPhone;
-                      item.email = sitem.email;
-                      // 客户
-                      this.tableCustomer.forEach((items) => {
-                        if (sitem.customerId == items.customerId) {
-                          item.customerName = items.customerName;
-                          item.customerId = items.customerId;
+                // 地域表格数据
+                queryRegion(data).then((res3) => {
+                  // 客户表格数据
+                  queryCustomer(data).then((res4) => {
+                    this.tableData = res.data.records; // 项目表格数据赋值
+                    this.Interface = res1.data.records; // 接口人表格数据赋值
+                    this.Users = res2.data.records; // 部门表格数据赋值
+                    this.MockUser = res3.data.records; // 地域表格数据赋值
+                    this.tableCustomer = res4.data.records; // 客户表格数据赋值
+                    // console.log(this.Users, "部门表格数据");
+                    // console.log(this.Interface, "接口人表格数据");
+                    console.log(this.tableData, "------项目表格数据");
+                    this.tableData.forEach((item) => {
+                      if (item.status == 1) {
+                        item.status = "开发中";
+                      }
+                      if (item.status == 2) {
+                        item.status = "前期投入";
+                      }
+                      if (item.status == 3) {
+                        item.status = "交付阶段";
+                      }
+                      // 接口人表格
+                      this.Interface.forEach((sitem) => {
+                        if (item.interfaceId == sitem.interfaceId) {
+                          item.interfaceName = sitem.interfaceName;
+                          item.cellPhone = sitem.cellPhone;
+                          item.email = sitem.email;
+                          // 客户
+                          this.tableCustomer.forEach((items) => {
+                            if (sitem.customerId == items.customerId) {
+                              item.customerName = items.customerName;
+                              item.customerId = items.customerId;
+                            }
+                          });
                         }
+                        // 部门表格
+                        this.Users.forEach((itemis) => {
+                          if (item.departmentId == itemis.departmentId) {
+                            item.department = itemis.department;
+                          }
+                          if (sitem.customerId == itemis.customerId) {
+                            item.customerName = itemis.customerName;
+                          }
+                        });
                       });
-                    }
-
-                    this.Users.forEach((itemis) => {
-                      if (item.departmentId == itemis.departmentId) {
-                        item.department = itemis.department;
-                      }
-                      if (sitem.customerId == itemis.customerId) {
-                        item.customerName = itemis.customerName;
-                      }
                     });
+                    this.paginationOptions.total = res.data.total; // 分页器赋值
                   });
                 });
-                this.paginationOptions.total = res.data.total; // 分页器赋值
               });
             });
           });
         } else {
           return false;
+        }
+      });
+    },
+    // 全部员工
+    //table数据
+    queryTableList() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 999;
+      queryEmployee(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          queryProject(data).then((res1) => {
+            queryDepartments(data).then((res2) => {
+              queryInterface(data).then((res3) => {
+                queryRegion(data).then((res4) => {
+                  queryCustomer(data).then((res5) => {
+                    //  数据岗位查询方法
+                    queryPost(data).then((res6) => {
+                      this.tableDatastaff = res.data.records; // 表格数据赋值
+                      console.log(this.tableDatastaff, "员工表格数据赋值");
+                      this.tableProjectstaff = res1.data.records; // 项目表格数据赋值
+                      this.Usersstaff = res2.data.records; // 部门数据表格数据赋值
+                      this.Interfacestaff = res3.data.records; // 接口人表格数据赋值
+                      this.MockUserstaff = res4.data.records; // 地域数据表格数据赋值
+                      this.tableCustomerstaff = res5.data.records; // 客户表格数据赋值
+                      this.tableyPoststaff = res6.data.records; // 岗位表格数据赋值
+                      this.tableDatastaff.forEach((item) => {
+                        this.tableProjectstaff.forEach((items) => {
+                          if (item.projectId == items.projectId) {
+                            // console.log(items, "------------111");
+                            item.project = items.project; //根据项目id给项目名称赋值
+                            this.Usersstaff.forEach((itemli) => {
+                              if (items.departmentId == itemli.departmentId) {
+                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
+                              }
+                            });
+                            this.Interfacestaff.forEach((itemis) => {
+                              if (items.interfaceId == itemis.interfaceId) {
+                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+                                this.tableCustomerstaff.forEach((itemiss) => {
+                                  if (itemis.customerId == itemiss.customerId) {
+                                    item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
+                                  }
+                                });
+                              }
+                            });
+                            this.MockUserstaff.forEach((itemlis) => {
+                              if (items.regionId == itemlis.regionId) {
+                                item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
+                              }
+                            });
+                          }
+                        });
+                        this.tableyPoststaff.forEach((itemls) => {
+                          if (item.postId == itemls.postId) {
+                            item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
+                            item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
+                          }
+                        });
+                      });
+                    });
+                  });
+                });
+              });
+            });
+            // this.paginationOptions.total = res.data.total; // 分页器赋值
+          });
         }
       });
     },
@@ -421,13 +508,17 @@ export default {
     },
     // 详情
     detailsClick(row) {
-      console.log(row,"------查看");
+      console.log(row, "------查看");
       this.$refs.userDaitDialogRef.openDialog(row);
-      // this.list = "查看项目详情";
+      this.list = "查看项目详情";
       // console.log("详情", row);
     },
     // 重置表单
-
+    resetForm(formName) {
+      console.log("重置-------", formName);
+      this.$refs[formName].resetFields();
+      // this.queryUserList();
+    },
     // 表格复选动作
     handleSelectionChange(val) {
       this.multipleSelection = val;
@@ -467,19 +558,43 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .el-form-item__content {
-  text-align: right;
-}
 ::v-deep .el-pagination {
   margin: 10px 0;
 }
 ::v-deep .el-form-item {
   margin-bottom: 0;
 }
-::v-deep .el-col-4 {
-  padding-right: 40px;
+.searchinpt {
+  margin-top: 15px;
+}
+.el-form-item {
+  width: 265px;
 }
 ::v-deep .btn {
-  padding-right: 0 !important;
+  text-align: right;
+  .el-form-item {
+    min-width: 230px;
+  }
+}
+::v-deep .el-col-6 {
+  overflow: hidden;
+}
+::v-deep .el-form-item__label {
+  width: 68px;
+}
+.demo-form-inline {
+  min-width: 1380px;
+}
+@media screen and (min-width: 1800px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
+::v-deep .el-card__body {
+  overflow-x: scroll;
+
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>

@@ -122,7 +122,7 @@
 </template>
 
 <script>
-import { updateUser } from "@/api/user";
+// import { updateUser } from "@/api/user";
 export default {
   props: {
     toChild: String,

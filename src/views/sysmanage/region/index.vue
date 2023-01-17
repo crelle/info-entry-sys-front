@@ -12,6 +12,7 @@
         size="mini"
         label-position="right"
         ref="queryRoleRef"
+        :rules="rules"
         :model="formOptions"
       >
         <el-row>
@@ -37,7 +38,9 @@
               <el-button type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryRoleslis">查询</el-button>
+              <el-button type="primary" @click="queryRolesclick"
+                >查询</el-button
+              >
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -71,7 +74,7 @@
           fixed
         ></el-table-column>
 
-        <el-table-column label="操作" min-width="120" fixed>
+        <el-table-column label="操作" min-width="210" fixed="right">
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -140,29 +143,37 @@ export default {
         layout: "total, sizes, prev, pager, next, jumper",
       },
       // 验证
-      rules: {},
+      rules: {
+        regionName: [
+          {
+            required: false,
+            message: "请输入地域名称",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
+        ],
+      },
     };
   },
   mounted() {
     this.queryRoles();
   },
   methods: {
-    // 查询
-    queryRoleslis() {
+        // 手动 查询
+    queryRolesclick() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = this.paginationOptions.pageSize;
-          console.log(data, data.current, data.size, "data----xu-----");
-          queryRegion(data).then((res) => {
-            console.log(res, "res++++++++++");
-            if (res && res.code && res.code === "00000") {
-              this.resetForm("queryRoleRef"); // 重置表单
-              this.tableData = res.data.records; // 表格数据赋值
-              this.paginationOptions.total = res.data.total; // 分页器赋值
-            }
-          });
+          this.paginationOptions.pageNo = 1;
+          this.queryRoles();
         } else {
           return false;
         }
@@ -304,5 +315,20 @@ export default {
 }
 .el-form-item {
   width: 252px;
+}
+.demo-form-inline {
+  min-width: 500px;
+}
+@media screen and (min-width: 800px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
+::v-deep .el-card__body {
+  overflow-x: scroll;
+
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>

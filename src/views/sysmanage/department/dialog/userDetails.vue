@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -12,8 +12,8 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form :model="userEditForm" ref="userEditRef" size="mini">
-                <div class="box">
-                  <ul>
+                <div class="boxmax">
+                  <ul class="box">
                     <li>
                       <span>部门名:</span
                       ><span>{{ userEditForm.department }}</span>
@@ -32,24 +32,34 @@
                       <span>部门总部地址:</span
                       ><span>{{ userEditForm.address }}</span>
                     </li>
-                  </ul>
-                  <ul>
                     <li class="new">
                       <span>部门介绍:</span>
-                      <span>{{ userEditForm.introduce }}</span>
+                      <span :title="userEditForm.introduce">{{
+                        userEditForm.introduce
+                      }}</span>
                     </li>
                   </ul>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="部门人员" name="first">
-                        <el-table :data="tableData1" border style="width: 100%">
+                        <el-table
+                          :data="tableData1"
+                          border
+                          height="310"
+                          style="width: 100%"
+                        >
                           <el-table-column
-                            prop="number"
+                            type="index"
+                            :index="indexMethod"
                             label="编号"
                             width="50"
                           >
                           </el-table-column>
-                          <el-table-column prop="date" label="工号" width="120">
+                          <el-table-column
+                            prop="jobNo"
+                            label="工号"
+                            width="120"
+                          >
                           </el-table-column>
                           <el-table-column
                             prop="name"
@@ -58,29 +68,39 @@
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="contact"
+                            prop="cellPhone"
                             label="联系方式"
                             width="150"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="address"
+                            prop="regionName"
                             label="地域"
-                            width="150"
+                            width="80"
                           >
                           </el-table-column>
-                          <el-table-column prop="project" label="所在项目">
+                          <el-table-column
+                            prop="project"
+                            label="所在项目"
+                            :show-overflow-tooltip="true"
+                          >
                           </el-table-column>
-                          <el-table-column prop="person" label="接口人">
+                          <el-table-column prop="interfaceName" label="接口人">
                           </el-table-column>
                           <el-table-column prop="sonstate" label="状态">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
                       <el-tab-pane label="部门项目" name="second">
-                        <el-table :data="tableData2" border style="width: 100%">
+                        <el-table
+                          :data="tableData2"
+                          border
+                          height="310"
+                          style="width: 100%"
+                        >
                           <el-table-column
-                            prop="number"
+                            type="index"
+                            :index="indexMethod"
                             label="编号"
                             width="50"
                           >
@@ -89,29 +109,32 @@
                             prop="project"
                             label="项目名称"
                             width="100"
+                            :show-overflow-tooltip="true"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="person"
+                            prop="interfaceName"
                             label="接口人"
                             width="90"
                           >
                           </el-table-column>
-                          <el-table-column prop="contact" label="联系方式">
+                          <el-table-column prop="cellPhone" label="联系方式">
                           </el-table-column>
                           <el-table-column
-                            prop="state"
+                            prop="status"
                             width="100"
                             label="项目状态"
                           >
                           </el-table-column>
-                          <el-table-column prop="customer" label="客户">
+                          <el-table-column
+                            prop="project"
+                            label="客户"
+                            :show-overflow-tooltip="true"
+                          >
                           </el-table-column>
-                          <el-table-column prop="belonging" label="所属部门">
+                          <el-table-column prop="department" label="所属部门">
                           </el-table-column>
                           <el-table-column prop="people" label="项目人数">
-                          </el-table-column>
-                          <el-table-column prop="gap" label="项目缺口">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -136,98 +159,15 @@
 export default {
   props: {
     toChild: String,
+    tableDataLook: "",
+    tableDataProject: "",
   },
   data() {
     return {
+      // 根据部门id查询部门人员
+      tableData1: [],
       // 假数据
-      tableData1: [
-        {
-          number: "1",
-          date: "n20160502",
-          name: "赵二",
-          address: "武汉1518 弄",
-          contact: "13315715789",
-          project: "xxx项目",
-          person: "aaa",
-          sonstate: "在岸",
-        },
-        {
-          number: "2",
-          date: "n20160504",
-          name: "张三",
-          address: "南京1517 弄",
-          contact: "13915715789",
-          project: "yyy项目",
-          person: "bbb",
-          sonstate: "外派",
-        },
-        {
-          number: "3",
-          date: "n20160501",
-          name: "李四",
-          address: "上海1519 弄",
-          contact: "13215715789",
-          project: "zzz项目",
-          person: "ccc",
-          sonstate: "离职",
-        },
-        {
-          number: "4",
-          date: "n20160503",
-          name: "王五",
-          address: "湖北1516 弄",
-          contact: "13115715789",
-          project: "www项目",
-          person: "ddd",
-          sonstate: "在岸",
-        },
-      ],
-      tableData2: [
-        {
-          number: "1",
-          project: "xxx项目",
-          person: "aaa",
-          contact: "13334215789",
-          state: "开发中",
-          customer: "ddd客户",
-          belonging: "kkk部门",
-          people: "50人",
-          gap: "1人",
-        },
-        {
-          number: "2",
-          project: "xxx项目",
-          person: "bbb",
-          contact: "13235715789",
-          state: "完成",
-          customer: "ccc客户",
-          belonging: "zzz部门",
-          people: "30人",
-          gap: "5人",
-        },
-        {
-          number: "3",
-          project: "xxx项目",
-          person: "ccc",
-          contact: "13545715789",
-          state: "维护",
-          customer: "bbb客户",
-          belonging: "yyy部门",
-          people: "18人",
-          gap: "10人",
-        },
-        {
-          number: "4",
-          project: "xxx项目",
-          person: "ddd",
-          contact: "1376715789",
-          state: "测试中",
-          customer: "aaa客户",
-          belonging: "xxx部门",
-          people: "50人",
-          gap: "5人",
-        },
-      ],
+      tableData2: [],
       // 假数据
       activeName: "first",
       textarea:
@@ -258,8 +198,24 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      ((this.tableData1 = []), (this.tableData2 = [])),
+        console.log(this.userEditForm, "001001");
+      // console.log(this.tableDataLook, "员工----");
       this.dialogFormVisible = true; // 让弹窗显示
+      //操作  员工   根据负责人对应的部门 的id 查找同部门的人员  赋值到 tableData1 中
+      this.tableDataLook.forEach((item) => {
+        if (row.departmentId == item.departmentId) {
+          this.tableData1.push(item);
+        }
+      });
+      //操作  项目   根据负责人对应的部门 的id 查找同部门的项目  赋值到 tableData2 中
+      this.tableDataProject.forEach((item) => {
+        if (row.departmentId == item.departmentId) {
+          this.tableData2.push(item);
+        }
+      });
+      // console.log(this.tableData1, "push来的内容1");
+      console.log(this.tableData2, "push来的内容2");
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -293,6 +249,9 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
+    indexMethod(index) {
+      return index + 1;
+    },
   },
 };
 </script>
@@ -320,35 +279,38 @@ export default {
 ::v-deep .cell {
   text-align: center;
 }
+.boxmax {
+  padding: 0 40px;
+}
 .box {
-  ul {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 40px;
+  li {
+    font-size: 14px;
+    width: 50%;
+    margin: 10px 0;
     display: flex;
-    flex-wrap: wrap;
-    li {
-      font-size: 14px;
-      width: 50%;
-      margin: 10px 0;
-      display: flex;
 
-      span:nth-child(1) {
-        width: 120px;
-      }
+    span:nth-child(1) {
+      width: 110px;
     }
-    .new {
-      width: 80%;
-      span:nth-child(1) {
-        display: block;
-      }
-      span:nth-child(2) {
-        margin-right: 40px;
-        line-height: 20px;
-        word-break: break-all;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2; /* 超出几行省略 */
-      }
+  }
+  .new {
+    width: 100%;
+    span:nth-child(1) {
+      display: block;
+      width: 110px;
+    }
+    span:nth-child(2) {
+      width: 660px;
+      line-height: 20px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 超出几行省略 */
     }
   }
 }
@@ -375,7 +337,7 @@ export default {
 ::v-deep .el-dialog__body {
   padding: 0;
 }
-::v-deep .el-dialog__footer{
+::v-deep .el-dialog__footer {
   padding: 20px 0;
 }
 </style>

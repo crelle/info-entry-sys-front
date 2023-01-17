@@ -33,7 +33,7 @@
                           ></el-tree>
                         </div>
                       </div>
-                      <!-- <div class="sbox">
+                      <div class="sbox">
                         <span>数据权限</span>
                         <div class="menubox">
                           <el-tree
@@ -43,7 +43,7 @@
                             @node-click="handleNodeClick"
                           ></el-tree>
                         </div>
-                      </div> -->
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -171,7 +171,8 @@ export default {
   methods: {
     openDialog(row) {
       console.log(this.userEditForm, "001001");
-      this.dialogFormVisible = true; // 让弹窗显示
+
+      this.datas = [];
       if (row) {
         this.initFormData = row;
         // 查询菜单
@@ -181,7 +182,11 @@ export default {
         queryRoleMenu(data).then((res) => {
           if (res && res.code && res.code === "00000") {
             console.log(res.data, "----查询角色菜单数据成功了");
-            this.datas = res.data.menus;
+            this.$nextTick(() => {
+              // 权限 查询 列表
+              this.datas = res.data;
+              this.dialogFormVisible = true; // 让弹窗显示
+            });
           }
         });
         this.$nextTick(() => {
@@ -250,7 +255,8 @@ li {
   ul {
     li {
       display: flex;
-      margin: 10px 0;
+      line-height: 29px;
+      margin: 20px 0;
       span {
         display: block;
         margin-right: 15px;

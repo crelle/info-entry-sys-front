@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -271,7 +272,6 @@
                     </el-form-item>
                   </div>
                 </div>
-
                 <!-- <el-form-item label="" prop="password">
                   <el-input
                     class="passwordat"
@@ -381,8 +381,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
           {
@@ -398,8 +398,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
           // {
@@ -483,8 +483,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120)$/,
-            message: "请输入有效年龄",
+            pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120).*[岁]$/,
+            message: "请输入有效年龄+岁",
             trigger: "blur",
           },
         ],
@@ -509,8 +509,13 @@ export default {
             trigger: ["blur", "change"],
           },
           {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
             pattern: /^([\u4E00-\u9FA5]|[0-9_-])*$/,
-            message: "用户名格式不正确",
+            message: "格式不正确",
             trigger: "blur",
           },
         ],
@@ -521,8 +526,13 @@ export default {
             trigger: ["blur", "change"],
           },
           {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
             pattern: /^([aA-zZ]|[\u4E00-\u9FA5]|[0-9_-])*$/,
-            message: "用户名格式不正确",
+            message: "格式不正确",
             trigger: "blur",
           },
         ],
@@ -534,7 +544,7 @@ export default {
           },
           {
             pattern: /^([\u4E00-\u9FA5])*$/,
-            message: "紧急联系人格式不正确",
+            message: "请输入中文",
             trigger: "blur",
           },
         ],
@@ -564,6 +574,11 @@ export default {
             trigger: ["blur", "change"],
           },
           {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
             pattern: /^([\u4E00-\u9FA5]|[0-9_/-])*$/,
             message: "学校名格式不正确",
             trigger: "blur",
@@ -581,6 +596,11 @@ export default {
             required: true,
             message: "请输入工作年限/年",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^([1-9]).*[年]$/,
+            message: "请输入输入数子+年",
+            trigger: "blur",
           },
         ],
         marriage: [
@@ -710,7 +730,7 @@ export default {
       this.tableyPost.forEach((itempro) => {
         if (itempro.projectId == e) {
           this.tableyPostlist.push(itempro);
-          console.log(itempro,"--------岗位---");
+          console.log(itempro, "--------岗位---");
         }
       });
     },
@@ -758,7 +778,7 @@ export default {
       this.tableyPost.forEach((itempro) => {
         if (itempro.projectId == e) {
           this.tableyPostlist.push(itempro);
-          console.log(itempro,"--------岗位---");
+          console.log(itempro, "--------岗位---");
         }
       });
     },
@@ -916,7 +936,7 @@ export default {
 }
 .el-form-item {
   display: flex;
-  margin-right: 50px;
+  justify-content: center;
 }
 ::v-deep .el-form-item__label {
   width: 125px !important;
@@ -924,6 +944,7 @@ export default {
 }
 ::v-deep .el-input__inner {
   width: 180px;
+  color: #606266 !important;
 }
 ::v-deep .el-textarea__inner {
   min-height: 110px !important;
@@ -940,6 +961,7 @@ export default {
 }
 .btn {
   text-align: right;
+  margin: 2px 0 20px;
 }
 // 修改对话框高度 滚动条
 .showAll_dialog {
@@ -949,7 +971,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 75%;
+    height: 83%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;
@@ -969,8 +991,15 @@ export default {
   }
 }
 .box_n {
-  padding-top: 15px;
+  width: 910px;
+  padding-top: 13px;
   display: flex;
   justify-content: space-around;
+  .box_li{
+    margin: 0 15px;
+  }
+}
+::v-deep .el-dialog {
+  min-width: 700px;
 }
 </style>

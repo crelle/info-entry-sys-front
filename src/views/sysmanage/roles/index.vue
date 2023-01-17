@@ -16,7 +16,7 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="角色名称"  prop="nameZh">
+            <el-form-item label="角色名称" prop="nameZh">
               <el-input
                 v-model="formOptions.nameZh"
                 placeholder="请输入角色名称"
@@ -38,7 +38,9 @@
               <el-button type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryRoles">查询</el-button>
+              <el-button type="primary" @click="queryRolesclick"
+                >查询</el-button
+              >
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -85,7 +87,7 @@
           min-width="120"
           fixed
         ></el-table-column>
-        <el-table-column label="操作" min-width="120" fixed>
+        <el-table-column label="操作" min-width="210" fixed="right">
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -152,7 +154,7 @@ export default {
         pageSize: 10,
         layout: "total, sizes, prev, pager, next, jumper",
       },
-         // 验证
+      // 验证
       rules: {},
     };
   },
@@ -160,6 +162,17 @@ export default {
     this.queryRoles();
   },
   methods: {
+    // 手动 查询
+    queryRolesclick() {
+      this.$refs["queryRoleRef"].validate((valid) => {
+        if (valid) {
+          this.paginationOptions.pageNo = 1;
+          this.queryRoles();
+        } else {
+          return false;
+        }
+      });
+    },
     // 查询
     queryRoles() {
       this.$refs["queryRoleRef"].validate((valid) => {
@@ -235,7 +248,7 @@ export default {
       this.list = "编辑角色信息";
       console.log("编辑", row, row.id);
     },
-   // 重置表单
+    // 重置表单
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
@@ -298,6 +311,21 @@ export default {
 }
 .el-form-item {
   width: 267px;
+}
+.demo-form-inline {
+  min-width: 500px;
+}
+@media screen and (min-width: 800px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
+::v-deep .el-card__body {
+  overflow-x: scroll;
+
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>
 

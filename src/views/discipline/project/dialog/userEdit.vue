@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -241,8 +242,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "项目名称不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
         ],
@@ -285,11 +286,11 @@ export default {
             message: "请填手机号",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "请填正确的手机号",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^1[3-9]\d{9}$/,
+          //   message: "请填正确的手机号",
+          //   trigger: "blur",
+          // },
         ],
         email: [
           {
@@ -553,7 +554,7 @@ export default {
   }
 }
 .el-form {
-  padding: 14px 50px;
+  padding: 20px 50px 0;
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
@@ -566,15 +567,16 @@ export default {
 }
 ::v-deep.el-form-item {
   display: flex;
-  margin-right: 50px;
-  margin-bottom: 18px !important;
+  // margin-right: 50px;
+  margin-bottom: 20px !important;
 }
 ::v-deep .el-form-item__label {
-  width: 125px;
+  width: 85px !important;
   text-align: left;
 }
 ::v-deep .el-input__inner {
   width: 250px;
+  color: #606266 !important;
 }
 ::v-deep .el-textarea__inner {
   min-height: 120px !important;
@@ -592,5 +594,8 @@ export default {
 }
 ::v-deep .el-dialog__footer {
   padding: 0 20px 20px;
+}
+::v-deep .el-dialog {
+  min-width: 380px;
 }
 </style>

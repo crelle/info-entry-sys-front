@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -179,16 +180,28 @@ export default {
             trigger: "blur",
           },
         ],
-
-        email: [
+        gender: [
           {
             required: true,
+            message: "请选择性别",
+            trigger: ["blur", "change"],
+          },
+        ],
+        email: [
+          {
+            required: false,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
             trigger: "blur",
           },
         ],
@@ -199,8 +212,13 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5]).*$/,
+            message: "请以中文名称开头",
             trigger: "blur",
           },
         ],
@@ -211,8 +229,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
         ],
@@ -223,16 +241,21 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^1[3-9]\d{9}$/,
+            message: "手机号格式不正确",
             trigger: "blur",
           },
         ],
         address: [
           {
             required: false,
-            message: "请填写地域",
+            message: "请输入接口人办公地址",
             trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
           },
         ],
         introduce: [
@@ -242,8 +265,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
         ],
@@ -465,7 +488,6 @@ export default {
 }
 .el-form-item {
   display: flex;
-  margin-right: 50px;
 }
 ::v-deep .el-form-item__label {
   width: 125px;
@@ -487,5 +509,8 @@ export default {
 
 ::v-deep .el-dialog__body {
   padding: 0px 20px;
+}
+::v-deep .el-dialog{
+  min-width: 420px;
 }
 </style>

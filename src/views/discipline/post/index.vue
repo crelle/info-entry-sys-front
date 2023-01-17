@@ -90,21 +90,19 @@
               <el-button type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryPostlist">查询</el-button>
+              <el-button type="primary" @click="queryPostclick">查询</el-button>
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </el-card>
-
     <el-card>
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         border
         stripe
         size="mini"
@@ -143,14 +141,14 @@
         ></el-table-column>
         <el-table-column
           label="客户"
-          prop="customer"
+          prop="customerName"
           min-width="100"
           fixed
         ></el-table-column>
         <el-table-column
           label="需求人数/人"
           prop="number"
-          min-width="60"
+          min-width="87"
           fixed
         ></el-table-column>
         <el-table-column
@@ -162,10 +160,10 @@
         <el-table-column
           label="截止今日岗位缺口/人"
           prop="number"
-          min-width="100"
+          min-width="144"
           fixed
         ></el-table-column>
-        <el-table-column label="操作" min-width="218" fixed>
+        <el-table-column label="操作" min-width="218" fixed="right">
           <template slot-scope="{ row, $index }">
             <el-button @click="lookClick(row)" type="primary" size="mini"
               >查看</el-button
@@ -202,6 +200,7 @@
       :toChild="list"
       :tableData="tableData"
       :projectData="projectData"
+      :customerData="customerData"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
     <role-data-dialog
@@ -218,7 +217,8 @@ import { queryPost, deletesPost } from "@/api/post";
 import { queryProject } from "@/api/project";
 // 地域
 import { queryRegion } from "@/api/region";
-
+//客户
+import { queryCustomer } from "@/api/customer";
 import RoleEditDialog from "@/views/discipline/post/dialog/dialogEdit.vue";
 import RoleDataDialog from "@/views/discipline/post/dialog/dialogDetails.vue";
 export default {
@@ -243,7 +243,6 @@ export default {
       list: "",
       formOptions: {
         address: "",
-        customer: "",
         date: "",
         detailAddress: "",
         latestArrivalTime: "",
@@ -254,10 +253,14 @@ export default {
         projectId: "",
         requirements: "",
         skill: "",
+        customer: "",
+        customerId: "",
+        customerName: "",
       },
       tableData: [],
       projectData: [],
       regionData: [],
+      customerData: [],
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
@@ -272,40 +275,12 @@ export default {
     this.queryPost();
   },
   methods: {
-    // 查询
-    queryPostlist() {
+    // 手动 查询 岗位表
+    queryPostclick() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = this.paginationOptions.pageSize;
-          queryPost(data).then((res) => {
-            //  查询 项目表
-            queryProject(data).then((res1) => {
-              // 查询 地域表
-              queryRegion(data).then((res2) => {
-                this.tableData = res.data.records; // 表格数据赋值
-                console.log(this.tableData, "++++++++++岗位数据----");
-                this.projectData = res1.data.records; // 表格数据赋值
-                console.log(this.projectData, "+++++++++项目数据----");
-                this.regionData = res2.data.records; // 表格数据赋值
-                console.log(this.regionData, "++++++++++地域数据----");
-                this.tableData.forEach((item) => {
-                  if (item.date) {
-                    item.date = item.date.split("T")[0];
-                    item.address = item.address.split("/")[0];
-                  }
-
-                  this.projectData.forEach((sitem) => {
-                    if (item.projectId == sitem.projectId) {
-                      item.project = sitem.project;
-                    }
-                  });
-                });
-              });
-            });
-            this.paginationOptions.total = res.data.total; // 分页器赋值
-          });
+          this.paginationOptions.pageNo = 1;
+          this.queryPost();
         } else {
           return false;
         }
@@ -319,26 +294,37 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           queryPost(data).then((res) => {
+            data.current = 1;
+            data.size = 999;
             //  查询 项目表
             queryProject(data).then((res1) => {
               // 查询 地域表
               queryRegion(data).then((res2) => {
-                this.tableData = res.data.records; // 表格数据赋值
-                console.log(this.tableData, "++++++++++岗位数据----");
-                this.projectData = res1.data.records; // 表格数据赋值
-                console.log(this.projectData, "+++++++++项目数据----");
-                this.regionData = res2.data.records; // 表格数据赋值
-                console.log(this.regionData, "++++++++++地域数据----");
-                this.tableData.forEach((item) => {
-                  if (item.date) {
-                    item.date = item.date.split("T")[0];
-                    item.address = item.address.split("/")[0];
-                  }
-
-                  this.projectData.forEach((sitem) => {
-                    if (item.projectId == sitem.projectId) {
-                      item.project = sitem.project;
+                // 查询 客户
+                queryCustomer(data).then((res3) => {
+                  this.tableData = res.data.records; // 表格数据赋值
+                  console.log(this.tableData, "++++++++++岗位数据----");
+                  this.projectData = res1.data.records; // 表格数据赋值
+                  // console.log(this.projectData, "+++++++++项目数据----");
+                  this.regionData = res2.data.records; // 表格数据赋值
+                  // console.log(this.regionData, "++++++++++地域数据----");
+                  this.customerData = res3.data.records; // 表格数据赋值
+                  // console.log(this.customerData, "++++++++++客户数据----");
+                  this.tableData.forEach((item) => {
+                    if (item.date) {
+                      item.date = item.date.split("T")[0];
+                      item.address = item.address.split("/")[0];
                     }
+                    this.projectData.forEach((sitem) => {
+                      if (item.projectId == sitem.projectId) {
+                        item.project = sitem.project;
+                      }
+                    });
+                    this.customerData.forEach((sitems) => {
+                      if (item.customer == sitems.customerId) {
+                        item.customerName = sitems.customerName;
+                      }
+                    });
                   });
                 });
               });
@@ -406,10 +392,10 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
-    },
+    // // 表格复选动作
+    // handleSelectionChange(val) {
+    //   this.multipleSelection = val;
+    // },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
@@ -449,7 +435,7 @@ export default {
   margin-right: 0;
 }
 
-@media screen and (min-width: 1850px) {
+@media screen and (min-width: 1800px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
     display: none;
   }
@@ -471,9 +457,12 @@ export default {
   margin-right: 5px;
 }
 .el-form-item {
-  width: 275px;
+  min-width: 270px;
 }
 ::v-deep .el-col-5 {
   overflow: hidden;
+}
+.demo-form-inline {
+  min-width: 1300px;
 }
 </style>

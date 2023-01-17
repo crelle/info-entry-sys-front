@@ -23,7 +23,7 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="5">
             <el-form-item label="客户" prop="customerId">
               <el-select
                 v-model="formOptions.customerId"
@@ -54,7 +54,9 @@
               <el-button type="primary" @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserListlis">查询</el-button>
+              <el-button type="primary" @click="queryUserListclick"
+                >查询</el-button
+              >
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -159,18 +161,23 @@
     ></user-edit-dialog>
     <user-dait-dialog
       :toChild="list"
+      :tableDataProject="tableDataProject"
       ref="userDaitDialogRef"
     ></user-dait-dialog>
   </div>
 </template>
 
 <script>
-// 接口人表/删除
-import { queryInterface, deletesInterface } from "@/api/interface";
-
 // 客户查询
 import { queryCustomer } from "@/api/customer";
-
+// 地域
+import { queryRegion } from "@/api/region";
+// 部门
+import { queryDepartments } from "@/api/department";
+// 项目
+import { queryProject } from "@/api/project";
+// 接口人表/删除
+import { queryInterface, deletesInterface } from "@/api/interface";
 import UserEditDialog from "@/views/discipline/interface/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/discipline/interface/dialog/userDetails.vue";
 export default {
@@ -200,55 +207,96 @@ export default {
       tableData: [],
       tableCustomer: [],
       multipleSelection: [],
+      // 全部项目
+      tableDataProject: [],
     };
   },
   mounted() {
     this.queryUserList();
+    this.queryProject();
     // this.queryCustomerList();
   },
   methods: {
-    // // 查询客户列表
-    // queryCustomerList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = this.paginationOptions.pageNo;
-    //       data.size = this.paginationOptions.pageSize;
-    //       queryCustomer(data).then((res) => {
-    //         this.tableCustomer = res.data.records; // 表格数据赋值
-    //         console.log(this.tableCustomer, "----------客户数据表-------");
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
-    // 查询
-    queryUserListlis() {
+    //  查询全部项目
+    queryProject() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
-          data.size = this.paginationOptions.pageSize;
-          // 接口人表
-          queryInterface(data).then((res) => {
-            data.current = 1;
-            data.size = 999;
-            // 客户表
-            queryCustomer(data).then((res1) => {
-              this.tableData = res.data.records; // 接口人表格数据赋值
-              this.tableCustomer = res1.data.records; //客户表格数据赋值
-              this.tableData.forEach((item) => {
-                this.tableCustomer.forEach((sitem) => {
-                  if (item.customerId == sitem.customerId) {
-                    item.customerName = sitem.customerName;
-                  }
+          data.size = 999;
+          // 项目表格数据
+          queryProject(data).then((res) => {
+            // //  数据接口人查询方法
+            queryInterface(data).then((res1) => {
+              // 部门表格数据
+              queryDepartments(data).then((res2) => {
+                // 地域表格数据
+                queryRegion(data).then((res3) => {
+                  // 客户表格数据
+                  queryCustomer(data).then((res4) => {
+                    this.tableDataProject = res.data.records; // 项目表格数据赋值
+                    this.InterfaceProject = res1.data.records; // 接口人表格数据赋值
+                    this.UsersProject = res2.data.records; // 部门表格数据赋值
+                    this.MockUserProject = res3.data.records; // 地域表格数据赋值
+                    this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
+                    // console.log(this.Users, "部门表格数据");
+                    // console.log(this.Interface, "接口人表格数据");
+                    console.log(
+                      this.tableDataProject,
+                      "------全部项目表格数据"
+                    );
+                    this.tableDataProject.forEach((item) => {
+                      if (item.status == 1) {
+                        item.status = "开发中";
+                      }
+                      if (item.status == 2) {
+                        item.status = "前期投入";
+                      }
+                      if (item.status == 3) {
+                        item.status = "交付阶段";
+                      }
+                      // 接口人表格
+                      this.InterfaceProject.forEach((sitem) => {
+                        if (item.interfaceId == sitem.interfaceId) {
+                          item.interfaceName = sitem.interfaceName;
+                          item.cellPhone = sitem.cellPhone;
+                          item.email = sitem.email;
+                          // 客户
+                          this.tableCustomerProject.forEach((items) => {
+                            if (sitem.customerId == items.customerId) {
+                              item.customerName = items.customerName;
+                              item.customerId = items.customerId;
+                            }
+                          });
+                        }
+                        // 部门表格
+                        this.UsersProject.forEach((itemis) => {
+                          if (item.departmentId == itemis.departmentId) {
+                            item.department = itemis.department;
+                          }
+                          if (sitem.customerId == itemis.customerId) {
+                            item.customerName = itemis.customerName;
+                          }
+                        });
+                      });
+                    });
+                    // this.paginationOptions.total = res.data.total; // 分页器赋值
+                  });
                 });
               });
-              this.paginationOptions.total = res.data.total; // 分页器赋值
             });
           });
+        } else {
+          return false;
+        }
+      });
+    },
+    //手动 查询接口人
+    queryUserListclick() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          this.paginationOptions.pageNo = 1;
+          this.queryUserList();
         } else {
           return false;
         }
@@ -258,7 +306,6 @@ export default {
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
-          console.log(valid, "validvalidvalid");
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
@@ -329,13 +376,13 @@ export default {
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑接口人信息";
-      console.log("编辑", row, row.interfaceId);
+      console.log("编辑", row);
     },
     // 详情
     detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看接口人详情";
-      console.log("详情", row, row.interfaceId);
+      console.log("详情", row);
     },
     // 重置表单
     resetForm(formName) {
@@ -380,6 +427,9 @@ export default {
 ::v-deep .el-col-14 {
   text-align: right;
 }
+::v-deep .el-col-5 {
+  min-width: 253px;
+}
 .el-form--inline .el-form-item {
   margin-right: 0;
 }
@@ -399,5 +449,20 @@ export default {
 }
 .el-form-item {
   width: 253px;
+}
+.demo-form-inline {
+  min-width: 1300px;
+}
+@media screen and (min-width: 1600px) {
+  ::v-deep .el-card__body::-webkit-scrollbar {
+    display: none;
+  }
+}
+::v-deep .el-card__body {
+  overflow-x: scroll;
+
+  .el-form-item--mini.el-form-item {
+    margin-bottom: 0;
+  }
 }
 </style>

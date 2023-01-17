@@ -16,13 +16,19 @@
               :rules="userEditFormRules"
               ref="userEditRef"
               size="small"
-              label-position="right"
-              label-width="100px"
+              label-position="left"
+              label-width="80px"
             >
               <el-form-item label="用户名" prop="username">
                 <el-input
                   v-model="userEditForm.username"
                   placeholder="请输入用户名"
+                ></el-input>
+              </el-form-item>
+              <el-form-item label="姓名" prop="isname">
+                <el-input
+                  v-model="userEditForm.isname"
+                  placeholder="请输入姓名"
                 ></el-input>
               </el-form-item>
               <el-form-item label="工号" prop="jobNo">
@@ -114,6 +120,7 @@ export default {
         jobNo: "",
         userPhone: "",
         username: "",
+        isname: "",
         roles: [
           {
             id: "",
@@ -127,7 +134,7 @@ export default {
         username: [
           {
             required: true,
-            message: "请输入用户名",
+            message: "请输入用户名称",
             trigger: ["blur", "change"],
           },
           {
@@ -140,6 +147,33 @@ export default {
             message: "不能以数字开头",
             trigger: "blur",
           },
+          {
+            pattern: /^([a-z]|[0-9])*$/,
+            message: "格式不正确&请输入小写英文名称",
+            trigger: "blur",
+          },
+        ],
+        isname: [
+          {
+            required: false,
+            message: "请输入姓名",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
+          // {
+          //   pattern: /^(?!\s+).*(?<!\s)$/,
+          //   message: "首尾不能为空格",
+          //   trigger: "blur",
+          // },
+          // {
+          //   pattern: /^(?![0-9]).*$/,
+          //   message: "不能以数字开头",
+          //   trigger: "blur",
+          // },
         ],
         password: [
           {
@@ -292,9 +326,13 @@ export default {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "增加了的valid");
-          console.log(this.userEditForm, this.userEditForm.id, "增加了的内容");
+          console.log(
+            this.userEditForm,
+            this.userEditForm.roles,
+            "增加了的内容"
+          );
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.id).then((res) => {
+            addUser(this.userEditForm, this.userEditForm.roles).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
@@ -318,5 +356,11 @@ export default {
 <style lang="less" scoped>
 .passwordat {
   display: none;
+}
+::v-deep .el-form-item__label {
+    padding-right: 0 !important;
+}
+::v-deep .el-dialog{
+  min-width: 300px;
 }
 </style>

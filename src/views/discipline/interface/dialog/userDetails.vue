@@ -37,30 +37,36 @@
                       <span>接口人办公地址:</span>
                       <span>{{ userEditForm.address }}</span>
                     </li>
-                    <li>
+                    <li class="new">
                       <span>介绍:</span>
-                      <span>{{ userEditForm.introduce }}</span>
+                      <span :title="userEditForm.introduce">{{ userEditForm.introduce }}</span>
                     </li>
                   </ul>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="项目表" name="first">
-                        <el-table :data="tableData1" border style="width: 100%">
+                        <el-table
+                          :data="tableData1"
+                          height="311"
+                          border
+                          style="width: 100%"
+                        >
                           <el-table-column
-                            prop="number"
-                            label="编号"
+                            label="序号"
+                            type="index"
+                            :index="indexMethod"
                             width="50"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="date"
+                            prop="project"
                             label="项目名称"
                             width="120"
                           >
                           </el-table-column>
-                          <el-table-column prop="project" label="项目状态">
+                          <el-table-column prop="status" label="项目状态">
                           </el-table-column>
-                          <el-table-column prop="person" label="客户">
+                          <el-table-column prop="customerName" label="客户">
                           </el-table-column>
                           <el-table-column prop="people" label="项目人数">
                           </el-table-column>
@@ -89,6 +95,7 @@
 export default {
   props: {
     toChild: String,
+    tableDataProject: "",
   },
   data() {
     return {
@@ -178,10 +185,18 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      this.tableData1 = [];
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
+        // console.log(this.tableDataProject, "----父亲传来的全部项目");
+        // 根据接口人 id 查询项目赋值 tableData1
+        this.tableDataProject.forEach((item) => {
+          if (row.interfaceId == item.interfaceId) {
+            this.tableData1.push(item);
+          }
+        });
+        console.log(this.tableData1, "---接口人对应的项目");
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
@@ -213,6 +228,9 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
+    indexMethod(index) {
+      return index + 1;
+    },
   },
 };
 </script>
@@ -240,14 +258,12 @@ export default {
 ::v-deep .cell {
   text-align: center;
 }
-.lis {
-  padding: 0;
-}
 ::v-deep .el-dialog__body {
   margin: 0 40px;
   padding: 0 40px;
 }
 .lis {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   li {
@@ -259,7 +275,24 @@ export default {
       display: block;
     }
     span:nth-child(1) {
-      width: 120px;
+      width: 110px;
+    }
+  }
+  .new {
+    width: 100%;
+    span:nth-child(1) {
+      display: block;
+      width: 110px;
+    }
+    span:nth-child(2) {
+      width: 660px;
+      line-height: 20px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 超出几行省略 */
     }
   }
 }
