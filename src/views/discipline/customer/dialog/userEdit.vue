@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -55,10 +56,10 @@
                     @change="queryson"
                   >
                     <el-option
-                      v-for="(item, index) in UserList"
+                      v-for="item in UserList"
                       :key="item.index"
                       :label="item.username"
-                      :value="index"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -143,11 +144,11 @@ export default {
             message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^(?!\s+).*(?<!\s)$/,
+          //   message: "首尾不能为空格",
+          //   trigger: "blur",
+          // },
         ],
 
         email: [
@@ -156,9 +157,10 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+         {
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
             trigger: "blur",
           },
         ],
@@ -168,19 +170,14 @@ export default {
             message: "请填写客户名",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
           {
-            pattern: /^(?![0-9]).*$/,
-            message: "不能以数字开头",
-            trigger: "blur",
-          },
-          {
-            pattern: /^([\u4E00-\u9FA5]|[0-9])*$/,
-            message: "请输入中文名称",
+            pattern: /^([\u4E00-\u9FA5]).*$/,
+            message: "请以中文名称开头",
             trigger: "blur",
           },
         ],
@@ -190,11 +187,11 @@ export default {
             message: "请填写手机号码",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^1[3-9]\d{9}$/,
-            message: "手机号格式不正确",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^1[3-9]\d{9}$/,
+          //   message: "手机号格式不正确",
+          //   trigger: "blur",
+          // },
         ],
         address: [
           {
@@ -242,9 +239,14 @@ export default {
     //自动选择
     queryson(e) {
       if (e) {
-        this.userEditForm.cellPhone = this.UserList[e].userPhone;
-        this.userEditForm.email = this.UserList[e].userEmail;
-        this.userEditForm.userId = this.UserList[e].username;
+        // 负责人
+        this.UserList.forEach((item) => {
+          if (item.id == e) {
+            this.userEditForm.cellPhone = item.userPhone;
+            this.userEditForm.email = item.userEmail;
+            this.userEditForm.userId = item.username;
+          }
+        });
       } else {
         this.userEditForm.cellPhone = null;
         this.userEditForm.email = null;
@@ -280,7 +282,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
+      console.log(this.userEditForm, "取消");
     },
     // 重置表单
     resetForm(formName) {
@@ -296,29 +298,16 @@ export default {
     /* 保存  */
     onCertain() {
       if (this.initFormData.customerId) {
-        console.log(
-          this.initFormData.customerId,
-          "--xxxxx--this.initFormData.id-"
-        );
         this.userEditForm.customerId = this.initFormData.customerId;
         this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "userEditFormuserEditForm123");
-        console.log(this.userEditForm.customerId, "-----id", this.userEditForm);
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            console.log(
-              this.userEditForm,
-              this.userEditForm.customerId,
-              "---id---传入未空的内容-----"
-            );
             editCustomer(this.userEditForm, this.userEditForm.customerId).then(
               (res) => {
-                console.log(res, "res11111");
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
-
                   this.$parent.queryUserList();
                   // this.dialogFormVisible = false; // 让弹窗显
                   this.dialogClose();
@@ -330,12 +319,9 @@ export default {
           }
         });
       } else {
-        console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
           if (valid) {
             establishCustomer(this.userEditForm).then((res) => {
-              console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
                 // this.nowIndex = -1; // 重置选中
@@ -442,7 +428,6 @@ export default {
 }
 .el-form-item {
   display: flex;
-  margin-right: 50px;
 }
 ::v-deep .el-form-item__label {
   width: 95px;
@@ -464,5 +449,11 @@ export default {
 
 ::v-deep .el-dialog__body {
   padding: 0px 20px;
+}
+::v-deep .el-input.is-disabled .el-input__inner {
+  color: #606266;
+}
+::v-deep .el-dialog{
+  min-width: 400px;
 }
 </style>

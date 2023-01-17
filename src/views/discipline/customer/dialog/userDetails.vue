@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
     >
@@ -26,8 +26,7 @@
                       ><span>{{ userEditForm.address }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span
-                      ><span>{{ userEditForm.userId }}</span>
+                      <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
@@ -36,37 +35,42 @@
                     <li>
                       <span>邮箱:</span><span>{{ userEditForm.email }}</span>
                     </li>
-                    <li>
-                      <span>介绍:</span><span>{{ userEditForm.introduce }}</span>
+                    <li class="new">
+                      <span>介绍:</span
+                      ><span :title="userEditForm.introduce">{{ userEditForm.introduce }}</span>
                     </li>
                   </ul>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="客户项目" name="first">
-                        <el-table :data="tableData1" border style="width: 100%">
+                        <el-table
+                          :data="tableData1"
+                          height="311"
+                          border
+                          style="width: 100%"
+                        >
                           <el-table-column
-                            prop="number"
-                            label="编号"
+                            label="序号"
+                            type="index"
+                            :index="indexMethod"
                             width="50"
                           >
                           </el-table-column>
-                          <el-table-column prop="date" label="项目" width="180">
-                          </el-table-column>
                           <el-table-column
-                            prop="name"
-                            label="项目人数"
-                            width="80"
+                            prop="project"
+                            label="项目"
+                            width="180"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="contact"
+                            prop="department"
                             label="所属部门"
                             width="120"
                           >
                           </el-table-column>
-                          <el-table-column prop="person" label="接口人">
+                          <el-table-column prop="interfaceName" label="接口人">
                           </el-table-column>
-                          <el-table-column prop="project" label="项目状态">
+                          <el-table-column prop="status" label="项目状态">
                           </el-table-column>
                           <el-table-column prop="psonstatus" label="项目人数">
                           </el-table-column>
@@ -95,52 +99,13 @@
 export default {
   props: {
     toChild: String,
+    // 全部项目
+    tableDataProject: "",
   },
   data() {
     return {
       // 假数据
-      tableData1: [
-        {
-          number: "1",
-          date: "n20160502项目",
-          name: "32",
-          contact: "研发1部",
-          project: "开发中",
-          person: "aaa",
-          psonstatus: "15人",
-          gap: "5人",
-        },
-        {
-          number: "2",
-          date: "n20160504项目",
-          name: "24",
-          contact: "研发2部",
-          project: "维护中",
-          person: "bbb",
-          psonstatus: "25人",
-          gap: "1人",
-        },
-        {
-          number: "3",
-          date: "n20160501项目",
-          name: "55",
-          contact: "研发3部",
-          project: "暂停中",
-          person: "ccc",
-          psonstatus: "18人",
-          gap: "5人",
-        },
-        {
-          number: "4",
-          date: "n20160503项目",
-          name: "43",
-          contact: "研发4部",
-          project: "上线中",
-          person: "ddd",
-          psonstatus: "35人",
-          gap: "4人",
-        },
-      ],
+      tableData1: [],
 
       // 假数据
       activeName: "first",
@@ -174,11 +139,22 @@ export default {
     openDialog(row) {
       console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.tableData1 = [];
       if (row) {
         this.initFormData = row;
+        console.log(this.tableDataProject, "------父亲传来全部项目");
+        // 根据客户id 查询项目 赋值给 tableData1
+        this.tableDataProject.forEach((item) => {
+          if (this.initFormData.customerId == item.customerId) {
+            // console.log(item, "----客户对应的项目----");
+            this.tableData1.push(item);
+          }
+        });
+        console.log(this.tableData1, "----客户对应的项目----");
+        this.initFormData.customerId;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(this.initFormData); // 为表单赋值
         });
       }
     },
@@ -207,6 +183,9 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
+    indexMethod(index) {
+      return index + 1;
+    },
   },
 };
 </script>
@@ -234,14 +213,12 @@ export default {
 ::v-deep .cell {
   text-align: center;
 }
-.lis {
-  padding: 0;
-}
 ::v-deep .el-dialog__body {
   margin: 0 40px;
   padding: 0 40px;
 }
 .lis {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   li {
@@ -256,7 +233,25 @@ export default {
       width: 100px;
     }
   }
+  .new {
+    width: 100%;
+    span:nth-child(1) {
+      display: block;
+      width: 100px;
+    }
+    span:nth-child(2) {
+      width: 660px;
+      line-height: 20px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 超出几行省略 */
+    }
+  }
 }
+
 ::v-deep .el-table {
   font-size: 12px;
 }
@@ -279,7 +274,7 @@ export default {
   font-size: 14px;
   font-family: "微软雅黑";
 }
-::v-deep .el-form-item__label{
+::v-deep .el-form-item__label {
   min-width: 44px;
 }
 </style>

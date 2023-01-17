@@ -35,6 +35,18 @@
                       ><span>{{ initFormData.interfaceName }}</span>
                     </li>
                     <li>
+                      <span>地域:</span
+                      ><span>{{ initFormData.regionName }}</span>
+                    </li>
+                    <li>
+                      <span>电话:</span
+                      ><span>{{ initFormData.cellPhone }}</span>
+                    </li>
+                    <li>
+                      <span>邮箱:</span><span>{{ initFormData.email }}</span>
+                    </li>
+
+                    <li>
                       <span>立项时间:</span
                       ><span>{{ initFormData.updateTime }}</span>
                     </li>
@@ -46,22 +58,32 @@
                       <span>当前状态:</span
                       ><span>{{ initFormData.status }}</span>
                     </li>
-                    <li>
+                    <li class="new">
                       <span>介绍:</span
-                      ><span>{{ initFormData.introduce }}</span>
+                      ><span :title="initFormData.introduce">{{ initFormData.introduce }}</span>
                     </li>
                   </ul>
                   <div>
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="项目人员" name="first">
-                        <el-table :data="tableData1" border style="width: 100%">
+                        <el-table
+                          :data="tableData1"
+                          border
+                          height="311"
+                          style="width: 100%"
+                        >
                           <el-table-column
-                            prop="number"
-                            label="编号"
+                            label="序号"
+                            type="index"
+                            :index="indexMethod"
                             width="50"
                           >
                           </el-table-column>
-                          <el-table-column prop="date" label="工号" width="110">
+                          <el-table-column
+                            prop="jobNo"
+                            label="工号"
+                            width="110"
+                          >
                           </el-table-column>
                           <el-table-column
                             prop="name"
@@ -70,16 +92,16 @@
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="contact"
+                            prop="cellPhone"
                             label="联系方式"
                             width="120"
                           >
                           </el-table-column>
-                          <el-table-column prop="address" label="地域">
+                          <el-table-column prop="regionName" label="地域">
                           </el-table-column>
-                          <el-table-column prop="project" label="所在项目">
+                          <el-table-column prop="postName" label="岗位">
                           </el-table-column>
-                          <el-table-column prop="person" label="接口人">
+                          <el-table-column prop="" label="状态">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -104,49 +126,14 @@
 export default {
   props: {
     toChild: String,
+    tableDatastaff: "",
+    //地域
+    MockUser: "",
   },
   data() {
     return {
-      // 假数据
-      tableData1: [
-        {
-          number: "1",
-          date: "n20160502",
-          name: "赵二",
-          address: "武汉1518 弄",
-          contact: "13315715789",
-          project: "xxx项目",
-          person: "aaa",
-        },
-        {
-          number: "2",
-          date: "n20160504",
-          name: "张三",
-          address: "南京1517 弄",
-          contact: "13915715789",
-          project: "yyy项目",
-          person: "bbb",
-        },
-        {
-          number: "3",
-          date: "n20160501",
-          name: "李四",
-          address: "上海1519 弄",
-          contact: "13215715789",
-          project: "zzz项目",
-          person: "ccc",
-        },
-        {
-          number: "4",
-          date: "n20160503",
-          name: "王五",
-          address: "湖北1516 弄",
-          contact: "13115715789",
-          project: "www项目",
-          person: "ddd",
-        },
-      ],
-
+      // 项目对应的员工数据
+      tableData1: [],
       // 假数据
       activeName: "first",
       textarea:
@@ -189,9 +176,30 @@ export default {
       // 修改时间格式
       row.updateTime = row.updateTime.split("T")[0];
       // console.log(this.userEditForm, "001001");
+      this.tableData1 = [];
       this.dialogFormVisible = true; // 让弹窗显示
+
       if (row) {
         this.initFormData = row;
+        // console.log(this.tableDatastaff, "-----------员工全部");
+        // 根据项目 id  查找 员工 赋值给 tableData1
+        this.tableDatastaff.forEach((item) => {
+          // console.log(item.projectId, item.project, "----员工----");
+          if (this.initFormData.projectId == item.projectId) {
+            // console.log(item.projectId, item.project, "同项目的id---");
+            this.tableData1.push(item);
+          }
+        });
+        // 根据传来的地域  id  查找 地域 赋值给
+        this.MockUser.forEach((item) => {
+          console.log(item, "----地域----");
+          if (this.initFormData.regionId == item.regionId) {
+            // console.log(item.regionId, item.regionId, "同地域的id---");
+            this.initFormData.regionName = item.regionName;
+          }
+        });
+
+        console.log(this.tableData1, "--对应的--员工表--");
         this.initFormData.number = this.tableData1.length;
       }
     },
@@ -219,6 +227,9 @@ export default {
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
+    },
+    indexMethod(index) {
+      return index + 1;
     },
   },
 };
@@ -248,14 +259,12 @@ export default {
 ::v-deep .cell {
   text-align: center;
 }
-.lis {
-  padding: 0;
-}
 ::v-deep .el-dialog__body {
   margin: 0 40px;
   padding: 0 40px;
 }
 .lis {
+  padding: 0;
   display: flex;
   flex-wrap: wrap;
   li {
@@ -267,6 +276,23 @@ export default {
     }
     span:nth-child(1) {
       width: 115px;
+    }
+  }
+  .new {
+    width: 100%;
+    span:nth-child(1) {
+      display: block;
+      width: 110px;
+    }
+    span:nth-child(2) {
+      width: 660px;
+      line-height: 20px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 超出几行省略 */
     }
   }
 }

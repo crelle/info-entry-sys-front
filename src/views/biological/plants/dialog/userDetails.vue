@@ -49,7 +49,8 @@
                       ><span>{{ initFormData.department }}</span>
                     </li>
                     <li>
-                      <span>客户:</span><span>{{ initFormData.customerName }}</span>
+                      <span>客户:</span
+                      ><span>{{ initFormData.customerName }}</span>
                     </li>
                     <li>
                       <span>户籍地:</span
@@ -95,14 +96,15 @@
                       ><span>{{ initFormData.skill }}</span>
                     </li>
                     <li>
-                      <span>项目:</span
-                      ><span>{{ initFormData.project }}</span>
+                      <span>项目:</span><span>{{ initFormData.project }}</span>
                     </li>
                     <li>
-                      <span>地域:</span><span>{{ initFormData.regionName }}</span>
+                      <span>地域:</span
+                      ><span>{{ initFormData.regionName }}</span>
                     </li>
                     <li>
-                      <span>接口人:</span><span>{{ initFormData.interfaceName }}</span>
+                      <span>接口人:</span
+                      ><span>{{ initFormData.interfaceName }}</span>
                     </li>
                     <li>
                       <span>现居住地:</span
@@ -148,7 +150,7 @@
                   {{ item.textarea1 }}
                 </el-card>
               </el-timeline-item>
-              <!-- <el-timeline-item :timestamp="monthValue" placement="top">
+              <el-timeline-item :timestamp="monthValue" placement="top">
                 <el-card>
                   <div class="note_taker">
                     记录人:{{ userEditForm.username }}
@@ -161,7 +163,7 @@
                   >
                   </el-input>
                 </el-card>
-              </el-timeline-item> -->
+              </el-timeline-item>
             </el-timeline>
             <div class="preservation">
               <el-button type="primary" @click="onCertain">保 存</el-button>
@@ -320,7 +322,7 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(this.initFormData); // 为表单赋值
-          console.log( this.initFormData,"--------------");
+          console.log(this.initFormData, "--------------");
         });
       }
     },
@@ -332,6 +334,7 @@ export default {
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
       this.resetForm("userEditRef"); // 重置表单
+      this.activeName = "first";
     },
     // 重置表单
     resetForm(formName) {
@@ -406,7 +409,7 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-input__inner {
-  color: rgb(0, 0, 0) !important;
+    color: #606266 !important;
 }
 // 修改对话框高度
 .showAll_dialog {
@@ -416,7 +419,7 @@ export default {
   overflow: hidden;
   ::v-deep .el-dialog {
     margin: 0 auto !important;
-    height: 75%;
+    height: 80%;
     overflow: hidden;
     .el-dialog__body {
       position: absolute;
@@ -498,4 +501,5 @@ export default {
 .block {
   padding: 20px 40px 0;
 }
+
 </style>

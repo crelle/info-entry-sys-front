@@ -22,7 +22,7 @@
                   <span>{{ initFormData.project }}</span></el-form-item
                 >
                 <el-form-item label="客户 :">
-                  <span>{{ initFormData.customer }}</span></el-form-item
+                  <span>{{ initFormData.customerName }}</span></el-form-item
                 >
                 <el-form-item label="岗位需求人数 :">
                   <span>{{ initFormData.number }}</span>

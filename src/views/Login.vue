@@ -315,6 +315,12 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
+           {
+            pattern:
+              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+            message: "邮箱格式不正确",
+            trigger: "blur",
+          },
         ],
         userNickName: [
           {

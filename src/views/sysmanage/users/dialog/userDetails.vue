@@ -15,15 +15,18 @@
                 <div class="userbox">
                   <ul class="lis">
                     <li>
-                      <span>用户名:</span
-                      ><span>{{ userEditForm.username }}</span>
+                      <span>姓名:</span><span>{{  }}</span>
+                    </li>
+                    <li>
+                      <span>手机号 :</span
+                      ><span>{{ userEditForm.userPhone }}</span>
                     </li>
                     <li>
                       <span>工号 :</span><span>{{ userEditForm.jobNo }}</span>
                     </li>
                     <li>
-                      <span>手机号 :</span
-                      ><span>{{ userEditForm.userPhone }}</span>
+                      <span>用户名:</span
+                      ><span>{{ userEditForm.username }}</span>
                     </li>
                     <li>
                       <span>邮箱 :</span
@@ -39,10 +42,10 @@
                         >{{ item.nameZh }}</span
                       >
                     </li>
-                    <li>
+                    <!-- <li>
                       <span>是否可用 :</span
                       ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
-                    </li>
+                    </li> -->
                     <!-- <li>
                       <span>账户是否未被锁定:</span
                       ><span>{{ userEditForm.accountNonLocked ? "是" : "否" }}</span>
@@ -51,6 +54,12 @@
                       <span>账户是否未过期:</span
                       ><span>{{ userEditForm.accountNonExpired ? "是" : "否" }}</span>
                     </li> -->
+                  </ul>
+                  <ul class="yesno">
+                    <li>
+                      <span>是否可用 :</span
+                      ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
+                    </li>
                   </ul>
                 </div>
               </el-form>
@@ -161,9 +170,10 @@ li {
       display: block;
     }
     span:nth-child(1) {
-      width: 80px;
+      width: 66px;
     }
     span:nth-child(2) {
+      width: 100px;
       padding-left: 10px;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -176,5 +186,28 @@ li {
 }
 .dialog-footer {
   text-align: center;
+}
+.yesno {
+  display: flex;
+  li {
+    width: 200px;
+    margin: 5px 0;
+    line-height: 35px;
+    font-size: 14px;
+    display: flex;
+
+    span {
+      display: block;
+    }
+    span:nth-child(1) {
+      width: 66px;
+    }
+    span:nth-child(2) {
+      padding-left: 10px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+  }
 }
 </style>

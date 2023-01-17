@@ -220,6 +220,13 @@
           show-overflow-tooltip
         >
         </el-table-column>
+        <el-table-column
+          prop="postName"
+          label="岗位"
+          min-width="90"
+          show-overflow-tooltip
+        >
+        </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="278">
           <template slot-scope="{ row, $index }">
             <el-button @click="stateClick(row)" type="primary" size="mini"
@@ -632,7 +639,7 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
-  width: 54px;
+  min-width: 54px;
   text-align: left;
 }
 .el-form-item {
@@ -642,9 +649,15 @@ export default {
   overflow: hidden;
 }
 .name {
-  padding-top: 10px;
+  padding-top: 15px;
 }
 .namecss {
   width: 193.89px;
+}
+// ::v-deep .el-input__inner {
+//   min-width: 193px;
+// }
+.demo-form-inline{
+  min-width: 1330px;
 }
 </style>

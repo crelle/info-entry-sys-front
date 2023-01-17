@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -56,14 +57,22 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
+
                 <el-form-item label="客户 :" prop="customer">
                   <el-input
-                    type="text"
                     v-model="userEditForm.customer"
-                    placeholder="客户"
-                    clearable
-                  ></el-input>
+                    placeholder="请选择客户"
+                    disabled
+                  >
+                    <!-- <el-option
+                      v-for="item in customerData"
+                      :key="item.index"
+                      :label="item.customerName"
+                      :value="item.customerId"
+                    ></el-option> -->
+                  </el-input>
                 </el-form-item>
+
                 <el-form-item label="岗位需求人数 :" prop="number">
                   <el-input
                     type="text"
@@ -105,7 +114,7 @@
                   >
                   </el-cascader>
                 </el-form-item> -->
-                 <el-form-item label="办公地点 :" prop="address">
+                <el-form-item label="办公地点 :" prop="address">
                   <el-input
                     type="text"
                     v-model="userEditForm.address"
@@ -172,6 +181,8 @@ export default {
     toChild: String,
     tableData: "",
     projectData: "",
+    // 客户
+    customerData: "",
   },
   data() {
     return {
@@ -216,8 +227,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
         ],
@@ -332,24 +343,26 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      this.projectData.forEach((item) => {
-        if (item.projectId == e) {
-          // 项目
-          let projectData = item;
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 100;
-          // // //  假数据接口人查询方法
-          // reqgetInterface(data).then((res) => {
-          //   res.data.forEach((item) => {
-          //     if (item.interfaceId == projectData.interfaceId) {
-          //       let names = item;
-          //       this.userEditForm.customer = names.name;
-          //     }
-          //   });
-          // });
-        }
-      });
+      console.log(this.projectData, "自动选择", "---选择的", e);
+      console.log(this.customerData, "--全部--客户---");
+      // this.projectData.forEach((item) => {
+      //   if (item.projectId == e) {
+      //     // 项目
+      //     let projectData = item;
+      //     let data = { records: [{ ...this.formOptions }] };
+      //     data.current = 1;
+      //     data.size = 100;
+      //     // // //  假数据接口人查询方法
+      //     // reqgetInterface(data).then((res) => {
+      //     //   res.data.forEach((item) => {
+      //     //     if (item.interfaceId == projectData.interfaceId) {
+      //     //       let names = item;
+      //     //       this.userEditForm.customer = names.name;
+      //     //     }
+      //     //   });
+      //     // });
+      //   }
+      // });
     },
     //
     // 弹窗
@@ -556,7 +569,6 @@ export default {
 }
 .el-form-item {
   display: flex;
-  margin-right: 50px;
 }
 ::v-deep .el-form-item__label {
   width: 110px;
@@ -578,9 +590,12 @@ export default {
 
 .dialog-footer {
   text-align: right;
-  padding: 10px 20px 20px;
+  padding: 2px 20px 20px;
 }
 ::v-deep .el-dialog__body {
   padding: 0;
+}
+::v-deep .el-dialog {
+  min-width: 400px;
 }
 </style>

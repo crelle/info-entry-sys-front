@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="20%"
       lock-scroll
       @close="closeDialog"
     >
@@ -71,14 +72,9 @@ export default {
             message: "请输入地域名称",
             trigger: ["blur", "change"],
           },
-         {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
-          },
-           {
-            pattern: /^(?![0-9]).*$/,
-            message: "不能以数字开头",
+          {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
             trigger: "blur",
           },
           {
@@ -315,9 +311,9 @@ export default {
 ::v-deep .el-dialog__body {
   padding: 20px 20px 0;
 }
-::v-deep .el-form-item--mini.el-form-item {
-  margin-bottom: 0;
-}
+// ::v-deep .el-form-item--mini.el-form-item {
+//   margin-bottom: 0;
+// }
 ::v-deep .el-dialog__footer {
   padding: 20px;
 }
@@ -327,5 +323,8 @@ export default {
 }
 ::v-deep .el-input__inner {
   height: 30px;
+}
+::v-deep .el-dialog{
+  min-width: 380px;
 }
 </style>
