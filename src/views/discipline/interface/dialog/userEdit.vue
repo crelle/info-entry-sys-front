@@ -216,11 +216,11 @@ export default {
             message: "不支持空格格式",
             trigger: "blur",
           },
-          {
-            pattern: /^([\u4E00-\u9FA5]).*$/,
-            message: "请以中文名称开头",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^([\u4E00-\u9FA5]).*$/,
+          //   message: "请以中文名称开头",
+          //   trigger: "blur",
+          // },
         ],
         userNickName: [
           {

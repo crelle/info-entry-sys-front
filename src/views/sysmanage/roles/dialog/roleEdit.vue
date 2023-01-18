@@ -400,7 +400,7 @@ li {
   padding: 5px 20px 0;
 
   .sbox {
-    width: 120px;
+    width: 140px;
     span {
       display: block;
       margin: 10px 0;

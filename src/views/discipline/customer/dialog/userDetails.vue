@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
     >
@@ -16,28 +17,30 @@
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span>{{ userEditForm.customerName }}</span>
+                      ><span :title="userEditForm.customerName">{{ userEditForm.customerName }}</span>
                     </li>
                     <li>
                       <span>地域:</span><span>{{ userEditForm.regionId }}</span>
                     </li>
                     <li>
                       <span>办公地点:</span
-                      ><span>{{ userEditForm.address }}</span>
+                      ><span :title="userEditForm.address">{{ userEditForm.address }}</span>
                     </li>
                     <li>
                       <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cellPhone }}</span>
+                      ><span :title="userEditForm.cellPhone">{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
+                      <span>邮箱:</span><span :title="userEditForm.email">{{ userEditForm.email }}</span>
                     </li>
                     <li class="new">
                       <span>介绍:</span
-                      ><span :title="userEditForm.introduce">{{ userEditForm.introduce }}</span>
+                      ><span :title="userEditForm.introduce">{{
+                        userEditForm.introduce
+                      }}</span>
                     </li>
                   </ul>
                   <div>
@@ -222,7 +225,6 @@ export default {
   display: flex;
   flex-wrap: wrap;
   li {
-    // width: 400px;
     width: 50%;
     margin: 10px 0;
     display: flex;
@@ -230,14 +232,22 @@ export default {
       display: block;
     }
     span:nth-child(1) {
-      width: 100px;
+      min-width: 70px;
+    }
+    span:nth-child(2) {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1; /* 超出几行省略 */
     }
   }
   .new {
     width: 100%;
     span:nth-child(1) {
       display: block;
-      width: 100px;
+      width: 70px;
     }
     span:nth-child(2) {
       width: 660px;
@@ -276,5 +286,8 @@ export default {
 }
 ::v-deep .el-form-item__label {
   min-width: 44px;
+}
+::v-deep .el-dialog {
+  min-width: 450px;
 }
 </style>

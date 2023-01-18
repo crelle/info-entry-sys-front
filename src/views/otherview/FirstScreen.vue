@@ -1,25 +1,34 @@
 <template>
   <div class="firstscreen_content">
-    <el-row :gutter="24">
-      <el-col :span="8">
-        <div class="echarts_map">
-          <!-- 部门人数 -->
-          <e-charts class="chart" :option="department" />
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="echarts_map">
-          <!-- 地域人数 -->
-          <e-charts class="chart" :option="area" />
-        </div>
-      </el-col>
-      <el-col :span="8">
-        <div class="echarts_map">
-          <!-- 技能人数 -->
-          <e-charts class="chart" :option="skill" />
-        </div>
-      </el-col>
-    </el-row>
+    <el-form
+      :inline="true"
+      :model="formOptions"
+      class="demo-form-inline"
+      size="mini"
+      ref="userQueryRef"
+      label-position="right"
+    >
+      <el-row :gutter="24">
+        <el-col :span="8">
+          <div class="echarts_map">
+            <!-- 部门人数 -->
+            <e-charts class="chart" :option="department" />
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="echarts_map">
+            <!-- 地域人数 -->
+            <e-charts class="chart" :option="area" />
+          </div>
+        </el-col>
+        <el-col :span="8">
+          <div class="echarts_map">
+            <!-- 技能人数 -->
+            <e-charts class="chart" :option="skill" />
+          </div>
+        </el-col>
+      </el-row>
+    </el-form>
     <div class="bottom">
       <div class="project">
         <!-- 项目人数 -->
@@ -55,17 +64,52 @@
 </template>
 
 <script>
+// 地域
+import { queryRegion } from "@/api/region";
+// 部门
+import { queryDepartments } from "@/api/department";
+// 接口人
+import { queryInterface } from "@/api/interface";
+// 客户
+import { queryCustomer } from "@/api/customer";
+// 项目
+import { queryProject } from "@/api/project";
+// 员工
+import { queryEmployee } from "@/api/employee";
+// 岗位
+import { queryPost } from "@/api/post";
+// 用户
+import { queryUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
 export default {
   components: {},
   data() {
     return {
-      departmentData: this.getRandomDatabt(),
+      formOptions: {
+        accountNonExpired: true,
+        accountNonLocked: true,
+        enabled: true,
+        userPhone: "",
+        username: "",
+        department: "",
+      },
+
+      // departmentData: this.getRandomDatabt(),
       skillData: this.getRandomData(),
-      areaData: [],
+      // areaData: [],
       projectData: [],
       tableData: [],
       userdetail: {},
+      // 全部部门
+      queryUserData: [],
+      // 全部员工
+      tableDataLook: [],
+      // 全部地域
+      MockUserLook: [],
+      // 部门分析
+      departmentAly: [],
+      // 地域分析
+      regionalAly: [],
     };
   },
   mounted() {
@@ -82,45 +126,159 @@ export default {
     // this.$nextTick(() => {
     //   this.initEcharts();
     // });
-    this.setArea();
+    // this.setArea();
     this.setNotch();
     this.setProject();
-    this.departmentData = this.getRandomDatabt();
+    // this.departmentData = this.getRandomDatabt();
     this.skillData = this.getRandomData();
     // setInterval(() => {
     //   this.departmentData = this.getRandomDatabt();
     //   this.skillData = this.getRandomData();
     // }, 3000);
+    // 全部部门/人员--部门分析
+    this.queryTableList();
   },
   methods: {
-    setArea() {
-      this.areaData = [
-        {
-          name: "南京",
-          value: 120,
-        },
-        {
-          name: "上海",
-          value: 200,
-        },
-        {
-          name: "北京",
-          value: 150,
-        },
-        {
-          name: "杭州",
-          value: 80,
-        },
-        {
-          name: "大连",
-          value: 70,
-        },
-        {
-          name: "深圳",
-          value: 110,
-        },
-      ];
+    // 全部人员/部门--详情
+    //table数据
+    queryTableList() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 999;
+      queryEmployee(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          queryProject(data).then((res1) => {
+            queryDepartments(data).then((res2) => {
+              queryInterface(data).then((res3) => {
+                queryRegion(data).then((res4) => {
+                  queryCustomer(data).then((res5) => {
+                    //  数据岗位查询方法
+                    queryPost(data).then((res6) => {
+                      this.tableyPostLook = res6.data.records; // 岗位表格数据赋值
+                      // console.log(this.tableyPost, "----------岗位数据");
+                      this.tableDataLook = res.data.records; // 表格数据赋值
+                      console.log(this.tableDataLook, "---全部---员工表格");
+                      this.tableProjectLook = res1.data.records; // 项目表格数据赋值
+                      this.queryUserData = res2.data.records; // 部门数据表格数据赋值
+                      // console.log(this.queryUserData, "----全部--部门数据表格");
+                      this.InterfaceLook = res3.data.records; // 接口人表格数据赋值
+                      this.MockUserLook = res4.data.records; // 地域数据表格数据赋值
+                      console.log(this.MockUserLook, "---全部--地域数据表");
+                      this.tableCustomerLook = res5.data.records; // 客户表格数据赋值
+                      this.tableDataLook.forEach((item) => {
+                        this.tableProjectLook.forEach((items) => {
+                          if (item.projectId == items.projectId) {
+                            // console.log(items, "------------111");
+                            item.project = items.project; //根据项目id给项目名称赋值
+                            this.queryUserData.forEach((itemli) => {
+                              if (items.departmentId == itemli.departmentId) {
+                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
+                                item.departmentId = itemli.departmentId; //根据项目id查找部门id给部门id赋值
+                              }
+                            });
+                            this.InterfaceLook.forEach((itemis) => {
+                              if (items.interfaceId == itemis.interfaceId) {
+                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+                                this.tableCustomerLook.forEach((itemiss) => {
+                                  if (itemis.customerId == itemiss.customerId) {
+                                    item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
+                                  }
+                                });
+                              }
+                            });
+                            this.MockUserLook.forEach((itemlis) => {
+                              if (items.regionId == itemlis.regionId) {
+                                item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
+                              }
+                            });
+                          }
+                        });
+                        this.tableyPostLook.forEach((itemls) => {
+                          if (item.postId == itemls.postId) {
+                            item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
+                            item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
+                          }
+                        });
+                      });
+                      // 清空 部门分析
+                      this.departmentAly = [];
+                      // 部门详情数据处理--根据全部部门/人员-生成新表 部门分析-departmentAly
+                      for (let item of this.queryUserData) {
+                        this.departmentAly.push({
+                          name: item.department,
+                          personnel: [],
+                        });
+                      }
+                      for (let item of this.departmentAly) {
+                        for (let items of this.tableDataLook) {
+                          if (item.name == items.department) {
+                            item.personnel.push(items);
+                          }
+                        }
+                        // 赋值部门人数
+                        item.value = item.personnel.length;
+                      }
+                      console.log("部门分析表------", this.departmentAly);
+                      // 清空地域分析
+                      this.regionalAly = [];
+                       // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
+                      for (let item of this.MockUserLook) {
+                        this.regionalAly.push({
+                          name: item.regionName,
+                          personnel: [],
+                        });
+                      }
+                      for (let item of this.regionalAly) {
+                        for (let items of this.tableDataLook) {
+                          if (item.name == items.regionName) {
+                            item.personnel.push(items);
+                          }
+                        }
+                        // 赋值部门人数
+                        item.value = item.personnel.length;
+                      }
+                      console.log("地域分析表------", this.regionalAly);
+                    });
+                  });
+                });
+              });
+            });
+            // this.paginationOptions.total = res.data.total; // 分页器赋值
+          });
+        }
+      });
     },
+
+    // ----------************---------------**********-------
+    // 地域图表数据
+    // setArea() {
+    //   this.areaData = [
+    //     {
+    //       name: "南京",
+    //       value: 120,
+    //     },
+    //     {
+    //       name: "上海",
+    //       value: 200,
+    //     },
+    //     {
+    //       name: "北京",
+    //       value: 150,
+    //     },
+    //     {
+    //       name: "杭州",
+    //       value: 80,
+    //     },
+    //     {
+    //       name: "大连",
+    //       value: 70,
+    //     },
+    //     {
+    //       name: "深圳",
+    //       value: 110,
+    //     },
+    //   ];
+    // },
     setProject() {
       this.projectData = [
         {
@@ -226,35 +384,23 @@ export default {
         },
       ];
     },
-    // 饼图 // 随机数据
-    getRandomDatabt() {
-      return [
-        {
-          name: "部门1",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          name: "部门2",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          name: "部门3",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          name: "部门4",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          name: "部门5",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          name: "部门6",
-          value: Math.round(Math.random() * 1000),
-        },
-      ];
-    },
+    // // 饼图 // 随机数据
+    // getRandomDatabt() {
+    //   return [
+    //     {
+    //       name: "部门1",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       name: "部门2",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       name: "部门3",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //   ];
+    // },
     // 图表 //随机数据
     getRandomData() {
       return [
@@ -312,7 +458,7 @@ export default {
               show: true,
             },
             radius: ["40%", "55%"],
-            data: this.departmentData,
+            data: this.departmentAly,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -434,7 +580,7 @@ export default {
         },
         xAxis: {
           type: "category",
-          data: this.areaData.map((item) => item.name),
+          data: this.regionalAly.map((item) => item.name),
         },
         yAxis: {
           type: "value",
@@ -442,7 +588,7 @@ export default {
         series: [
           {
             name: "地域",
-            data: this.areaData.map((item) => item.value),
+            data: this.regionalAly.map((item) => item.value),
             type: "bar",
             barWidth: 20,
             itemStyle: {

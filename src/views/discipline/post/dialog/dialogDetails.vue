@@ -3,7 +3,8 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
+      width="40%"
       lock-scroll
       @close="closeDialog"
     >
@@ -11,38 +12,48 @@
         <el-row style="height: 100%">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form ref="userEditRef" size="mini">
-                <el-form-item label="岗位名称 :">
-                  <span>{{ initFormData.postName }}</span>
-                </el-form-item>
-                <el-form-item label="岗位技能 :">
-                  <span>{{ initFormData.skill }}</span>
-                </el-form-item>
-                <el-form-item label="项目 :">
-                  <span>{{ initFormData.project }}</span></el-form-item
-                >
-                <el-form-item label="客户 :">
-                  <span>{{ initFormData.customerName }}</span></el-form-item
-                >
-                <el-form-item label="岗位需求人数 :">
-                  <span>{{ initFormData.number }}</span>
-                </el-form-item>
-                <el-form-item label="计划满足日期 :" prop="date">
-                  <span>{{ initFormData.date }}</span></el-form-item
-                >
-                <el-form-item label="办公地点 :" prop="place">
-                  <span>{{ initFormData.address }}</span></el-form-item
-                >
-                <el-form-item label="岗位职责 :" prop="duty">
-                  <span :title="initFormData.position" class="duty">
-                    {{ initFormData.position }}
-                  </span></el-form-item
-                >
-                <el-form-item label="岗位要求 :" prop="requirement">
-                  <span :title="initFormData.requirements" class="requirement">{{
-                    initFormData.requirements
-                  }}</span>
-                </el-form-item>
+              <el-form :model="initFormData" ref="userEditRef" size="mini">
+                <div class="userbox">
+                  <ul class="lis">
+                    <li>
+                      <span>岗位名称:</span
+                      ><span :title="initFormData.postName">{{
+                        initFormData.postName
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>岗位技能:</span
+                      ><span>{{ initFormData.skill }}</span>
+                    </li>
+                    <li>
+                      <span>项目:</span><span :title="initFormData.project">{{ initFormData.project }}</span>
+                    </li>
+                    <li>
+                      <span>客户:</span
+                      ><span>{{ initFormData.customerName }}</span>
+                    </li>
+                    <li>
+                      <span>岗位需求人数:</span
+                      ><span>{{ initFormData.number }}</span>
+                    </li>
+                    <li>
+                      <span>计划满足日期:</span
+                      ><span :title="initFormData.date">{{ initFormData.date }}</span>
+                    </li>
+                    <li>
+                      <span>办公地点:</span
+                      ><span :title="initFormData.address">{{ initFormData.address }}</span>
+                    </li>
+                    <li>
+                      <span>岗位职责:</span
+                      ><span :title="initFormData.position">{{ initFormData.position }}</span>
+                    </li>
+                    <li class="new">
+                      <span>岗位要求:</span
+                      ><span  :title="initFormData.requirements">{{ initFormData.requirements }}</span>
+                    </li>
+                  </ul>
+                </div>
               </el-form>
             </div>
           </el-col>
@@ -134,7 +145,7 @@ export default {
 @deep: ~">>>";
 @{deep} .register_form_main {
   position: relative;
-  min-width: 30%;
+  min-width: 40%;
   overflow: hidden;
   > span {
     display: block;
@@ -146,120 +157,89 @@ export default {
     background-color: #383f49;
     text-shadow: 0 1px -3px #409eff;
   }
-  .grid-content-left {
-    height: 100%;
+}
+::v-deep .cell {
+  text-align: center;
+}
+::v-deep .el-dialog__body {
+  margin: 0 40px;
+  padding: 0 40px;
+}
+.lis {
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  li {
+    // width: 400px;
+    width: 50%;
+    margin: 10px 0;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 10px;
-    .avatar-uploader .el-upload {
-      border: 1px dashed #8c939d;
-      border-radius: 50%;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .avatar-uploader .el-upload:hover {
-      border-color: #409eff;
-    }
-    .avatar-uploader-icon {
-      font-size: 28px;
-      color: #8c939d;
-      width: 178px;
-      height: 178px;
-      line-height: 178px;
-      text-align: center;
-    }
-    .avatar {
-      width: 178px;
-      height: 178px;
+    span {
       display: block;
     }
-    .el-scrollbar__wrap {
-      overflow-x: hidden !important;
+    span:nth-child(1) {
+      min-width: 95px;
     }
-    .demo-image__lazy {
-      height: 88px;
-      .el-image {
-        width: 80px;
-        height: 80px;
-        border: 1px solid #eee;
-        margin: 2px;
-      }
-      .default_img_chioce {
-        &::before {
-          width: 80px;
-          height: 80px;
-          background-color: rgba(139, 197, 252, 0.5);
-          position: absolute;
-          display: block;
-          top: 0;
-          left: 0;
-          content: "已选";
-          color: #409eff;
-          font-size: 12px;
-        }
-      }
+    span:nth-child(2) {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1; /* 超出几行省略 */
+    }
+  }
+  .new {
+    width: 100%;
+    span:nth-child(1) {
+      display: block;
+      min-width: 95px;
+    }
+    span:nth-child(2) {
+      width: 660px;
+      line-height: 20px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* 超出几行省略 */
     }
   }
 }
-.el-form {
-  padding: 5px 50px;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  .el-input-group__append {
-    padding: 0 2px;
-  }
+::v-deep .el-table {
+  font-size: 12px;
 }
-.passwordat {
-  display: none;
-}
-.el-form-item {
-  display: flex;
-  margin-right: 50px;
-}
-::v-deep .el-form-item__label {
-  width: 110px;
-  text-align: left;
-}
-::v-deep .el-input__inner {
-  width: 250px;
-}
-::v-deep .el-textarea__inner {
-  min-height: 120px !important;
-  width: 250px;
-  color: #606266;
-  font-size: 14px;
-  font-family: "微软雅黑";
-}
-::v-deep .el-dialog {
-  width: 30%;
-}
-
 .dialog-footer {
   text-align: center;
 }
-.el-form-item__content {
-  span {
-    display: block;
-    width: 250px;
-    // background-color: #f0f0f0;
-    padding: 0 10px;
-    //超出两行省略号
-    text-overflow: -o-ellipsis-lastline;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    line-clamp: 3;
-    -webkit-box-orient: vertical;
+::v-deep .el-dialog {
+  margin-top: 10vh !important;
+}
+.textarea {
+  ::v-deep .el-textarea__inner {
+    height: 100px;
+    line-height: 30px;
   }
 }
-::v-deep .el-dialog__body{
-  padding: 0;
+::v-deep .dialog-footer {
+  padding: 20px 0;
 }
-.el-dialog__footer{
-  text-align: c;
+::v-deep .el-textarea__inner {
+  margin-bottom: 20px;
+  margin-top: 5px;
+  font-size: 14px;
+  font-family: "微软雅黑";
+}
+::v-deep .el-form-item__label {
+  min-width: 44px;
+}
+.introduce {
+  display: block;
+  display: flex;
+  width: 200px;
+}
+::v-deep .el-dialog {
+  min-width: 450px;
 }
 </style>
