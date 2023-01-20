@@ -9,24 +9,25 @@
       label-position="right"
     >
       <el-row :gutter="24">
-        <el-col :span="8">
+        <el-col :span="12">
           <div class="echarts_map">
             <!-- 部门人数 -->
             <e-charts class="chart" :option="department" />
           </div>
         </el-col>
-        <el-col :span="8">
+        <el-col :span="12">
           <div class="echarts_map">
             <!-- 地域人数 -->
             <e-charts class="chart" :option="area" />
           </div>
         </el-col>
-        <el-col :span="8">
+        <!-- 技能人数 -->
+        <!-- <el-col :span="8">
           <div class="echarts_map">
-            <!-- 技能人数 -->
+            
             <e-charts class="chart" :option="skill" />
           </div>
-        </el-col>
+        </el-col> -->
       </el-row>
     </el-form>
     <div class="bottom">
@@ -95,7 +96,7 @@ export default {
       },
 
       // departmentData: this.getRandomDatabt(),
-      skillData: this.getRandomData(),
+      // skillData: this.getRandomData(),
       // areaData: [],
       projectData: [],
       tableData: [],
@@ -106,10 +107,18 @@ export default {
       tableDataLook: [],
       // 全部地域
       MockUserLook: [],
+      // 全部项目
+      tableProjectLook: [],
+      // 全部客户
+      tableCustomerLook: [],
       // 部门分析
       departmentAly: [],
       // 地域分析
       regionalAly: [],
+      // 项目分析
+      projectAly: [],
+      // 客户分析
+      customerAly: [],
     };
   },
   mounted() {
@@ -130,7 +139,7 @@ export default {
     this.setNotch();
     this.setProject();
     // this.departmentData = this.getRandomDatabt();
-    this.skillData = this.getRandomData();
+    // this.skillData = this.getRandomData();
     // setInterval(() => {
     //   this.departmentData = this.getRandomDatabt();
     //   this.skillData = this.getRandomData();
@@ -159,12 +168,17 @@ export default {
                       this.tableDataLook = res.data.records; // 表格数据赋值
                       console.log(this.tableDataLook, "---全部---员工表格");
                       this.tableProjectLook = res1.data.records; // 项目表格数据赋值
+                      console.log(this.tableProjectLook, "---全部--项目数据表");
                       this.queryUserData = res2.data.records; // 部门数据表格数据赋值
                       // console.log(this.queryUserData, "----全部--部门数据表格");
                       this.InterfaceLook = res3.data.records; // 接口人表格数据赋值
                       this.MockUserLook = res4.data.records; // 地域数据表格数据赋值
                       console.log(this.MockUserLook, "---全部--地域数据表");
                       this.tableCustomerLook = res5.data.records; // 客户表格数据赋值
+                      console.log(
+                        this.tableCustomerLook,
+                        "---全部--客户数据表"
+                      );
                       this.tableDataLook.forEach((item) => {
                         this.tableProjectLook.forEach((items) => {
                           if (item.projectId == items.projectId) {
@@ -200,7 +214,7 @@ export default {
                           }
                         });
                       });
-                      // 清空 部门分析
+                      // 清空 部门分析--------
                       this.departmentAly = [];
                       // 部门详情数据处理--根据全部部门/人员-生成新表 部门分析-departmentAly
                       for (let item of this.queryUserData) {
@@ -219,9 +233,9 @@ export default {
                         item.value = item.personnel.length;
                       }
                       console.log("部门分析表------", this.departmentAly);
-                      // 清空地域分析
+                      // 清空地域分析 -----------
                       this.regionalAly = [];
-                       // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
+                      // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
                       for (let item of this.MockUserLook) {
                         this.regionalAly.push({
                           name: item.regionName,
@@ -238,6 +252,33 @@ export default {
                         item.value = item.personnel.length;
                       }
                       console.log("地域分析表------", this.regionalAly);
+// 工作到这2023-1-20 徐天奇--- (暂时注掉期间内容 --等待 后续继续 开发...)--------
+                      // // 清空项目分析
+                      // this.projectAly = [];
+                      // // 清空客户分析
+                      // this.customerAly = [];
+                      // // -查询全部项目-查询全部人员-生成新表 客户分析-customerAly
+                      // for (let item of this.tableProjectLook) {
+                      //   this.projectAly.push({
+                      //     name: item.project,
+                      //     personnel: [],
+                      //   });
+                      // }
+                      // for (let item of this.projectAly) {
+                      //   for (let items of this.tableDataLook) {
+                      //     if (item.name == items.project) {
+                      //       item.personnel.push(items);
+                      //     }
+                      //   }
+                      //   // 赋值部门人数
+                      //   item.value = item.personnel.length;
+
+                      //   // ===========
+                    
+                      //   // ===========
+                      // }
+                      // console.log("部门-项目人数分析表------", this.projectAly);
+// 工作到这2023-1-20 徐天奇-----------
                     });
                   });
                 });
@@ -384,7 +425,7 @@ export default {
         },
       ];
     },
-    // // 饼图 // 随机数据
+    // 饼图 随机数据
     // getRandomDatabt() {
     //   return [
     //     {
@@ -401,31 +442,31 @@ export default {
     //     },
     //   ];
     // },
-    // 图表 //随机数据
-    getRandomData() {
-      return [
-        {
-          time: "测试",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "JAVA",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "C",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "前端",
-          value: Math.round(Math.random() * 1000),
-        },
-        {
-          time: "产品",
-          value: Math.round(Math.random() * 1000),
-        },
-      ];
-    },
+    // 图表随机数据
+    // getRandomData() {
+    //   return [
+    //     {
+    //       time: "测试",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       time: "JAVA",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       time: "C",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       time: "前端",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //     {
+    //       time: "产品",
+    //       value: Math.round(Math.random() * 1000),
+    //     },
+    //   ];
+    // },
   },
   computed: {
     // 饼图
@@ -470,66 +511,66 @@ export default {
         ],
       };
     },
-    //图表
-    skill() {
-      return {
-        title: {
-          text: "技能人数分析",
-          left: "center",
-        },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "shadow",
-          },
-        },
-        xAxis: {
-          type: "value",
-          boundaryGap: [0, 0.01],
-          splitLine: {
-            // 网格线
-            show: false,
-          },
-        },
-        yAxis: {
-          type: "category",
-          data: this.skillData.map((d) => d.time),
-          axisLabel: {
-            // y轴文字的配置
-            show: true,
-            interval: 0,
-            textStyle: {
-              align: "right",
-            },
-          },
-        },
-        series: [
-          {
-            name: "技能",
-            type: "bar",
-            data: this.skillData.map((d) => d.value),
-            barWidth: 30,
-            label: {
-              show: true, // 开启显示
-              position: "right", // 在上方显示
-              textStyle: {
-                fontSize: 15,
-              },
-            },
-            itemStyle: {
-              normal: {
-                //这里是颜色
-                color: "#5a9bd5",
-              },
-            },
-          },
-        ],
-      };
-    },
+    // //图表
+    // skill() {
+    //   return {
+    //     title: {
+    //       text: "技能人数分析",
+    //       left: "center",
+    //     },
+    //     tooltip: {
+    //       trigger: "axis",
+    //       axisPointer: {
+    //         type: "shadow",
+    //       },
+    //     },
+    //     xAxis: {
+    //       type: "value",
+    //       boundaryGap: [0, 0.01],
+    //       splitLine: {
+    //         // 网格线
+    //         show: false,
+    //       },
+    //     },
+    //     yAxis: {
+    //       type: "category",
+    //       data: this.skillData.map((d) => d.time),
+    //       axisLabel: {
+    //         // y轴文字的配置
+    //         show: true,
+    //         interval: 0,
+    //         textStyle: {
+    //           align: "right",
+    //         },
+    //       },
+    //     },
+    //     series: [
+    //       {
+    //         name: "技能",
+    //         type: "bar",
+    //         data: this.skillData.map((d) => d.value),
+    //         barWidth: 30,
+    //         label: {
+    //           show: true, // 开启显示
+    //           position: "right", // 在上方显示
+    //           textStyle: {
+    //             fontSize: 15,
+    //           },
+    //         },
+    //         itemStyle: {
+    //           normal: {
+    //             //这里是颜色
+    //             color: "#5a9bd5",
+    //           },
+    //         },
+    //       },
+    //     ],
+    //   };
+    // },
     project() {
       return {
         title: {
-          text: "项目人数分析",
+          text: "客户人数分析",
           left: "center",
         },
         tooltip: {
@@ -551,7 +592,7 @@ export default {
         },
         series: [
           {
-            name: "项目",
+            name: "人数",
             data: this.projectData.map((item) => item.value),
             type: "bar",
             barWidth: 30,
@@ -587,7 +628,7 @@ export default {
         },
         series: [
           {
-            name: "地域",
+            name: "人数",
             data: this.regionalAly.map((item) => item.value),
             type: "bar",
             barWidth: 20,
