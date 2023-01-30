@@ -1,16 +1,16 @@
 <template>
   <div id="login_content">
     <span class="sys_info"
-      >© {{ new Date().getFullYear() }} - author
-      <el-link type="primary" href="https://github.com/Crelle" target="_blank"
-        >crell</el-link
+      >© {{ new Date().getFullYear() }} - 
+      <el-link type="primary" href="https://www.archermind.com/" target="_blank"
+        >诚迈科技(南京)股份有限公司</el-link
       >
       &
       <el-link
         type="primary"
-        href="https://github.com/CoderOfRat"
+        href="https://www.archermind.com/about-us#contact"
         target="_blank"
-        >CoderOfRat</el-link
+        >联系我们</el-link
       ></span
     >
     <div class="login_form_main" v-show="ifLogin">
@@ -68,13 +68,13 @@
           <el-button type="primary" size="mini" @click="submitForm('ruleForm')"
             >登录</el-button
           >
-          <el-button
+          <!-- <el-button
             @click="submitForm('ruleForm')"
             size="mini"
             type="text"
             class="loginpassword"
             >忘记密码？</el-button
-          >
+          > -->
         </el-form-item>
       </el-form>
     </div>
@@ -241,12 +241,12 @@ export default {
             message: "请输入用户名",
             trigger: ["blur", "change"],
           },
-          {
-            min: 2,
-            max: 10,
-            message: "用户名长度在 2 到 10 个字符",
-            trigger: "blur",
-          },
+          // {
+          //   min: 2,
+          //   max: 10,
+          //   message: "用户名长度在 2 到 10 个字符",
+          //   trigger: "blur",
+          // },
         ],
         password: [
           {
@@ -254,12 +254,12 @@ export default {
             message: "请填写密码",
             trigger: ["blur", "change"],
           },
-          {
-            min: 5,
-            max: 16,
-            message: "密码长度在 6 到 16 位之间",
-            trigger: "blur",
-          },
+          // {
+          //   min: 5,
+          //   max: 16,
+          //   message: "密码长度在 6 到 16 位之间",
+          //   trigger: "blur",
+          // },
         ],
         code: [
           {
@@ -276,12 +276,12 @@ export default {
             message: "请输入用户名",
             trigger: ["blur", "change"],
           },
-          {
-            min: 3,
-            max: 10,
-            message: "用户名长度在 3 到 10 个字符",
-            trigger: "blur",
-          },
+          // {
+          //   min: 3,
+          //   max: 10,
+          //   message: "用户名长度在 3 到 10 个字符",
+          //   trigger: "blur",
+          // },
         ],
         password: [
           {
@@ -289,12 +289,12 @@ export default {
             message: "请填写密码",
             trigger: ["blur", "change"],
           },
-          {
-            min: 5,
-            max: 16,
-            message: "密码长度在 6 到 16 位之间",
-            trigger: "blur",
-          },
+          // {
+          //   min: 5,
+          //   max: 16,
+          //   message: "密码长度在 6 到 16 位之间",
+          //   trigger: "blur",
+          // },
         ],
         confirmPwd: [
           {
@@ -302,12 +302,12 @@ export default {
             message: "请确认密码",
             trigger: ["blur", "change"],
           },
-          {
-            min: 5,
-            max: 16,
-            message: "密码长度在 6 到 16 位之间",
-            trigger: "blur",
-          },
+          // {
+          //   min: 5,
+          //   max: 16,
+          //   message: "密码长度在 6 到 16 位之间",
+          //   trigger: "blur",
+          // },
         ],
         userEmail: [
           {

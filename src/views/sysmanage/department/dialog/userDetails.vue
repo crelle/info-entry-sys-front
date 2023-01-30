@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
     >
@@ -16,21 +17,21 @@
                   <ul class="box">
                     <li>
                       <span>部门名:</span
-                      ><span>{{ userEditForm.department }}</span>
+                      ><span :title="userEditForm.department">{{ userEditForm.department }}</span>
                     </li>
                     <li>
                       <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cellPhone }}</span>
+                      ><span :title="userEditForm.cellPhone">{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
+                      <span>邮箱:</span><span :title="userEditForm.email">{{ userEditForm.email }}</span>
                     </li>
                     <li>
                       <span>部门总部地址:</span
-                      ><span>{{ userEditForm.address }}</span>
+                      ><span :title="userEditForm.address">{{ userEditForm.address }}</span>
                     </li>
                     <li class="new">
                       <span>部门介绍:</span>
@@ -280,12 +281,12 @@ export default {
   text-align: center;
 }
 .boxmax {
-  padding: 0 40px;
+  padding: 0 30px;
 }
 .box {
   display: flex;
   flex-wrap: wrap;
-  padding: 0 40px;
+  padding: 0 20px;
   li {
     font-size: 14px;
     width: 50%;
@@ -293,14 +294,25 @@ export default {
     display: flex;
 
     span:nth-child(1) {
-      width: 110px;
+      display: block;
+      min-width: 100px;
+    }
+    span:nth-child(2) {
+      display: block;
+      min-width: 80px;
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1; /* 超出几行省略 */
     }
   }
   .new {
     width: 100%;
     span:nth-child(1) {
       display: block;
-      width: 110px;
+      min-width: 110px;
     }
     span:nth-child(2) {
       width: 660px;
@@ -326,7 +338,7 @@ export default {
   padding-bottom: 10px;
 }
 ::v-deep .el-tabs {
-  padding: 0 40px;
+  padding: 0 20px;
 }
 .dialog-footer {
   text-align: center;
@@ -339,5 +351,8 @@ export default {
 }
 ::v-deep .el-dialog__footer {
   padding: 20px 0;
+}
+::v-deep .el-dialog {
+  min-width: 460px;
 }
 </style>

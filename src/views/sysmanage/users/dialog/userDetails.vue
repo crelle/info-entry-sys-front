@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="30%"
       lock-scroll
       @close="closeDialog"
     >
@@ -15,7 +16,7 @@
                 <div class="userbox">
                   <ul class="lis">
                     <li>
-                      <span>姓名:</span><span>{{  }}</span>
+                      <span>姓名:</span><span>{{}}</span>
                     </li>
                     <li>
                       <span>手机号 :</span
@@ -42,6 +43,14 @@
                         >{{ item.nameZh }}</span
                       >
                     </li>
+                    <li>
+                      <span>是否可用 :</span
+                      ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
+                    </li>
+                    <li>
+                      <span></span
+                      ><span></span>
+                    </li>
                     <!-- <li>
                       <span>是否可用 :</span
                       ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
@@ -55,12 +64,12 @@
                       ><span>{{ userEditForm.accountNonExpired ? "是" : "否" }}</span>
                     </li> -->
                   </ul>
-                  <ul class="yesno">
+                  <!-- <ul class="yesno">
                     <li>
                       <span>是否可用 :</span
                       ><span>{{ userEditForm.enabled ? "是" : "否" }}</span>
                     </li>
-                  </ul>
+                  </ul> -->
                 </div>
               </el-form>
             </div>
@@ -155,12 +164,13 @@ li {
   list-style: none;
 }
 .lis {
+  padding: 0 20px;
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
   li {
-    width: 200px;
+    width: 245px;
     margin: 5px 0;
     line-height: 35px;
     font-size: 14px;
@@ -170,11 +180,10 @@ li {
       display: block;
     }
     span:nth-child(1) {
-      width: 66px;
+      width: 75px;
     }
     span:nth-child(2) {
-      width: 100px;
-      padding-left: 10px;
+      width: 200px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
@@ -187,27 +196,7 @@ li {
 .dialog-footer {
   text-align: center;
 }
-.yesno {
-  display: flex;
-  li {
-    width: 200px;
-    margin: 5px 0;
-    line-height: 35px;
-    font-size: 14px;
-    display: flex;
-
-    span {
-      display: block;
-    }
-    span:nth-child(1) {
-      width: 66px;
-    }
-    span:nth-child(2) {
-      padding-left: 10px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-  }
+::v-deep .el-dialog {
+  min-width: 350px;
 }
 </style>

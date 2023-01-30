@@ -180,7 +180,7 @@ import { queryProject } from "@/api/project";
 import { queryEmployee } from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
-
+// 用户
 import { queryUser } from "@/api/user";
 import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
 import UserDaitDialog from "@/views/sysmanage/department/dialog/userDetails.vue";

@@ -184,7 +184,7 @@ export default {
           queryRole(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
-              this.resetForm("queryRoleRef"); // 重置表单
+              // this.resetForm("queryRoleRef"); // 重置表单
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
             }

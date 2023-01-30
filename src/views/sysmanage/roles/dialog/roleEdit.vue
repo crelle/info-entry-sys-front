@@ -115,7 +115,7 @@ export default {
     return {
       tableData: [],
       datas: [],
-
+      data1: [],
       defaultProps: {
         children: "childrenMenus",
         label: "name",
@@ -146,7 +146,7 @@ export default {
             message: "请填写角色名称",
             trigger: ["blur", "change"],
           },
-           {
+          {
             pattern: /^([\u4E00-\u9FA5]).*$/,
             message: "请以中文名称开头",
             trigger: "blur",
@@ -400,7 +400,7 @@ li {
   padding: 5px 20px 0;
 
   .sbox {
-    width: 120px;
+    width: 140px;
     span {
       display: block;
       margin: 10px 0;
@@ -432,7 +432,7 @@ li {
 ::v-deep .is-required {
   display: flex;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 380px;
 }
 </style>

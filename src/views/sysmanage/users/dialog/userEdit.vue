@@ -25,9 +25,9 @@
                   placeholder="请输入用户名"
                 ></el-input>
               </el-form-item>
-              <el-form-item label="姓名" prop="isname">
+              <el-form-item label="姓名" prop="userNickName">
                 <el-input
-                  v-model="userEditForm.isname"
+                  v-model="userEditForm.userNickName"
                   placeholder="请输入姓名"
                 ></el-input>
               </el-form-item>
@@ -120,7 +120,7 @@ export default {
         jobNo: "",
         userPhone: "",
         username: "",
-        isname: "",
+        userNickName: "",
         roles: [
           {
             id: "",
@@ -153,7 +153,7 @@ export default {
             trigger: "blur",
           },
         ],
-        isname: [
+        userNickName: [
           {
             required: false,
             message: "请输入姓名",

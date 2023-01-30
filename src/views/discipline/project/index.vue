@@ -24,6 +24,23 @@
               ></el-input>
             </el-form-item>
           </el-col>
+          <!-- <el-col :span="7">
+            <el-form-item label="客户" prop="customer">
+              <el-select
+                v-model="formOptions.customer"
+                placeholder="请选择客户名称"
+                clearable
+                filterable
+              >
+                <el-option
+                  v-for="item in tableCustomer"
+                  :key="item.index"
+                  :label="item.customerName"
+                  :value="item.customerId"
+                ></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col> -->
           <el-col :span="7">
             <el-form-item label="客户" prop="customer">
               <el-select
@@ -41,6 +58,7 @@
               </el-select>
             </el-form-item>
           </el-col>
+
           <el-col :span="6">
             <el-form-item label="地域" prop="region">
               <el-select
@@ -102,7 +120,6 @@
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col :span="6">
             <el-form-item label="所属部门" prop="department">
               <el-select

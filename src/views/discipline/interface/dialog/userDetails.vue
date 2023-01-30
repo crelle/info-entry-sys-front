@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -17,29 +18,31 @@
                   <ul class="lis">
                     <li>
                       <span>接口人名:</span
-                      ><span>{{ userEditForm.interfaceName }}</span>
+                      ><span :title="userEditForm.interfaceName">{{ userEditForm.interfaceName }}</span>
                     </li>
                     <li>
                       <span>性别:</span><span>{{ userEditForm.gender }}</span>
                     </li>
                     <li>
                       <span>客户:</span
-                      ><span>{{ userEditForm.customerName }}</span>
+                      ><span :title="userEditForm.customerName">{{ userEditForm.customerName }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span>{{ userEditForm.cellPhone }}</span>
+                      ><span :title="userEditForm.cellPhone">{{ userEditForm.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ userEditForm.email }}</span>
+                      <span>邮箱:</span><span :title="userEditForm.email">{{ userEditForm.email }}</span>
                     </li>
                     <li>
                       <span>接口人办公地址:</span>
-                      <span>{{ userEditForm.address }}</span>
+                      <span :title="userEditForm.address">{{ userEditForm.address }}</span>
                     </li>
                     <li class="new">
                       <span>介绍:</span>
-                      <span :title="userEditForm.introduce">{{ userEditForm.introduce }}</span>
+                      <span :title="userEditForm.introduce">{{
+                        userEditForm.introduce
+                      }}</span>
                     </li>
                   </ul>
                   <div>
@@ -275,14 +278,22 @@ export default {
       display: block;
     }
     span:nth-child(1) {
-      width: 110px;
+      min-width: 110px;
+    }
+    span:nth-child(2) {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1; /* 超出几行省略 */
     }
   }
   .new {
     width: 100%;
     span:nth-child(1) {
       display: block;
-      width: 110px;
+      min-width: 110px;
     }
     span:nth-child(2) {
       width: 660px;
@@ -327,5 +338,8 @@ export default {
   display: block;
   display: flex;
   width: 200px;
+}
+::v-deep .el-dialog {
+  min-width: 450px;
 }
 </style>

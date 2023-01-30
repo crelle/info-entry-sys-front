@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
       class="showAll_dialog"
@@ -501,5 +502,7 @@ export default {
 .block {
   padding: 20px 40px 0;
 }
-
+::v-deep .el-dialog {
+  min-width: 700px;
+}
 </style>

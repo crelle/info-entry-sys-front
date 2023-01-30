@@ -107,7 +107,7 @@
                         ></el-option>
                       </el-select>
                     </el-form-item>
-                    <el-form-item label="部门">
+                    <el-form-item label="部门" prop="department">
                       <el-input
                         v-model="userEditForm.department"
                         placeholder="部门"
@@ -369,11 +369,19 @@ export default {
         status: "",
         department: "",
         projectId: "",
-        workingHours: null,
+        workingHours: "",
         regionId: "",
       },
       initFormData: {},
       userEditFormRules: {
+        department:[
+          {
+            required: false,
+            message: "请输入部门",
+            trigger: ["blur", "change"],
+          },
+        ],
+
         jobNo: [
           {
             required: true,
@@ -483,8 +491,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120).*[岁]$/,
-            message: "请输入有效年龄+岁",
+            pattern: /^(?:[1-9][0-9]?|1[01][0-9]|120)*$/,
+            message: "请输入有效年龄",
             trigger: "blur",
           },
         ],
@@ -598,8 +606,8 @@ export default {
             trigger: ["blur", "change"],
           },
           {
-            pattern: /^([1-9]).*[年]$/,
-            message: "请输入输入数子+年",
+            pattern: /^([0-9])*$/,
+            message: "请输入输入数字",
             trigger: "blur",
           },
         ],

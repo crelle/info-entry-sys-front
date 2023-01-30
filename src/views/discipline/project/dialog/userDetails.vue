@@ -4,6 +4,7 @@
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      width="50%"
       lock-scroll
       @close="closeDialog"
     >
@@ -16,15 +17,15 @@
                   <ul class="lis">
                     <li>
                       <span>项目名称:</span
-                      ><span>{{ initFormData.project }}</span>
+                      ><span :title="initFormData.project">{{ initFormData.project }}</span>
                     </li>
                     <li>
                       <span>项目人数:</span
-                      ><span>{{ initFormData.number }} 人</span>
+                      ><span >{{ initFormData.number }} 人</span>
                     </li>
                     <li>
                       <span>所属部门:</span
-                      ><span>{{ initFormData.department }}</span>
+                      ><span :title="initFormData.department">{{ initFormData.department }}</span>
                     </li>
                     <li>
                       <span>客户:</span
@@ -40,15 +41,15 @@
                     </li>
                     <li>
                       <span>电话:</span
-                      ><span>{{ initFormData.cellPhone }}</span>
+                      ><span :title="initFormData.cellPhone">{{ initFormData.cellPhone }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span>{{ initFormData.email }}</span>
+                      <span>邮箱:</span><span :title="initFormData.email">{{ initFormData.email }}</span>
                     </li>
 
                     <li>
                       <span>立项时间:</span
-                      ><span>{{ initFormData.updateTime }}</span>
+                      ><span :title="initFormData.updateTime">{{ initFormData.updateTime }}</span>
                     </li>
                     <li>
                       <span>合作模式:</span
@@ -268,21 +269,29 @@ export default {
   display: flex;
   flex-wrap: wrap;
   li {
-    width: 395px;
+    width: 50%;
     margin: 10px 0;
     display: flex;
     span {
       display: block;
     }
     span:nth-child(1) {
-      width: 115px;
+      min-width: 70px;
+    }
+    span:nth-child(2) {
+      word-break: break-all;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 1; /* 超出几行省略 */
     }
   }
   .new {
     width: 100%;
     span:nth-child(1) {
       display: block;
-      width: 110px;
+      min-width: 70px;
     }
     span:nth-child(2) {
       width: 660px;
@@ -311,5 +320,8 @@ export default {
   color: #606266;
   font-size: 14px;
   font-family: "微软雅黑";
+}
+::v-deep .el-dialog {
+  min-width: 450px;
 }
 </style>
