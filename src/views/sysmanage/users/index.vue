@@ -116,7 +116,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop=""
+          prop="userNickName"
           label="姓名"
           min-width="80"
           show-overflow-tooltip
@@ -218,7 +218,7 @@
 </template>
 
 <script>
-import { queryUser, deleteMenu } from "@/api/user";
+import { queryUser, deleteMenu,resetPassword } from "@/api/user";
 import { queryRole } from "@/api/role";
 import userEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
 import userDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
@@ -364,7 +364,7 @@ export default {
         });
     },
     // 重置密码弹框
-    resetpassword(row, index) {
+    resetpassword(row) {
       this.$confirm(
         "此操作将重置该用户的登录密码, 是否继续?",
         "重置用户登录密码",
@@ -376,30 +376,24 @@ export default {
         }
       )
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "重置密码成功! 初始密码为：[ 123456 ]",
+          console.log(row.id,"---------row.id");
+          // 点击确认，发起后台请求，
+          resetPassword(row.id).then((res) => {
+            console.log(res,"-------重置密码");
+            // console.log(res, "点击确认，发起后台请求");
+            // if (res.code == "00000") {
+            //   return this.$message({
+            //     type: "success",
+            //     message: "重置密码成功! 初始密码为：[ 123456 ]",
+            //   });
+            // } else {
+            //   this.$message({
+            //     type: "success",
+            //     message: "失败!",
+            //   });
+            // }
           });
         })
-        // .then(() => {
-        //   // 点击确认，发起后台请求，
-        //   deleteMenu(row.id).then((res) => {
-        //     console.log(res, "点击确认，发起后台请求");
-        //     if (res.code == "00000") {
-        //       this.tableData.splice(index, 1);
-        //       this.queryUserList();
-        //       return this.$message({
-        //         type: "success",
-        //         message: "成功!",
-        //       });
-        //     } else {
-        //       this.$message({
-        //         type: "success",
-        //         message: "失败!",
-        //       });
-        //     }
-        //   });
-        // })
         .catch(() => {
           // 点击取消，取消该操作
           this.$message({

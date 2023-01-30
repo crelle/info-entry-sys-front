@@ -32,7 +32,7 @@
     </el-form>
     <div class="bottom">
       <div class="project">
-        <!-- 项目人数 -->
+        <!-- 客户 人数 -->
         <e-charts :option="project" />
       </div>
       <div class="notch">
@@ -65,6 +65,8 @@
 </template>
 
 <script>
+// 首页
+import { departmentAnalysis } from "@/api/firstscreen";
 // 地域
 import { queryRegion } from "@/api/region";
 // 部门
@@ -146,8 +148,21 @@ export default {
     // }, 3000);
     // 全部部门/人员--部门分析
     this.queryTableList();
+    //  首页  分析查询
+    this.analysis();
   },
   methods: {
+    // 首页  分析查询
+    analysis() {
+      // let data = { records: [{ ...this.formOptions }] };
+      let data = {};
+      // data.current = 1;
+      // data.size = 999;
+      departmentAnalysis(data).then((res) => {
+        console.log(res, "--------首页  分析查询----");
+      });
+    },
+
     // 全部人员/部门--详情
     //table数据
     queryTableList() {
@@ -166,19 +181,16 @@ export default {
                       this.tableyPostLook = res6.data.records; // 岗位表格数据赋值
                       // console.log(this.tableyPost, "----------岗位数据");
                       this.tableDataLook = res.data.records; // 表格数据赋值
-                      console.log(this.tableDataLook, "---全部---员工表格");
+                      // console.log(this.tableDataLook, "---全部---员工表格");
                       this.tableProjectLook = res1.data.records; // 项目表格数据赋值
-                      console.log(this.tableProjectLook, "---全部--项目数据表");
+                      // console.log(this.tableProjectLook, "---全部--项目数据表");
                       this.queryUserData = res2.data.records; // 部门数据表格数据赋值
                       // console.log(this.queryUserData, "----全部--部门数据表格");
                       this.InterfaceLook = res3.data.records; // 接口人表格数据赋值
                       this.MockUserLook = res4.data.records; // 地域数据表格数据赋值
-                      console.log(this.MockUserLook, "---全部--地域数据表");
+                      // console.log(this.MockUserLook, "---全部--地域数据表");
                       this.tableCustomerLook = res5.data.records; // 客户表格数据赋值
-                      console.log(
-                        this.tableCustomerLook,
-                        "---全部--客户数据表"
-                      );
+                      // console.log(this.tableCustomerLook,"---全部--客户数据表");
                       this.tableDataLook.forEach((item) => {
                         this.tableProjectLook.forEach((items) => {
                           if (item.projectId == items.projectId) {
@@ -190,9 +202,12 @@ export default {
                                 item.departmentId = itemli.departmentId; //根据项目id查找部门id给部门id赋值
                               }
                             });
+                            // 接口人
                             this.InterfaceLook.forEach((itemis) => {
                               if (items.interfaceId == itemis.interfaceId) {
                                 item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+
+                                // 客户数据表
                                 this.tableCustomerLook.forEach((itemiss) => {
                                   if (itemis.customerId == itemiss.customerId) {
                                     item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
@@ -232,7 +247,7 @@ export default {
                         // 赋值部门人数
                         item.value = item.personnel.length;
                       }
-                      console.log("部门分析表------", this.departmentAly);
+                      // console.log("部门分析表------", this.departmentAly);
                       // 清空地域分析 -----------
                       this.regionalAly = [];
                       // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
@@ -251,34 +266,26 @@ export default {
                         // 赋值部门人数
                         item.value = item.personnel.length;
                       }
-                      console.log("地域分析表------", this.regionalAly);
-// 工作到这2023-1-20 徐天奇--- (暂时注掉期间内容 --等待 后续继续 开发...)--------
-                      // // 清空项目分析
-                      // this.projectAly = [];
-                      // // 清空客户分析
-                      // this.customerAly = [];
-                      // // -查询全部项目-查询全部人员-生成新表 客户分析-customerAly
-                      // for (let item of this.tableProjectLook) {
-                      //   this.projectAly.push({
-                      //     name: item.project,
-                      //     personnel: [],
-                      //   });
-                      // }
-                      // for (let item of this.projectAly) {
-                      //   for (let items of this.tableDataLook) {
-                      //     if (item.name == items.project) {
-                      //       item.personnel.push(items);
-                      //     }
-                      //   }
-                      //   // 赋值部门人数
-                      //   item.value = item.personnel.length;
-
-                      //   // ===========
-                    
-                      //   // ===========
-                      // }
-                      // console.log("部门-项目人数分析表------", this.projectAly);
-// 工作到这2023-1-20 徐天奇-----------
+                      // console.log("地域分析表------", this.regionalAly);
+                      // 清空客户分析 -----------
+                      this.customerAly = [];
+                      for (let item of this.tableCustomerLook) {
+                        this.customerAly.push({
+                          name: item.customerName,
+                          personnel: [],
+                        });
+                      }
+                      for (let item of this.customerAly) {
+                        for (let items of this.tableDataLook) {
+                          if (item.name == items.customerName) {
+                            item.personnel.push(items);
+                          }
+                        }
+                        // 赋值客户下员工人数
+                        item.value = item.personnel.length;
+                      }
+                      this.projectData = this.customerAly;
+                      // console.log("客户分析表------", this.customerAly);
                     });
                   });
                 });
@@ -321,40 +328,7 @@ export default {
     //   ];
     // },
     setProject() {
-      this.projectData = [
-        {
-          name: "合同管理",
-          value: 12,
-        },
-        {
-          name: "企业管理",
-          value: 20,
-        },
-        {
-          name: "水电app",
-          value: 15,
-        },
-        {
-          name: "小程序",
-          value: 8,
-        },
-        {
-          name: "融媒体",
-          value: 7,
-        },
-        {
-          name: "电力项目",
-          value: 11,
-        },
-        {
-          name: "网页数据分析",
-          value: 13,
-        },
-        {
-          name: "畅联",
-          value: 6,
-        },
-      ];
+      this.projectData = [];
     },
     getSummaries(param) {
       const { columns, data } = param;
