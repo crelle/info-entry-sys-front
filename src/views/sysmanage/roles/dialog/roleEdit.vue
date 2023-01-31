@@ -215,7 +215,6 @@ export default {
         });
         //查询菜单名字
         queryMenuAll().then((res) => {
-          console.log(res, "res++++++++++");
           if (res && res.code && res.code === "00000") {
             this.tableData = res.data; // 表格数据赋值
             console.log(this.tableData, "----所有菜单---");
@@ -226,12 +225,23 @@ export default {
             queryRoleMenu(data).then((res) => {
               if (res && res.code && res.code === "00000") {
                 console.log(res.data, "----查询角色菜单数据成功了");
-                this.datas = res.data;
-                // 为选中的菜单赋值
-                // this.dialogFormVisible = true; // 让弹窗显示
-                // this.$nextTick(() => {
-                //   // 这个要加上
-                this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
+                // 删除指定的 对象 （delete）
+                // delete res.data.childrenMenus;
+                res.data.forEach((items, index) => {
+                  // console.log(items.name, "--------刪除父級");
+                  if (
+                    items.name == "系统管理" ||
+                    items.name == "需求管理" ||
+                    items.name == "员工管理"
+                  ) {
+                    // console.log(items, "----删除的父亲");
+                    res.data.splice(index, 1);
+                    // console.log(res.data, "----剩下的孩子");
+                    this.datas = res.data;
+                    this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
+                  }
+                });
+
                 // });
               }
             });
@@ -281,7 +291,10 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      // console.log(this.$refs.tree_n.getHalfCheckedNodes(), "--父级-菜单----");
+      console.log(
+        this.$refs.tree_n.getHalfCheckedNodes(),
+        "------------父级-菜单----"
+      );
 
       // console.log(
       //   this.$refs.tree_n.getCheckedNodes(),
@@ -292,14 +305,14 @@ export default {
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
-        console.log(this.initFormData, "----保存de 内容");
+        // console.log(this.initFormData, "----保存de 内容");
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
+          // console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userEditForm, "---修改传递的内容111111111----");
+            // console.log(this.userEditForm, "---修改传递的内容111111111----");
             updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
-              console.log(res, "-----------角色菜单名称修改");
+              // console.log(res, "-----------角色菜单名称修改");
               if (res && res.code && res.code === "00000") {
                 this.dialogClose();
                 this.$parent.queryRoles();
@@ -307,14 +320,19 @@ export default {
             });
 
             (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
-              // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
-              console.log(
-                this.userEditForm,
-                this.userEditForm.menus,
-                "---修改传递的内容22222222----"
-              );
+              // 赋值父级菜单
+              this.$refs.tree_n.getHalfCheckedNodes().forEach((item) => {
+                this.userEditForm.menus.push(item);
+              });
+
+            // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+            console.log(
+              this.userEditForm,
+              this.userEditForm.menus,
+              "---修改传递的内容22222222----"
+            );
             updateRoleMenu(this.userEditForm).then((res) => {
-              console.log(res, "-----------角色菜单权限修改");
+              // console.log(res, "-----------角色菜单权限修改");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.dialogClose();
@@ -339,7 +357,7 @@ export default {
                 this.userEditForm.menus
               );
             addRole(this.userEditForm).then((res) => {
-              console.log(res, "增加了...res11111");
+              // console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 console.log("成功增加--用户！");
                 this.$message.success("创建成功！");
