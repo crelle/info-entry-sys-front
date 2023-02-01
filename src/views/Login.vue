@@ -1,7 +1,7 @@
 <template>
   <div id="login_content">
     <span class="sys_info"
-      >© {{ new Date().getFullYear() }} - 
+      >© {{ new Date().getFullYear() }} -
       <el-link type="primary" href="https://www.archermind.com/" target="_blank"
         >诚迈科技(南京)股份有限公司</el-link
       >
@@ -315,7 +315,7 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
-           {
+          {
             pattern:
               /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
             message: "邮箱格式不正确",
@@ -344,6 +344,10 @@ export default {
     this.changecode();
   },
   mounted() {
+    console.log(
+      "%c XuTianqi-email:1300811776@qq.com",
+      "color: rgba(248, 133, 200, 0)"
+    );
     // this.getBackImg();
   },
   methods: {
@@ -465,7 +469,7 @@ export default {
         this.nowIndex = index;
         this.imageUrl = url;
       } else {
-        console.log(this.nowIndex, -1);
+        console.log(this.nowIndex, -0.2);
         this.nowIndex = -1;
         this.imageUrl = "";
       }
@@ -499,7 +503,7 @@ export default {
     background: linear-gradient(
       0deg,
       rgba(255, 255, 255),
-      rgba(255, 255, 255, 0.1)
+      rgba(255, 255, 255, 0.2)
     );
   }
   .login_form_main {
@@ -582,7 +586,7 @@ export default {
           &::before {
             width: 80px;
             height: 80px;
-            background-color: rgba(139, 197, 252, 0.5);
+            background-color: rgba(139, 197, 252, 0.2);
             position: absolute;
             display: block;
             top: 0;
@@ -619,7 +623,7 @@ export default {
   background-color: #012e69;
   color: #fff;
 }
-.account{
-     background-color: rgba(0, 40, 99, 0.63);
+.account {
+  background-color: rgba(0, 40, 99, 0.63);
 }
 </style>

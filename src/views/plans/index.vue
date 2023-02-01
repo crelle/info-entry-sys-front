@@ -31,7 +31,10 @@
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="用户名 :">
-                    <el-input clearable v-model="userdetail.username"></el-input>
+                    <el-input
+                      clearable
+                      v-model="userdetail.username"
+                    ></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -54,12 +57,18 @@
               <div class="box">
                 <div class="boxlis">
                   <el-form-item label="邮箱 :">
-                    <el-input clearable v-model="userdetail.userEmail"></el-input>
+                    <el-input
+                      clearable
+                      v-model="userdetail.userEmail"
+                    ></el-input>
                   </el-form-item>
                 </div>
                 <div class="boxlis">
                   <el-form-item label="电话 :">
-                    <el-input clearable v-model="userdetail.userPhone"></el-input>
+                    <el-input
+                      clearable
+                      v-model="userdetail.userPhone"
+                    ></el-input>
                   </el-form-item>
                 </div>
               </div>
@@ -186,7 +195,6 @@ export default {
               console.log(res, "----修改了当前用户后----");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                
               }
             });
           } else {

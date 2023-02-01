@@ -241,7 +241,6 @@ export default {
                     this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
                   }
                 });
-
                 // });
               }
             });

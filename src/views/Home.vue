@@ -41,9 +41,7 @@
                 v-if="item.childrenMenus.length > 0"
               >
                 <template slot="title">
-                  <i
-                    :class="item.iconLs ? item.iconLs : `el-icon-setting`"
-                  ></i>
+                  <i :class="item.iconLs ? item.iconLs : `el-icon-setting`"></i>
                   <span>{{ item.name }}</span>
                 </template>
                 <el-menu-item-group>

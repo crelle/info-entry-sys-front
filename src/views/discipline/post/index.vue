@@ -25,9 +25,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="项目名" prop="project">
+            <el-form-item label="项目名" prop="projectId">
               <el-select
-                v-model="formOptions.project"
+                v-model="formOptions.projectId"
                 placeholder="请选择项目名"
                 filterable
                 clearable
@@ -50,10 +50,10 @@
                 clearable
               >
                 <el-option
-                  v-for="item in regionData"
+                  v-for="item in queryPostAll"
                   :key="item.index"
-                  :label="item.regionName"
-                  :value="item.regionId"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -201,6 +201,7 @@
       :tableData="tableData"
       :projectData="projectData"
       :customerData="customerData"
+      :InterfaceData="InterfaceData"
       ref="roleEditDialogRef"
     ></role-edit-dialog>
     <role-data-dialog
@@ -219,6 +220,8 @@ import { queryProject } from "@/api/project";
 import { queryRegion } from "@/api/region";
 //客户
 import { queryCustomer } from "@/api/customer";
+// 接口人
+import { queryInterface } from "@/api/interface";
 import RoleEditDialog from "@/views/discipline/post/dialog/dialogEdit.vue";
 import RoleDataDialog from "@/views/discipline/post/dialog/dialogDetails.vue";
 export default {
@@ -228,6 +231,8 @@ export default {
   },
   data() {
     return {
+      // 全部岗位
+      queryPostAll: [],
       // 技能
       skill: [
         {
@@ -261,6 +266,7 @@ export default {
       projectData: [],
       regionData: [],
       customerData: [],
+      InterfaceData: [],
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
@@ -296,34 +302,53 @@ export default {
           queryPost(data).then((res) => {
             data.current = 1;
             data.size = 999;
-            //  查询 项目表
-            queryProject(data).then((res1) => {
-              // 查询 地域表
-              queryRegion(data).then((res2) => {
-                // 查询 客户
-                queryCustomer(data).then((res3) => {
-                  this.tableData = res.data.records; // 表格数据赋值
-                  console.log(this.tableData, "++++++++++岗位数据----");
-                  this.projectData = res1.data.records; // 表格数据赋值
-                  // console.log(this.projectData, "+++++++++项目数据----");
-                  this.regionData = res2.data.records; // 表格数据赋值
-                  // console.log(this.regionData, "++++++++++地域数据----");
-                  this.customerData = res3.data.records; // 表格数据赋值
-                  // console.log(this.customerData, "++++++++++客户数据----");
-                  this.tableData.forEach((item) => {
-                    if (item.date) {
-                      item.date = item.date.split("T")[0];
-                      item.address = item.address.split("/")[0];
-                    }
-                    this.projectData.forEach((sitem) => {
-                      if (item.projectId == sitem.projectId) {
-                        item.project = sitem.project;
-                      }
-                    });
-                    this.customerData.forEach((sitems) => {
-                      if (item.customer == sitems.customerId) {
-                        item.customerName = sitems.customerName;
-                      }
+            // //  数据接口人查询方法
+            queryInterface(data).then((res0) => {
+              //  查询 项目表
+              queryProject(data).then((res1) => {
+                // 查询 地域表
+                queryRegion(data).then((res2) => {
+                  // 查询 客户
+                  queryCustomer(data).then((res3) => {
+                    this.InterfaceData = res0.data.records; // 接口人表格数据赋值
+                    console.log(this.InterfaceData ,"---------接口人数据---");
+                    this.tableData = res.data.records; // 表格数据赋值
+                    console.log(this.tableData, "++++++++++岗位数据----");
+                    this.projectData = res1.data.records; // 表格数据赋值
+                    // console.log(this.projectData, "+++++++++项目数据----");
+                    this.regionData = res2.data.records; // 表格数据赋值
+                    // console.log(this.regionData, "++++++++++地域数据----");
+                    this.customerData = res3.data.records; // 表格数据赋值
+                    // console.log(this.customerData, "++++++++++客户数据----");
+                    queryPost(data).then((res4) => {
+                      res4.data.records.forEach((itesas) => {
+                        if (itesas.address != "") {
+                          // console.log(itesas,"--------全部岗位--- 办公地点 表格数据赋值");
+                          if(!this.queryPostAll.includes(itesas.address)){
+                               this.queryPostAll.push(itesas.address); //全部岗位--- 办公地点 表格数据赋值
+                          }
+                        }
+                      });
+                      // console.log(this.queryPostAll,"-----地点的下拉内容*--");
+                      this.tableData.forEach((item) => {
+                        if (item.date) {
+                          // 时间格式修改
+                          item.date = item.date.split("T")[0];
+                          item.address = item.address.split("/")[0];
+                        }
+                        this.projectData.forEach((sitem) => {
+                          if (item.projectId == sitem.projectId) {
+                            item.project = sitem.project;
+                          }
+                        });
+                        this.customerData.forEach((sitems) => {
+                          if (item.customer == sitems.customerId) {
+                            this.$set(item,item.customerName,sitems.customerName)
+                            item.customerName = sitems.customerName;
+                          }
+                        });
+                        // this.customerData=this.customerData
+                      });
                     });
                   });
                 });
