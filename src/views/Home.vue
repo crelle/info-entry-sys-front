@@ -6,7 +6,7 @@
         <div class="header_avatar">
           <div @click="personal()">
             <el-avatar size="small" :src="userdetail.userAvatar"></el-avatar>
-            <span>欢迎 {{ userdetail.username }}</span>
+            <span>你好 {{ userdetail.userNickName }}</span>
           </div>
           <el-popconfirm
             confirm-button-text="确认"

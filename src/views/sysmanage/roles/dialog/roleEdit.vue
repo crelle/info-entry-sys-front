@@ -349,12 +349,16 @@ export default {
             // console.log(this.$refs.tree_n.getHalfCheckedNodes(),"--------------xz");
             //   this.userEditForm.menus.push(this.$refs.tree_n.getHalfCheckedNodes()),
             (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
-              // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
-              console.log(
-                this.userEditForm,
-                "---增加传递的内容-----菜单----",
-                this.userEditForm.menus
-              );
+              // 赋值父级菜单
+              this.$refs.tree_n.getHalfCheckedNodes().forEach((item) => {
+                this.userEditForm.menus.push(item);
+              });
+            // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+            console.log(
+              this.userEditForm,
+              "---增加传递的内容-----菜单----",
+              this.userEditForm.menus
+            );
             addRole(this.userEditForm).then((res) => {
               // console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {

@@ -1,7 +1,8 @@
 <template>
   <div>
     <div class="grid-content-right">
-      <el-form :model="userEditForm" ref="userEditRef" size="mini">
+       <!-- :model="userEditForm" ref="userEditRef"  -->
+      <el-form size="mini">
         <div class="userbox">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item>个人信息管理</el-breadcrumb-item>
@@ -23,33 +24,18 @@
               >
             </div>
             <el-form
-              ref="form"
+              :rules="userEditFormRules"
+              ref="userEditRef"
               :model="userdetail"
               :disabled="isInput"
               label-width="100px"
             >
               <div class="box">
                 <div class="boxlis">
-                  <el-form-item label="用户名 :">
+                  <el-form-item label="姓名 :" prop="userNickName">
                     <el-input
                       clearable
-                      v-model="userdetail.username"
-                    ></el-input>
-                  </el-form-item>
-                </div>
-              </div>
-              <div class="box">
-                <div class="boxlis">
-                  <el-form-item label="工号 :">
-                    <el-input clearable v-model="userdetail.jobNo"></el-input>
-                  </el-form-item>
-                </div>
-                <div class="boxlis">
-                  <el-form-item label="角色 :">
-                    <el-input
-                      disabled
-                      v-model="userdetail.roles[0].nameZh"
-                      clearable
+                      v-model="userdetail.userNickName"
                     ></el-input>
                   </el-form-item>
                 </div>
@@ -72,6 +58,26 @@
                   </el-form-item>
                 </div>
               </div>
+              <div class="box">
+                <div class="boxlis">
+                  <el-form-item label="角色 :">
+                    <el-input
+                      disabled
+                      v-model="userdetail.roles[0].nameZh"
+                      clearable
+                    ></el-input>
+                  </el-form-item>
+                </div>
+                <div class="boxlis">
+                  <el-form-item label="工号 :">
+                    <el-input
+                      disabled
+                      clearable
+                      v-model="userdetail.jobNo"
+                    ></el-input>
+                  </el-form-item>
+                </div>
+              </div>
             </el-form>
           </div>
         </div>
@@ -85,6 +91,7 @@
 </template>
 
 <script>
+import { Encrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
 import RoleDataDialog from "@/views/plans/dialog/dialogDetails.vue";
@@ -127,6 +134,30 @@ export default {
         roles: "",
       },
       initFormData: {},
+      userEditFormRules: {
+        userNickName: [
+          {
+            required: false,
+            message: "请输入姓名",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^([\u4E00-\u9FA5])*$/,
+            message: "请输入中文名称",
+            trigger: "blur",
+          },
+          // {
+          //   pattern: /^(?!\s+).*(?<!\s)$/,
+          //   message: "首尾不能为空格",
+          //   trigger: "blur",
+          // },
+          // {
+          //   pattern: /^(?![0-9]).*$/,
+          //   message: "不能以数字开头",
+          //   trigger: "blur",
+          // },
+        ],
+      },
     };
   },
   computed: {
@@ -187,14 +218,18 @@ export default {
         );
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            console.log(this.userdetail.password, "密码不能空");
+            // console.log(this.userdetail.password, "密码不能空");
             console.log(this.userEditForm, "--传入的东西0");
+            delete this.userEditForm.authorities;
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "----修改了当前用户后----");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
+                // 加密用户信息 用户信息包含菜单
+                let multifyDetail = Encrypt(JSON.stringify(this.userdetail));
+                // 保存已加密的用户信息到 localstorage
+                window.localStorage.setItem("userdetail", multifyDetail);
               }
             });
           } else {

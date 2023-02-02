@@ -373,7 +373,7 @@ export default {
               this.customerData.forEach((items) => {
                 if (sitem.customerId == items.customerId) {
                   this.userEditForm.customerName = items.customerName;
-                  this.userEditForm.customerId = items.customerId;
+                  this.userEditForm.customer = items.customerId;
                 }
               });
             }

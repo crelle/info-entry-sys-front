@@ -301,7 +301,7 @@ li {
 ::v-deep .el-dialog__body {
   padding: 0;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 400px;
 }
 </style>

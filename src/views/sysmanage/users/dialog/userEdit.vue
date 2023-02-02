@@ -310,15 +310,15 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
             console.log(this.userEditForm, "--传入的东西0");
-            // updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
-            //   // console.log(res, "----res11111");
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message.success("修改成功！");
-            //     // this.dialogClose();
-            //     this.$parent.queryUserList();
-            //     this.dialogFormVisible = false; // 让弹窗显
-            //   }
-            // });
+            updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
+              // console.log(res, "----res11111");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                // this.dialogClose();
+                this.$parent.queryUserList();
+                this.dialogFormVisible = false; // 让弹窗显
+              }
+            });
           } else {
             return false;
           }
