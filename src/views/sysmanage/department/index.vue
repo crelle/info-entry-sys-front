@@ -39,7 +39,9 @@
               <el-button type="primary" @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserListclick">查询</el-button>
+              <el-button type="primary" @click="queryUserListclick"
+                >查询</el-button
+              >
               <el-button type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
@@ -292,6 +294,12 @@ export default {
           queryUser(data).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.UserData = res.data.records; // 表格数据赋值
+              // --- 过滤掉管理员admin
+              // this.UserData.forEach((item, index) => {
+              //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+              //     this.UserData.splice(index, 1);
+              //   }
+              // });
               console.log(this.UserData, " // 真的查询用户列表");
             }
           });

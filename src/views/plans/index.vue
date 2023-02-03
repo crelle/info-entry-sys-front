@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="grid-content-right">
-       <!-- :model="userEditForm" ref="userEditRef"  -->
+      <!-- :model="userEditForm" ref="userEditRef"  -->
       <el-form size="mini">
         <div class="userbox">
           <el-breadcrumb separator-class="el-icon-arrow-right">
@@ -10,13 +10,15 @@
           </el-breadcrumb>
           <div>
             <div class="but">
+              <!-- 重置 -->
+             
               <el-button type="primary" v-if="reset" @click="onEditRoleMima">
                 修改密码
               </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
                 >保 存</el-button
               >
-              <el-button type="primary" v-if="displays" @click="cancel"
+              <el-button type="primary" v-if="displays" @click="cancel('userEditRef')"
                 >取 消</el-button
               >
               <el-button type="primary" v-if="editbtn" @click="edit"
@@ -42,7 +44,7 @@
               </div>
               <div class="box">
                 <div class="boxlis">
-                  <el-form-item label="邮箱 :">
+                  <el-form-item label="邮箱 :" prop="userEmail">
                     <el-input
                       clearable
                       v-model="userdetail.userEmail"
@@ -50,7 +52,7 @@
                   </el-form-item>
                 </div>
                 <div class="boxlis">
-                  <el-form-item label="电话 :">
+                  <el-form-item label="电话 :" prop="userPhone">
                     <el-input
                       clearable
                       v-model="userdetail.userPhone"
@@ -60,7 +62,7 @@
               </div>
               <div class="box">
                 <div class="boxlis">
-                  <el-form-item label="角色 :">
+                  <el-form-item label="角色 :" prop="userPhone">
                     <el-input
                       disabled
                       v-model="userdetail.roles[0].nameZh"
@@ -187,14 +189,20 @@ export default {
       this.reset = false;
     },
     // 取消
-    cancel() {
+    cancel(formName) {
       // 表单禁用
       this.isInput = true;
       this.displays = false;
       this.editbtn = true;
       this.reset = true;
+      this.resetForm(formName);
       // 获取数据
       // this.getSave();
+    },
+    // 重置
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+      console.log("----------重置-");
     },
     // --------
     /* 保存  */

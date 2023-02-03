@@ -284,6 +284,12 @@ export default {
                 this.tableData = res.data.records; // 客户表格数据赋值
                 this.regionData = res2.data.records; // 地域表格数据赋值
                 this.UserList = res3.data.records; // 用户表格数据赋值
+                // --- 过滤掉管理员admin
+                // this.UserList.forEach((item, index) => {
+                //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+                //     this.UserList.splice(index, 1);
+                //   }
+                // });
                 this.paginationOptions.total = res.data.total; // 分页器赋值
                 console.log(this.tableData, "客户数据");
               });

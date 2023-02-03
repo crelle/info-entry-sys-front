@@ -357,10 +357,10 @@ export default {
         if (valid) {
           let formlogin = { ...this.ruleForm };
           login(formlogin).then((res) => {
-            console.log(
-              res,
-              "-------------------------------------登录存到localStorage----"
-            );
+            // console.log(
+            //   res,
+            //   "-------------------------------------登录存到localStorage----"
+            // );
             if (res && res.code && res.code === "00000") {
               // 登录成功 转跳首屏
               // 加密用户信息 用户信息包含菜单

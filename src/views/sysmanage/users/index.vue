@@ -303,6 +303,12 @@ export default {
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
               console.log(this.tableData, "查询用户列表++++++");
+              // 过滤掉管理员admin
+              // this.tableData.forEach((item, index) => {
+              //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+              //     this.tableData.splice(index, 1);
+              //   }
+              // });
             }
           });
         } else {
@@ -382,7 +388,7 @@ export default {
           data.userId = row.id;
           // 点击确认，发起后台请求，
           console.log(data, "----重置密码传入的内容----");
-          resetPassword(data,data.userId).then((res) => {
+          resetPassword(data, data.userId).then((res) => {
             console.log(res, "-------重置密码");
             // console.log(res, "点击确认，发起后台请求");
             // if (res.code == "00000") {
