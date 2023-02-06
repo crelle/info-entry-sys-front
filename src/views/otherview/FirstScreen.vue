@@ -8,7 +8,7 @@
       ref="userQueryRef"
       label-position="right"
     >
-      <el-row :gutter="24">
+      <el-row :gutter="24" style="margin-bottom: 25px">
         <el-col :span="12">
           <div class="echarts_map">
             <!-- 部门人数 -->
@@ -29,44 +29,27 @@
           </div>
         </el-col> -->
       </el-row>
+      <el-row :gutter="24">
+        <el-col :span="12">
+          <div class="echarts_map">
+            <!-- 客户 人数 -->
+            <e-charts class="chart" :option="project" />
+          </div>
+        </el-col>
+        <el-col :span="12">
+          <div class="echarts_map">
+            <!-- 负责人管理人数分析 -->
+            <e-charts class="chart" :option="user" />
+          </div>
+        </el-col>
+      </el-row>
     </el-form>
-    <div class="bottom">
-      <div class="project">
-        <!-- 客户 人数 -->
-        <e-charts :option="project" />
-      </div>
-      <div class="notch">
-        <!-- 项目缺口 -->
-        <div class="label">项目缺口</div>
-        <el-table
-          :data="tableData"
-          border
-          show-summary
-          :height="313"
-          :summary-method="getSummaries"
-          stripe
-          :header-cell-style="{ background: '#5a9bd5', color: 'white' }"
-          style="width: 100%"
-        >
-          <el-table-column prop="id" label="" width="130"> </el-table-column>
-          <el-table-column prop="amount1" label="产品"> </el-table-column>
-          <el-table-column prop="amount2" label="测试"> </el-table-column>
-          <el-table-column prop="amount3" label="前端"> </el-table-column>
-          <el-table-column prop="amount4" label="C"> </el-table-column>
-          <el-table-column prop="amount5" label="JAVA"> </el-table-column>
-          <el-table-column prop="total" label="合计"> </el-table-column>
-        </el-table>
-        <div class="tit">
-          注：0/4,0为当前技能人员数，4为当前项目所需技能人员数
-        </div>
-      </div>
-    </div>
   </div>
 </template>
 
 <script>
 // 首页
-import { departmentAnalysis } from "@/api/firstscreen";
+import { departmentAnalysis,regionAnalysis } from "@/api/reportform";
 // 地域
 import { queryRegion } from "@/api/region";
 // 部门
@@ -103,8 +86,10 @@ export default {
       projectData: [],
       tableData: [],
       userdetail: {},
-      // 全部部门
+      // 全部用户（负责人）
       queryUserData: [],
+      // 全部部门
+      queryDepartmentsData: [],
       // 全部员工
       tableDataLook: [],
       // 全部地域
@@ -121,6 +106,8 @@ export default {
       projectAly: [],
       // 客户分析
       customerAly: [],
+      // 用户（负责人）分析
+      userAly: [],
     };
   },
   mounted() {
@@ -159,7 +146,10 @@ export default {
       // data.current = 1;
       // data.size = 999;
       departmentAnalysis(data).then((res) => {
-        console.log(res, "--------首页  分析查询----");
+        console.log(res, "--------首页 ---- 部门 --- 分析查询----");
+      });
+      regionAnalysis(data).then((res) => {
+        console.log(res, "--------首页 ---- 地域 --- 分析查询----");
       });
     },
 
@@ -178,114 +168,122 @@ export default {
                   queryCustomer(data).then((res5) => {
                     //  数据岗位查询方法
                     queryPost(data).then((res6) => {
-                      this.tableyPostLook = res6.data.records; // 岗位表格数据赋值
-                      // console.log(this.tableyPost, "----------岗位数据");
-                      this.tableDataLook = res.data.records; // 表格数据赋值
-                      // console.log(this.tableDataLook, "---全部---员工表格");
-                      this.tableProjectLook = res1.data.records; // 项目表格数据赋值
-                      // console.log(this.tableProjectLook, "---全部--项目数据表");
-                      this.queryUserData = res2.data.records; // 部门数据表格数据赋值
-                      // console.log(this.queryUserData, "----全部--部门数据表格");
-                      this.InterfaceLook = res3.data.records; // 接口人表格数据赋值
-                      this.MockUserLook = res4.data.records; // 地域数据表格数据赋值
-                      // console.log(this.MockUserLook, "---全部--地域数据表");
-                      this.tableCustomerLook = res5.data.records; // 客户表格数据赋值
-                      // console.log(this.tableCustomerLook,"---全部--客户数据表");
-                      this.tableDataLook.forEach((item) => {
-                        this.tableProjectLook.forEach((items) => {
-                          if (item.projectId == items.projectId) {
-                            // console.log(items, "------------111");
-                            item.project = items.project; //根据项目id给项目名称赋值
-                            this.queryUserData.forEach((itemli) => {
-                              if (items.departmentId == itemli.departmentId) {
-                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
-                                item.departmentId = itemli.departmentId; //根据项目id查找部门id给部门id赋值
-                              }
-                            });
-                            // 接口人
-                            this.InterfaceLook.forEach((itemis) => {
-                              if (items.interfaceId == itemis.interfaceId) {
-                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+                      // 客户
+                      queryUser(data).then((res7) => {
+                        this.tableDataLook = res.data.records; // 表格数据赋值
+                        // console.log(this.tableDataLook, "---全部---员工表格");
+                        this.tableProjectLook = res1.data.records; // 项目表格数据赋值
+                        // console.log(this.tableProjectLook, "---全部--项目数据表");
+                        this.queryDepartmentsData = res2.data.records; // 部门数据表格数据赋值
+                        // console.log(this.queryDepartmentsData, "----全部--部门数据表格");
+                        this.InterfaceLook = res3.data.records; // 接口人表格数据赋值
+                        this.MockUserLook = res4.data.records; // 地域数据表格数据赋值
+                        // console.log(this.MockUserLook, "---全部--地域数据表");
+                        this.tableCustomerLook = res5.data.records; // 客户表格数据赋值
+                        // console.log(this.tableCustomerLook,"---全部--客户数据表");
+                        this.tableyPostLook = res6.data.records; // 岗位表格数据赋值
+                        // console.log(this.tableyPost, "----------岗位数据");
+                        this.queryUserData = res7.data.records; // 用户（负责人）表格数据赋值
+                        // console.log( this.queryUserData,"----------用户（负责人）");
+                        this.tableDataLook.forEach((item) => {
+                          this.tableProjectLook.forEach((items) => {
+                            if (item.projectId == items.projectId) {
+                              // console.log(items, "------------111");
+                              item.project = items.project; //根据项目id给项目名称赋值
+                              this.queryDepartmentsData.forEach((itemli) => {
+                                if (items.departmentId == itemli.departmentId) {
+                                  item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
+                                  item.departmentId = itemli.departmentId; //根据项目id查找部门id给部门id赋值
+                                }
+                              });
+                              // 接口人
+                              this.InterfaceLook.forEach((itemis) => {
+                                if (items.interfaceId == itemis.interfaceId) {
+                                  item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
 
-                                // 客户数据表
-                                this.tableCustomerLook.forEach((itemiss) => {
-                                  if (itemis.customerId == itemiss.customerId) {
-                                    item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
-                                  }
-                                });
-                              }
-                            });
-                            this.MockUserLook.forEach((itemlis) => {
-                              if (items.regionId == itemlis.regionId) {
-                                item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
-                              }
-                            });
-                          }
+                                  // 客户数据表
+                                  this.tableCustomerLook.forEach((itemiss) => {
+                                    if (
+                                      itemis.customerId == itemiss.customerId
+                                    ) {
+                                      item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
+                                    }
+                                  });
+                                }
+                              });
+                              this.MockUserLook.forEach((itemlis) => {
+                                if (items.regionId == itemlis.regionId) {
+                                  item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
+                                }
+                              });
+                            }
+                          });
+                          this.tableyPostLook.forEach((itemls) => {
+                            if (item.postId == itemls.postId) {
+                              item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
+                              item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
+                            }
+                          });
                         });
-                        this.tableyPostLook.forEach((itemls) => {
-                          if (item.postId == itemls.postId) {
-                            item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
-                            item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
+                        // 清空 部门分析--------
+                        this.departmentAly = [];
+                        // 部门详情数据处理--根据全部部门/人员-生成新表 部门分析-departmentAly
+                        for (let item of this.queryDepartmentsData) {
+                          this.departmentAly.push({
+                            name: item.department,
+                            personnel: [],
+                          });
+                        }
+                        for (let item of this.departmentAly) {
+                          for (let items of this.tableDataLook) {
+                            if (item.name == items.department) {
+                              item.personnel.push(items);
+                            }
                           }
-                        });
+                          // 赋值部门人数
+                          item.value = item.personnel.length;
+                        }
+                        // console.log("部门分析表------", this.departmentAly);
+                        // 清空地域分析 -----------
+                        this.regionalAly = [];
+                        // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
+                        for (let item of this.MockUserLook) {
+                          this.regionalAly.push({
+                            name: item.regionName,
+                            personnel: [],
+                          });
+                        }
+                        for (let item of this.regionalAly) {
+                          for (let items of this.tableDataLook) {
+                            if (item.name == items.regionName) {
+                              item.personnel.push(items);
+                            }
+                          }
+                          // 赋值部门人数
+                          item.value = item.personnel.length;
+                        }
+                        // console.log("地域分析表------", this.regionalAly);
+                        // 清空客户分析 -----------
+                        this.customerAly = [];
+                        for (let item of this.tableCustomerLook) {
+                          this.customerAly.push({
+                            name: item.customerName,
+                            personnel: [],
+                          });
+                        }
+                        for (let item of this.customerAly) {
+                          for (let items of this.tableDataLook) {
+                            if (item.name == items.customerName) {
+                              item.personnel.push(items);
+                            }
+                          }
+                          // 赋值客户下员工人数
+                          item.value = item.personnel.length;
+                        }
+                        this.projectData = this.customerAly;
+                        // console.log("客户分析表------", this.customerAly);
+                        // ----------------------2023-1-31 ----------------------------------工作到这-------------
                       });
-                      // 清空 部门分析--------
-                      this.departmentAly = [];
-                      // 部门详情数据处理--根据全部部门/人员-生成新表 部门分析-departmentAly
-                      for (let item of this.queryUserData) {
-                        this.departmentAly.push({
-                          name: item.department,
-                          personnel: [],
-                        });
-                      }
-                      for (let item of this.departmentAly) {
-                        for (let items of this.tableDataLook) {
-                          if (item.name == items.department) {
-                            item.personnel.push(items);
-                          }
-                        }
-                        // 赋值部门人数
-                        item.value = item.personnel.length;
-                      }
-                      // console.log("部门分析表------", this.departmentAly);
-                      // 清空地域分析 -----------
-                      this.regionalAly = [];
-                      // 地域详情数据处理--根据全部地域/人员-生成新表 地域分析-regionalAly
-                      for (let item of this.MockUserLook) {
-                        this.regionalAly.push({
-                          name: item.regionName,
-                          personnel: [],
-                        });
-                      }
-                      for (let item of this.regionalAly) {
-                        for (let items of this.tableDataLook) {
-                          if (item.name == items.regionName) {
-                            item.personnel.push(items);
-                          }
-                        }
-                        // 赋值部门人数
-                        item.value = item.personnel.length;
-                      }
-                      // console.log("地域分析表------", this.regionalAly);
-                      // 清空客户分析 -----------
-                      this.customerAly = [];
-                      for (let item of this.tableCustomerLook) {
-                        this.customerAly.push({
-                          name: item.customerName,
-                          personnel: [],
-                        });
-                      }
-                      for (let item of this.customerAly) {
-                        for (let items of this.tableDataLook) {
-                          if (item.name == items.customerName) {
-                            item.personnel.push(items);
-                          }
-                        }
-                        // 赋值客户下员工人数
-                        item.value = item.personnel.length;
-                      }
-                      this.projectData = this.customerAly;
-                      // console.log("客户分析表------", this.customerAly);
                     });
                   });
                 });
@@ -443,7 +441,7 @@ export default {
     // },
   },
   computed: {
-    // 饼图
+    // 饼图 部门人数分析
     department() {
       return {
         title: {
@@ -474,6 +472,49 @@ export default {
             },
             radius: ["40%", "55%"],
             data: this.departmentAly,
+            emphasis: {
+              itemStyle: {
+                shadowBlur: 10,
+                shadowOffsetX: 0,
+                shadowColor: "rgba(0, 0, 0, 0.5)",
+              },
+            },
+          },
+        ],
+      };
+    },
+    // 饼图 负责人管理人数分析
+    user() {
+      return {
+        title: {
+          text: "负责人管理人数分析",
+          left: "center",
+        },
+        tooltip: {
+          trigger: "item",
+        },
+        legend: {
+          show: false,
+        },
+        series: [
+          {
+            name: "部门",
+            type: "pie",
+            label: {
+              show: true,
+              position: "outside",
+              normal: {
+                formatter: "{b}\n{c}",
+                fontSize: "14",
+                fontWeight: "bold",
+              },
+            },
+            labelLine: {
+              show: true,
+            },
+            radius: "50%",
+            // radius: ["40%", "55%"],
+            data: this.userAly,
             emphasis: {
               itemStyle: {
                 shadowBlur: 10,
@@ -559,6 +600,22 @@ export default {
           axisLabel: {
             interval: 0,
             rotate: 50, //倾斜的程度
+            formatter: function (params) {
+              // console.log("formatter", params, params.length);
+              var newParamsName = ""; // 最终拼接成的字符串
+              var paramsNameNumber = params.length; // 实际标签的个数
+              var provideNumber = 4; // 每行能显示的字的个数
+              // 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+              if (paramsNameNumber > provideNumber) {
+                // ********重点在这里********
+                newParamsName = params.substring(0, 3) + "..."; // 最终拼成的字符串
+              } else {
+                // 将旧标签的值赋给新标签
+                newParamsName = params;
+              }
+              // 将最终的字符串返回
+              return newParamsName;
+            },
           },
         },
         yAxis: {

@@ -60,9 +60,9 @@
           </el-col>
 
           <el-col :span="6">
-            <el-form-item label="地域" prop="region">
+            <el-form-item label="地域" prop="regionId">
               <el-select
-                v-model="formOptions.region"
+                v-model="formOptions.regionId"
                 placeholder="请选择地域"
                 clearable
                 filterable
@@ -104,9 +104,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="7">
-            <el-form-item label="接口人" prop="name">
+            <el-form-item label="接口人" prop="interfaceId">
               <el-select
-                v-model="formOptions.name"
+                v-model="formOptions.interfaceId"
                 placeholder="请选择接口人姓名"
                 clearable
                 filterable
@@ -121,9 +121,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="6">
-            <el-form-item label="所属部门" prop="department">
+            <el-form-item label="所属部门" prop="departmentId">
               <el-select
-                v-model="formOptions.department"
+                v-model="formOptions.departmentId"
                 placeholder="所属部门"
                 clearable
                 filterable
@@ -288,7 +288,7 @@ export default {
       xmzt: "",
       list: "",
       formOptions: {
-        name: "",
+        interfaceId: "",
         cellPhone: "",
         email: "",
         customerName: "",
@@ -363,10 +363,10 @@ export default {
                     console.log(this.tableData, "------项目表格数据");
                     this.tableData.forEach((item) => {
                       if (item.status == 1) {
-                        item.status = "开发中";
+                        item.status = "前期投入";
                       }
                       if (item.status == 2) {
-                        item.status = "前期投入";
+                        item.status = "开发中";
                       }
                       if (item.status == 3) {
                         item.status = "交付阶段";

@@ -129,7 +129,7 @@ export default {
           },
         ],
       },
-      initFormData: {},
+      initFormData: [],
       userEditFormRules: {
         username: [
           {
@@ -303,12 +303,13 @@ export default {
           // console.log(this.userEditForm, "------roles-----");
         }
       });
+      console.log(this.initFormData.id,'------修改 有 创建无------');
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            // console.log(this.userEditForm, "--传入的东西0");
+            console.log(this.userEditForm, "--传入的东西0");
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
               // console.log(res, "----res11111");
               if (res && res.code && res.code === "00000") {
@@ -358,9 +359,9 @@ export default {
   display: none;
 }
 ::v-deep .el-form-item__label {
-    padding-right: 0 !important;
+  padding-right: 0 !important;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 300px;
 }
 </style>

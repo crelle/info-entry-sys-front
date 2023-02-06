@@ -124,7 +124,9 @@ export default {
           changePassword(data).then((res) => {
             if (res.code == "00000") {
               this.del();
-              this.dialogFormVisible = false; // 让弹窗显示
+              this.dialogFormVisible = false; // 弹窗隐藏
+              this.$message.warning("用户信息失效，请重新登录！");
+              this.$loginout();
             } else {
               this.del();
             }
