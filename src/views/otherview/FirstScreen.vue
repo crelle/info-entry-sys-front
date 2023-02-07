@@ -44,12 +44,340 @@
         </el-col>
       </el-row>
     </el-form>
+    <el-divider content-position="left"></el-divider>
+    <div class="lis">
+      <el-col :span="7">
+        <el-card header="客户A" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 5" :key="item">
+                  <ul>
+                    <li>
+                      <span>岗位名：</span><span>{{ item }}岗位</span>
+                    </li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+      <el-col :span="7">
+        <el-card header="客户A" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+      <el-col :span="7">
+        <el-card header="客户B" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+      <el-col :span="7">
+        <el-card header="客户B" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+      <el-col :span="7">
+        <el-card header="客户B" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+      <el-col :span="7">
+        <el-card header="客户B" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+
+      <el-col :span="7">
+        <el-card header="客户C" shadow="hover">
+          <el-card shadow="hover">
+            <div class="block">
+              <span class="demonstration">
+                <span style="font-weight: bold; font-size: 18px">项目：</span
+                ><span>XXXX项目</span></span
+              >
+              <el-carousel height="285px" :autoplay="false">
+                <el-carousel-item v-for="item in 4" :key="item">
+                  <ul>
+                    <li><span>岗位名：</span><span>XXXX岗位</span></li>
+                    <li>9/10（当前满足需求人数）</li>
+                    <li><span>发布日期 ：</span><span>2023/1/3</span></li>
+                    <li><span>最晚到港时间 ：</span><span>2023/1/19</span></li>
+                  </ul>
+                  <ul class="contents_box">
+                    <li class="post_lis">
+                      <span>岗位职责：</span>
+                      <div class="content_post">
+                        <p
+                          title="sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯"
+                        >
+                          1、2023--------asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                          2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                          <br />
+                          3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfssdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯sdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯dfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        </p>
+                      </div>
+                    </li>
+                    <li>
+                      <span>岗位要求：</span>
+                      <div class="content_post">
+                        3、sdfsdffsdfsdfsxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达dfsdsdf
+                        1、asdac阿斯达c阿斯达c阿斯达c阿斯达sdsd<br />
+                        2、zxc阿斯c阿斯达fsdfsdfsdfsdc阿斯达c阿斯达达萨达
+                        <br />
+                      </div>
+                    </li>
+                  </ul>
+                </el-carousel-item>
+              </el-carousel>
+            </div>
+          </el-card>
+        </el-card>
+      </el-col>
+    </div>
   </div>
 </template>
 
 <script>
 // 首页
-import { departmentAnalysis,regionAnalysis } from "@/api/reportform";
+import { departmentAnalysis, regionAnalysis } from "@/api/reportform";
 // 地域
 import { queryRegion } from "@/api/region";
 // 部门
@@ -743,5 +1071,110 @@ export default {
       color: grey;
     }
   }
+}
+// 卡片
+ul,
+li {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+::v-deep .el-card__header {
+  font-size: 18px;
+  font-weight: bold;
+  padding: 10px 20px;
+}
+::v-deep .el-card__body {
+  padding: 5px 15px 0;
+  margin-bottom: 0;
+}
+::v-deep .is-hover-shadow {
+  margin-bottom: 0;
+}
+::v-deep .el-col-7 {
+  margin-top: 20px;
+  width: 32.35%;
+}
+.lis {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  li {
+    margin: 5px 0;
+    span:nth-child(1) {
+      font-weight: bold;
+    }
+  }
+  ul:nth-child(1) {
+    li:nth-child(1) {
+      font-size: 17px;
+      // color: #ffdc60;
+    }
+    li:nth-child(2) {
+      font-size: 16px;
+      // color: #ffdc60;
+    }
+    li:nth-child(3) {
+      font-size: 15px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      // color: #ffdc60;
+    }
+  }
+}
+.post_lis {
+  margin: 5px 0;
+}
+.content_post {
+  p {
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* 超出几行省略 */
+  }
+  span {
+    display: block;
+  }
+}
+p {
+  margin: 0;
+}
+// 轮播
+.el-carousel__item h3 {
+  color: #475669;
+  font-size: 14px;
+  opacity: 0.75;
+  line-height: 150px;
+  margin: 0;
+}
+.el-carousel__item:nth-child(2n) {
+  background-color: #99a9bf;
+}
+
+.el-carousel__item:nth-child(2n + 1) {
+  background-color: #d3dce6;
+}
+::v-deep .el-carousel__button {
+  background-color: #475669;
+}
+::v-deep .el-carousel__indicator--horizontal {
+  padding: 0 4px;
+}
+::v-deep .el-carousel__indicators--horizontal {
+  width: 430px;
+  text-align: center;
+  word-break: break-all;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1; /* 超出几行省略 */
+}
+::v-deep .contents_box {
+  font-size: 14px !important;
+  color: rgb(134, 11, 11);
 }
 </style>

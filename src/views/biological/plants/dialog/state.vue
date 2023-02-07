@@ -32,19 +32,19 @@
                 <el-form-item label="出差地" prop="cell_phone">
                   <el-input
                     placeholder="出差地"
-                    v-model="businesstravel_place"
+                    v-model="userEditForm.businesstravel_place"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="出差时间" prop="cell_phone">
                   <el-input
                     placeholder="出差时间"
-                    v-model="businesstravel_time"
+                    v-model="userEditForm.businesstravel_time"
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="预计出差周期" prop="cell_phone">
                   <el-input
                     placeholder="预计出差周期"
-                    v-model="businesstravel_cycle"
+                    v-model="userEditForm.businesstravel_cycle"
                   ></el-input>
                 </el-form-item>
               </div>
@@ -89,6 +89,8 @@
                 </el-form-item>
               </div>
               <div class="preservation">
+
+                <el-button type="primary" @click="deleteState">状 态</el-button>
                 <el-button type="primary" @click="onCertain">保 存</el-button>
                 <el-button class="cancel" type="primary" @click="close"
                   >取 消</el-button
@@ -122,26 +124,14 @@
 </template>
 
 <script>
-// import { updateUser } from "@/api/user";
+import { deleteState } from "@/api/employee";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
-      // 出差
-      businesstravel_place: "",
-      businesstravel_time: "",
-      businesstravel_cycle: "",
-      // 派遣
-      dispatch_place: "",
-      dispatch_time: "",
-      dispatch_cycle: "",
-      // 离职
-      quit_time: "",
-      quit_reason: "",
-      quit_going: "",
-      //
+     
       activeName: "second",
       // 当前日期
       monthValue: "",
@@ -172,10 +162,31 @@ export default {
           cycles: "离职原因",
           cycle: "出国...",
         },
+        {
+          text: "离职去向11111111111",
+          textarea1: "离职去向地点xzxc1111xx",
+          times: "离职时间",
+          time: "2018/3/12/3时21分",
+          cycles: "离职原因",
+          cycle: "出国...",
+        },
       ],
       displays: true,
       isInput: false,
       userEditForm: {
+         // 出差
+      businesstravel_place: "",
+      businesstravel_time: "",
+      businesstravel_cycle: "",
+      // 派遣
+      dispatch_place: "",
+      dispatch_time: "",
+      dispatch_cycle: "",
+      // 离职
+      quit_time: "",
+      quit_reason: "",
+      quit_going: "",
+      //
         id: "",
         job_no: "",
         name: "",
@@ -345,6 +356,41 @@ export default {
     empty() {
       console.log("清空!");
       this.textarea = "";
+    },
+    // 状态-------------
+    deleteState() {
+      if (this.userEditForm.departmentId) {
+        this.initFormData = this.userEditForm;
+        // 修改
+        this.$refs["userEditRef"].validate((valid) => {
+          if (valid) {
+            console.log(this.userEditForm, "--传入修改的内容");
+            // editDepartments(this.userEditForm).then((res) => {
+            //   if (res.code === "00000") {
+            //     this.$message.success("修改成功！");
+            //     this.$parent.queryUserList();
+            //     this.dialogFormVisible = false; // 让弹窗隐藏
+            //   }
+            // });
+          }
+        });
+      } else {
+        console.log("新增了");
+        this.$refs["userEditRef"].validate((valid) => {
+          if (valid) {
+            console.log(this.userEditForm, "新增内容带字段------");
+            // deleteState(this.userEditForm).then((res) => {
+            //   if (res && res.code && res.code === "00000") {
+            //     this.$message.success("创建成功！");
+            //     this.dialogClose();
+            //     this.$parent.queryUserList();
+            //   }
+            // });
+          } else {
+            return false;
+          }
+        });
+      }
     },
   },
 };

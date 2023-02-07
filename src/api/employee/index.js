@@ -31,5 +31,13 @@ const deleteEmployee = (data) =>
     url: BaseURL + "/app/employee/deleteById/" + data,
     
   });
-
-export { createEmployee, updateEmployee, deleteEmployee, queryEmployee };
+// 员工状态
+// 新增状态
+const deleteState = (data) =>
+  Request({
+    method: "POST",
+    url: BaseURL + "/app/staus-record/create",
+    data,
+    
+  });
+export { createEmployee, updateEmployee, deleteEmployee, queryEmployee ,deleteState};

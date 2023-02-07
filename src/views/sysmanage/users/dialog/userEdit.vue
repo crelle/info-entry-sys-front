@@ -155,7 +155,7 @@ export default {
         ],
         userNickName: [
           {
-            required: false,
+            required: true,
             message: "请输入姓名",
             trigger: ["blur", "change"],
           },
@@ -233,7 +233,7 @@ export default {
 
         roles: [
           {
-            required: false,
+            required: true,
             message: "请选择权限",
             trigger: ["blur", "change"],
           },
@@ -271,12 +271,17 @@ export default {
     },
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置
+      this.dialogClose(); // 取消触发
       this.resetForm("userEditRef"); // 重置表单
     },
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
       console.log(this.userEditForm, "取消");
+      // 清空权限内的地段
+      this.userEditForm.roles[0].id = "";
+      this.userEditForm.roles[0].name = "";
+      this.userEditForm.roles[0].nameZh = "";
     },
     // 重置表单
     resetForm(formName) {
@@ -303,7 +308,7 @@ export default {
           // console.log(this.userEditForm, "------roles-----");
         }
       });
-      console.log(this.initFormData.id,'------修改 有 创建无------');
+      console.log(this.initFormData.id, "------修改 有 创建无------");
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         // 修改
@@ -314,9 +319,9 @@ export default {
               // console.log(res, "----res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
+                this.dialogClose();
                 this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.dialogFormVisible = false; // 让弹窗隐
               }
             });
           } else {

@@ -97,9 +97,9 @@
                 clearable
                 placeholder="请选择"
               >
-                <el-option label="前期" value="1"></el-option>
+                <el-option label="前期投入" value="1"></el-option>
                 <el-option label="开发中" value="2"></el-option>
-                <el-option label="交付中" value="3"></el-option>
+                <el-option label="交付阶段" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
