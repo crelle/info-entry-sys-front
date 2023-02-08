@@ -36,8 +36,16 @@ const deleteEmployee = (data) =>
 const deleteState = (data) =>
   Request({
     method: "POST",
-    url: BaseURL + "/app/staus-record/create",
+    url: BaseURL + "/app/status-record/create",
     data,
     
   });
-export { createEmployee, updateEmployee, deleteEmployee, queryEmployee ,deleteState};
+// 沟通记录
+const communIcate = (data) =>
+  Request({
+    method: "POST",
+    url: BaseURL + "/app/communicate/create",
+    data,
+    
+  });
+export { createEmployee, updateEmployee, deleteEmployee, queryEmployee ,deleteState,communIcate};

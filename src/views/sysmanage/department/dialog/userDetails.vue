@@ -17,21 +17,36 @@
                   <ul class="box">
                     <li>
                       <span>部门名:</span
-                      ><span :title="userEditForm.department">{{ userEditForm.department }}</span>
+                      ><span :title="userEditForm.department">{{
+                        userEditForm.department
+                      }}</span>
                     </li>
                     <li>
                       <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span :title="userEditForm.cellPhone">{{ userEditForm.cellPhone }}</span>
+                      ><span :title="userEditForm.cellPhone">{{
+                        userEditForm.cellPhone
+                      }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span :title="userEditForm.email">{{ userEditForm.email }}</span>
+                      <span>邮箱:</span
+                      ><span :title="userEditForm.email">{{
+                        userEditForm.email
+                      }}</span>
                     </li>
                     <li>
                       <span>部门总部地址:</span
-                      ><span :title="userEditForm.address">{{ userEditForm.address }}</span>
+                      ><span :title="userEditForm.address">{{
+                        userEditForm.address
+                      }}</span>
+                    </li>
+                    <li>
+                      <span>上级部门:</span
+                      ><span :title="userEditForm.departmentUp">{{
+                        userEditForm.departmentUp
+                      }}</span>
                     </li>
                     <li class="new">
                       <span>部门介绍:</span>
@@ -189,6 +204,7 @@ export default {
         introduce: "",
         jobNo: "",
         userId: "",
+        departmentUp: "",
       },
       initFormData: {},
     };

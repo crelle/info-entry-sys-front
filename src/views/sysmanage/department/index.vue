@@ -276,6 +276,18 @@ export default {
               this.tableData = res.data.records;
               this.tableDataUp = res1.data.records;
               console.log(this.tableData, "查询部门数据");
+              this.tableData.forEach((item) => {
+                console.log(item.departmentUp, "*----部门---");
+                let value = item.departmentUp;
+                let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
+                let flag = reg.test(value); //true
+                if (flag) {
+                  console.log("---部门存在--");
+                }else{
+                  console.log("---部门 ----不存在--");
+                  item.departmentUp="(部门不存在了)"
+                }
+              });
               this.paginationOptions.total = res.data.total; // 分页器赋值
             });
           });

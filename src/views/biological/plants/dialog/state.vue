@@ -12,84 +12,86 @@
         <el-tab-pane label="" name="second">
           <div class="boxtop">
             <el-form
-              :model="userEditForm"
+              :model="stateForm"
               :rules="userEditFormRules"
               ref="userEditRef"
               size="mini"
             >
-              <el-form-item label="员工状态" prop="employee_status">
-                <el-select
-                  v-model="userEditForm.employee_status"
-                  placeholder="请选择状态"
-                >
+              <el-form-item label="员工状态" prop="status">
+                <el-select v-model="stateForm.status" placeholder="请选择状态">
                   <el-option label="在岸" value="在岸"></el-option>
                   <el-option label="出差" value="出差"></el-option>
                   <el-option label="外派" value="外派"></el-option>
                   <el-option label="离职" value="离职"></el-option>
                 </el-select>
               </el-form-item>
-              <div class="lis" v-if="userEditForm.employee_status == '出差'">
-                <el-form-item label="出差地" prop="cell_phone">
+              <div class="lis" v-if="stateForm.status == '出差'">
+                <el-form-item label="出差地" prop="area">
                   <el-input
                     placeholder="出差地"
-                    v-model="userEditForm.businesstravel_place"
+                    v-model="stateForm.area"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="出差时间" prop="cell_phone">
-                  <el-input
-                    placeholder="出差时间"
-                    v-model="userEditForm.businesstravel_time"
-                  ></el-input>
+                <el-form-item label="出差时间" prop="time">
+                  <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="预计出差周期" prop="cell_phone">
+                <el-form-item label="预计出差周期" prop="cycle">
                   <el-input
                     placeholder="预计出差周期"
-                    v-model="userEditForm.businesstravel_cycle"
+                    v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="lis" v-if="userEditForm.employee_status == '外派'">
-                <el-form-item label="派遣地" prop="cell_phone">
+              <div class="lis" v-if="stateForm.status == '外派'">
+                <el-form-item label="派遣地" prop="area">
                   <el-input
                     placeholder="派遣地"
-                    v-model="cell_phone"
+                    v-model="stateForm.area"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="派遣时间" prop="cell_phone">
-                  <el-input
-                    placeholder="派遣时间"
-                    v-model="cell_phone"
-                  ></el-input>
+                <el-form-item label="派遣时间" prop="time">
+                 <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="预计派遣周期" prop="cell_phone">
+                <el-form-item label="预计派遣周期" prop="cycle">
                   <el-input
                     placeholder="预计派遣周期"
-                    v-model="cell_phone"
+                    v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="lis" v-if="userEditForm.employee_status == '离职'">
-                <el-form-item label="离职时间" prop="cell_phone">
-                  <el-input
-                    placeholder="离职时间"
-                    v-model="cell_phone"
-                  ></el-input>
+              <div class="lis" v-if="stateForm.status == '离职'">
+                <el-form-item label="离职时间" prop="time">
+                  <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="离职原因" prop="cell_phone">
+                <el-form-item label="离职原因" prop="cycle">
                   <el-input
                     placeholder="离职原因"
-                    v-model="cell_phone"
+                    v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="离职去向" prop="cell_phone">
+                <el-form-item label="离职去向" prop="area">
                   <el-input
                     placeholder="离职去向"
-                    v-model="cell_phone"
+                    v-model="stateForm.area"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="preservation">
-
                 <el-button type="primary" @click="deleteState">状 态</el-button>
                 <el-button type="primary" @click="onCertain">保 存</el-button>
                 <el-button class="cancel" type="primary" @click="close"
@@ -125,13 +127,25 @@
 
 <script>
 import { deleteState } from "@/api/employee";
+import { Decrypt } from "@/util/crypto/secret";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
-     
+      //  状态
+      stateForm: {
+        area: "",
+        createTime: "",
+        cycle: "",
+        id: "",
+        jobNo: "",
+        recorder: "",
+        recorderNo: "",
+        status: "",
+        time: "",
+      },
       activeName: "second",
       // 当前日期
       monthValue: "",
@@ -174,19 +188,19 @@ export default {
       displays: true,
       isInput: false,
       userEditForm: {
-         // 出差
-      businesstravel_place: "",
-      businesstravel_time: "",
-      businesstravel_cycle: "",
-      // 派遣
-      dispatch_place: "",
-      dispatch_time: "",
-      dispatch_cycle: "",
-      // 离职
-      quit_time: "",
-      quit_reason: "",
-      quit_going: "",
-      //
+        // 出差
+        businesstravel_place: "",
+        businesstravel_time: "",
+        businesstravel_cycle: "",
+        // 派遣
+        dispatch_place: "",
+        dispatch_time: "",
+        dispatch_cycle: "",
+        // 离职
+        quit_time: "",
+        quit_reason: "",
+        quit_going: "",
+        //
         id: "",
         job_no: "",
         name: "",
@@ -254,6 +268,7 @@ export default {
       },
     };
   },
+  created() {},
   methods: {
     // 编辑
     edit() {
@@ -284,6 +299,17 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
+      console.log(row, "----传来的row");
+      if (row) {
+        this.userdetail = window.localStorage.getItem("userdetail")
+          ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+          : {};
+        console.log(this.userdetail, "我是 当前----用户");
+        this.stateForm.recorder = this.userdetail.userNickName;
+        this.stateForm.recorderNo = this.userdetail.jobNo;
+        this.stateForm.jobNo = row.jobNo;
+        console.log(this.stateForm, "-----提前处理好的传入内容");
+      }
       this.empty(); //清空内容
       this.cancel();
       this.dialogFormVisible = true; // 让弹窗显示
@@ -358,8 +384,9 @@ export default {
       this.textarea = "";
     },
     // 状态-------------
-    deleteState() {
-      if (this.userEditForm.departmentId) {
+    deleteState(row) {
+      console.log(row, "传来的row=---------");
+      if (this.stateForm.id) {
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
@@ -378,14 +405,16 @@ export default {
         console.log("新增了");
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "新增内容带字段------");
-            // deleteState(this.userEditForm).then((res) => {
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message.success("创建成功！");
-            //     this.dialogClose();
-            //     this.$parent.queryUserList();
-            //   }
-            // });
+            console.log(this.stateForm, "新增内容带字段------");
+
+            deleteState(this.stateForm).then((res) => {
+              console.log(res,"------------成了----");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("创建成功！");
+                // this.dialogClose();
+                this.$parent.queryUserList();
+              }
+            });
           } else {
             return false;
           }

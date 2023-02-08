@@ -160,7 +160,7 @@
                     type="textarea"
                     :rows="3"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                    v-model="record.text"
                   >
                   </el-input>
                 </el-card>
@@ -180,6 +180,8 @@
 </template>
 
 <script>
+import { communIcate } from "@/api/employee";
+import { Decrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 export default {
   props: {
@@ -188,6 +190,15 @@ export default {
   },
   data() {
     return {
+      // 沟通记录
+      record: {
+        id: "",
+        jobNo: "",
+        recorder: "",
+        recorderNo: "",
+        text: "",
+        time: "",
+      },
       aaa: "",
       activeName: "first",
       // 当前日期
@@ -323,7 +334,8 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(this.initFormData); // 为表单赋值
-          console.log(this.initFormData, "--------------");
+          console.log(this.initFormData, "------传来的当前角色信息--------");
+          this.record.jobNo = this.initFormData.jobNo;
         });
       }
     },
@@ -350,19 +362,35 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.textarea != "") {
-        this.datanew.textarea1 = this.textarea;
-        this.datanew.time = this.monthValue;
-        this.datanew.username = this.userEditForm.username;
-        if (this.datanew.textarea1 != "") {
-          console.log(this.datanew, "内容和日期-用户名");
-          alert("保存成功");
-          // this.empty();
-        } else {
-          return false;
-        }
-      } else {
-        alert("内容为空,请输入内容!");
+      if (this.record.text != "") {
+        this.userdetail = window.localStorage.getItem("userdetail")
+          ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+          : {};
+        console.log(this.userdetail, "我是 当前----用户");
+        this.record.recorder = this.userdetail.userNickName;
+        this.record.recorderNo = this.userdetail.jobNo;
+        this.record.text = this.record.text;
+        console.log(this.record, "---------保存传入的内容---");
+        communIcate(this.record).then((res) => {
+          console.log(res, "------------成了----");
+          if (res && res.code && res.code === "00000") {
+            this.$message.success("创建成功！");
+            // this.dialogClose();
+            this.record.text = "";
+            this.$parent.queryUserList();
+          }
+        });
+        //   if (this.datanew.textarea1 != "") {
+        //     console.log(this.datanew, "内容和日期-用户名");
+        //     alert("保存成功");
+        //     // this.empty();
+        //   } else {
+        //     return false;
+        //   }
+        // } else {
+        //   alert("内容为空,请输入内容!");
+      }else{
+         this.$message.success("内容为空,请输入内容!");
       }
     },
     // //
@@ -410,7 +438,7 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-input__inner {
-    color: #606266 !important;
+  color: #606266 !important;
 }
 // 修改对话框高度
 .showAll_dialog {

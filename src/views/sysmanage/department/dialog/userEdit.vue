@@ -280,6 +280,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
+      this.userEditForm.departmentId = "";
     },
     // 重置表单
     resetForm(formName) {
@@ -294,7 +295,11 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.userEditForm.departmentId) {
+      console.log(
+        this.initFormData.departmentId,
+        "this.initFormData.departmentId---编辑有"
+      );
+      if (this.initFormData.departmentId) {
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
@@ -305,6 +310,8 @@ export default {
                 this.$message.success("修改成功！");
                 this.$parent.queryUserList();
                 this.dialogFormVisible = false; // 让弹窗隐藏
+              } else {
+                his.$message.success("修改失败！");
               }
             });
           }
@@ -440,8 +447,8 @@ export default {
 ::v-deep .el-dialog__body {
   padding: 0;
 }
-::v-deep .el-dialog{
-  min-width:400px;
+::v-deep .el-dialog {
+  min-width: 400px;
 }
 </style>
 
