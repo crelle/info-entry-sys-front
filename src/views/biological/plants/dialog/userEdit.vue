@@ -311,6 +311,7 @@ import {
   deleteEmployee,
   updateEmployee,
 } from "@/api/employee";
+
 export default {
   props: {
     toChild: String,
@@ -696,6 +697,7 @@ export default {
       },
     };
   },
+
   methods: {
     //编辑项目的自动选择
     queryson(e) {
@@ -832,13 +834,13 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
             console.log(this.userEditForm, "---修改传入的内容---------");
-            // updateEmployee(this.userEditForm).then((res) => {
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message.success("修改成功！");
-            //     this.$parent.queryTableList();
-            //     this.dialogFormVisible = false;
-            //   }
-            // });
+            updateEmployee(this.userEditForm).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                this.$parent.queryTableList();
+                this.dialogFormVisible = false;
+              }
+            });
           } else {
             return false;
           }
@@ -848,13 +850,13 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
             console.log(this.userEditForm, "-----------创建传入的内容");
-            // createEmployee(this.userEditForm).then((res) => {
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message.success("创建成功！");
-            //     this.$parent.queryTableList();
-            //     this.closeDialog();
-            //   }
-            // });
+            createEmployee(this.userEditForm).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("创建成功！");
+                this.$parent.queryTableList();
+                this.closeDialog();
+              }
+            });
           } else {
             return false;
           }

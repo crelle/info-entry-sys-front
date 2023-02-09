@@ -8,7 +8,7 @@
       @close="closeDialog"
       class="showAll_dialog"
     >
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="" name="second">
           <div class="boxtop">
             <el-form
@@ -18,7 +18,12 @@
               size="mini"
             >
               <el-form-item label="员工状态" prop="status">
-                <el-select v-model="stateForm.status" placeholder="请选择状态">
+                <el-select
+                  v-model="stateForm.status"
+                  placeholder="请选择状态"
+                  clearable
+                  filterable
+                >
                   <el-option label="在岸" value="在岸"></el-option>
                   <el-option label="出差" value="出差"></el-option>
                   <el-option label="外派" value="外派"></el-option>
@@ -55,7 +60,7 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="派遣时间" prop="time">
-                 <el-date-picker
+                  <el-date-picker
                     v-model="stateForm.time"
                     type="date"
                     placeholder="选择日期"
@@ -92,7 +97,6 @@
                 </el-form-item>
               </div>
               <div class="preservation">
-                <el-button type="primary" @click="deleteState">状 态</el-button>
                 <el-button type="primary" @click="onCertain">保 存</el-button>
                 <el-button class="cancel" type="primary" @click="close"
                   >取 消</el-button
@@ -109,12 +113,16 @@
                 :label="item.textarea1"
                 :value="index"
                 placement="top"
-                :timestamp="item.time"
+                :timestamp="item.createTime"
               >
-                <div class="note_taker">记录人:{{ userEditForm.name }}</div>
+                <div class="note_taker">
+                  记录人:{{ item.recorder }} {{ item.jobNo }}
+                </div>
                 <el-card>
-                  {{ item.text }} : {{ item.textarea1 }} ; {{ item.times }} :
-                  {{ item.time }} ; {{ item.cycles }} : {{ item.cycle }}
+                  状态 : {{ item.status }} <br />
+                  <span> {{ item.place }} {{ item.area }} </span>
+                  <span> {{ item.startTime }} {{ item.time }} </span>
+                  <span>{{ item.cycleReason }} {{ item.cycle }} </span>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -126,7 +134,7 @@
 </template>
 
 <script>
-import { deleteState } from "@/api/employee";
+import { deleteState, queryState } from "@/api/employee";
 import { Decrypt } from "@/util/crypto/secret";
 export default {
   props: {
@@ -149,41 +157,32 @@ export default {
       activeName: "second",
       // 当前日期
       monthValue: "",
-      textarea: "",
       datanew: [],
       datashu: [
-        {
-          text: "出差地点",
-          textarea1: "出差地点xxxzcxxczxx",
-          times: "出差时间",
-          time: "2018/1/12/12时11分",
-          cycles: "预计出差周期",
-          cycle: "18周",
-        },
-        {
-          text: "外派地点",
-          textarea1: "外派地点xxzczxxx",
-          times: "外派时间",
-          time: "2018/2/12/11时12分",
-          cycles: "预计外派周期",
-          cycle: "18周",
-        },
-        {
-          text: "离职去向",
-          textarea1: "离职去向地点xzxcxx",
-          times: "离职时间",
-          time: "2018/3/12/3时21分",
-          cycles: "离职原因",
-          cycle: "出国...",
-        },
-        {
-          text: "离职去向11111111111",
-          textarea1: "离职去向地点xzxc1111xx",
-          times: "离职时间",
-          time: "2018/3/12/3时21分",
-          cycles: "离职原因",
-          cycle: "出国...",
-        },
+        // {
+        //   text: "外派地点",
+        //   textarea1: "外派地点xxzczxxx",
+        //   times: "外派时间",
+        //   time: "2018/2/12/11时12分",
+        //   cycles: "预计外派周期",
+        //   cycle: "18周",
+        // },
+        // {
+        //   text: "离职去向",
+        //   textarea1: "离职去向地点xzxcxx",
+        //   times: "离职时间",
+        //   time: "2018/3/12/3时21分",
+        //   cycles: "离职原因",
+        //   cycle: "出国...",
+        // },
+        // {
+        //   text: "离职去向11111111111",
+        //   textarea1: "离职去向地点xzxc1111xx",
+        //   times: "离职时间",
+        //   time: "2018/3/12/3时21分",
+        //   cycles: "离职原因",
+        //   cycle: "出国...",
+        // },
       ],
       displays: true,
       isInput: false,
@@ -294,10 +293,6 @@ export default {
       this.dialogFormVisible = false; // 让弹窗显示
       this.cancel();
     },
-    // 表格
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     openDialog(row) {
       console.log(row, "----传来的row");
       if (row) {
@@ -312,6 +307,7 @@ export default {
       }
       this.empty(); //清空内容
       this.cancel();
+      this.queryStateform(); //查 状态表
       this.dialogFormVisible = true; // 让弹窗显示
 
       // 当前时间
@@ -361,65 +357,73 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-    /* 保存  */
-    onCertain() {
-      if (this.textarea != "") {
-        this.datanew.textarea1 = this.textarea;
-        this.datanew.time = this.monthValue;
-        this.datanew.username = this.userEditForm.username;
-        if (this.datanew.textarea1 != "") {
-          console.log(this.datanew, "内容和日期-用户名");
-          alert("保存成功");
-          this.empty();
-        } else {
-          return false;
-        }
-      } else {
-        alert("内容为空,请输入内容!");
-      }
-    },
-    //
     empty() {
       console.log("清空!");
       this.textarea = "";
     },
-    // 状态-------------
-    deleteState(row) {
-      console.log(row, "传来的row=---------");
-      if (this.stateForm.id) {
-        this.initFormData = this.userEditForm;
-        // 修改
-        this.$refs["userEditRef"].validate((valid) => {
-          if (valid) {
-            console.log(this.userEditForm, "--传入修改的内容");
-            // editDepartments(this.userEditForm).then((res) => {
-            //   if (res.code === "00000") {
-            //     this.$message.success("修改成功！");
-            //     this.$parent.queryUserList();
-            //     this.dialogFormVisible = false; // 让弹窗隐藏
-            //   }
-            // });
-          }
-        });
-      } else {
-        console.log("新增了");
-        this.$refs["userEditRef"].validate((valid) => {
-          if (valid) {
-            console.log(this.stateForm, "新增内容带字段------");
-
+    //   /* 保存  */ 状态-------------
+    onCertain() {
+      console.log("状态新增了");
+      this.$refs["userEditRef"].validate((valid) => {
+        if (valid) {
+          console.log(this.stateForm, "新增内容带字段------");
+          if (this.stateForm.status != "") {
             deleteState(this.stateForm).then((res) => {
-              console.log(res,"------------成了----");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
                 // this.dialogClose();
                 this.$parent.queryUserList();
+                this.queryStateform();
+                this.closeDialog();
               }
             });
           } else {
-            return false;
+            this.$message.success("状态为空,请选择状态!");
           }
-        });
-      }
+        } else {
+          return false;
+        }
+      });
+    },
+    // 分页查询状态--记录表
+    queryStateform() {
+      console.log("----分页查询状态--记录表------------");
+      let data = { records: [{ ...this.stateForm }] };
+      data.current = 1;
+      data.size = 9999;
+      console.log(data,"---------------查询状态--记录---------11111-------------");
+      queryState(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data, "-----查询-----成了");
+          this.datashu = res.data.records;
+          console.log(this.datashu, "res.data.records, -----查询-----成了");
+          this.datashu.forEach((items) => {
+            items.createTime = items.createTime.split("T")[0];
+            if (items.time != null) {
+              items.time = items.time.split("T")[0];
+            }
+            if (items.status == "在岸") {
+              items.place = "";
+              items.startTime = "";
+            }
+            if (items.status == "出差") {
+              items.place = "出差地址 :";
+              items.startTime = "出差时间 :";
+              items.cycleReason = "出差周期 :";
+            }
+            if (items.status == "外派") {
+              items.place = "外派地址 :";
+              items.startTime = "外派时间 :";
+              items.cycleReason = "外派周期 :";
+            }
+            if (items.status == "离职") {
+              items.place = "离职去向 :";
+              items.startTime = "离职时间 :";
+              items.cycleReason = "离职原因 :";
+            }
+          });
+        }
+      });
     },
   },
 };
@@ -591,5 +595,12 @@ export default {
 }
 ::v-deep .el-timeline {
   padding-left: 0;
+}
+.el-card__body {
+  span {
+    display: block;
+    float: left;
+    margin-right: 25px;
+  }
 }
 </style>

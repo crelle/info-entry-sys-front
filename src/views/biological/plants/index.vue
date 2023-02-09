@@ -214,11 +214,7 @@
         >
         </el-table-column>
         <!-- 员工状态 -->
-        <el-table-column
-          prop="employee_status"
-          label="员工状态"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="state" label="员工状态" show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="postName"
@@ -304,7 +300,7 @@ import { queryCustomer } from "@/api/customer";
 // 项目
 import { queryProject } from "@/api/project";
 // 员工
-import { queryEmployee, deleteEmployee } from "@/api/employee";
+import { queryEmployee, deleteEmployee, queryState } from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
@@ -417,7 +413,6 @@ export default {
                     queryPost(data).then((res6) => {
                       this.tableyPost = res6.data.records; // 岗位表格数据赋值
                       console.log(this.tableyPost, "----------岗位数据");
-
                       this.tableData = res.data.records; // 表格数据赋值
                       console.log(this.tableData, "员工表格数据赋值");
                       this.tableProject = res1.data.records; // 项目表格数据赋值
@@ -426,6 +421,25 @@ export default {
                       this.MockUser = res4.data.records; // 地域数据表格数据赋值
                       this.tableCustomer = res5.data.records; // 客户表格数据赋值
                       this.tableData.forEach((item) => {
+                        item.state = "";
+                        let data = { records: [{ ...this.stateForm }] };
+                        data.records[0].jobNo = item.jobNo;
+                        data.current = 1;
+                        data.size = 99;
+                        // 查询状态--赋值
+                        queryState(data).then((reszt) => {
+                          if (reszt.data.records[0]) {
+                            item.state = reszt.data.records[0].status;
+                            this.$set(
+                              item,
+                              item.state,
+                              reszt.data.records[0].status
+                            );
+                          } else {
+                            item.state = "(当前状态未定义)";
+                            this.$set(item, item.state, item.state);
+                          }
+                        });
                         this.tableProject.forEach((items) => {
                           if (item.projectId == items.projectId) {
                             // console.log(items, "------------111");
@@ -657,7 +671,7 @@ export default {
 // ::v-deep .el-input__inner {
 //   min-width: 193px;
 // }
-.demo-form-inline{
+.demo-form-inline {
   min-width: 1330px;
 }
 </style>
