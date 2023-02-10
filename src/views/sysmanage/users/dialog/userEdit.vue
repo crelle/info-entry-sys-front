@@ -105,6 +105,7 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    // queryRoleData: "",
     queryRoleData: "",
   },
   data() {
@@ -252,7 +253,8 @@ export default {
   methods: {
     // 弹窗
     openDialog(row) {
-      console.log(row, "ROW");
+      console.log(row, "---ROW---", this.queryRoleData);
+
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -262,6 +264,7 @@ export default {
         });
       } else {
         console.log("我是新增");
+        this.userEditForm.roles[0].nameZh = "";
       }
     },
     initForm(data) {
@@ -278,10 +281,6 @@ export default {
     dialogClose() {
       this.dialogFormVisible = false;
       console.log(this.userEditForm, "取消");
-      // 清空权限内的地段
-      this.userEditForm.roles[0].id = "";
-      this.userEditForm.roles[0].name = "";
-      this.userEditForm.roles[0].nameZh = "";
     },
     // 重置表单
     resetForm(formName) {
@@ -320,8 +319,11 @@ export default {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗隐
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗隐
+                });
               }
             });
           } else {
@@ -345,8 +347,11 @@ export default {
                 // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显示
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗显示
+                });
               }
             });
           } else {

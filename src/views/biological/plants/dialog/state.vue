@@ -75,7 +75,11 @@
                 </el-form-item>
               </div>
               <div class="lis" v-if="stateForm.status == '离职'">
-                <el-form-item label="离职时间" prop="time">
+                <el-form-item
+                  style="min-width: 281px"
+                  label="离职时间"
+                  prop="time"
+                >
                   <el-date-picker
                     v-model="stateForm.time"
                     type="date"
@@ -89,7 +93,11 @@
                     v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="离职去向" prop="area">
+                <el-form-item
+                  style="min-width: 191px"
+                  label="离职去向"
+                  prop="area"
+                >
                   <el-input
                     placeholder="离职去向"
                     v-model="stateForm.area"
@@ -391,7 +399,10 @@ export default {
       let data = { records: [{ ...this.stateForm }] };
       data.current = 1;
       data.size = 9999;
-      console.log(data,"---------------查询状态--记录---------11111-------------");
+      console.log(
+        data,
+        "---------------查询状态--记录---------11111-------------"
+      );
       queryState(data).then((res) => {
         if (res && res.code && res.code === "00000") {
           console.log(res.data, "-----查询-----成了");
@@ -497,7 +508,9 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-form-item__label {
-  width: 96px !important;
+  text-align: right !important;
+  padding: 0;
+  min-width: 0;
 }
 ::v-deep .el-textarea__inner {
   min-height: 130px !important;
@@ -583,8 +596,29 @@ export default {
   margin-left: 10px;
   border-top: 2px solid #eee;
   padding-top: 15px;
+  .el-form-item:nth-child(1) {
+    ::v-deep .el-form-item__label {
+      min-width: 44px;
+      // background-color: aqua;
+    }
+  }
+  .el-form-item:nth-child(2) {
+    ::v-deep .el-form-item__label {
+      min-width: 66px;
+      padding-left: 10px;
+      // background-color: rgb(129, 255, 11);
+    }
+  }
+  .el-form-item:nth-child(3) {
+    ::v-deep .el-form-item__label {
+      padding-left: 10px;
+      min-width: 94px;
+      // background-color: rgb(183, 0, 255);
+    }
+  }
 }
 ::v-deep .preservation {
+  min-width: 658px;
   margin-bottom: 0;
 }
 ::v-deep .el-tabs__nav-scroll {
@@ -602,5 +636,25 @@ export default {
     float: left;
     margin-right: 25px;
   }
+}
+// 头部缩放滚动条
+
+@media screen and (min-width: 1446px) {
+  ::v-deep .el-form::-webkit-scrollbar {
+    display: none;
+    .el-input__inner {
+      margin: 0 10px;
+    }
+    .el-form-item--mini {
+      min-width: 310px;
+    }
+  }
+}
+::v-deep .el-form {
+  overflow-x: scroll;
+}
+
+::v-deep .el-input__inner {
+  min-width: 105px;
 }
 </style>
