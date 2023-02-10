@@ -47,7 +47,9 @@
                 </el-form-item>
                 <el-form-item label="预计出差周期" prop="cycle">
                   <el-input
-                    placeholder="预计出差周期"
+                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                    oninput="value=value.replace(/[^\d.]/g,'')"
+                    placeholder="请输入数字 (天)"
                     v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
@@ -69,12 +71,24 @@
                 </el-form-item>
                 <el-form-item label="预计派遣周期" prop="cycle">
                   <el-input
-                    placeholder="预计派遣周期"
+                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                    oninput="value=value.replace(/[^\d.]/g,'')"
+                    placeholder="请输入数字 (天)"
                     v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="lis" v-if="stateForm.status == '离职'">
+                <el-form-item
+                  style="min-width: 191px"
+                  label="离职去向"
+                  prop="area"
+                >
+                  <el-input
+                    placeholder="离职去向"
+                    v-model="stateForm.area"
+                  ></el-input>
+                </el-form-item>
                 <el-form-item
                   style="min-width: 281px"
                   label="离职时间"
@@ -93,20 +107,12 @@
                     v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
-                <el-form-item
-                  style="min-width: 191px"
-                  label="离职去向"
-                  prop="area"
-                >
-                  <el-input
-                    placeholder="离职去向"
-                    v-model="stateForm.area"
-                  ></el-input>
-                </el-form-item>
               </div>
               <div class="preservation">
-                <el-button type="primary" @click="onCertain">保 存</el-button>
-                <el-button class="cancel" type="primary" @click="close"
+                <el-button type="primary" size="mini" @click="onCertain"
+                  >保 存</el-button
+                >
+                <el-button class="cancel" size="mini" type="info" @click="close"
                   >取 消</el-button
                 >
               </div>
@@ -265,10 +271,31 @@ export default {
       // baseURL: BaseURL,
       initFormData: {},
       userEditFormRules: {
-        employee_status: [
+        status: [
           {
             required: true,
             message: "请选择状态",
+            trigger: ["blur", "change"],
+          },
+        ],
+        area: [
+          {
+            required: true,
+            message: "输入内容格式不正确",
+            trigger: ["blur", "change"],
+          },
+        ],
+        time: [
+          {
+            required: true,
+            message: "请选择时间",
+            trigger: ["blur", "change"],
+          },
+        ],
+        cycle: [
+          {
+            required: true,
+            message: "输入内容格式不正确",
             trigger: ["blur", "change"],
           },
         ],
@@ -376,17 +403,34 @@ export default {
         if (valid) {
           console.log(this.stateForm, "新增内容带字段------");
           if (this.stateForm.status != "") {
-            deleteState(this.stateForm).then((res) => {
-              if (res && res.code && res.code === "00000") {
-                this.$message.success("创建成功！");
-                // this.dialogClose();
-                this.$parent.queryUserList();
-                this.queryStateform();
-                this.closeDialog();
+            console.log(this.stateForm.status, "------------状态---");
+            if (
+              this.stateForm.status == "出差" ||
+              this.stateForm.status == "外派"
+            ) {
+              if (this.stateForm.cycle != "") {
+                this.stateForm.cycle = this.stateForm.cycle + "天";
+                deleteState(this.stateForm).then((res) => {
+                  if (res && res.code && res.code === "00000") {
+                    this.$message.success("创建成功！");
+                    // this.dialogClose();
+                    this.$parent.queryUserList();
+                    this.queryStateform();
+                    this.closeDialog();
+                  }
+                });
               }
-            });
-          } else {
-            this.$message.success("状态为空,请选择状态!");
+            } else {
+              deleteState(this.stateForm).then((res) => {
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("创建成功！");
+                  // this.dialogClose();
+                  this.$parent.queryUserList();
+                  this.queryStateform();
+                  this.closeDialog();
+                }
+              });
+            }
           }
         } else {
           return false;
@@ -474,6 +518,9 @@ export default {
 }
 ::v-deep .el-input__inner {
   color: rgb(0, 0, 0) !important;
+
+  width: 180px;
+  color: #606266 !important;
 }
 // 修改对话框高度
 .showAll_dialog {
@@ -618,7 +665,7 @@ export default {
   }
 }
 ::v-deep .preservation {
-  min-width: 658px;
+  min-width: 767px;
   margin-bottom: 0;
 }
 ::v-deep .el-tabs__nav-scroll {
@@ -639,7 +686,7 @@ export default {
 }
 // 头部缩放滚动条
 
-@media screen and (min-width: 1446px) {
+@media screen and (min-width: 1698px) {
   ::v-deep .el-form::-webkit-scrollbar {
     display: none;
     .el-input__inner {
@@ -656,5 +703,8 @@ export default {
 
 ::v-deep .el-input__inner {
   min-width: 105px;
+}
+::v-deep .el-date-editor {
+  width: 180px;
 }
 </style>

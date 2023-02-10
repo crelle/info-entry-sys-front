@@ -291,7 +291,7 @@
               >
               <el-button
                 class="cancel"
-                type="primary"
+                type="info"
                 @click="closeDialog"
                 size="mini"
                 >取 消</el-button

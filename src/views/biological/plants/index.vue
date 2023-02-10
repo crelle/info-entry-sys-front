@@ -429,6 +429,7 @@ export default {
                         // 查询状态--赋值
                         queryState(data).then((reszt) => {
                           if (reszt.data.records[0]) {
+                            console.log(reszt.data.records,"-------状态");
                             item.state = reszt.data.records[0].status;
                             this.$set(
                               item,
