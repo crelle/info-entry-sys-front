@@ -47,10 +47,10 @@
                 </el-form-item>
                 <el-form-item label="预计出差周期" prop="cycle">
                   <el-input
-                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
-                    oninput="value=value.replace(/[^\d.]/g,'')"
                     placeholder="请输入数字 (天)"
                     v-model="stateForm.cycle"
+                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                    oninput="value=value.replace(/[^\d.]/g,'')"
                   ></el-input>
                 </el-form-item>
               </div>

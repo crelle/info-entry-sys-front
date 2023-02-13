@@ -16,6 +16,14 @@ const queryEmployee = (data) =>
     data,
   });
 
+// 手动分页查询 员工
+const queryEmployeeManual = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/app/employee/manualPage",
+    data,
+  });
+
 // 编辑员工
 const updateEmployee = (data) =>
   Request({
@@ -68,4 +76,5 @@ export {
   communIcate,
   queryState,
   queryRecord,
+  queryEmployeeManual,
 };

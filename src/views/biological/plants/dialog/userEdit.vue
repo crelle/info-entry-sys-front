@@ -365,6 +365,7 @@ export default {
         name: "",
         nativeAddress: "",
         postId: "",
+        postName: "",
         projectId: "",
         residence: "",
         school: "",
