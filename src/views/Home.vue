@@ -6,7 +6,7 @@
         <div class="header_avatar">
           <div @click="personal()">
             <el-avatar size="small" :src="userdetail.userAvatar"></el-avatar>
-            <span>你好 {{ userdetail.userNickName }}</span>
+            <span>{{ this.timeslot }} {{ userdetail.userNickName }}</span>
           </div>
           <el-popconfirm
             confirm-button-text="确认"
@@ -81,6 +81,10 @@ export default {
       tableData: [],
       userdetail: {},
       nowMenu: "",
+      // 时间
+      monthValue: "",
+      // 时间段
+      timeslot: "",
     };
   },
   computed: {
@@ -99,7 +103,28 @@ export default {
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
     // console.log(window.localStorage.getItem("userdetail"));
-    console.log(this.userdetail, "我是 this.userdetail");
+    console.log(this.userdetail, "---我是（当前用户信息）");
+    // 当前时间  判断上午-中午 -下午 欢迎语
+    this.timeslot = "";
+    var data = new Date();
+    var hours = data.getHours();
+    var toMonth = hours;
+    this.monthValue = toMonth;
+    console.log(this.monthValue, "---------时间");
+    if (this.monthValue <= "11"&& this.monthValue > 8) {
+      this.timeslot = "上午好";
+    } else {
+      if (this.monthValue <= 12 && this.monthValue > 11) {
+        this.timeslot = "中午好";
+      } else {
+        if (this.monthValue <= 18 && this.monthValue > 12) {
+          this.timeslot = "下午好";
+        } else {
+          return (this.timeslot = "你好");
+        }
+      }
+    }
+
     if (Object.keys(this.userdetail).length === 0) {
       this.$message.warning("用户信息失效，请重新登录！");
       return this.$router.push("/login");

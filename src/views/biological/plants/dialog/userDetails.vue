@@ -146,29 +146,34 @@
                 placement="top"
                 :timestamp="item.time"
               >
-                <div class="note_taker">记录人:{{ userEditForm.username }}</div>
+                <div class="note_taker">
+                  记录人:{{ item.recorder }} {{ item.recorderNo }}
+                </div>
                 <el-card>
-                  {{ item.textarea1 }}
+                  {{ item.text }}
                 </el-card>
               </el-timeline-item>
-              <el-timeline-item :timestamp="monthValue" placement="top">
+              <el-timeline-item placement="top">
                 <el-card>
                   <div class="note_taker">
-                    记录人:{{ userEditForm.username }}
+                    记录人:{{ userdetail.fullname }} {{ userdetail.jobNo }}
                   </div>
                   <el-input
                     type="textarea"
                     :rows="3"
                     placeholder="请输入内容"
-                    v-model="textarea"
+                    v-model="record.text"
+                    @keyup.enter.native="onCertain('record')"
                   >
                   </el-input>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
             <div class="preservation">
-              <el-button type="primary" @click="onCertain">保 存</el-button>
-              <el-button class="cancel" type="primary" @click="close"
+              <el-button type="primary" size="mini" @click="onCertain"
+                >保 存</el-button
+              >
+              <el-button class="cancel" type="info" size="mini" @click="close"
                 >取 消</el-button
               >
             </div>
@@ -180,6 +185,8 @@
 </template>
 
 <script>
+import { communIcate, queryRecord } from "@/api/employee";
+import { Decrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 export default {
   props: {
@@ -188,30 +195,22 @@ export default {
   },
   data() {
     return {
+      // 沟通记录
+      record: {
+        id: "",
+        jobNo: "",
+        recorder: "",
+        recorderNo: "",
+        text: "",
+        time: "",
+      },
       aaa: "",
       activeName: "first",
       // 当前日期
       monthValue: "",
       textarea: "",
       datanew: [],
-      datashu: [
-        {
-          textarea1:
-            "日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111日志1111",
-          time: "2018/1/12/12时11分",
-          names: "zs",
-        },
-        {
-          textarea1: "日志12221",
-          time: "2018/2/12/11时12分",
-          names: "zs",
-        },
-        {
-          textarea1: "日志133331",
-          time: "2018/3/12/3时21分",
-          names: "zs",
-        },
-      ],
+      datashu: [],
       displays: true,
       isInput: false,
       userEditForm: {
@@ -257,6 +256,18 @@ export default {
       initFormData: {},
     };
   },
+
+  created() {
+    this.userdetail = window.localStorage.getItem("userdetail")
+      ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+      : {};
+    // console.log(window.localStorage.getItem("userdetail"));
+    console.log(
+      this.userdetail.fullname,
+      this.userdetail.jobNo,
+      "我是 当前----用户"
+    );
+  },
   methods: {
     // 编辑
     edit() {
@@ -285,6 +296,7 @@ export default {
     // 表格
     handleClick(tab, event) {
       console.log(tab, event);
+      this.queryRecordform();
     },
     openDialog(row) {
       // this.empty(); //清空内容
@@ -296,19 +308,14 @@ export default {
       var year = data.getFullYear();
       var month = data.getMonth();
       var day = data.getDate();
-      var hours = data.getHours();
-      var minutes = data.getMinutes();
-      var toMonth =
-        year +
-        "/" +
-        (month + 1) +
-        "/" +
-        day +
-        "/" +
-        hours +
-        "时" +
-        minutes +
-        "分";
+      // var hours = data.getHours();
+      // var minutes = data.getMinutes();
+      var toMonth = year + "/" + (month + 1) + "/" + day;
+      // "/" +
+      // hours +
+      // "时" +
+      // minutes +
+      // "分";
       this.monthValue = toMonth;
       if (row) {
         this.initFormData = row;
@@ -323,7 +330,8 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(this.initFormData); // 为表单赋值
-          console.log(this.initFormData, "--------------");
+          console.log(this.initFormData, "------传来的当前角色信息--------");
+          this.record.jobNo = this.initFormData.jobNo;
         });
       }
     },
@@ -350,19 +358,34 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.textarea != "") {
-        this.datanew.textarea1 = this.textarea;
-        this.datanew.time = this.monthValue;
-        this.datanew.username = this.userEditForm.username;
-        if (this.datanew.textarea1 != "") {
-          console.log(this.datanew, "内容和日期-用户名");
-          alert("保存成功");
-          // this.empty();
-        } else {
-          return false;
-        }
+      if (this.record.text != "") {
+        this.userdetail = window.localStorage.getItem("userdetail")
+          ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+          : {};
+        console.log(this.userdetail, "我是 当前----用户");
+        this.record.recorder = this.userdetail.userNickName;
+        this.record.recorderNo = this.userdetail.jobNo;
+        this.record.text = this.record.text;
+        console.log(this.record, "---------保存传入的内容---");
+        communIcate(this.record).then((res) => {
+          console.log(res, "------------成了----");
+          if (res && res.code && res.code === "00000") {
+            this.$message.success("创建成功！");
+            this.record.text = "";
+            this.queryRecordform();
+          }
+        });
+        //   if (this.datanew.textarea1 != "") {
+        //     console.log(this.datanew, "内容和日期-用户名");
+        //     alert("保存成功");
+        //     // this.empty();
+        //   } else {
+        //     return false;
+        //   }
+        // } else {
+        //   alert("内容为空,请输入内容!");
       } else {
-        alert("内容为空,请输入内容!");
+        this.$message.success("内容为空,请输入内容!");
       }
     },
     // //
@@ -370,6 +393,24 @@ export default {
     //   console.log("清空!");
     //   this.textarea = "";
     // },
+    // 分页查询沟通记录表
+    queryRecordform() {
+      console.log("----页查询沟通记录表------------");
+      let data = { records: [{ ...this.record }] };
+      data.current = 1;
+      data.size = 9999;
+      queryRecord(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data.records, "-----查询-----成了");
+          this.datashu = res.data.records;
+          console.log(this.datashu, "res.data.records, -----查询-----成了");
+          this.datashu.forEach((items) => {
+            items.time = items.time.split("T")[0];
+            // item.address = item.address.split("/")[0];
+          });
+        }
+      });
+    },
   },
 };
 </script>
@@ -410,7 +451,7 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-input__inner {
-    color: #606266 !important;
+  color: #606266 !important;
 }
 // 修改对话框高度
 .showAll_dialog {
@@ -456,6 +497,7 @@ export default {
 }
 .note_taker {
   color: #909399;
+  margin-bottom: 20px;
 }
 
 * {

@@ -29,13 +29,14 @@
               <el-select
                 v-model="formOptions.department"
                 placeholder="请选择接部门"
+                clearable
                 filterable
               >
                 <el-option
                   v-for="item in Users"
                   :key="item.index"
                   :label="item.department"
-                  :value="item.departmentId"
+                  :value="item.department"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -45,13 +46,14 @@
               <el-select
                 v-model="formOptions.region"
                 placeholder="请选择接地域名称"
+                clearable
                 filterable
               >
                 <el-option
                   v-for="item in MockUser"
                   :key="item.index"
                   :label="item.regionName"
-                  :value="item.regionId"
+                  :value="item.regionName"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -61,13 +63,14 @@
               <el-select
                 v-model="formOptions.Interface"
                 placeholder="请选择接口人"
+                clearable
                 filterable
               >
                 <el-option
                   v-for="item in Interface"
                   :key="item.index"
                   :label="item.interfaceName"
-                  :value="item.interfaceId"
+                  :value="item.interfaceName"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -88,6 +91,7 @@
               <el-select
                 v-model="formOptions.customer"
                 placeholder="请选择客户名称"
+                clearable
                 filterable
               >
                 <el-option
@@ -104,6 +108,7 @@
               <el-select
                 v-model="formOptions.project"
                 placeholder="请选择项目名称"
+                clearable
                 filterable
               >
                 <el-option
@@ -117,7 +122,12 @@
           </el-col>
           <el-col :span="5">
             <el-form-item label="技能" prop="skill">
-              <el-select v-model="formOptions.skill" placeholder="请选择技能">
+              <el-select
+                v-model="formOptions.skill"
+                placeholder="请选择技能"
+                clearable
+                filterable
+              >
                 <el-option
                   v-for="item in options"
                   :key="item.value"
@@ -129,10 +139,15 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item class="lab" label="状态" prop="state">
-              <el-select v-model="formOptions.state" placeholder="请选择">
+            <el-form-item class="lab" label="状态" prop="status">
+              <el-select
+                v-model="formOptions.status"
+                placeholder="请选择"
+                clearable
+                filterable
+              >
                 <el-option
-                  v-for="item in state"
+                  v-for="item in status"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value"
@@ -214,11 +229,7 @@
         >
         </el-table-column>
         <!-- 员工状态 -->
-        <el-table-column
-          prop="employee_status"
-          label="员工状态"
-          show-overflow-tooltip
-        >
+        <el-table-column prop="status" label="员工状态" show-overflow-tooltip>
         </el-table-column>
         <el-table-column
           prop="postName"
@@ -304,7 +315,12 @@ import { queryCustomer } from "@/api/customer";
 // 项目
 import { queryProject } from "@/api/project";
 // 员工
-import { queryEmployee, deleteEmployee } from "@/api/employee";
+import {
+  queryEmployee,
+  deleteEmployee,
+  queryState,
+  queryEmployeeManual,
+} from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
@@ -318,43 +334,45 @@ export default {
   },
   data() {
     return {
-      state: [
+      // 手动查询员工
+      employeeManual: [],
+      status: [
         {
-          value: "选项1",
+          value: "在岸",
           label: "在岸",
         },
         {
-          value: "选项2",
+          value: "派遣",
           label: "派遣",
         },
         {
-          value: "选项3",
+          value: "出差",
           label: "出差",
         },
         {
-          value: "选项4",
+          value: "离职",
           label: "离职",
         },
       ],
       options: [
         {
-          value: "选项1",
+          value: "C++",
           label: "C++",
         },
         {
-          value: "选项2",
+          value: "JAVA",
           label: "JAVA",
         },
         {
-          value: "选项3",
+          value: "WEB",
           label: "WEB",
         },
         {
-          value: "选项4",
+          value: "UI",
           label: "UI",
         },
         {
-          value: "选项5",
+          value: "TEST",
           label: "TEST",
         },
       ],
@@ -371,8 +389,9 @@ export default {
         regionName: "",
         project: "",
         skill: "",
-        state: "",
+        status: "",
       },
+      formSon: {},
       formClear: "",
       paginationOptions: {
         pageNo: 1,
@@ -396,7 +415,7 @@ export default {
     this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
-    // this.queryPostList();
+    this.querySearch();
   },
   methods: {
     //table数据
@@ -404,72 +423,42 @@ export default {
       let data = { records: [{ ...this.formOptions }] };
       data.current = this.paginationOptions.pageNo;
       data.size = this.paginationOptions.pageSize;
-      queryEmployee(data).then((res) => {
+      queryEmployeeManual(data).then((res) => {
         if (res && res.code && res.code === "00000") {
-          data.current = 1;
-          data.size = 999;
-          queryProject(data).then((res1) => {
-            queryDepartments(data).then((res2) => {
-              queryInterface(data).then((res3) => {
-                queryRegion(data).then((res4) => {
-                  queryCustomer(data).then((res5) => {
-                    //  数据岗位查询方法
-                    queryPost(data).then((res6) => {
-                      this.tableyPost = res6.data.records; // 岗位表格数据赋值
-                      console.log(this.tableyPost, "----------岗位数据");
-
-                      this.tableData = res.data.records; // 表格数据赋值
-                      console.log(this.tableData, "员工表格数据赋值");
-                      this.tableProject = res1.data.records; // 项目表格数据赋值
-                      this.Users = res2.data.records; // 部门数据表格数据赋值
-                      this.Interface = res3.data.records; // 接口人表格数据赋值
-                      this.MockUser = res4.data.records; // 地域数据表格数据赋值
-                      this.tableCustomer = res5.data.records; // 客户表格数据赋值
-                      this.tableData.forEach((item) => {
-                        this.tableProject.forEach((items) => {
-                          if (item.projectId == items.projectId) {
-                            // console.log(items, "------------111");
-                            item.project = items.project; //根据项目id给项目名称赋值
-                            this.Users.forEach((itemli) => {
-                              if (items.departmentId == itemli.departmentId) {
-                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
-                              }
-                            });
-                            this.Interface.forEach((itemis) => {
-                              if (items.interfaceId == itemis.interfaceId) {
-                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
-                                this.tableCustomer.forEach((itemiss) => {
-                                  if (itemis.customerId == itemiss.customerId) {
-                                    item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
-                                  }
-                                });
-                              }
-                            });
-                            this.MockUser.forEach((itemlis) => {
-                              if (items.regionId == itemlis.regionId) {
-                                item.regionName = itemlis.regionName; //根据项目id查找区域id给区域名称赋值
-                              }
-                            });
-                          }
-                        });
-                        this.tableyPost.forEach((itemls) => {
-                          if (item.postId == itemls.postId) {
-                            console.log(itemls, "岗位-----");
-                            item.postName = itemls.postName; //根据项目id查找岗位id给岗位名称赋值
-                            item.postId = itemls.postId; //根据项目id查找岗位id给岗位名称赋值
-                          }
-                        });
-                      });
-                    });
-                  });
-                });
-              });
-            });
-            this.paginationOptions.total = res.data.total; // 分页器赋值
-          });
+          this.tableData = res.data.records; // 表格数据赋值
+          console.log(this.tableData, "员工表格数据赋值");
+          this.paginationOptions.total = res.data.total; // 分页器赋值
         }
       });
     },
+
+    // 搜索查询
+    querySearch() {
+      let data = { records: [{ ...this.formSon }] };
+      data.current = 1;
+      data.size = 999;
+      queryProject(data).then((res1) => {
+        queryDepartments(data).then((res2) => {
+          queryInterface(data).then((res3) => {
+            queryRegion(data).then((res4) => {
+              queryCustomer(data).then((res5) => {
+                //  数据岗位查询方法
+                queryPost(data).then((res6) => {
+                  this.tableyPost = res6.data.records; // 岗位表格数据赋值
+                  this.tableProject = res1.data.records; // 项目表格数据赋值
+                  this.Users = res2.data.records; // 部门数据表格数据赋值
+                  this.Interface = res3.data.records; // 接口人表格数据赋值
+                  this.MockUser = res4.data.records; // 地域数据表格数据赋值
+                  this.tableCustomer = res5.data.records; // 客户表格数据赋值
+                });
+              });
+            });
+          });
+        });
+      });
+    },
+
+    // 搜索查询
     resetForm() {
       this.paginationOptions.pageNo = 1;
       this.formOptions = JSON.parse(JSON.stringify(this.formClear));
@@ -498,23 +487,6 @@ export default {
         console.log(res, "queryProjectList");
       });
     },
-
-    // //  数据岗位查询方法
-    // queryPostList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = 1;
-    //       data.size = 999;
-    //       queryPost(data).then((res) => {
-    //         this.tableyPost = res.data.records; // 岗位表格数据赋值
-    //         console.log(this.tableyPost, "----------岗位数据");
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
 
     queryUserList() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -657,7 +629,7 @@ export default {
 // ::v-deep .el-input__inner {
 //   min-width: 193px;
 // }
-.demo-form-inline{
+.demo-form-inline {
   min-width: 1330px;
 }
 </style>

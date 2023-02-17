@@ -75,6 +75,7 @@
                     </el-form-item>
                     <el-form-item label="工号" prop="jobNo">
                       <el-input
+                        :disabled="jobNo_state"
                         placeholder="工号"
                         v-model="userEditForm.jobNo"
                       ></el-input>
@@ -290,7 +291,7 @@
               >
               <el-button
                 class="cancel"
-                type="primary"
+                type="info"
                 @click="closeDialog"
                 size="mini"
                 >取 消</el-button
@@ -310,6 +311,7 @@ import {
   deleteEmployee,
   updateEmployee,
 } from "@/api/employee";
+
 export default {
   props: {
     toChild: String,
@@ -329,6 +331,9 @@ export default {
   },
   data() {
     return {
+      // 工号是否能修改
+      jobNo_state: false,
+      // jobNo_state: true,
       // 岗位：
       tableyPostlist: [],
       post: [
@@ -360,6 +365,7 @@ export default {
         name: "",
         nativeAddress: "",
         postId: "",
+        postName: "",
         projectId: "",
         residence: "",
         school: "",
@@ -374,7 +380,7 @@ export default {
       },
       initFormData: {},
       userEditFormRules: {
-        department:[
+        department: [
           {
             required: false,
             message: "请输入部门",
@@ -692,6 +698,7 @@ export default {
       },
     };
   },
+
   methods: {
     //编辑项目的自动选择
     queryson(e) {
@@ -795,12 +802,17 @@ export default {
     openDialog(row) {
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
+        console.log("我是修改---");
+        this.jobNo_state = true;
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
           this.querysonss(row.projectId);
         });
+      } else {
+        console.log("我是新增-----");
+        this.jobNo_state = false;
       }
     },
     initForm(data) {
@@ -822,7 +834,7 @@ export default {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "修改---------");
+            console.log(this.userEditForm, "---修改传入的内容---------");
             updateEmployee(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
@@ -1003,7 +1015,7 @@ export default {
   padding-top: 13px;
   display: flex;
   justify-content: space-around;
-  .box_li{
+  .box_li {
     margin: 0 15px;
   }
 }

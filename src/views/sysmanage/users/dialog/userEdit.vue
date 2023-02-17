@@ -105,6 +105,7 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    // queryRoleData: "",
     queryRoleData: "",
   },
   data() {
@@ -155,7 +156,7 @@ export default {
         ],
         userNickName: [
           {
-            required: false,
+            required: true,
             message: "请输入姓名",
             trigger: ["blur", "change"],
           },
@@ -233,7 +234,7 @@ export default {
 
         roles: [
           {
-            required: false,
+            required: true,
             message: "请选择权限",
             trigger: ["blur", "change"],
           },
@@ -252,7 +253,8 @@ export default {
   methods: {
     // 弹窗
     openDialog(row) {
-      console.log(row, "ROW");
+      console.log(row, "---ROW---", this.queryRoleData);
+
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
         this.initFormData = row;
@@ -262,6 +264,7 @@ export default {
         });
       } else {
         console.log("我是新增");
+        this.userEditForm.roles[0].nameZh = "";
       }
     },
     initForm(data) {
@@ -271,6 +274,7 @@ export default {
     },
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置
+      this.dialogClose(); // 取消触发
       this.resetForm("userEditRef"); // 重置表单
     },
     // 取消
@@ -303,7 +307,7 @@ export default {
           // console.log(this.userEditForm, "------roles-----");
         }
       });
-      console.log(this.initFormData.id,'------修改 有 创建无------');
+      console.log(this.initFormData.id, "------修改 有 创建无------");
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         // 修改
@@ -314,9 +318,12 @@ export default {
               // console.log(res, "----res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.dialogClose();
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗隐
+                });
               }
             });
           } else {
@@ -340,8 +347,11 @@ export default {
                 // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显示
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗显示
+                });
               }
             });
           } else {

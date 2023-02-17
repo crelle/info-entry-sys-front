@@ -224,10 +224,11 @@ export default {
             // 查询 菜单当前是否选中
             queryRoleMenu(data).then((res) => {
               if (res && res.code && res.code === "00000") {
-                console.log(res.data, "----查询角色菜单数据成功了");
+                console.log(res.data, "----查询角色菜单数据成功了-----");
                 // 删除指定的 对象 （delete）
                 // delete res.data.childrenMenus;
                 res.data.forEach((items, index) => {
+                  // console.log(items.name, "------------items.name");
                   // console.log(items.name, "--------刪除父級");
                   if (
                     items.name == "系统管理" ||
@@ -238,6 +239,11 @@ export default {
                     res.data.splice(index, 1);
                     // console.log(res.data, "----剩下的孩子");
                     this.datas = res.data;
+                    // console.log(this.datas, "------//赋值----");
+                    this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
+                  } else {
+                    this.datas = res.data;
+                    // console.log(this.datas, "------//赋值----");
                     this.$refs.tree_n.setCheckedNodes(this.datas); //赋值
                   }
                 });

@@ -8,19 +8,21 @@
       @close="closeDialog"
       class="showAll_dialog"
     >
-      <el-tabs v-model="activeName" @tab-click="handleClick">
+      <el-tabs v-model="activeName">
         <el-tab-pane label="" name="second">
           <div class="boxtop">
             <el-form
-              :model="userEditForm"
+              :model="stateForm"
               :rules="userEditFormRules"
               ref="userEditRef"
               size="mini"
             >
-              <el-form-item label="员工状态" prop="employee_status">
+              <el-form-item label="员工状态" prop="status">
                 <el-select
-                  v-model="userEditForm.employee_status"
+                  v-model="stateForm.status"
                   placeholder="请选择状态"
+                  clearable
+                  filterable
                 >
                   <el-option label="在岸" value="在岸"></el-option>
                   <el-option label="出差" value="出差"></el-option>
@@ -28,69 +30,89 @@
                   <el-option label="离职" value="离职"></el-option>
                 </el-select>
               </el-form-item>
-              <div class="lis" v-if="userEditForm.employee_status == '出差'">
-                <el-form-item label="出差地" prop="cell_phone">
+              <div class="lis" v-if="stateForm.status == '出差'">
+                <el-form-item label="出差地" prop="area">
                   <el-input
                     placeholder="出差地"
-                    v-model="businesstravel_place"
+                    v-model="stateForm.area"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="出差时间" prop="cell_phone">
-                  <el-input
-                    placeholder="出差时间"
-                    v-model="businesstravel_time"
-                  ></el-input>
+                <el-form-item label="出差时间" prop="time">
+                  <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="预计出差周期" prop="cell_phone">
+                <el-form-item label="预计出差周期" prop="cycle">
                   <el-input
-                    placeholder="预计出差周期"
-                    v-model="businesstravel_cycle"
+                    placeholder="请输入数字 (天)"
+                    v-model="stateForm.cycle"
+                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                    oninput="value=value.replace(/[^\d.]/g,'')"
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="lis" v-if="userEditForm.employee_status == '外派'">
-                <el-form-item label="派遣地" prop="cell_phone">
+              <div class="lis" v-if="stateForm.status == '外派'">
+                <el-form-item label="派遣地" prop="area">
                   <el-input
                     placeholder="派遣地"
-                    v-model="cell_phone"
+                    v-model="stateForm.area"
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="派遣时间" prop="cell_phone">
-                  <el-input
-                    placeholder="派遣时间"
-                    v-model="cell_phone"
-                  ></el-input>
+                <el-form-item label="派遣时间" prop="time">
+                  <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
                 </el-form-item>
-                <el-form-item label="预计派遣周期" prop="cell_phone">
+                <el-form-item label="预计派遣周期" prop="cycle">
                   <el-input
-                    placeholder="预计派遣周期"
-                    v-model="cell_phone"
+                    onbeforepaste="clipboardData.setData('text',clipboardData.getData('text').replace(/[^\d]/g,''))"
+                    oninput="value=value.replace(/[^\d.]/g,'')"
+                    placeholder="请输入数字 (天)"
+                    v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
               </div>
-              <div class="lis" v-if="userEditForm.employee_status == '离职'">
-                <el-form-item label="离职时间" prop="cell_phone">
-                  <el-input
-                    placeholder="离职时间"
-                    v-model="cell_phone"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="离职原因" prop="cell_phone">
-                  <el-input
-                    placeholder="离职原因"
-                    v-model="cell_phone"
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="离职去向" prop="cell_phone">
+              <div class="lis" v-if="stateForm.status == '离职'">
+                <el-form-item
+                  style="min-width: 191px"
+                  label="离职去向"
+                  prop="area"
+                >
                   <el-input
                     placeholder="离职去向"
-                    v-model="cell_phone"
+                    v-model="stateForm.area"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item
+                  style="min-width: 281px"
+                  label="离职时间"
+                  prop="time"
+                >
+                  <el-date-picker
+                    v-model="stateForm.time"
+                    type="date"
+                    placeholder="选择日期"
+                  >
+                  </el-date-picker>
+                </el-form-item>
+                <el-form-item label="离职原因" prop="cycle">
+                  <el-input
+                    placeholder="离职原因"
+                    v-model="stateForm.cycle"
                   ></el-input>
                 </el-form-item>
               </div>
               <div class="preservation">
-                <el-button type="primary" @click="onCertain">保 存</el-button>
-                <el-button class="cancel" type="primary" @click="close"
+                <el-button type="primary" size="mini" @click="onCertain"
+                  >保 存</el-button
+                >
+                <el-button class="cancel" size="mini" type="info" @click="close"
                   >取 消</el-button
                 >
               </div>
@@ -105,12 +127,16 @@
                 :label="item.textarea1"
                 :value="index"
                 placement="top"
-                :timestamp="item.time"
+                :timestamp="item.createTime"
               >
-                <div class="note_taker">记录人:{{ userEditForm.name }}</div>
+                <div class="note_taker">
+                  记录人:{{ item.recorder }} {{ item.jobNo }}
+                </div>
                 <el-card>
-                  {{ item.text }} : {{ item.textarea1 }} ; {{ item.times }} :
-                  {{ item.time }} ; {{ item.cycles }} : {{ item.cycle }}
+                  状态 : {{ item.status }} <br />
+                  <span> {{ item.place }} {{ item.area }} </span>
+                  <span> {{ item.startTime }} {{ item.time }} </span>
+                  <span>{{ item.cycleReason }} {{ item.cycle }} </span>
                 </el-card>
               </el-timeline-item>
             </el-timeline>
@@ -122,60 +148,72 @@
 </template>
 
 <script>
-// import { updateUser } from "@/api/user";
+import { deleteState, queryState } from "@/api/employee";
+import { Decrypt } from "@/util/crypto/secret";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
-      // 出差
-      businesstravel_place: "",
-      businesstravel_time: "",
-      businesstravel_cycle: "",
-      // 派遣
-      dispatch_place: "",
-      dispatch_time: "",
-      dispatch_cycle: "",
-      // 离职
-      quit_time: "",
-      quit_reason: "",
-      quit_going: "",
-      //
+      //  状态
+      stateForm: {
+        area: "",
+        createTime: "",
+        cycle: "",
+        id: "",
+        jobNo: "",
+        recorder: "",
+        recorderNo: "",
+        status: "",
+        time: "",
+      },
       activeName: "second",
       // 当前日期
       monthValue: "",
-      textarea: "",
       datanew: [],
       datashu: [
-        {
-          text: "出差地点",
-          textarea1: "出差地点xxxzcxxczxx",
-          times: "出差时间",
-          time: "2018/1/12/12时11分",
-          cycles: "预计出差周期",
-          cycle: "18周",
-        },
-        {
-          text: "外派地点",
-          textarea1: "外派地点xxzczxxx",
-          times: "外派时间",
-          time: "2018/2/12/11时12分",
-          cycles: "预计外派周期",
-          cycle: "18周",
-        },
-        {
-          text: "离职去向",
-          textarea1: "离职去向地点xzxcxx",
-          times: "离职时间",
-          time: "2018/3/12/3时21分",
-          cycles: "离职原因",
-          cycle: "出国...",
-        },
+        // {
+        //   text: "外派地点",
+        //   textarea1: "外派地点xxzczxxx",
+        //   times: "外派时间",
+        //   time: "2018/2/12/11时12分",
+        //   cycles: "预计外派周期",
+        //   cycle: "18周",
+        // },
+        // {
+        //   text: "离职去向",
+        //   textarea1: "离职去向地点xzxcxx",
+        //   times: "离职时间",
+        //   time: "2018/3/12/3时21分",
+        //   cycles: "离职原因",
+        //   cycle: "出国...",
+        // },
+        // {
+        //   text: "离职去向11111111111",
+        //   textarea1: "离职去向地点xzxc1111xx",
+        //   times: "离职时间",
+        //   time: "2018/3/12/3时21分",
+        //   cycles: "离职原因",
+        //   cycle: "出国...",
+        // },
       ],
       displays: true,
       isInput: false,
       userEditForm: {
+        // 出差
+        businesstravel_place: "",
+        businesstravel_time: "",
+        businesstravel_cycle: "",
+        // 派遣
+        dispatch_place: "",
+        dispatch_time: "",
+        dispatch_cycle: "",
+        // 离职
+        quit_time: "",
+        quit_reason: "",
+        quit_going: "",
+        //
         id: "",
         job_no: "",
         name: "",
@@ -233,16 +271,38 @@ export default {
       // baseURL: BaseURL,
       initFormData: {},
       userEditFormRules: {
-        employee_status: [
+        status: [
           {
             required: true,
             message: "请选择状态",
             trigger: ["blur", "change"],
           },
         ],
+        area: [
+          {
+            required: true,
+            message: "输入内容格式不正确",
+            trigger: ["blur", "change"],
+          },
+        ],
+        time: [
+          {
+            required: true,
+            message: "请选择时间",
+            trigger: ["blur", "change"],
+          },
+        ],
+        cycle: [
+          {
+            required: true,
+            message: "输入内容格式不正确",
+            trigger: ["blur", "change"],
+          },
+        ],
       },
     };
   },
+  created() {},
   methods: {
     // 编辑
     edit() {
@@ -268,13 +328,21 @@ export default {
       this.dialogFormVisible = false; // 让弹窗显示
       this.cancel();
     },
-    // 表格
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     openDialog(row) {
+      console.log(row, "----传来的row");
+      if (row) {
+        this.userdetail = window.localStorage.getItem("userdetail")
+          ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+          : {};
+        console.log(this.userdetail, "我是 当前----用户");
+        this.stateForm.recorder = this.userdetail.userNickName;
+        this.stateForm.recorderNo = this.userdetail.jobNo;
+        this.stateForm.jobNo = row.jobNo;
+        console.log(this.stateForm, "-----提前处理好的传入内容");
+      }
       this.empty(); //清空内容
       this.cancel();
+      this.queryStateform(); //查 状态表
       this.dialogFormVisible = true; // 让弹窗显示
 
       // 当前时间
@@ -324,27 +392,93 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-    /* 保存  */
-    onCertain() {
-      if (this.textarea != "") {
-        this.datanew.textarea1 = this.textarea;
-        this.datanew.time = this.monthValue;
-        this.datanew.username = this.userEditForm.username;
-        if (this.datanew.textarea1 != "") {
-          console.log(this.datanew, "内容和日期-用户名");
-          alert("保存成功");
-          this.empty();
-        } else {
-          return false;
-        }
-      } else {
-        alert("内容为空,请输入内容!");
-      }
-    },
-    //
     empty() {
       console.log("清空!");
       this.textarea = "";
+    },
+    //   /* 保存  */ 状态-------------
+    onCertain() {
+      console.log("状态新增了");
+      this.$refs["userEditRef"].validate((valid) => {
+        if (valid) {
+          console.log(this.stateForm, "新增内容带字段------");
+          if (this.stateForm.status != "") {
+            console.log(this.stateForm.status, "------------状态---");
+            if (
+              this.stateForm.status == "出差" ||
+              this.stateForm.status == "外派"
+            ) {
+              if (this.stateForm.cycle != "") {
+                this.stateForm.cycle = this.stateForm.cycle + "天";
+                deleteState(this.stateForm).then((res) => {
+                  if (res && res.code && res.code === "00000") {
+                    this.$message.success("创建成功！");
+                    // this.dialogClose();
+                    this.$parent.queryUserList();
+                    this.queryStateform();
+                    this.closeDialog();
+                  }
+                });
+              }
+            } else {
+              deleteState(this.stateForm).then((res) => {
+                if (res && res.code && res.code === "00000") {
+                  this.$message.success("创建成功！");
+                  // this.dialogClose();
+                  this.$parent.queryUserList();
+                  this.queryStateform();
+                  this.closeDialog();
+                }
+              });
+            }
+          }
+        } else {
+          return false;
+        }
+      });
+    },
+    // 分页查询状态--记录表
+    queryStateform() {
+      console.log("----分页查询状态--记录表------------");
+      let data = { records: [{ ...this.stateForm }] };
+      data.current = 1;
+      data.size = 9999;
+      console.log(
+        data,
+        "---------------查询状态--记录---------11111-------------"
+      );
+      queryState(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data, "-----查询-----成了");
+          this.datashu = res.data.records;
+          console.log(this.datashu, "res.data.records, -----查询-----成了");
+          this.datashu.forEach((items) => {
+            items.createTime = items.createTime.split("T")[0];
+            if (items.time != null) {
+              items.time = items.time.split("T")[0];
+            }
+            if (items.status == "在岸") {
+              items.place = "";
+              items.startTime = "";
+            }
+            if (items.status == "出差") {
+              items.place = "出差地址 :";
+              items.startTime = "出差时间 :";
+              items.cycleReason = "出差周期 :";
+            }
+            if (items.status == "外派") {
+              items.place = "外派地址 :";
+              items.startTime = "外派时间 :";
+              items.cycleReason = "外派周期 :";
+            }
+            if (items.status == "离职") {
+              items.place = "离职去向 :";
+              items.startTime = "离职时间 :";
+              items.cycleReason = "离职原因 :";
+            }
+          });
+        }
+      });
     },
   },
 };
@@ -384,6 +518,9 @@ export default {
 }
 ::v-deep .el-input__inner {
   color: rgb(0, 0, 0) !important;
+
+  width: 180px;
+  color: #606266 !important;
 }
 // 修改对话框高度
 .showAll_dialog {
@@ -418,7 +555,9 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-form-item__label {
-  width: 96px !important;
+  text-align: right !important;
+  padding: 0;
+  min-width: 0;
 }
 ::v-deep .el-textarea__inner {
   min-height: 130px !important;
@@ -504,8 +643,29 @@ export default {
   margin-left: 10px;
   border-top: 2px solid #eee;
   padding-top: 15px;
+  .el-form-item:nth-child(1) {
+    ::v-deep .el-form-item__label {
+      min-width: 44px;
+      // background-color: aqua;
+    }
+  }
+  .el-form-item:nth-child(2) {
+    ::v-deep .el-form-item__label {
+      min-width: 66px;
+      padding-left: 10px;
+      // background-color: rgb(129, 255, 11);
+    }
+  }
+  .el-form-item:nth-child(3) {
+    ::v-deep .el-form-item__label {
+      padding-left: 10px;
+      min-width: 94px;
+      // background-color: rgb(183, 0, 255);
+    }
+  }
 }
 ::v-deep .preservation {
+  min-width: 767px;
   margin-bottom: 0;
 }
 ::v-deep .el-tabs__nav-scroll {
@@ -516,5 +676,35 @@ export default {
 }
 ::v-deep .el-timeline {
   padding-left: 0;
+}
+.el-card__body {
+  span {
+    display: block;
+    float: left;
+    margin-right: 25px;
+  }
+}
+// 头部缩放滚动条
+
+@media screen and (min-width: 1698px) {
+  ::v-deep .el-form::-webkit-scrollbar {
+    display: none;
+    .el-input__inner {
+      margin: 0 10px;
+    }
+    .el-form-item--mini {
+      min-width: 310px;
+    }
+  }
+}
+::v-deep .el-form {
+  overflow-x: scroll;
+}
+
+::v-deep .el-input__inner {
+  min-width: 105px;
+}
+::v-deep .el-date-editor {
+  width: 180px;
 }
 </style>

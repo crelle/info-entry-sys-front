@@ -274,7 +274,7 @@ export default {
   },
   mounted() {
     this.queryUserList();
-    this.queryRoleList();
+    // this.queryRoleList();
   },
   methods: {
     //手动 查询用户列表
@@ -299,6 +299,15 @@ export default {
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
           queryUser(data).then((res) => {
+            data.current = 1;
+            data.size = 999;
+            // 查询角色列表;
+            queryRole(data).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.queryRoleData = res.data.records; // 表格数据赋值
+                console.log(this.queryRoleData, "查询角色列表++++++");
+              }
+            });
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
@@ -317,23 +326,23 @@ export default {
       });
     },
     // 查询角色列表
-    queryRoleList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          queryRole(data).then((res) => {
-            if (res && res.code && res.code === "00000") {
-              this.queryRoleData = res.data.records; // 表格数据赋值
-              console.log(this.queryRoleData, "查询角色列表++++++");
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // queryRoleList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = 1;
+    //       data.size = 999;
+    //       queryRole(data).then((res) => {
+    //         if (res && res.code && res.code === "00000") {
+    //           this.queryRoleData = res.data.records; // 表格数据赋值
+    //           console.log(this.queryRoleData, "查询角色列表++++++");
+    //         }
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "删除用户", {
