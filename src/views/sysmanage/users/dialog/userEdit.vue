@@ -254,8 +254,9 @@ export default {
     // 弹窗
     openDialog(row) {
       console.log(row, "---ROW---", this.queryRoleData);
-
       this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.id = "";
+      this.initFormData = {};
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {

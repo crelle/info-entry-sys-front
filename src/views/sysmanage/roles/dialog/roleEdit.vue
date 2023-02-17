@@ -206,6 +206,8 @@ export default {
     openDialog(row) {
       console.log(row, "----传来的row");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.id = "";
+      this.initFormData = {};
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {

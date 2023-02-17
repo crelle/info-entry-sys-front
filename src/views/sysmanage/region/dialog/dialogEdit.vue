@@ -90,6 +90,8 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.initFormData = {};
+      this.userEditForm.regionId = "";
       if (row) {
         // let editRow = JSON.parse(JSON.stringify(row));
         // editRow.regionName = this.getCityCode(editRow.regionName);
@@ -324,7 +326,7 @@ export default {
 ::v-deep .el-input__inner {
   height: 30px;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 380px;
 }
 </style>

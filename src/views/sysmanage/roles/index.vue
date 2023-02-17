@@ -213,13 +213,14 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.queryRoles();
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
             }
+            // else {
+            //   this.queryRoles();
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
           });
         })
         .catch(() => {

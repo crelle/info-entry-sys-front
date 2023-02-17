@@ -4,9 +4,14 @@
       <div class="header_main">
         <h1>诚迈员工管理系统</h1>
         <div class="header_avatar">
-          <div @click="personal()">
+          <div>
             <el-avatar size="small" :src="userdetail.userAvatar"></el-avatar>
-            <span>{{ this.timeslot }} {{ userdetail.userNickName }}</span>
+            <el-dropdown @command="personal">
+              <span>{{ this.timeslot }} {{ userdetail.userNickName }}</span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item>个人信息详情</el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
           <el-popconfirm
             confirm-button-text="确认"
@@ -103,7 +108,7 @@ export default {
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
     // console.log(window.localStorage.getItem("userdetail"));
-    console.log(this.userdetail, "---我是（当前用户信息）");
+    // console.log(this.userdetail, "---我是（当前用户信息）");
     // 当前时间  判断上午-中午 -下午 欢迎语
     this.timeslot = "";
     var data = new Date();
@@ -111,13 +116,13 @@ export default {
     var toMonth = hours;
     this.monthValue = toMonth;
     console.log(this.monthValue, "---------时间");
-    if (this.monthValue <= "11"&& this.monthValue > 8) {
+    if (this.monthValue <= 11 && this.monthValue > 8) {
       this.timeslot = "上午好";
     } else {
-      if (this.monthValue <= 12 && this.monthValue > 11) {
+      if (this.monthValue <= 13 && this.monthValue > 11) {
         this.timeslot = "中午好";
       } else {
-        if (this.monthValue <= 18 && this.monthValue > 12) {
+        if (this.monthValue <= 18 && this.monthValue > 13) {
           this.timeslot = "下午好";
         } else {
           return (this.timeslot = "你好");
@@ -203,5 +208,25 @@ export default {
     overflow-x: hidden !important;
     border-right: 1px solid #eee;
   }
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+  font-size: 12px;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+.demonstration {
+  display: block;
+  color: #8492a6;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.el-dropdown {
+  color: #fff;
+}
+.el-dropdown-menu {
+  padding: 0;
 }
 </style>

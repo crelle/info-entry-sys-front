@@ -27,19 +27,12 @@
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="岗位技能 :" prop="skill">
-                  <el-select
+                  <el-input
+                    type="text"
                     v-model="userEditForm.skill"
-                    placeholder="请选择岗位技能"
+                    placeholder="请填写岗位技能"
                     clearable
-                    filterable
-                  >
-                    <el-option
-                      v-for="item in skill"
-                      :key="item.index"
-                      :label="item.ski"
-                      :value="item.ski"
-                    ></el-option>
-                  </el-select>
+                  ></el-input>
                 </el-form-item>
                 <el-form-item label="项目 :" prop="projectId">
                   <el-select
@@ -255,7 +248,7 @@ export default {
         skill: [
           {
             required: false,
-            message: "请选择岗位技能",
+            message: "请输入岗位技能",
             trigger: ["blur", "change"],
           },
         ],
@@ -271,16 +264,11 @@ export default {
             trigger: "blur",
           },
         ],
-        project: [
+        projectId: [
           {
-            required: false,
-            message: "请填写项目名称",
+            required: true,
+            message: "请选择项目名称",
             trigger: ["blur", "change"],
-          },
-          {
-            pattern: /^(?!\s+).*(?<!\s)$/,
-            message: "首尾不能为空格",
-            trigger: "blur",
           },
         ],
         customerName: [
@@ -384,6 +372,8 @@ export default {
     //
     // 弹窗
     openDialog(row) {
+      this.initFormData = {};
+      this.userEditForm.postId = "";
       this.queryson();
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
@@ -441,7 +431,11 @@ export default {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "----修改的-----");
+            console.log(
+              this.userEditForm,
+              "----修改的-----",
+              this.initFormData.postId
+            );
             editPost(this.userEditForm, this.userEditForm.postId).then(
               (res) => {
                 if (res && res.code && res.code === "00000") {
@@ -460,7 +454,11 @@ export default {
       } else {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "----增加的-----");
+            console.log(
+              this.userEditForm,
+              "----增加的-----",
+              this.initFormData.postId
+            );
             establishPost(this.userEditForm).then((res) => {
               console.log(res, "增加了.........");
               if (res && res.code && res.code === "00000") {

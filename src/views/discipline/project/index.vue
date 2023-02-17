@@ -494,13 +494,14 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.queryUserList();
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
-            }
+            } 
+            // else {
+            //   this.queryUserList();
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
           });
         })
         .catch(() => {
@@ -613,5 +614,8 @@ export default {
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }
+}
+::v-deep .el-card{
+  padding:0 10px;
 }
 </style>

@@ -110,7 +110,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="regionId"
+          prop="regionName"
           label="地域"
           min-width="100"
           show-overflow-tooltip
@@ -283,6 +283,7 @@ export default {
               queryUser(data).then((res3) => {
                 this.tableData = res.data.records; // 客户表格数据赋值
                 this.regionData = res2.data.records; // 地域表格数据赋值
+                console.log(this.regionData, "*--地域表--");
                 this.UserList = res3.data.records; // 用户表格数据赋值
                 // --- 过滤掉管理员admin
                 // this.UserList.forEach((item, index) => {
@@ -290,8 +291,16 @@ export default {
                 //     this.UserList.splice(index, 1);
                 //   }
                 // });
-                this.paginationOptions.total = res.data.total; // 分页器赋值
+
+                this.tableData.forEach((item) => {
+                  this.regionData.forEach((items) => {
+                    if (item.regionId == items.regionId) {
+                      item.regionName = items.regionName;
+                    }
+                  });
+                });
                 console.log(this.tableData, "客户数据");
+                this.paginationOptions.total = res.data.total; // 分页器赋值
               });
             });
           });
@@ -393,12 +402,13 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
             }
+            //  else {
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
           });
         })
         .catch(() => {

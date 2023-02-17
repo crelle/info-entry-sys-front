@@ -283,9 +283,9 @@ export default {
                 let flag = reg.test(value); //true
                 if (flag) {
                   console.log("---部门存在--");
-                }else{
+                } else {
                   console.log("---部门 ----不存在--");
-                  item.departmentUp="(部门不存在了)"
+                  item.departmentUp = "(部门不存在了)";
                 }
               });
               this.paginationOptions.total = res.data.total; // 分页器赋值
@@ -484,12 +484,13 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
             }
+            //  else {
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
           });
         })
         .catch(() => {

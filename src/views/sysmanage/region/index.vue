@@ -168,7 +168,7 @@ export default {
     this.queryRoles();
   },
   methods: {
-        // 手动 查询
+    // 手动 查询
     queryRolesclick() {
       this.$refs["queryRoleRef"].validate((valid) => {
         if (valid) {
@@ -209,22 +209,17 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
           deletesRegion(row.regionId).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               this.queryRoles();
+              this.tableData.splice(index, 1);
               return this.$message({
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
-            }
+            } 
           });
         })
         .catch(() => {
