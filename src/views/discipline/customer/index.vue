@@ -285,17 +285,18 @@ export default {
                 this.regionData = res2.data.records; // 地域表格数据赋值
                 console.log(this.regionData, "*--地域表--");
                 this.UserList = res3.data.records; // 用户表格数据赋值
+                console.log(this.UserList, "=========用户表格数据赋值");
                 // --- 过滤掉管理员admin
                 // this.UserList.forEach((item, index) => {
                 //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
                 //     this.UserList.splice(index, 1);
                 //   }
                 // });
-
                 this.tableData.forEach((item) => {
                   this.regionData.forEach((items) => {
                     if (item.regionId == items.regionId) {
                       item.regionName = items.regionName;
+                      // this.$set(item, item.regionName, items.regionName);
                     }
                   });
                 });

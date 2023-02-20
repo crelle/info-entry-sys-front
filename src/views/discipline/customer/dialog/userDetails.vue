@@ -17,24 +17,34 @@
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span :title="userEditForm.customerName">{{ userEditForm.customerName }}</span>
+                      ><span :title="userEditForm.customerName">{{
+                        userEditForm.customerName
+                      }}</span>
                     </li>
                     <li>
-                      <span>地域:</span><span>{{ userEditForm.regionId }}</span>
+                      <span>地域:</span
+                      ><span>{{ userEditForm.regionName }}</span>
                     </li>
                     <li>
                       <span>办公地点:</span
-                      ><span :title="userEditForm.address">{{ userEditForm.address }}</span>
+                      ><span :title="userEditForm.address">{{
+                        userEditForm.address
+                      }}</span>
                     </li>
                     <li>
                       <span>负责人:</span><span>{{ userEditForm.userId }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span :title="userEditForm.cellPhone">{{ userEditForm.cellPhone }}</span>
+                      ><span :title="userEditForm.cellPhone">{{
+                        userEditForm.cellPhone
+                      }}</span>
                     </li>
                     <li>
-                      <span>邮箱:</span><span :title="userEditForm.email">{{ userEditForm.email }}</span>
+                      <span>邮箱:</span
+                      ><span :title="userEditForm.email">{{
+                        userEditForm.email
+                      }}</span>
                     </li>
                     <li class="new">
                       <span>介绍:</span
@@ -130,6 +140,7 @@ export default {
         introduce: "",
         regionId: "",
         userId: "",
+        regionName: "",
       },
       initFormData: {},
     };

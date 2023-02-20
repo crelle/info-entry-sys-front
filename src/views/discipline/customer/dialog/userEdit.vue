@@ -58,7 +58,7 @@
                     <el-option
                       v-for="item in UserList"
                       :key="item.index"
-                      :label="item.username"
+                      :label="item.userNickName"
                       :value="item.id"
                     ></el-option>
                   </el-select>
@@ -244,7 +244,7 @@ export default {
           if (item.id == e) {
             this.userEditForm.cellPhone = item.userPhone;
             this.userEditForm.email = item.userEmail;
-            this.userEditForm.userId = item.username;
+            this.userEditForm.userId = item.userNickName;
           }
         });
       } else {

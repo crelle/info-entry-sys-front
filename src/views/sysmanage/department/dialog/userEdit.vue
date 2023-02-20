@@ -38,7 +38,7 @@
                     <el-option
                       v-for="(item, index) in UserData"
                       :key="item.index"
-                      :label="item.username"
+                      :label="item.userNickName"
                       :value="index"
                     ></el-option>
                   </el-select>
@@ -239,8 +239,9 @@ export default {
     //自动选择
     queryson(e) {
       if (this.UserData[e]) {
+        console.log(this.UserData[e],'--------this.UserData[e]');
         // this.userEditForm = this.tableData[e];
-        this.userEditForm.userId = this.UserData[e].username;
+        this.userEditForm.userId = this.UserData[e].userNickName;
         this.userEditForm.cellPhone = this.UserData[e].userPhone;
         this.userEditForm.email = this.UserData[e].userEmail;
         this.userEditForm.jobNo = this.UserData[e].jobNo;
