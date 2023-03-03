@@ -76,10 +76,11 @@
                       v-for="item in tableDataUp"
                       :key="item.index"
                       :label="item.department"
-                      :value="item.departmentId"
+                      :value="item.department"
                     ></el-option>
                   </el-select>
                 </el-form-item>
+                
                 <el-form-item label="部门总部地址" prop="address">
                   <el-input
                     type="email"
@@ -146,12 +147,18 @@ export default {
       userEditForm: {
         address: "",
         cellPhone: "",
+        createBy: "",
+        createTime: "",
         department: "",
         departmentId: "",
         departmentUp: "",
         email: "",
+        enabled: "",
+        id: "",
         introduce: "",
         jobNo: "",
+        updateBy: "",
+        updateTime: "",
         userId: "",
       },
       initFormData: {},
@@ -239,7 +246,7 @@ export default {
     //自动选择
     queryson(e) {
       if (this.UserData[e]) {
-        console.log(this.UserData[e],'--------this.UserData[e]');
+        console.log(this.UserData[e], "--------this.UserData[e]");
         // this.userEditForm = this.tableData[e];
         this.userEditForm.userId = this.UserData[e].userNickName;
         this.userEditForm.cellPhone = this.UserData[e].userPhone;

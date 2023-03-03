@@ -300,6 +300,7 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           queryPost(data).then((res) => {
+            console.log('手动岗位--------------',res.data.records);
             data.current = 1;
             data.size = 999;
             // //  数据接口人查询方法

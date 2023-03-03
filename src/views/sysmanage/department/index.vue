@@ -238,6 +238,7 @@ export default {
     this.queryUser();
     this.queryTableList();
     this.queryProjectList();
+    this.queryUserListUp();
   },
   methods: {
     //手动 查询部门列表
@@ -259,37 +260,30 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           queryDepartments(data).then((res) => {
-            data.current = 1;
-            data.size = 999;
-            queryDepartments(data).then((res1) => {
-              for (let item of res.data.records) {
-                if (item.departmentUp) {
-                  for (let item1 of res1.data.records) {
-                    if (item.departmentUp == item1.departmentId) {
-                      item.departmentUp = item1.department;
-                    }
-                  }
-                } else {
-                  item.departmentUp = "暂无";
-                }
-              }
+            if (res && res.code && res.code === "00000") {
+              console.log(res.data.records, "--------------初始查询部门");
               this.tableData = res.data.records;
-              this.tableDataUp = res1.data.records;
-              console.log(this.tableData, "查询部门数据");
-              this.tableData.forEach((item) => {
-                console.log(item.departmentUp, "*----部门---");
-                let value = item.departmentUp;
-                let reg = new RegExp("[\\u4E00-\\u9FFF]+", "g");
-                let flag = reg.test(value); //true
-                if (flag) {
-                  console.log("---部门存在--");
-                } else {
-                  console.log("---部门 ----不存在--");
-                  item.departmentUp = "(部门不存在了)";
-                }
-              });
               this.paginationOptions.total = res.data.total; // 分页器赋值
-            });
+            }
+          });
+        } else {
+          return false;
+        }
+      });
+    },
+    // 全部部门
+    // 查询部门列表
+    queryUserListUp() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
+          let data = { records: [{ ...this.formOptions }] };
+          data.current = 1;
+          data.size = 99999;
+          queryDepartments(data).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              console.log(res.data.records, "--------------上级查询部门");
+              this.tableDataUp = res.data.records;
+            }
           });
         } else {
           return false;
