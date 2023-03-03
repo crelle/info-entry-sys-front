@@ -8,11 +8,11 @@ const establishPost = (data) =>
     url: BaseURL + "/app/post/create",
     data,
   });
-// 分页查询岗位
+// 分页查询岗位(手动)
 const queryPost = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/app/post/pageByCondition",
+    url: BaseURL + "/app/post/manualPage",
     data,
   });
 
