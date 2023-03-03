@@ -102,7 +102,7 @@
                           </el-table-column>
                           <el-table-column prop="postName" label="岗位">
                           </el-table-column>
-                          <el-table-column prop="" label="状态">
+                          <el-table-column prop="status" label="状态">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>

@@ -8,11 +8,11 @@ const establishProject= (data) =>
     url: BaseURL + "/app/project/create",
     data,
   });
-// 分页查询项目
+// 分页查询项目(手动)
 const queryProject = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/app/project/pageByCondition",
+    url: BaseURL + "/app/project/manualPage",
     data,
   });
 // 编辑项目

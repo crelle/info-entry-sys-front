@@ -432,7 +432,7 @@ export default {
         ],
         email: [
           {
-            required: true,
+            required: false,
             message: "请输入邮箱",
             trigger: ["blur", "change"],
           },
@@ -485,7 +485,7 @@ export default {
         ],
         birthday: [
           {
-            required: true,
+            required: false,
             message: "请选择出生日期",
             trigger: ["blur", "change"],
           },
@@ -516,7 +516,7 @@ export default {
         ],
         residence: [
           {
-            required: true,
+            required: false,
             message: "请输入住址",
             trigger: ["blur", "change"],
           },
@@ -533,19 +533,19 @@ export default {
         ],
         emergency: [
           {
-            required: true,
+            required: false,
             message: "请输入紧急联系人",
             trigger: ["blur", "change"],
           },
-          {
-            pattern: /^([\u4E00-\u9FA5])*$/,
-            message: "请输入中文",
-            trigger: "blur",
-          },
+          // {
+          //   pattern: /^([\u4E00-\u9FA5])*$/,
+          //   message: "请输入中文",
+          //   trigger: "blur",
+          // },
         ],
         emergencyTelephone: [
           {
-            required: true,
+            required: false,
             message: "请输入紧急联系人电话",
             trigger: ["blur", "change"],
           },
@@ -557,14 +557,14 @@ export default {
         ],
         education: [
           {
-            required: true,
+            required: false,
             message: "请选择学历",
             trigger: ["blur", "change"],
           },
         ],
         school: [
           {
-            required: true,
+            required: false,
             message: "请输入学校",
             trigger: ["blur", "change"],
           },
@@ -581,14 +581,14 @@ export default {
         ],
         schoolTime: [
           {
-            required: true,
+            required: false,
             message: "请输入毕业时间",
             trigger: ["blur", "change"],
           },
         ],
         workingHours: [
           {
-            required: true,
+            required: false,
             message: "请输入工作年限/年",
             trigger: ["blur", "change"],
           },
@@ -600,14 +600,14 @@ export default {
         ],
         marriage: [
           {
-            required: true,
+            required: false,
             message: "请选择婚姻状况",
             trigger: ["blur", "change"],
           },
         ],
         child: [
           {
-            required: true,
+            required: false,
             message: "请选择小孩情况",
             trigger: ["blur", "change"],
           },
@@ -645,7 +645,7 @@ export default {
         ],
         time: [
           {
-            required: true,
+            required: false,
             message: "请输入入职时间",
             trigger: ["blur", "change"],
           },

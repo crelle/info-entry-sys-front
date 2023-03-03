@@ -179,6 +179,74 @@
             </div>
           </div>
         </el-tab-pane>
+        <el-tab-pane label="员工资产" name="property">
+          <!-- 员工动态记录 -->
+          <div class="block">
+            <el-table
+              :data="tableDatas"
+              style="width: 100%"
+              max-height="450"
+              border
+            >
+              <el-table-column prop="name" label="资产编号"> </el-table-column>
+              <el-table-column prop="province" label="资产序列号">
+              </el-table-column>
+              <el-table-column prop="city" label="资产名称"> </el-table-column>
+              <!-- fixed="right" -->
+              <el-table-column label="操作" width="80">
+                <template slot-scope="scope">
+                  <el-button
+                    @click="open(scope.$index, tableDatas)"
+                    type="text"
+                    size="small"
+                  >
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
+            </el-table>
+            <!-- 增加资产操作 -->
+            <div>
+              <div class="borders">
+                <el-form
+                  :model="numberValidateForm"
+                  ref="numberValidateForm"
+                  label-width="100px"
+                  class="demo-ruleForm"
+                >
+                  <el-form-item label="资产编号 :" prop="age1">
+                    <el-input
+                      v-model.number="numberValidateForm.age1"
+                      autocomplete="off"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="资产序列号 :" prop="age2">
+                    <el-input
+                      v-model.number="numberValidateForm.age2"
+                      autocomplete="off"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item label="资产名称 :" prop="age3">
+                    <el-input
+                      v-model.number="numberValidateForm.age3"
+                      autocomplete="off"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item>
+                    <el-button
+                      type="primary"
+                      @click="submitForm('numberValidateForm')"
+                      >提交</el-button
+                    >
+                    <el-button @click="resetForm('numberValidateForm')"
+                      >重置</el-button
+                    >
+                  </el-form-item>
+                </el-form>
+              </div>
+            </div>
+          </div>
+        </el-tab-pane>
       </el-tabs>
     </el-dialog>
   </div>
@@ -195,6 +263,50 @@ export default {
   },
   data() {
     return {
+      // 资产新增
+      numberValidateForm: {
+        age1: "",
+        age2: "",
+        age3: "",
+      },
+      // 资产假数据
+      tableDatas: [
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAD2WE2WSDSDWWD",
+          city: "EwerDW主机",
+        },
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAD2WwefWD",
+          city: "E32ADW显示器",
+        },
+        {
+          name: "JJASDJSA-ASD21wfdscASDAS",
+          province: "CPSAD23422WSDSDWWD",
+          city: "ESADW主机",
+        },
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAの4323DWWD",
+          city: "ewq234wefADW显示器机",
+        },
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAの4323DWWD",
+          city: "ewq234wefADW显示器机",
+        },
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAの4323DWWD",
+          city: "ewq234wefADW显示器机",
+        },
+        {
+          name: "JJASDJSA-ASD2123ASDAS",
+          province: "CPSAの4323DWWD",
+          city: "ewq234wefADW显示器机",
+        },
+      ],
       // 沟通记录
       record: {
         id: "",
@@ -269,6 +381,47 @@ export default {
     );
   },
   methods: {
+    // 资产 新增
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          alert("新增成功!");
+          this.resetForm(formName);
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
+    },
+    resetForm(formName) {
+      this.$refs[formName].resetFields();
+    },
+
+    // 资产 删除1
+    open(index, rows) {
+      this.$confirm("此操作将永久删除该资产, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then(() => {
+          this.$message({
+            type: "success",
+            message: "删除成功!",
+          });
+           rows.splice(index, 1);
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除",
+          });
+        });
+    },
+    // // 资产 删除2
+    // deleteRow(index, rows) {
+    //   rows.splice(index, 1);
+    // },
     // 编辑
     edit() {
       this.isInput = false;
@@ -486,7 +639,7 @@ export default {
   margin-bottom: 20px;
 }
 ::v-deep .el-form-item__label {
-  width: 120px !important;
+  // width: 120px !important;
   text-align: left;
 }
 ::v-deep .el-form-item__content {
@@ -500,11 +653,11 @@ export default {
   margin-bottom: 20px;
 }
 
-* {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+// * {
+//   list-style: none;
+//   padding: 0;
+//   margin: 0;
+// }
 .preservation {
   margin-top: 40px;
   ::v-deep .el-button {
@@ -546,5 +699,19 @@ export default {
 }
 ::v-deep .el-dialog {
   min-width: 700px;
+}
+.borders {
+  padding: 20px 20px 0;
+  margin: 20px 0;
+  border: 1px solid #ebeef5;
+  ::v-deep .el-form-item__label {
+    text-align: right;
+  }
+  ::v-deep .el-form-item__content {
+    text-align: right;
+  }
+  .demo-ruleForm {
+    margin-left: -25px;
+  }
 }
 </style>

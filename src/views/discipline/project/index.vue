@@ -273,7 +273,7 @@ import { queryDepartments } from "@/api/department";
 // 项目
 import { queryProject, deletesProject } from "@/api/project";
 // 员工
-import { queryEmployee } from "@/api/employee";
+import { queryEmployeeManual} from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
@@ -343,6 +343,7 @@ export default {
           data.size = this.paginationOptions.pageSize;
           // 项目表格数据
           queryProject(data).then((res) => {
+            console.log(res.data,'----------手动----------');
             data.current = 1;
             data.size = 999;
             // //  数据接口人查询方法
@@ -413,7 +414,7 @@ export default {
       let data = { records: [{ ...this.formOptions }] };
       data.current = 1;
       data.size = 999;
-      queryEmployee(data).then((res) => {
+      queryEmployeeManual(data).then((res) => {
         if (res && res.code && res.code === "00000") {
           queryProject(data).then((res1) => {
             queryDepartments(data).then((res2) => {

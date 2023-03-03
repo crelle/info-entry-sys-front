@@ -156,6 +156,33 @@
               </el-select>
             </el-form-item>
           </el-col>
+          <el-col :span="4" class="btn">
+            <el-form-item>
+              <el-upload
+                class="upload-demo"
+                ref="upload"
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :file-list="fileList"
+                :auto-upload="false"
+              >
+                <el-button slot="trigger" size="small" type="primary"
+                  >选取文件</el-button
+                >
+                <el-button
+                  style="margin-left: 10px"
+                  size="small"
+                  type="success"
+                  @click="submitUpload"
+                  >上传到服务器</el-button
+                >
+                <!-- <div slot="tip" class="el-upload__tip">
+                  只能上传jpg/png文件，且不超过500kb
+                </div> -->
+              </el-upload>
+            </el-form-item>
+          </el-col>
         </el-row>
       </el-form>
     </el-card>
@@ -334,6 +361,8 @@ export default {
   },
   data() {
     return {
+      // 批量上传员工信息
+      fileList: [],
       // 搜索头数据全部
       searchHeaderData: "",
       // 手动查询员工
@@ -436,6 +465,16 @@ export default {
     this.searchHeader();
   },
   methods: {
+    // 批量上传员工信息
+    submitUpload() {
+      this.$refs.upload.submit();
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
     // 头部搜索
     searchHeader() {
       let data = { records: [{ ...this.formOptions }] };
