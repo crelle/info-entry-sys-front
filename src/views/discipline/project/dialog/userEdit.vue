@@ -338,6 +338,8 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.projectId = "";
+      this.initFormData = {};
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {

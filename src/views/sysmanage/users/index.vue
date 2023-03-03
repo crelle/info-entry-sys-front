@@ -313,11 +313,11 @@ export default {
               this.paginationOptions.total = res.data.total; // 分页器赋值
               console.log(this.tableData, "查询用户列表++++++");
               // 过滤掉管理员admin
-              // this.tableData.forEach((item, index) => {
-              //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
-              //     this.tableData.splice(index, 1);
-              //   }
-              // });
+              this.tableData.forEach((item, index) => {
+                if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+                  this.tableData.splice(index, 1);
+                }
+              });
             }
           });
         } else {

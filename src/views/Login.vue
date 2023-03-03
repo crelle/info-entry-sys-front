@@ -344,10 +344,10 @@ export default {
     this.changecode();
   },
   mounted() {
-    console.log(
-      "%c XuTianqi-email:1300811776@qq.com",
-      "color: rgba(248, 133, 200, 0)"
-    );
+    // console.log(
+    //   "%c XuTianqi-email:1300811776@qq.com",
+    //   "color: rgba(248, 133, 200, 0)"
+    // );
     // this.getBackImg();
   },
   methods: {

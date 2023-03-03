@@ -35,7 +35,7 @@
                       v-for="item in regionData"
                       :key="item.index"
                       :label="item.regionName"
-                      :value="item.regionName"
+                      :value="item.regionId"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -58,7 +58,7 @@
                     <el-option
                       v-for="item in UserList"
                       :key="item.index"
-                      :label="item.username"
+                      :label="item.userNickName"
                       :value="item.id"
                     ></el-option>
                   </el-select>
@@ -157,7 +157,7 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
-         {
+          {
             pattern:
               /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
             message: "邮箱格式不正确",
@@ -170,7 +170,7 @@ export default {
             message: "请填写客户名",
             trigger: ["blur", "change"],
           },
-            {
+          {
             pattern: /^[^\s]*$/,
             message: "不支持空格格式",
             trigger: "blur",
@@ -244,7 +244,7 @@ export default {
           if (item.id == e) {
             this.userEditForm.cellPhone = item.userPhone;
             this.userEditForm.email = item.userEmail;
-            this.userEditForm.userId = item.username;
+            this.userEditForm.userId = item.userNickName;
           }
         });
       } else {
@@ -257,6 +257,8 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.customerId = "";
+      this.initFormData = {};
       console.log(this.UserList, "父亲传来的用户表----------");
       if (row) {
         this.initFormData = row;
@@ -321,6 +323,7 @@ export default {
       } else {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
+            // console.log(this.userEditForm,'---创建传入');
             establishCustomer(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
@@ -453,7 +456,7 @@ export default {
 ::v-deep .el-input.is-disabled .el-input__inner {
   color: #606266;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 400px;
 }
 </style>

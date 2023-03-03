@@ -436,6 +436,7 @@ export default {
           return false;
         }
       });
+      this.$parent.searchHeader();
     },
     // 分页查询状态--记录表
     queryStateform() {

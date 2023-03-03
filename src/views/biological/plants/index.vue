@@ -33,44 +33,44 @@
                 filterable
               >
                 <el-option
-                  v-for="item in Users"
+                  v-for="item in UsersHeader"
                   :key="item.index"
-                  :label="item.department"
-                  :value="item.department"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="地域" prop="region">
+            <el-form-item label="地域" prop="regionName">
               <el-select
-                v-model="formOptions.region"
+                v-model="formOptions.regionName"
                 placeholder="请选择接地域名称"
                 clearable
                 filterable
               >
                 <el-option
-                  v-for="item in MockUser"
+                  v-for="item in RegionNameHeader"
                   :key="item.index"
-                  :label="item.regionName"
-                  :value="item.regionName"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="接口人" prop="Interface">
+            <el-form-item label="接口人" prop="interfaceName">
               <el-select
-                v-model="formOptions.Interface"
+                v-model="formOptions.interfaceName"
                 placeholder="请选择接口人"
                 clearable
                 filterable
               >
                 <el-option
-                  v-for="item in Interface"
+                  v-for="item in InterfaceNameHeader"
                   :key="item.index"
-                  :label="item.interfaceName"
-                  :value="item.interfaceName"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -87,18 +87,18 @@
         </el-row>
         <el-row class="name">
           <el-col :span="5">
-            <el-form-item label="客户" prop="customer">
+            <el-form-item label="客户" prop="customerName">
               <el-select
-                v-model="formOptions.customer"
+                v-model="formOptions.customerName"
                 placeholder="请选择客户名称"
                 clearable
                 filterable
               >
                 <el-option
-                  v-for="item in tableCustomer"
+                  v-for="item in CustomerNameHeader"
                   :key="item.index"
-                  :label="item.customerName"
-                  :value="item.customerId"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -112,27 +112,27 @@
                 filterable
               >
                 <el-option
-                  v-for="item in tableProject"
+                  v-for="item in ProjectNameHeader"
                   :key="item.index"
-                  :label="item.project"
-                  :value="item.projectId"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="技能" prop="skill">
+            <el-form-item label="岗位" prop="postName">
               <el-select
-                v-model="formOptions.skill"
-                placeholder="请选择技能"
+                v-model="formOptions.postName"
+                placeholder="请选择岗位"
                 clearable
                 filterable
               >
                 <el-option
-                  v-for="item in options"
+                  v-for="item in PostNameHeader"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :label="item"
+                  :value="item"
                 >
                 </el-option>
               </el-select>
@@ -147,10 +147,10 @@
                 filterable
               >
                 <el-option
-                  v-for="item in status"
+                  v-for="item in StatusNameHeader"
                   :key="item.value"
-                  :label="item.label"
-                  :value="item.value"
+                  :label="item"
+                  :value="item"
                 >
                 </el-option>
               </el-select>
@@ -334,6 +334,8 @@ export default {
   },
   data() {
     return {
+      // 搜索头数据全部
+      searchHeaderData: "",
       // 手动查询员工
       employeeManual: [],
       status: [
@@ -409,6 +411,21 @@ export default {
       tableyPost: [],
       // 验证
       rules: {},
+      // ----头查
+      // 部门
+      UsersHeader: [],
+      // 地域
+      RegionNameHeader: [],
+      // 接口人
+      InterfaceNameHeader: [],
+      // 客户
+      CustomerNameHeader: [],
+      // 项目
+      ProjectNameHeader: [],
+      // 岗位
+      PostNameHeader: [],
+      // 状态
+      StatusNameHeader: [],
     };
   },
   mounted() {
@@ -416,8 +433,68 @@ export default {
     this.queryTableList();
     this.queryProjectList();
     this.querySearch();
+    this.searchHeader();
   },
   methods: {
+    // 头部搜索
+    searchHeader() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 9999;
+      // 清空头部预存数据重新赋值
+      this.UsersHeader = [];
+      this.RegionNameHeader = [];
+      this.InterfaceNameHeader = [];
+      this.CustomerNameHeader = [];
+      this.ProjectNameHeader = [];
+      this.PostNameHeader = [];
+      this.StatusNameHeader = [];
+      queryEmployeeManual(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.searchHeaderData = res.data.records; // 表格数据赋值
+          this.searchHeaderData.forEach((item) => {
+            console.log(item, "-------头部搜索数据----");
+            // console.log(item.department, "-------头部搜索数据----");
+            // 项目
+            if (item.department != null) {
+              this.UsersHeader.push(item.department);
+            }
+            // 地域
+            if (item.regionName != null) {
+              this.RegionNameHeader.push(item.regionName);
+            }
+            // 接口人
+            if (item.interfaceName != null) {
+              this.InterfaceNameHeader.push(item.interfaceName);
+            }
+            // 客户
+            if (item.customerName != null) {
+              this.CustomerNameHeader.push(item.customerName);
+            }
+            // 项目
+            if (item.project != null) {
+              this.ProjectNameHeader.push(item.project);
+            }
+            // 岗位
+            if (item.postName != null) {
+              this.PostNameHeader.push(item.postName);
+            }
+            // 状态
+            if (item.status != null) {
+              this.StatusNameHeader.push(item.status);
+            }
+          });
+          this.UsersHeader = [...new Set(this.UsersHeader)];
+          this.RegionNameHeader = [...new Set(this.RegionNameHeader)];
+          this.InterfaceNameHeader = [...new Set(this.InterfaceNameHeader)];
+          this.CustomerNameHeader = [...new Set(this.CustomerNameHeader)];
+          this.ProjectNameHeader = [...new Set(this.ProjectNameHeader)];
+          this.PostNameHeader = [...new Set(this.PostNameHeader)];
+          this.StatusNameHeader = [...new Set(this.StatusNameHeader)];
+          console.log(this.StatusNameHeader, "*----------*---查查");
+        }
+      });
+    },
     //table数据
     queryTableList() {
       let data = { records: [{ ...this.formOptions }] };
@@ -426,7 +503,7 @@ export default {
       queryEmployeeManual(data).then((res) => {
         if (res && res.code && res.code === "00000") {
           this.tableData = res.data.records; // 表格数据赋值
-          console.log(this.tableData, "员工表格数据赋值");
+          // console.log(this.tableData, "员工表格数据赋值");
           this.paginationOptions.total = res.data.total; // 分页器赋值
         }
       });
@@ -445,11 +522,22 @@ export default {
                 //  数据岗位查询方法
                 queryPost(data).then((res6) => {
                   this.tableyPost = res6.data.records; // 岗位表格数据赋值
+                  // console.log(this.tableyPost, "----------岗位数据");
                   this.tableProject = res1.data.records; // 项目表格数据赋值
                   this.Users = res2.data.records; // 部门数据表格数据赋值
                   this.Interface = res3.data.records; // 接口人表格数据赋值
                   this.MockUser = res4.data.records; // 地域数据表格数据赋值
                   this.tableCustomer = res5.data.records; // 客户表格数据赋值
+                  // this.tableData.forEach((item) => {
+                  //   if (item.status == null) {
+                  //     item.status = "(当前状态未定义)";
+                  //     this.$set(item, item.status, item.status);
+                  //   }
+                  //   if (item.postName == null) {
+                  //     item.postName = "(当前岗位未确定)";
+                  //     this.$set(item, item.postName, item.postName);
+                  //   }
+                  // });
                 });
               });
             });
@@ -484,7 +572,7 @@ export default {
           },
         ],
       }).then((res) => {
-        console.log(res, "queryProjectList");
+        // console.log(res, "queryProjectList");
       });
     },
 

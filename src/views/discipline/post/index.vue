@@ -58,7 +58,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
+          <!-- <el-col :span="5">
             <el-form-item label="岗位技能" prop="skill">
               <el-select
                 v-model="formOptions.skill"
@@ -74,10 +74,10 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
 
           <el-col
-            :span="4"
+            :span="9"
             :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
@@ -453,7 +453,7 @@ export default {
   text-align: center;
   line-height: 36.9px;
 }
-::v-deep .el-col-4 {
+::v-deep .el-col-9 {
   text-align: right;
 }
 .el-form--inline .el-form-item {
