@@ -8,6 +8,20 @@ const uploadApi = (data) =>
     url: BaseURL + "/app/employee/importExcel",
     data,
   });
+//下载员工（批量）
+const downloadApi = (data) =>
+  Request({
+    method: "get",
+    url: BaseURL + "/app/employee/downloadExcel",
+    data,
+  });
+//下载模板
+const downloadTemplate = (data) =>
+  Request({
+    method: "get",
+    url: BaseURL + "/app/employee/downloadTemplate",
+    data,
+  });
 //创建员工
 const createEmployee = (data) =>
   Request({
@@ -84,5 +98,7 @@ export {
   queryState,
   queryRecord,
   queryEmployeeManual,
-  uploadApi
+  uploadApi,
+  downloadApi,
+  downloadTemplate
 };

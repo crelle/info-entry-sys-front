@@ -177,8 +177,12 @@
             class="btn"
             style="display: flex; float: right; height: 28px"
           >
-            <el-button type="primary" size="mini">下载模板</el-button>
-            <el-button type="primary" size="mini">批量导出</el-button>
+            <el-button type="primary" size="mini" @click="downloadTemplate()"
+              >下载模板</el-button
+            >
+            <el-button type="primary" size="mini" @click="downloadApi()"
+              >批量导出</el-button
+            >
             <el-upload
               action="https://jsonplaceholder.typicode.com/posts/"
               :limit="7"
@@ -367,7 +371,12 @@ import { queryCustomer } from "@/api/customer";
 import { queryProject } from "@/api/project";
 
 // 员工 导入
-import { uploadFile, uploadApi } from "@/api/employee"; //api 请求
+import {
+  uploadFile,
+  uploadApi,
+  downloadApi,
+  downloadTemplate,
+} from "@/api/employee"; //api 请求
 import {
   queryEmployee,
   deleteEmployee,
@@ -498,6 +507,26 @@ export default {
     this.searchHeader();
   },
   methods: {
+    // 下载模板
+    downloadTemplate() {
+      downloadTemplate().then((res) => {
+        if (res.message == "成功") {
+          this.$message.success(res.data);
+        } else {
+          this.$message.success("操作失败,请联系管理员");
+        }
+      });
+    },
+    // 下载员工(批量)
+    downloadApi() {
+      downloadApi().then((res) => {
+        if (res.message == "成功") {
+          this.$message.success(res.data);
+        } else {
+          this.$message.success("操作失败,请联系管理员");
+        }
+      });
+    },
     // 批量
     uploadmore(v) {
       console.log("批量导入", v);
