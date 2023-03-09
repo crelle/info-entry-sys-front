@@ -43,7 +43,7 @@
                     @change="queryson"
                   >
                     <el-option
-                      v-for="item in projectData"
+                      v-for="item in ProjectAll"
                       :key="item.index"
                       :label="item.project"
                       :value="item.projectId"
@@ -86,38 +86,6 @@
                     ></el-date-picker>
                   </el-col>
                 </el-form-item>
-                <!-- <el-form-item label="办公地点 :" prop="address">
-                  <el-cascader
-                    size="large"
-                    :options="options"
-                    v-model="userEditForm.address"
-                    clearable
-                  >
-                  </el-cascader>
-                </el-form-item> -->
-                <!-- <el-form-item label="办公地点 :" prop="address">
-                  <el-input
-                    type="text"
-                    v-model="userEditForm.address"
-                    placeholder="办公地点"
-                    clearable
-                  ></el-input>
-                </el-form-item> -->
-                <!-- <el-form-item label="地域 :" prop="regionName">
-                  <el-select
-                    v-model="userEditForm.regionName"
-                    placeholder="请选择地域"
-                    filterable
-                    clearable
-                  >
-                    <el-option
-                      v-for="item in regionData"
-                      :key="item.index"
-                      :label="item.regionName"
-                      :value="item.regionId"
-                    ></el-option>
-                  </el-select>
-                </el-form-item> -->
                 <el-form-item label="办公地点 :" prop="address">
                   <el-input
                     type="text"
@@ -167,16 +135,11 @@
 <script>
 //创建岗位/编辑岗位
 import { establishPost, editPost } from "@/api/post";
-// 假的 查询接口人 查客户
-// import { reqgetInterface } from "@/mockjs/reqMock";
-// 地区选择
-// import { regionData, CodeToText, TextToCode } from "element-china-area-data";
-
+import { queryProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
     tableData: "",
-    projectData: "",
     // 客户
     customerData: "",
     // 地域
@@ -186,6 +149,7 @@ export default {
   },
   data() {
     return {
+      ProjectAll: [],
       dialogFormVisible: false,
       fileType: {
         fileType: 0,
@@ -342,38 +306,34 @@ export default {
       // 清空
       this.userEditForm.customerName = "";
       this.userEditForm.customerId = "";
-      console.log(this.projectData, "自动选择---项目", "---选择的", e);
-      console.log(this.customerData, "--全部--客户---");
-      console.log(this.InterfaceData, "--全部--接口人---");
-      // 通过接口人 查询客户
-      this.projectData.forEach((item) => {
+      console.log(this.ProjectAll, "自动选择---项目", "---选择的", e);
+      this.ProjectAll.forEach((item) => {
         if (item.projectId == e) {
-          // 项目
-          console.log(item, "--2023");
+          console.log(item,"---------1111----------chengle*---");
           this.userEditForm.customerName = item.customerName;
-          // 接口人
-          this.InterfaceData.forEach((sitem) => {
-            if (item.interfaceId == sitem.interfaceId) {
-              item.interfaceName = sitem.interfaceName;
-              item.cellPhone = sitem.cellPhone;
-              item.email = sitem.email;
-              // 客户
-              this.customerData.forEach((items) => {
-                if (sitem.customerId == items.customerId) {
-                  this.userEditForm.customerName = items.customerName;
-                  this.userEditForm.customer = items.customerId;
-                }
-              });
-            }
-          });
+          this.$set(item, item.customerName, this.userEditForm.customerName);
         }
       });
     },
-    //
+    
+    //全部项目
+    queryProjectAll() {
+      let data = { records: [{ ...this.userEditForm }] };
+      data.current = 1;
+      data.size = 999;
+      queryProject(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.ProjectAll = res.data.records; // 表格数据赋值
+          console.log(this.ProjectAll, "-*全部---------项目表格数据赋值");
+        }
+      });
+    },
     // 弹窗
     openDialog(row) {
       this.initFormData = {};
+      this.ProjectAll = [];
       this.userEditForm.postId = "";
+      this.queryProjectAll();
       this.queryson();
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示

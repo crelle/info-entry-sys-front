@@ -1,6 +1,13 @@
 import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
 
+//创建员工（批量）
+const uploadApi = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/app/employee/importExcel",
+    data,
+  });
 //创建员工
 const createEmployee = (data) =>
   Request({
@@ -77,4 +84,5 @@ export {
   queryState,
   queryRecord,
   queryEmployeeManual,
+  uploadApi
 };
