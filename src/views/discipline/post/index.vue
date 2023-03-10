@@ -25,9 +25,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="项目名" prop="projectId">
+            <el-form-item label="项目名" prop="project">
               <el-select
-                v-model="formOptions.projectId"
+                v-model="formOptions.project"
                 placeholder="请选择项目名"
                 filterable
                 clearable
@@ -35,8 +35,8 @@
                 <el-option
                   v-for="item in projectData"
                   :key="item.index"
-                  :label="item.project"
-                  :value="item.projectId"
+                  :label="item"
+                  :value="item"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -50,7 +50,7 @@
                 clearable
               >
                 <el-option
-                  v-for="item in queryPostAll"
+                  v-for="item in regionData"
                   :key="item.index"
                   :label="item"
                   :value="item"
@@ -199,7 +199,6 @@
     <role-edit-dialog
       :toChild="list"
       :tableData="tableData"
-      :projectData="projectData"
       :customerData="customerData"
       :InterfaceData="InterfaceData"
       ref="roleEditDialogRef"
@@ -255,7 +254,7 @@ export default {
         position: "",
         postId: "",
         postName: "",
-        projectId: "",
+        project: "",
         requirements: "",
         skill: "",
         customer: "",
@@ -263,9 +262,13 @@ export default {
         customerName: "",
       },
       tableData: [],
+      // 项目数据
       projectData: [],
+      // 地域数据
       regionData: [],
+      // 客户
       customerData: [],
+      // 接口人
       InterfaceData: [],
       paginationOptions: {
         pageNo: 1,
@@ -279,8 +282,45 @@ export default {
   },
   mounted() {
     this.queryPost();
+    this.searchHeader();
   },
   methods: {
+    // 头部搜索
+    // 头部搜索
+    searchHeader() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 9999;
+      // 清空头部预存数据重新赋值
+      this.queryPostAll = [];
+      // // 项目数据
+      this.projectData = [];
+      // // 办公地点
+      this.regionData = [];
+      console.log(this.regionData, "99991111");
+      queryPost(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.queryPostAll = res.data.records; // 表格数据赋值
+          // console.log(res.data.records,'**********---------');
+          this.queryPostAll.forEach((item) => {
+            console.log(item, "-------头部搜索数据----");
+            // console.log(item.department, "-------头部搜索数据----");
+            // 项目
+            if (item.project != null && item.project != "") {
+              this.projectData.push(item.project);
+            }
+            // 办公地点
+            if (item.address != null && item.address != "") {
+              this.regionData.push(item.address);
+            }
+          });
+          this.projectData = [...new Set(this.projectData)];
+          this.regionData = [...new Set(this.regionData)];
+
+          console.log(this.regionData, "*----------*---查查");
+        }
+      });
+    },
     // 手动 查询 岗位表
     queryPostclick() {
       this.$refs["queryRoleRef"].validate((valid) => {
@@ -300,61 +340,9 @@ export default {
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           queryPost(data).then((res) => {
-            console.log('手动岗位--------------',res.data.records);
-            data.current = 1;
-            data.size = 999;
-            // //  数据接口人查询方法
-            queryInterface(data).then((res0) => {
-              //  查询 项目表
-              queryProject(data).then((res1) => {
-                // 查询 地域表
-                queryRegion(data).then((res2) => {
-                  // 查询 客户
-                  queryCustomer(data).then((res3) => {
-                    this.InterfaceData = res0.data.records; // 接口人表格数据赋值
-                    console.log(this.InterfaceData ,"---------接口人数据---");
-                    this.tableData = res.data.records; // 表格数据赋值
-                    console.log(this.tableData, "++++++++++岗位数据----");
-                    this.projectData = res1.data.records; // 表格数据赋值
-                    // console.log(this.projectData, "+++++++++项目数据----");
-                    this.regionData = res2.data.records; // 表格数据赋值
-                    // console.log(this.regionData, "++++++++++地域数据----");
-                    this.customerData = res3.data.records; // 表格数据赋值
-                    // console.log(this.customerData, "++++++++++客户数据----");
-                    queryPost(data).then((res4) => {
-                      res4.data.records.forEach((itesas) => {
-                        if (itesas.address != "") {
-                          // console.log(itesas,"--------全部岗位--- 办公地点 表格数据赋值");
-                          if(!this.queryPostAll.includes(itesas.address)){
-                               this.queryPostAll.push(itesas.address); //全部岗位--- 办公地点 表格数据赋值
-                          }
-                        }
-                      });
-                      // console.log(this.queryPostAll,"-----地点的下拉内容*--");
-                      this.tableData.forEach((item) => {
-                        if (item.date) {
-                          // 时间格式修改
-                          item.date = item.date.split("T")[0];
-                          item.address = item.address.split("/")[0];
-                        }
-                        this.projectData.forEach((sitem) => {
-                          if (item.projectId == sitem.projectId) {
-                            item.project = sitem.project;
-                          }
-                        });
-                        this.customerData.forEach((sitems) => {
-                          if (item.customer == sitems.customerId) {
-                            this.$set(item,item.customerName,sitems.customerName)
-                            item.customerName = sitems.customerName;
-                          }
-                        });
-                        // this.customerData=this.customerData
-                      });
-                    });
-                  });
-                });
-              });
-            });
+            console.log("手动岗位--------------", res.data.records);
+            this.tableData = res.data.records; // 表格数据赋值
+            console.log(this.tableData, "++++++++++岗位数据----");
             this.paginationOptions.total = res.data.total; // 分页器赋值
           });
         } else {
