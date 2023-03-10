@@ -75,13 +75,29 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4" class="btn">
+          <el-col :span="4" class="btn" style="display: flex; float: right">
             <el-form-item>
-              <el-button type="primary" @click="resetForm('userQueryRef')"
+              <el-button
+                type="primary"
+                size="mini"
+                style="width: 80px"
+                @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserList">查询</el-button>
-              <el-button type="primary" @click="addClick">新增</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                style="width: 80px"
+                @click="queryUserList"
+                >查询</el-button
+              >
+              <el-button
+                type="primary"
+                size="mini"
+                style="width: 80px"
+                @click="addClick"
+                >新增</el-button
+              >
             </el-form-item>
           </el-col>
         </el-row>
@@ -156,32 +172,44 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="4" class="btn">
-            <el-form-item>
-              <el-upload
-                class="upload-demo"
-                ref="upload"
-                action="https://jsonplaceholder.typicode.com/posts/"
-                :on-preview="handlePreview"
-                :on-remove="handleRemove"
-                :file-list="fileList"
-                :auto-upload="false"
+          <el-col
+            :span="4"
+            class="btn"
+            style="display: flex; float: right; height: 28px"
+          >
+            <el-button type="primary" size="mini" @click="downloadTemplate()"
+              >下载模板</el-button
+            >
+            <el-button type="primary" size="mini" @click="downloadApi()"
+              >批量导出</el-button
+            >
+            <el-upload
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :limit="7"
+              ref="enclosureUpload"
+              :file-list="fileList"
+              accept=".xlsx"
+              :headers="tokens"
+              :multiple="true"
+              :show-file-list="false"
+              :auto-upload="false"
+              :on-change="handleFileChange"
+              :on-success="enclosureHandleSuccess"
+              :on-exceed="handleExceed"
+              :before-upload="handlebeforeUpload"
+              style="margin-left: 10px"
+            >
+              <el-button
+                type="primary"
+                size="small"
+                class="btn"
+                style="width: 80px; padding: 7px 15px"
+                @click="uploadmore"
               >
-                <el-button slot="trigger" size="small" type="primary"
-                  >选取文件</el-button
-                >
-                <el-button
-                  style="margin-left: 10px"
-                  size="small"
-                  type="success"
-                  @click="submitUpload"
-                  >上传到服务器</el-button
-                >
-                <!-- <div slot="tip" class="el-upload__tip">
-                  只能上传jpg/png文件，且不超过500kb
-                </div> -->
-              </el-upload>
-            </el-form-item>
+                批量导入
+              </el-button>
+            </el-upload>
+            <el-form-item> </el-form-item>
           </el-col>
         </el-row>
       </el-form>
@@ -341,7 +369,14 @@ import { queryInterface } from "@/api/interface";
 import { queryCustomer } from "@/api/customer";
 // 项目
 import { queryProject } from "@/api/project";
-// 员工
+
+// 员工 导入
+import {
+  uploadFile,
+  uploadApi,
+  downloadApi,
+  downloadTemplate,
+} from "@/api/employee"; //api 请求
 import {
   queryEmployee,
   deleteEmployee,
@@ -361,8 +396,15 @@ export default {
   },
   data() {
     return {
-      // 批量上传员工信息
+      // 批量
+      tokens: {
+        Authorization: localStorage.getItem("token"),
+      },
+      uploadLoading: false,
       fileList: [],
+      enclosureList: [],
+      exportLoading: false,
+      timer: null,
       // 搜索头数据全部
       searchHeaderData: "",
       // 手动查询员工
@@ -465,16 +507,176 @@ export default {
     this.searchHeader();
   },
   methods: {
-    // 批量上传员工信息
-    submitUpload() {
-      this.$refs.upload.submit();
+    // 下载模板
+    downloadTemplate() {
+      downloadTemplate().then((res) => {
+        if (res.message == "成功") {
+          this.$message.success(res.data);
+        } else {
+          this.$message.success("操作失败,请联系管理员");
+        }
+      });
     },
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
+    // 下载员工(批量)
+    downloadApi() {
+      downloadApi().then((res) => {
+        if (res.message == "成功") {
+          this.$message.success(res.data);
+        } else {
+          this.$message.success("操作失败,请联系管理员");
+        }
+      });
     },
-    handlePreview(file) {
-      console.log(file);
+    // 批量
+    uploadmore(v) {
+      console.log("批量导入", v);
     },
+
+    // 过滤重复
+    filterRepetition(arr) {
+      let arr1 = []; //存id
+      let newArr = []; //存新数组
+      for (let i in arr) {
+        if (arr1.indexOf(arr[i].name) == -1) {
+          arr1.push(arr[i].name);
+          newArr.push(arr[i]);
+        }
+      }
+      return newArr;
+    },
+
+    handlebeforeUpload(file, fileList) {
+      console.log("上传前", file, fileList);
+    },
+
+    // 修改 存放要上传的文件列表
+    handleFileChange(file, fileList) {
+      let arr = this.filterRepetition(fileList);
+      // if (arr.length !== fileList.length) {
+      //   this.$message("上传重复文件，已过滤重复文件");
+      // }
+      this.fileList = arr;
+      // 上传文件后，自动把文件传给后台，这里做了一个防抖，等待500ms后在传给后台
+      this.debounce(this.submitUpload, 500);
+    },
+
+    // element上传多个文件时，会把每个文件做个单独请求
+    // 这里的方法是请求最后一次
+    debounce(fn, waits) {
+      if (this.timer) {
+        clearTimeout(this.timer);
+        this.timer = null;
+      }
+
+      this.timer = setTimeout(() => {
+        fn.apply(this, arguments); // 把参数传进去
+      }, waits);
+    },
+
+    // 确定
+    async submitUpload() {
+      if (this.fileList.length === 0) {
+        this.$message.success("请上传文件");
+        return;
+      }
+
+      this.uploadLoading = true;
+      let formData = new FormData(); //  用FormData存放上传文件
+      this.fileList.forEach((file) => {
+        formData.append("file", file.raw); // file.raw
+      });
+
+      // 确定上传 把在上传列表里的文件 合并到formData里面传给后台
+      let res = await uploadApi(formData);
+      console.log("结果++++++++++;", res);
+      if (res.message == "成功") {
+        this.$message.success("导入成功");
+      }
+      this.queryTableList();
+      this.resetsubmitUpload();
+
+      if (res.isSuccess) {
+        this.$message.success("上传成功");
+        res.result = res.result || [];
+        this.fileList = [];
+        this.enclosureList = [];
+        let arr = Object.prototype.toString.call(res.result);
+        if (arr === "[object Array]") {
+          this.enclosureList = res.result || [];
+        }
+        console.log("结果：------", arr);
+      }
+
+      this.uploadLoading = false;
+    },
+
+    // 移除文件
+    async delIdlist(val) {
+      let flag = await this.$confirm(`确定移除吗？`);
+      if (flag === "confirm") {
+        this.enclosureList = this.enclosureList.filter((res) => res !== val);
+      }
+    },
+
+    // 重新上传
+    resetsubmitUpload() {
+      this.enclosureList = [];
+      this.fileList = [];
+    },
+
+    // 清除记录
+    async delUploadList() {
+      let flag = await this.$confirm(`确定清除所有附件ID吗？`);
+      if (flag === "confirm") {
+        this.enclosureList = [];
+        this.fileList = [];
+      }
+    },
+
+    // 取消
+    approveCancel() {
+      this.fileList = [];
+      this.approve_dialog = false;
+    },
+
+    // 删除时的钩子
+    onFileRemove(file, fileList) {
+      console.log("删除时钩子-fileList", fileList);
+      this.fileList = fileList;
+    },
+    // 删除之前钩子
+    beforeFileRemove(file, fileList) {
+      let flag = this.$confirm(`确定移除 ${file.name}？`);
+      return flag;
+    },
+
+    // 上传成功
+    enclosureHandleSuccess(response, file, fileListile) {
+      console.log("上传成功:", response, file, fileListile);
+      this.uploadLoading = false;
+    },
+
+    // 上传失败
+    enclosureHandleError(err, file, fileList) {
+      this.$message({
+        showClose: true,
+        message: err,
+        type: "error",
+      });
+      this.uploadLoading = false;
+    },
+
+    // 上传文件之前
+    beforeUpload(file) {},
+
+    // 导入
+    handleExceed(files, fileList) {
+      console.log("导入", files, fileList);
+      this.$message.warning(
+        `限制选择7个文件，本次选择了 ${files.length} 个文件`
+      );
+    },
+
     // 头部搜索
     searchHeader() {
       let data = { records: [{ ...this.formOptions }] };
@@ -740,9 +942,6 @@ export default {
   margin-right: 5px;
   min-width: 54px;
   text-align: left;
-}
-.el-form-item {
-  width: 253px;
 }
 ::v-deep .el-col-5 {
   overflow: hidden;
