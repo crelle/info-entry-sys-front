@@ -58,21 +58,13 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="5">
-            <el-form-item label="接口人" prop="interfaceName">
-              <el-select
+         <el-col :span="5">
+            <el-form-item label="资产编号" prop="interfaceName">
+              <el-input
+                class="namecss"
                 v-model="formOptions.interfaceName"
-                placeholder="请选择接口人"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in InterfaceNameHeader"
-                  :key="item.index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
+                placeholder="请输入资产编号--等待实现..."
+              ></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="4" class="btn" style="display: flex; float: right">
@@ -530,6 +522,7 @@ export default {
     // 批量
     uploadmore(v) {
       console.log("批量导入", v);
+      
     },
 
     // 过滤重复
@@ -940,7 +933,7 @@ export default {
 }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
-  min-width: 54px;
+  min-width: 68px;
   text-align: left;
 }
 ::v-deep .el-col-5 {
