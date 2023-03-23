@@ -184,21 +184,40 @@
           <div class="block">
             <el-table
               :data="tableDatas"
+              tooltip-effect="dark"
               style="width: 100%"
-              max-height="450"
               border
+              stripe
+              size="mini"
+              :max-height="300"
             >
-              <el-table-column prop="name" label="资产编号"> </el-table-column>
-              <el-table-column prop="province" label="资产序列号">
+              <el-table-column label="序号" type="index" width="50">
               </el-table-column>
-              <el-table-column prop="city" label="资产名称"> </el-table-column>
+              <el-table-column
+                prop="assetNo"
+                label="资产编号"
+                show-overflow-tooltip
+              >
+              </el-table-column>
+              <el-table-column
+                prop="assetSerialNumber"
+                label="资产序列号"
+                show-overflow-tooltip
+              >
+              </el-table-column>
+              <el-table-column
+                prop="assetName"
+                label="资产名称"
+                show-overflow-tooltip
+              >
+              </el-table-column>
               <!-- fixed="right" -->
-              <el-table-column label="操作" width="80">
-                <template slot-scope="scope">
+              <el-table-column label="操作" width="60">
+                <template slot-scope="{ row, $index }">
                   <el-button
-                    @click="open(scope.$index, tableDatas)"
+                    @click="deletePropertyis(row, $index)"
                     type="text"
-                    size="small"
+                    size="mini"
                   >
                     删除
                   </el-button>
@@ -210,35 +229,39 @@
               <div class="borders">
                 <el-form
                   :model="numberValidateForm"
+                  :rules="userEditFormRules"
                   ref="numberValidateForm"
                   label-width="100px"
                   class="demo-ruleForm"
                 >
-                  <el-form-item label="资产编号 :" prop="age1">
+                  <el-form-item label="资产编号 :" prop="assetNo">
                     <el-input
-                      v-model.number="numberValidateForm.age1"
+                      v-model.number="numberValidateForm.assetNo"
                       autocomplete="off"
                     ></el-input>
                   </el-form-item>
-                  <el-form-item label="资产序列号 :" prop="age2">
+                  <el-form-item label="资产序列号 :" prop="assetSerialNumber">
                     <el-input
-                      v-model.number="numberValidateForm.age2"
+                      v-model.number="numberValidateForm.assetSerialNumber"
                       autocomplete="off"
                     ></el-input>
                   </el-form-item>
-                  <el-form-item label="资产名称 :" prop="age3">
+                  <el-form-item label="资产名称 :" prop="assetName">
                     <el-input
-                      v-model.number="numberValidateForm.age3"
+                      v-model.number="numberValidateForm.assetName"
                       autocomplete="off"
                     ></el-input>
                   </el-form-item>
                   <el-form-item>
                     <el-button
                       type="primary"
+                      size="mini"
                       @click="submitForm('numberValidateForm')"
-                      >提交</el-button
+                      >添加</el-button
                     >
-                    <el-button @click="resetForm('numberValidateForm')"
+                    <el-button
+                      @click="resetFormProperty('numberValidateForm')"
+                      size="mini"
                       >重置</el-button
                     >
                   </el-form-item>
@@ -253,7 +276,13 @@
 </template>
 
 <script>
-import { communIcate, queryRecord } from "@/api/employee";
+import {
+  communIcate,
+  queryRecord,
+  createProperty,
+  deleteProperty,
+  queryPropertyManual,
+} from "@/api/employee";
 import { Decrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 export default {
@@ -265,48 +294,14 @@ export default {
     return {
       // 资产新增
       numberValidateForm: {
-        age1: "",
-        age2: "",
-        age3: "",
+        employeeId: "",
+        assetNo: "",
+        assetSerialNumber: "",
+        assetName: "",
+        createBy: "",
       },
       // 资产假数据
-      tableDatas: [
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAD2WE2WSDSDWWD",
-          city: "EwerDW主机",
-        },
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAD2WwefWD",
-          city: "E32ADW显示器",
-        },
-        {
-          name: "JJASDJSA-ASD21wfdscASDAS",
-          province: "CPSAD23422WSDSDWWD",
-          city: "ESADW主机",
-        },
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAの4323DWWD",
-          city: "ewq234wefADW显示器机",
-        },
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAの4323DWWD",
-          city: "ewq234wefADW显示器机",
-        },
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAの4323DWWD",
-          city: "ewq234wefADW显示器机",
-        },
-        {
-          name: "JJASDJSA-ASD2123ASDAS",
-          province: "CPSAの4323DWWD",
-          city: "ewq234wefADW显示器机",
-        },
-      ],
+      tableDatas: [],
       // 沟通记录
       record: {
         id: "",
@@ -366,6 +361,30 @@ export default {
       // baseURL: BaseURL,
 
       initFormData: {},
+      // 正则验证
+      userEditFormRules: {
+        assetNo: [
+          {
+            required: true,
+            message: "请输资产编号",
+            trigger: ["blur", "change"],
+          },
+        ],
+        assetSerialNumber: [
+          {
+            required: true,
+            message: "请输资产序列号",
+            trigger: ["blur", "change"],
+          },
+        ],
+        assetName: [
+          {
+            required: true,
+            message: "请输资产名称",
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
     };
   },
 
@@ -380,38 +399,79 @@ export default {
       "我是 当前----用户"
     );
   },
+  mounted() {
+    this.queryPropertylist();
+  },
   methods: {
+    // 资产 查询
+    //table数据
+    queryPropertylist() {
+      let data = this.initFormData.jobNo;
+      queryPropertyManual(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.tableDatas = res.data; // 表格数据赋值
+          // console.log(this.tableData, "员工表格数据赋值");
+          // this.paginationOptions.total = res.data.total; // 分页器赋值
+        }
+      });
+    },
     // 资产 新增
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          alert("新增成功!");
-          this.resetForm(formName);
+          this.numberValidateForm.employeeId = this.initFormData.jobNo;
+          this.numberValidateForm.createBy = this.userdetail.jobNo;
+          createProperty(this.numberValidateForm).then((res) => {
+            if (res && res.code && res.code === "00000") {
+              this.$message.success("资产添加成功！");
+              this.resetFormProperty(formName);
+              this.queryPropertylist();
+            }
+          });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
+    // 清空资产
+    resetFormProperty(formName) {
+      this.$refs[formName].resetFields();
+      this.numberValidateForm.employeeId = "";
+      this.numberValidateForm.updateBy = "";
+    },
+    // 清空
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
 
     // 资产 删除1
-    open(index, rows) {
+    deletePropertyis(row, index) {
+      console.log(row, "---------资产 删除1-------------");
       this.$confirm("此操作将永久删除该资产, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
       })
         .then(() => {
-          this.$message({
-            type: "success",
-            message: "删除成功!",
+          this.tableDatas.splice(index, 1);
+          // 点击确认，发起后台请求，删除该用户
+          deleteProperty(row.assetId).then((res) => {
+            console.log(res, "点击确认，发起后台请求，删除");
+            if (res.code == "00000") {
+              return this.$message({
+                type: "success",
+                message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "success",
+                message: "删除失败!",
+              });
+            }
           });
-           rows.splice(index, 1);
         })
         .catch(() => {
+          // 点击取消，取消该操作
           this.$message({
             type: "info",
             message: "已取消删除",
@@ -450,6 +510,8 @@ export default {
     handleClick(tab, event) {
       console.log(tab, event);
       this.queryRecordform();
+      // 查询资产
+      this.queryPropertylist();
     },
     openDialog(row) {
       // this.empty(); //清空内容
@@ -472,6 +534,7 @@ export default {
       this.monthValue = toMonth;
       if (row) {
         this.initFormData = row;
+        console.log(row, "--------------row");
         // 处理时间格式
         this.initFormData.birthday = this.initFormData.birthday.split("T")[0];
         this.initFormData.projectId = this.initFormData.projectId.split("T")[0];
@@ -701,7 +764,7 @@ export default {
   min-width: 700px;
 }
 .borders {
-  padding: 20px 20px 0;
+  padding: 20px 16px 0 35px;
   margin: 20px 0;
   border: 1px solid #ebeef5;
   ::v-deep .el-form-item__label {

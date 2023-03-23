@@ -1,6 +1,31 @@
 import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
-
+// 创建员工资产
+const createProperty = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/app/asset/create",
+    data,
+  });
+// 批量 创建员工资产
+const createPropertyes = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/app/asset/creates",
+    data,
+  });
+//删除资产
+const deleteProperty = (data) =>
+  Request({
+    method: "DELETE",
+    url: BaseURL + "/app/asset/deleteById/" + data,
+  });
+// 根据员工查询 资产
+const queryPropertyManual = (data) =>
+  Request({
+    method: "get",
+    url: BaseURL + "/app/asset/list/" + data,
+  });
 //创建员工（批量）
 const uploadApi = (data) =>
   Request({
@@ -8,6 +33,7 @@ const uploadApi = (data) =>
     url: BaseURL + "/app/employee/importExcel",
     data,
   });
+
 //下载员工（批量）
 const downloadApi = (data) =>
   Request({
@@ -100,5 +126,8 @@ export {
   queryEmployeeManual,
   uploadApi,
   downloadApi,
-  downloadTemplate
+  downloadTemplate,
+  createProperty,
+  deleteProperty,
+  queryPropertyManual,
 };
