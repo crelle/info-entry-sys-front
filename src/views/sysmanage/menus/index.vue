@@ -24,7 +24,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="是否需要鉴权" style="margin-left:20px;">
+            <el-form-item label="是否需要鉴权" style="margin-left: 20px">
               <el-select v-model="formOptions.requireAuth" placeholder="请选择">
                 <el-option label="是" :value="true"></el-option>
                 <el-option label="否" :value="false"></el-option>
@@ -40,7 +40,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="9">
-            <el-form-item style="float:right;">
+            <el-form-item style="float: right">
               <el-button type="primary" @click="queryMenus">查询</el-button>
               <el-button
                 class="filter-item"
@@ -54,7 +54,7 @@
                 class="filter-item"
                 style="margin-left: 10px"
                 type="primary"
-               @click="sortClick"
+                @click="sortClick"
               >
                 编辑
               </el-button>
@@ -115,7 +115,7 @@
         ></el-table-column>
         <el-table-column
           label="菜单类型"
-          prop="parentId"
+          prop="menuType"
           min-width="80"
         ></el-table-column>
         <el-table-column
@@ -186,12 +186,13 @@
 </template>
 
 <script>
-import { queryMenu, deleteMenu } from "@/api/menu";
+import { queryMenu, queryMenuAll, deleteMenu } from "@/api/menu";
 import UserEditDialog from "@/views/sysmanage/menus/dialog/menusEdit.vue";
-import menusSort from './dialog/menusSort.vue'
+import menusSort from "./dialog/menusSort.vue";
 export default {
   components: {
-    UserEditDialog,menusSort
+    UserEditDialog,
+    menusSort,
   },
   data() {
     return {
@@ -305,12 +306,16 @@ export default {
       this.paginationOptions.pageNo = val;
       this.queryMenus();
     },
-    indexMethod(index){
-      return (this.paginationOptions.pageNo-1)*this.paginationOptions.pageSize+index+1
+    indexMethod(index) {
+      return (
+        (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
+        index +
+        1
+      );
     },
-    sortClick(){
-      this.$refs.menusSortRef.dialogFormVisible=true
-    }
+    sortClick() {
+      this.$refs.menusSortRef.dialogFormVisible = true;
+    },
   },
 };
 </script>

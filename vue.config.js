@@ -3,7 +3,7 @@ const path = require("path");
 const resolve = (dir) => path.join(__dirname, dir);
 
 module.exports = {
-  lintOnSave: false, // 保存时不进行格式化
+  lintOnSave: false, // 保存时不进行语法检测
   publicPath: BASE_URL, // 项目打包发布线上后的根目录
   outputDir: "docs", // 配合github pages
   // 自定义webpack配置
@@ -17,7 +17,7 @@ module.exports = {
   devServer: {
     proxy: {
       "/api": {
-        target: "http://10.20.24.32:8084/",
+        target: "http://localhost:8084/",
         // target: "http://10.20.24.40:8084/",
         // target: "http://139.196.125.106:8083/",
         changeOrigin: true, // 是否允许跨域
