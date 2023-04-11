@@ -332,10 +332,10 @@
       :MockUser="MockUser"
       ref="userEditDialogRef"
     ></user-edit-dialog>
-    <user-dait-dialog
+    <user-details-dialog
       :toChild="list"
-      ref="userDaitDialogRef"
-    ></user-dait-dialog>
+      ref="UserDetailsDialogRef"
+    ></user-details-dialog>
     <user-state-dialog
       :toChild="list"
       ref="userStateDialogRef"
@@ -378,12 +378,12 @@ import {
 // 岗位
 import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/app/employee-information/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/app/employee-information/dialog/userDetails.vue";
+import UserDetailsDialog from "@/views/app/employee-information/dialog/userDetails.vue";
 import UserStateDialog from "@/views/app/employee-information/dialog/state.vue";
 export default {
   components: {
     UserEditDialog,
-    UserDaitDialog,
+    UserDetailsDialog,
     UserStateDialog,
   },
   data() {
@@ -871,7 +871,7 @@ export default {
     },
     // 详情
     detailsClick(row) {
-      this.$refs.userDaitDialogRef.openDialog(row);
+      this.$refs.UserDetailsDialogRef.openDialog(row);
       this.list = "查看员工详情";
       console.log("详情", row);
     },
