@@ -178,8 +178,8 @@ import { queryDepartments } from "@/api/department";
 import { queryProject } from "@/api/project";
 // 接口人表/删除
 import { queryInterface, deletesInterface } from "@/api/interface";
-import UserEditDialog from "@/views/discipline/interface/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/discipline/interface/dialog/userDetails.vue";
+import UserEditDialog from "@/views/app/interface/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/app/interface/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,

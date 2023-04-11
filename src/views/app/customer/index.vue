@@ -205,8 +205,8 @@ import { queryDepartments } from "@/api/department";
 import { queryProject } from "@/api/project";
 // 用户
 import { queryUser } from "@/api/user";
-import UserEditDialog from "@/views/discipline/customer/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/discipline/customer/dialog/userDetails.vue";
+import UserEditDialog from "@/views/app/customer/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/app/customer/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,

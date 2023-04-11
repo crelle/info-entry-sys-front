@@ -58,7 +58,7 @@
               </el-select>
             </el-form-item>
           </el-col>
-         <el-col :span="5">
+          <el-col :span="5">
             <el-form-item label="资产编号" prop="interfaceName">
               <el-input
                 class="namecss"
@@ -377,9 +377,9 @@ import {
 } from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
-import UserEditDialog from "@/views/biological/plants/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/biological/plants/dialog/userDetails.vue";
-import UserStateDialog from "@/views/biological/plants/dialog/state.vue";
+import UserEditDialog from "@/views/app/employee-information/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/app/employee-information/dialog/userDetails.vue";
+import UserStateDialog from "@/views/app/employee-information/dialog/state.vue";
 export default {
   components: {
     UserEditDialog,
@@ -522,7 +522,6 @@ export default {
     // 批量
     uploadmore(v) {
       console.log("批量导入", v);
-      
     },
 
     // 过滤重复

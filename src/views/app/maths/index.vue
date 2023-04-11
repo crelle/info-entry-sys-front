@@ -156,7 +156,7 @@
 
 <script>
 import { queryMenu, deleteMenu } from "@/api/menu";
-import UserEditDialog from "@/views/discipline/maths/newly_build/build.vue";
+import UserEditDialog from "@/views/app/maths/newly_build/build.vue";
 export default {
   components: {
     UserEditDialog,

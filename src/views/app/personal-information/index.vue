@@ -11,14 +11,17 @@
           <div>
             <div class="but">
               <!-- 重置 -->
-             
+
               <el-button type="primary" v-if="reset" @click="onEditRoleMima">
                 修改密码
               </el-button>
               <el-button type="primary" v-if="displays" @click="onSubmit"
                 >保 存</el-button
               >
-              <el-button type="primary" v-if="displays" @click="cancel('userEditRef')"
+              <el-button
+                type="primary"
+                v-if="displays"
+                @click="cancel('userEditRef')"
                 >取 消</el-button
               >
               <el-button type="primary" v-if="editbtn" @click="edit"
@@ -96,7 +99,7 @@
 import { Encrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
-import RoleDataDialog from "@/views/plans/dialog/dialogDetails.vue";
+import RoleDataDialog from "@/views/app/personal-information/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleDataDialog,

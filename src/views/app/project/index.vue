@@ -276,8 +276,8 @@ import { queryProject, deletesProject } from "@/api/project";
 import { queryEmployeeManual} from "@/api/employee";
 // 岗位
 import { queryPost } from "@/api/post";
-import UserEditDialog from "@/views/discipline/project/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/discipline/project/dialog/userDetails.vue";
+import UserEditDialog from "@/views/app/project/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/app/project/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,

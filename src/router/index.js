@@ -80,25 +80,15 @@ const routes = [
       {
         path: "customer",
         name: "customers",
-        component: () => import("@/views/discipline/customer/index.vue"),
+        component: () => import("@/views/app/customer/index.vue"),
         meta: {
           title: "客户管理",
-        },
-        // children: [
-        //   {
-        //     path: 'details',
-        //     name: 'details',
-        //     component: () => import('@/views/discipline/maths/newly_build/details.vue'),
-        //     meta: {
-        //       title: "详情"
-        //     }
-        //   },
-        // ]
+        }
       },
       {
         path: "interface",
         name: "interfaces",
-        component: () => import("@/views/discipline/interface/index.vue"),
+        component: () => import("@/views/app/interface/index.vue"),
         meta: {
           title: "接口人管理",
         },
@@ -106,7 +96,7 @@ const routes = [
       {
         path: "project",
         name: "projects",
-        component: () => import("@/views/discipline/project/index.vue"),
+        component: () => import("@/views/app/project/index.vue"),
         meta: {
           title: "项目管理",
         },
@@ -114,7 +104,7 @@ const routes = [
       {
         path: "post",
         name: "posts",
-        component: () => import("@/views/discipline/post/index.vue"),
+        component: () => import("@/views/app/post/index.vue"),
         meta: {
           title: "项目管理",
         },
@@ -122,23 +112,15 @@ const routes = [
       {
         path: "plant",
         name: "plants",
-        component: () => import("@/views/biological/plants/index.vue"),
+        component: () => import("@/views/app/employee-information/index.vue"),
         meta: {
-          title: "植物",
-        },
-      },
-      {
-        path: "animal",
-        name: "animals",
-        component: () => import("@/views/biological/animals/index.vue"),
-        meta: {
-          title: "动物",
+          title: "员工信息",
         },
       },
       {
         path: "plan",
         name: "plans",
-        component: () => import("@/views/plans/index.vue"),
+        component: () => import("@/views/app/personal-information/index.vue"),
         meta: {
           title: "个人信息",
         },

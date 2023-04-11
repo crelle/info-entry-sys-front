@@ -221,8 +221,8 @@ import { queryRegion } from "@/api/region";
 import { queryCustomer } from "@/api/customer";
 // 接口人
 import { queryInterface } from "@/api/interface";
-import RoleEditDialog from "@/views/discipline/post/dialog/dialogEdit.vue";
-import RoleDataDialog from "@/views/discipline/post/dialog/dialogDetails.vue";
+import RoleEditDialog from "@/views/app/post/dialog/dialogEdit.vue";
+import RoleDataDialog from "@/views/app/post/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleEditDialog,
