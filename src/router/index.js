@@ -53,22 +53,7 @@ const routes = [
           title: "用户管理",
         },
       },
-      {
-        path: "region",
-        name: "regions",
-        component: () => import("@/views/sysmanage/region/index.vue"),
-        meta: {
-          title: "地域管理",
-        },
-      },
-      {
-        path: "department",
-        name: "departments",
-        component: () => import("@/views/sysmanage/department/index.vue"),
-        meta: {
-          title: "部门管理",
-        },
-      },
+    
       {
         path: "menu",
         name: "menus",
@@ -77,7 +62,30 @@ const routes = [
           title: "菜单管理",
         },
       },
+     
       {
+        path: "personalInformation",
+        name: "personalInformation",
+        component: () => import("@/views/sysmanage/personal-information/index.vue"),
+        meta: {
+          title: "个人信息",
+        },
+      }
+    ],
+  },
+  {
+    path: "/app",
+    name: "app",
+    component: Home,
+    children:[
+      {
+        path:"employeeAsset",
+        name:"employeeAssets",
+        component:()=>import("@/views/app/employee-asset/EmployeeAsset.vue"),
+        meta:{
+          title:"员工信息"
+        }
+      }, {
         path: "customer",
         name: "customers",
         component: () => import("@/views/app/customer/index.vue"),
@@ -110,22 +118,30 @@ const routes = [
         },
       },
       {
-        path: "plant",
-        name: "plants",
+        path: "employeeInformation",
+        name: "employeeInformation",
         component: () => import("@/views/app/employee-information/index.vue"),
         meta: {
           title: "员工信息",
         },
       },
       {
-        path: "plan",
-        name: "plans",
-        component: () => import("@/views/app/personal-information/index.vue"),
+        path: "region",
+        name: "regions",
+        component: () => import("@/views/sysmanage/region/index.vue"),
         meta: {
-          title: "个人信息",
+          title: "地域管理",
         },
       },
-    ],
+      {
+        path: "department",
+        name: "departments",
+        component: () => import("@/views/sysmanage/department/index.vue"),
+        meta: {
+          title: "部门管理",
+        },
+      },
+    ]
   },
 ];
 

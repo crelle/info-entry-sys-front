@@ -154,10 +154,9 @@ export default {
     },
     // 个人信息跳转
     personal() {
-      if (this.$route.path !== "/sys/plan") {
+      if (this.$route.path !== "/sys/personalInformation") {
         this.$nextTick(() => {
-          console.log("出发了个人信息跳转");
-          this.$router.push({ path: "/sys/plan" });
+          this.$router.push({ path: "/sys/personalInformation" });
         });
       }
     },

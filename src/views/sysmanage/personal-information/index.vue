@@ -99,7 +99,7 @@
 import { Encrypt } from "@/util/crypto/secret";
 import { updateUser } from "@/api/user";
 import { Decrypt } from "@/util/crypto/secret";
-import RoleDataDialog from "@/views/app/personal-information/dialog/dialogDetails.vue";
+import RoleDataDialog from "@/views/sysmanage/personal-information/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleDataDialog,
