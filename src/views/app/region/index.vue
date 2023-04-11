@@ -122,8 +122,8 @@
 // 真的地域接口
 import { queryRegion, deletesRegion } from "@/api/region";
 
-import RoleEditDialog from "@/views/sysmanage/region/dialog/dialogEdit.vue";
-import RoleDataDialog from "@/views/sysmanage/region/dialog/dialogDetails.vue";
+import RoleEditDialog from "@/views/app/region/dialog/dialogEdit.vue";
+import RoleDataDialog from "@/views/app/region/dialog/dialogDetails.vue";
 export default {
   components: {
     RoleEditDialog,
@@ -219,7 +219,7 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } 
+            }
           });
         })
         .catch(() => {

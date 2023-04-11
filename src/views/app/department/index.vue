@@ -184,8 +184,8 @@ import { queryEmployee } from "@/api/employee";
 import { queryPost } from "@/api/post";
 // 用户
 import { queryUser } from "@/api/user";
-import UserEditDialog from "@/views/sysmanage/department/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/sysmanage/department/dialog/userDetails.vue";
+import UserEditDialog from "@/views/app/department/dialog/userEdit.vue";
+import UserDaitDialog from "@/views/app/department/dialog/userDetails.vue";
 export default {
   components: {
     UserEditDialog,

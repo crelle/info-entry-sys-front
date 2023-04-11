@@ -128,7 +128,7 @@ const routes = [
       {
         path: "region",
         name: "regions",
-        component: () => import("@/views/sysmanage/region/index.vue"),
+        component: () => import("@/views/app/region/index.vue"),
         meta: {
           title: "地域管理",
         },
@@ -136,7 +136,7 @@ const routes = [
       {
         path: "department",
         name: "departments",
-        component: () => import("@/views/sysmanage/department/index.vue"),
+        component: () => import("@/views/app/department/index.vue"),
         meta: {
           title: "部门管理",
         },
