@@ -67,11 +67,16 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <add-asset-dialog ref="AddAssetDialogRef"> </add-asset-dialog>
   </div>
 </template>
 
 <script>
+import AddAssetDialog from "@/views/app/employee-asset/dialog/AddAsset.vue";
 export default {
+  components: {
+    AddAssetDialog,
+  },
   data() {
     return {
       asset: {
@@ -86,7 +91,9 @@ export default {
     };
   },
   methods: {
-    onCreate() {},
+    onCreate() {
+      this.$refs.AddAssetDialogRef.openDialog();
+    },
     onDelete() {},
     onUpdate() {},
     onSubmit() {
