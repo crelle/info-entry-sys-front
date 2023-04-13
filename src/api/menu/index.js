@@ -7,6 +7,12 @@ const queryMenuAll = () =>
     method: "get",
     url: BaseURL + "/sysmgmt/menu/all",
   });
+  //获取菜单顺序
+const getMenuSort = () =>
+Request({
+  method: "get",
+  url: BaseURL + "/sysmgmt/menu/getMenuSort",
+});
 //查询菜单
 const queryMenu = (data) =>
   Request({
@@ -42,4 +48,4 @@ const sortMenu = (data) =>
     url: BaseURL + "/sysmgmt/menu/updateMenu",
     data,
   });
-export { queryMenu,queryMenuAll, modifyTheMenu, createMenu, deleteMenu ,sortMenu};
+export { queryMenu,queryMenuAll, modifyTheMenu, createMenu, deleteMenu ,sortMenu,getMenuSort};
