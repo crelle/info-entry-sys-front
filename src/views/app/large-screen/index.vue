@@ -34,7 +34,7 @@
         <!-- 地图 -->
         <div class="middle">
           <span>地图</span>
-          <div class="mapWrapper">
+          <!-- <div class="mapWrapper">
             <div class="map" ref="map"></div>
             <div
               class="map-btn"
@@ -43,7 +43,7 @@
             >
               {{ history[history.length - 1] }}
             </div>
-          </div>
+          </div> -->
         </div>
         <div class="right">数据</div>
       </div>
