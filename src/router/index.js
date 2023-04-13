@@ -70,6 +70,14 @@ const routes = [
         meta: {
           title: "个人信息",
         },
+      },
+      {
+        path: "dictionary",
+        name: "dictionary",
+        component: () => import("@/views/sysmanage/dictionary/Dictionary.vue"),
+        meta: {
+          title: "个人信息",
+        },
       }
     ],
   },
