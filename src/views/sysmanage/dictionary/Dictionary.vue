@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-card>
-      <el-form :inline="true" :model="dictionary" class="demo-form-inline">
+      <el-form :inline="true" :model="formData" class="demo-form-inline">
         <el-form-item label="父级菜单名称">
           <el-select
-            v-model="value"
+            v-model="formData.name"
             multiple
             filterable
             remote
@@ -23,7 +23,7 @@
         </el-form-item>
         <el-form-item label="子级菜单名称">
           <el-select
-            v-model="value"
+            v-model="formData.childrenName"
             multiple
             filterable
             remote
@@ -47,13 +47,13 @@
           <el-button type="primary" @click="onCreate">新增</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">重置</el-button>
+          <el-button type="primary" @click="onReset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
     <el-card>
       <el-table
-        :data="dictionaryData"
+        :data="tableData"
         style="width: 100%"
         row-key="id"
         border
@@ -74,6 +74,7 @@
 
 <script>
 import AddDictionary from "@/views/sysmanage/dictionary/dialog/AddDictionary.vue";
+import { queryDictionary } from "@/api/dictionary";
 
 export default {
   components: {
@@ -81,6 +82,10 @@ export default {
   },
   data() {
     return {
+      formData: {
+        name: "",
+        childrenName: "",
+      },
       fatherData: [],
       childrenData: [],
       value: [],
@@ -168,12 +173,16 @@ export default {
   },
   methods: {
     remoteMethod(query) {
+      debugger;
       if (query !== "") {
         this.loading = true;
         setTimeout(() => {
           this.loading = false;
-          this.options = this.list.filter((item) => {
-            return item.label.toLowerCase().indexOf(query.toLowerCase()) > -1;
+          this.options = [];
+          let data = { records: [{ ...this.formData }] };
+          debugger;
+          queryDictionary(data).then((resp) => {
+            console.log("@@@@@@@@@@@@@@", resp);
           });
         }, 200);
       } else {
@@ -202,6 +211,13 @@ export default {
 
     onCreate() {
       this.$refs.AddDictionaryRef.openDialog();
+    },
+
+    onsubmit() {
+      let data = { records: [{ ...this.dictionary }] };
+      queryDictionary(data).then((resp) => {
+        console.log("@@@@@@@@@@@@@@", resp);
+      });
     },
   },
 };
