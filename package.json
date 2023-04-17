@@ -28,6 +28,6 @@
     "@vue/composition-api": "^1.7.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.14"
   }
 }
