@@ -1,127 +1,182 @@
-<!--
-    本组件是echarts地图下钻组件
-    可以支持中国，省，市的三级下钻，起点可以是中国，省，终点可以是 中国，省，市
-    可以自定义纹理图，或者颜色以及高亮背景图，高亮颜色
-    可以设置地图边框阴影的颜色以及范围，不传就用默认
-    可以自定义散点图标,或散点图颜色
-    可以自定义散点图的数据
-    可以使用本身的返回按钮，也可以隐藏返回按钮自己调用返回方法
-    可以传自定义的tooltip框的id,也可以不传用默认的
-
-    事件：
-    鼠标移入地图区域事件  $emit('mapMouseover')
-    鼠标移出地图区域事件 $emit('mapMouseout')
-    鼠标点击地图区域事件 $emit('mapClick')
-    鼠标移入散点事件 $emit('pointMouseover')
-    鼠标移出散点事件 $emit('pointMouseout')
-    鼠标点击散点事件 $emit('pointClick')
-    下钻事件 $emit('goDown')
-    回钻事件 $emit('goUpside')
--->
 <template>
-  <div class="users_content">
-    <div class="topbox">
-      <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-col :span="24"
-          ><div class="grid-content bg-purple-dark">
-            管理大屏大数据分析系统
-          </div></el-col
-        >
-      </el-breadcrumb>
-      <!-- 左中右 -->
-      <div class="box">
-        <div class="left">表格</div>
-        <!-- 地图 -->
-        <div class="middle">
-          <span>地图</span>
-          <!-- <div class="mapWrapper">
-            <div class="map" ref="map"></div>
-            <div
-              class="map-btn"
-              @click="returnUpLevel"
-              v-if="history.length && showReturn"
-            >
-              {{ history[history.length - 1] }}
-            </div>
-          </div> -->
+  <div id="largescreen">
+    <el-row :gutter="10">
+      <el-col :lg="24" :md="24" :sm="24" :xs="24">
+        <!-- <top-header/> -->
+      </el-col>
+    </el-row>
+    <el-row :gutter="10" style="padding: 10px; height: calc(100% - 60px)">
+      <el-col :lg="6" :md="6" :sm="24" :xs="24"> </el-col>
+      <el-col :lg="12" :md="12" :sm="24" :xs="24">
+        <div class="date-range">
+          <el-date-picker
+            v-model="dateRange"
+            type="daterange"
+            align="right"
+            size="mini"
+            unlink-panels
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            value-format="yyyy-MM-dd"
+            :picker-options="pickerOptions"
+          >
+          </el-date-picker>
         </div>
-        <div class="right">数据</div>
-      </div>
-    </div>
+        <div class="map-item-amounts">大屏 {{ amounts }} 数据</div>
+        <china />
+        <!-- <chinaess /> -->
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
+import China from "./components/china-map.vue";
+import Chinaess from "./components/china-map-copy.vue";
 
-// import { queryUser, deleteMenu, resetPassword } from "@/api/user";
-// import { queryRole } from "@/api/role";
-// import userEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
-// import userDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
 export default {
+  name: "index",
   components: {
-    // userEditDialog,
-    // userDaitDialog,
+    China,
+    Chinaess
   },
   data() {
-    return {};
+    return {
+      areaCode: "000000000000", // 当前用的areaCode
+      areaLevel: 0, // 当前用的areaCode
+      areaName: "china", // 当前用的areaName
+      mapNameList: [], // 当前地图上的地区名字
+      mapCodeList: [], // 当前地图上的地区Code
+      largescreenPcStyle: {
+        position: "fixed",
+        top: 0,
+        left: 0,
+      },
+      queryParams: {},
+      areaStatistic: [], // 测试
+      amounts: 0, // 测试
+      dayStaCount: [], // 测试
+      satisfied: {}, // 测试
+      timedComplain: [], // 测试
+      todayPvNumber: [], // 测试
+      daTjInformation: [], // 测试
+      daTjItemsInfo: [], // 测试
+      complaintOverview: {}, // 测试
+      pageview: {}, // 测试
+      totalPublish: 0, // 测试
+      totalItems: 0, // 测试
+      thirdPlatform: 0, // 测试
+      dateRange: [],
+      pickerOptions: {
+        shortcuts: [
+          {
+            text: "最近一周",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近一个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+          {
+            text: "最近三个月",
+            onClick(picker) {
+              const end = new Date();
+              const start = new Date();
+              start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+              picker.$emit("pick", [start, end]);
+            },
+          },
+        ],
+      },
+    };
   },
-  mounted() {},
-  methods: {},
+  created() {
+
+  },
+  mounted() {
+
+  },
+  watch: {
+
+  },
+  methods: {
+  },
 };
 </script>
 
-<style lang='less'>
-.topbox {
-  background-color: aqua;
-  height: 100vh;
-}
-.el-row {
-  margin-bottom: 20px;
-  &:last-child {
-    margin-bottom: 0;
+<style scoped lang="less">
+::v-deep#largescreen {
+  height: 100%;
+  width: 100%;
+  background-size: 100% 100%;
+  padding: 0;
+  // background-image: url("../assets/images/largescreen/home-bg.png");
+
+  .el-col {
+    height: 100%;
+    position: relative;
+
+    .date-range {
+      position: absolute;
+      right: 5px;
+      z-index: 9;
+
+      .el-date-editor {
+        background: transparent;
+        border-color: rgb(0, 186, 255);
+        width: 250px;
+
+        .el-icon-date {
+          color: #fff;
+        }
+
+        .el-range-separator {
+          color: #fff;
+        }
+
+        .el-range__close-icon {
+          color: #fff;
+        }
+
+        .el-range-input {
+          background: transparent;
+          color: #fff;
+        }
+      }
+    }
+
+    .map-item-amounts {
+      position: absolute;
+      z-index: 9;
+      left: 10px;
+      top: 30px;
+      color: #fff;
+      font-size: 16px;
+      color: #24cff4;
+    }
   }
-}
-.el-col {
-  border-radius: 4px;
-}
-.bg-purple-dark {
-  text-align: center;
-  font-size: 20px;
-}
-.bg-purple {
-  background: #d3dce6;
-}
-.bg-purple-light {
-  background: #e5e9f2;
-}
-.grid-content {
-  border-radius: 4px;
-  line-height: 40px;
-}
-.row-bg {
-  padding: 10px 0;
-  background-color: #f9fafc;
-}
-// 主内容css布局
-.box {
-  padding: 10px 0;
-  display: flex;
-  justify-content: space-between;
-  align-content: center;
-  background-color: blanchedalmond;
-  // 左边
-  .left {
-    width: 33%;
-    background-color: cadetblue;
-  }
-  .middle {
-    width: 33%;
-    background-color: rgb(37, 231, 16);
-  }
-  .right {
-    width: 33%;
-    height: 800px;
-    background-color: rgb(12, 132, 245);
+
+  .el-carousel {
+    height: calc(33.3%);
+    //margin-bottom: 10px;
+    .el-carousel__container {
+      height: 100%;
+    }
+
+    .el-carousel__indicator--horizontal {
+      padding: 3px;
+    }
   }
 }
 </style>
