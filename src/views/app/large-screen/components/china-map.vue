@@ -1,7 +1,7 @@
 
 <template>
   <div class="users_content">
-    <div id="main" style="width: 100%; height: 100vh"></div>
+    <div id="main" style="width: 100%; height: 60vh"></div>
     <baidu-map :center="center" :zoom="zoom" @ready="initMap"></baidu-map>
   </div>
 </template>
@@ -419,7 +419,7 @@ export default {
     this.option = {
       backgroundColor: "transparent",
       title: {
-        text: "人员管理大屏系统",
+        text: "",
         // subtext: "诚迈科技",
         // sublink: "https://www.archermind.com/",
         left: "center",
@@ -446,7 +446,9 @@ export default {
         },
       },
       bmap: {
-        center: [104.114129, 37.550339],
+        // 北京: [116.46, 39.92],
+        center: [135, 30],
+        // center: [104.114129, 37.550339],
         zoom: 5,
         roam: true,
         mapStyle: {
@@ -600,6 +602,7 @@ export default {
           },
           itemStyle: {
             color: "#ddb926",
+            
           },
           emphasis: {
             label: {
