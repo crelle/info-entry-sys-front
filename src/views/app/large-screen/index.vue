@@ -552,26 +552,25 @@ html {
       min-height: 36px;
     }
   }
-  // 主体内容 上半
+  // 主体内容 上半内容
   .upperHalf {
     // 两侧
     .bg-purple {
       width: 100%;
       height: 28vh;
-      background-color: rgba(224, 236, 211,0.2);
+      background-color: rgba(224, 236, 211, 0.2);
       margin: 5px 0;
     }
     .bg-purple-light {
       width: 100%;
       height: 60vh;
-      background-color: rgba(224, 236, 211,0.2);
+      background-color: rgba(224, 236, 211, 0.2);
     }
     .bg-purple-chart {
       margin-top: 6px;
       width: 100%;
       height: 25vh;
-      background-color: rgba(224, 236, 211,0.2);
-      
+      background-color: rgba(224, 236, 211, 0.2);
     }
   }
 }
