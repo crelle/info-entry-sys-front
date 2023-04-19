@@ -45,11 +45,18 @@
             <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="6"
               ><div class="grid-content bg-purple">
                 <div class="bg-purple-right">
-                  <img src="./components/uihomepage/小圆头像.png" alt="" />
+                  <img
+                    src="./components/images/uihomepage/小圆头像.png"
+                    alt=""
+                  />
                   <div class="userInfo">
                     <span>杨小飞</span>
                     <span>项目经理</span>
-                    <img src="./components/uihomepage/菜单icon.png" alt="" />
+                    <img
+                      @click="centerDialogVisible = true"
+                      src="./components/images/uihomepage/菜单icon.png"
+                      alt=""
+                    />
                   </div>
                 </div></div
             ></el-col>
@@ -115,6 +122,21 @@
         </div> -->
       </div>
     </div>
+    <!-- 弹窗菜单 -->
+    <el-dialog
+      title=""
+      :visible.sync="centerDialogVisible"
+      width="25%"
+      center
+      :modal="false"
+    >
+      <div class="popUpMenu">
+        <!-- 头部 -->
+        <div class="menuHead">
+          <span>人物信息</span>
+        </div>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,6 +149,8 @@ export default {
   },
   data() {
     return {
+      // 菜单弹窗
+      centerDialogVisible: false,
       // 左上下来功能数据模拟
       options: [
         {
@@ -421,7 +445,7 @@ html {
   width: 100%;
   min-width: 1200px;
   height: 100vh;
-  background: url(./components/uihomepage/页面大背景.png);
+  background: url(./components/images/uihomepage/页面大背景.png);
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
@@ -440,7 +464,7 @@ html {
     letter-spacing: 6px;
     font-weight: bold;
     color: #dce1ef;
-    background: url(./components/uihomepage/顶部栏.png);
+    background: url(./components/images/uihomepage/顶部栏.png);
     background-size: cover;
   }
   // 响应式布局
@@ -488,7 +512,7 @@ html {
       height: 40px;
       .el-cascader {
         width: 25%;
-        background: url(./components/uihomepage/xiaoxisc.com小夕素材81.png);
+        background: url(./components/images/uihomepage/xiaoxisc.com小夕素材81.png);
         background-size: cover;
         margin: 0 20px;
         padding: 0 10px;
@@ -571,6 +595,27 @@ html {
       width: 100%;
       height: 25vh;
       background-color: rgba(224, 236, 211, 0.2);
+    }
+  }
+}
+// 菜单弹窗
+.el-dialog--center {
+  margin-right: 0vw;
+  margin-top: 0vh !important;
+}
+.el-dialog {
+  background: rgba(0, 0, 0, 0.7);
+}
+.popUpMenu {
+  .menuHead {
+    background: url(./components/images/popUpMenu/title-rwxx.png);
+    height: 39px;
+    display: flex;
+    align-items: center;
+    padding-left: 20px;
+    span {
+      font-size: 16px;
+      color: #dfeef3;
     }
   }
 }

@@ -1,42 +1,30 @@
 <template>
   <div>
-    <el-card>
-      <el-form :inline="true" :model="formData" class="demo-form-inline">
+    <el-card :body-style="{ height: '6vh' }">
+      <el-form :inline="true" ref="ruleForm">
         <el-form-item label="父级菜单名称">
           <el-select
-            v-model="formData.name"
-            multiple
+            v-model="parent"
             filterable
             remote
-            reserve-keyword
-            placeholder="请输入关键词"
-            :remote-method="remoteMethod"
+            placeholder="请输入父级关键词"
+            :remote-method="remoteFirst"
             :loading="loading"
           >
-            <el-option
-              v-for="item in fatherData"
-              :key="item.value"
-              :value="item.value"
-            >
+            <el-option v-for="item in fatherData" :key="item" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="子级菜单名称">
           <el-select
-            v-model="formData.childrenName"
-            multiple
+            v-model="child"
             filterable
             remote
-            reserve-keyword
-            placeholder="请输入关键词"
-            :remote-method="remoteMethod"
+            placeholder="请输入子级关键词"
+            :remote-method="remoteSec"
             :loading="loading"
           >
-            <el-option
-              v-for="item in childrenData"
-              :key="item.value"
-              :value="item.value"
-            >
+            <el-option v-for="item in childrenData" :key="item" :value="item">
             </el-option>
           </el-select>
         </el-form-item>
@@ -44,29 +32,48 @@
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onCreate">新增</el-button>
+          <el-button type="success" @click="onCreate">新增</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onReset">重置</el-button>
+          <el-button @click="reset">重置</el-button>
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card :body-style="{ height: '68vh' }">
       <el-table
-        :data="tableData"
-        style="width: 100%"
+        :data="dictionaryData"
+        style="width: 90%"
         row-key="id"
+        max-height="619"
         border
-        lazy
-        :load="load"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column prop="name" label="名称" width="180">
         </el-table-column>
         <el-table-column prop="code" label="编码" width="180">
         </el-table-column>
-        <el-table-column prop="updateTime" label="更新时间"> </el-table-column>
+        <el-table-column prop="updateTime" label="更新时间" width="300"> </el-table-column>
+        <el-table-column fixed="right" label="操作" min-width="310" align="center">
+          <template slot-scope="{ row}">
+            <el-button type="primary" @click="edit(row)" size="small"
+                >编辑</el-button
+              >
+              <el-button type="danger" @click="delbtn(row.id)" size="small"
+                >删除</el-button
+              >
+              <!-- <el-button type="primary" size="small">新增</el-button> -->
+          </template>
+        </el-table-column>
+     
       </el-table>
+      
+      <el-pagination
+      @current-change="handleCurrentChange"
+      :current-page.sync="currentPage1"
+      v-if="total>10"
+      layout="total, prev, pager, next"
+      :total="total">
+    </el-pagination>
     </el-card>
     <add-dictionary ref="AddDictionaryRef"></add-dictionary>
   </div>
@@ -74,150 +81,172 @@
 
 <script>
 import AddDictionary from "@/views/sysmanage/dictionary/dialog/AddDictionary.vue";
-import { queryDictionary } from "@/api/dictionary";
-
+import { manualPage,deleteDic } from "@/api/dictionary";
 export default {
   components: {
     AddDictionary,
   },
   data() {
     return {
-      formData: {
-        name: "",
-        childrenName: "",
-      },
+      parent: "",
+      child: "",
+      total: "",
+      currentPage1:1,
+      // -----------------------
       fatherData: [],
       childrenData: [],
       value: [],
-      list: [],
       loading: false,
-      states: [
-        "Alabama",
-        "Alaska",
-        "Arizona",
-        "Arkansas",
-        "California",
-        "Colorado",
-        "Connecticut",
-        "Delaware",
-        "Florida",
-        "Georgia",
-        "Hawaii",
-        "Idaho",
-        "Illinois",
-        "Indiana",
-        "Iowa",
-        "Kansas",
-        "Kentucky",
-        "Louisiana",
-        "Maine",
-        "Maryland",
-        "Massachusetts",
-        "Michigan",
-        "Minnesota",
-        "Mississippi",
-        "Missouri",
-        "Montana",
-        "Nebraska",
-        "Nevada",
-        "New Hampshire",
-        "New Jersey",
-        "New Mexico",
-        "New York",
-        "North Carolina",
-        "North Dakota",
-        "Ohio",
-        "Oklahoma",
-        "Oregon",
-        "Pennsylvania",
-        "Rhode Island",
-        "South Carolina",
-        "South Dakota",
-        "Tennessee",
-        "Texas",
-        "Utah",
-        "Vermont",
-        "Virginia",
-        "Washington",
-        "West Virginia",
-        "Wisconsin",
-        "Wyoming",
-      ],
-      dictionaryData: [
-        {
-          id: 1,
-          name: "部门",
-          code: "department",
-          updateTime: "123",
-        },
-        {
-          id: 2,
-          name: "人名",
-          code: "name",
-          updateTime: "456",
-          hasChildren: true,
-        },
-        {
-          id: 1,
-          name: "动物",
-          code: "department",
-          updateTime: "123",
-        },
-      ],
+      dictionaryData: [],
     };
   },
   mounted() {
-    this.list = this.states.map((item) => {
-      return { value: `value:${item}`, label: `label:${item}` };
-    });
+    this.parent = "",
+    this.child = "",
+    this.fatherData = [],
+    this.childrenData = [];
   },
   methods: {
-    remoteMethod(query) {
-      debugger;
+    remoteFirst(query) {
       if (query !== "") {
         this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          this.options = [];
-          let data = { records: [{ ...this.formData }] };
-          debugger;
-          queryDictionary(data).then((resp) => {
-            console.log("@@@@@@@@@@@@@@", resp);
-          });
-        }, 200);
+        manualPage({
+          records: [
+            {
+              childrenName: "",
+              name: query,
+            },
+          ],
+          size: 1,
+          total: 10,
+        }).then((res) => {
+          if (res && res.code && res.code === "00000") {
+            res.data.records.forEach((item) => {
+              console.log(item);
+              this.fatherData.push(item.name);
+            });
+            this.loading = false;
+          }
+        });
       } else {
-        this.options = [];
+        this.fatherData = [];
       }
     },
-    load(tree, treeNode, resolve) {
-      console.log("@@@@@@@@@@@@@", tree, treeNode, resolve);
-      setTimeout(() => {
-        resolve([
-          {
-            id: 31,
-            code: "2016-05-01",
-            name: "王小虎",
-            updateTime: "上海市普陀区金沙江路 1519 弄",
-          },
-          {
-            id: 32,
-            code: "2016-05-01",
-            name: "王小虎",
-            updateTime: "上海市普陀区金沙江路 1519 弄",
-          },
-        ]);
-      }, 1000);
+    remoteSec(query) {
+      if (query !== "") {
+        this.loading = true;
+        manualPage({
+          records: [
+            {
+              childrenName: query,
+              name: "",
+            },
+          ],
+          size: 1,
+          total: 10,
+        }).then((res) => {
+          if (res && res.code && res.code === "00000") {
+            res.data.records.forEach((item) => {
+              if (item.children.length) {
+                item.children.forEach((sitem) => {
+                  if (sitem.name.includes(query)) {
+                    console.log(item.name, sitem.name);
+                    this.childrenData.push(`${item.name}-${sitem.name}`);
+                  }
+                });
+              }
+            });
+            this.loading = false;
+          }
+        });
+      } else {
+        this.childrenData = [];
+      }
     },
 
     onCreate() {
       this.$refs.AddDictionaryRef.openDialog();
     },
-
-    onsubmit() {
-      let data = { records: [{ ...this.dictionary }] };
-      queryDictionary(data).then((resp) => {
-        console.log("@@@@@@@@@@@@@@", resp);
+    onSubmit() {
+      manualPage({
+        records: [
+          {
+            childrenName: this.child.split("-")[1] || "",
+            name: this.parent,
+          },
+        ],
+        size: 10,
+        current:this.currentPage1
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data.records, this.child, "11111");
+          if (this.child) {
+            res.data.records.forEach((item) => {
+              item.children=item.children.filter(item=>item.name.includes(this.child.split("-")[1]))
+            });
+          }
+          this.total = res.data.total;
+          console.log("qaz",this.total);
+          this.dictionaryData = res.data.records;
+          this.dictionaryData.forEach(item=>{
+            // item.updateTime=this.timeDeal(item.updateTime)
+            // item.children.forEach(item=>item.updateTime=this.timeDeal(item.updateTime))
+          })
+          
+        }
       });
+    },
+    reset() {
+      this.child = "";
+      this.parent = "";
+    },
+    edit(row){
+      this.$refs.AddDictionaryRef.openDialog(row);
+      console.log('edit',row);
+    },
+    delbtn(id){
+      //  deleteDic(id).then(res=>{
+      //       if (res && res.code && res.code === "00000") {
+      //         }
+      //     })
+          
+      this.$confirm('此操作将永久删除该字典, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          console.log('delbtn----',id);
+          deleteDic(id).then(res=>{
+            if (res && res.code && res.code === "00000") {
+              this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.onSubmit()
+            }
+          })
+          
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    },
+    handleCurrentChange(val){
+      this.currentPage1=val
+      console.log('handleCurrentChange',this.currentPage1);
+      this.onSubmit()
+    },
+    timeDeal(timeString) {
+      const date = new Date(timeString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const hour = String(date.getHours()).padStart(2, "0");
+      const minute = String(date.getMinutes()).padStart(2, "0");
+      const second = String(date.getSeconds()).padStart(2, "0");
+      return `${year}-${month}-${day} ${hour}:${minute}:${second}`
     },
   },
 };
