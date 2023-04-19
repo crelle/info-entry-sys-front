@@ -10,6 +10,7 @@
             placeholder="请输入父级关键词"
             :remote-method="remoteFirst"
             :loading="loading"
+            @focus="getFoucus()"
           >
             <el-option v-for="item in fatherData" :key="item" :value="item">
             </el-option>
@@ -23,6 +24,7 @@
             placeholder="请输入子级关键词"
             :remote-method="remoteSec"
             :loading="loading"
+            @focus="getFoucus('sec')"
           >
             <el-option v-for="item in childrenData" :key="item" :value="item">
             </el-option>
@@ -39,7 +41,7 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card :body-style="{ height: '68vh' }">
+    <el-card :body-style="{ height: '67vh' }">
       <el-table
         :data="dictionaryData"
         style="width: 90%"
@@ -105,10 +107,21 @@ export default {
     this.child = "",
     this.fatherData = [],
     this.childrenData = [];
+    this.onSubmit()
   },
   methods: {
+    getFoucus(item){
+      if(item){
+        this.remoteSec('')
+      }else{
+        this.remoteFirst()
+      }
+     
+      console.log('获取焦点');
+    },
     remoteFirst(query) {
-      if (query !== "") {
+      // if (query !== "") {
+        this.fatherData = [];
         this.loading = true;
         manualPage({
           records: [
@@ -128,12 +141,13 @@ export default {
             this.loading = false;
           }
         });
-      } else {
-        this.fatherData = [];
-      }
+      // } else {
+      //   this.fatherData = [];
+      // }
     },
     remoteSec(query) {
-      if (query !== "") {
+      // if (query !== "") {
+        this.childrenData = [];
         this.loading = true;
         manualPage({
           records: [
@@ -151,7 +165,8 @@ export default {
                 item.children.forEach((sitem) => {
                   if (sitem.name.includes(query)) {
                     console.log(item.name, sitem.name);
-                    this.childrenData.push(`${item.name}-${sitem.name}`);
+                    this.childrenData.push(`${sitem.name}`);
+                    this.childrenData=[...new Set(this.childrenData)]
                   }
                 });
               }
@@ -159,9 +174,9 @@ export default {
             this.loading = false;
           }
         });
-      } else {
-        this.childrenData = [];
-      }
+      // } else {
+      //   this.childrenData = [];
+      // }
     },
 
     onCreate() {

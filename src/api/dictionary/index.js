@@ -17,7 +17,7 @@ const manualPage = (data) =>
 
 const createDic = (data) =>
   Request({
-    method: "get",
+    method: "post",
     url: BaseURL + "/sysmgmt/dictionary/create",
     data,
   });
