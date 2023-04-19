@@ -144,7 +144,7 @@ export default {
       if(raw){
         console.log("有内容");
         this.status=false
-        this.dynamicValidateForm=raw
+        this.dynamicValidateForm=JSON.parse(JSON.stringify(raw)) 
       }else{
         console.log("无内容");
         this.status=true
