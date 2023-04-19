@@ -7,9 +7,6 @@ import "element-ui/lib/theme-chalk/index.css";
 (() => import("@/assets/iconfont/iconfont.css"))(); // 引入自定义图标
 import * as echarts from "echarts";
 import { loginout } from "@/util/publicapis/index.js";
-// 引入vue-echarts
-import ECharts from "vue-echarts";
-import "echarts";
 // 引入百度地图
 import BaiduMap from "vue-baidu-map";
 import { BmlMarkerClusterer } from "vue-baidu-map";
@@ -18,9 +15,6 @@ Vue.use(BaiduMap, {
   ak: "OxETb6diaEcgGesobwhYEBoV5TZmMaf9",
 });
 Vue.component("bml-marker-cluster", BmlMarkerClusterer);
-
-Vue.component("ECharts", ECharts);
-
 Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.$echarts = echarts; // 挂载echarts
