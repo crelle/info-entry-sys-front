@@ -1,33 +1,34 @@
 import { BaseURL } from "@/api/config";
 import Request from "@/util/axios/request";
-// 创建员工资产
-const createProperty = (data) =>
+
+const deleteDic = (id) =>
+  Request({
+    method: "delete",
+    url: BaseURL + "/sysmgmt/dictionary/delete/"+id,
+  });
+
+
+const manualPage = (data) =>
   Request({
     method: "post",
+    url: BaseURL + "/sysmgmt/dictionary/manualPage",
+    data,
+  });
+
+const createDic = (data) =>
+  Request({
+    method: "get",
     url: BaseURL + "/sysmgmt/dictionary/create",
     data,
   });
 
-//删除资产
-const deleteProperty = (data) =>
-  Request({
-    method: "DELETE",
-    url: BaseURL + "/sysmgmt/dictionary/delete/{id}" + data,
-  });
-// 根据员工查询 资产
-const queryPropertyManual = (data) =>
-  Request({
-    method: "get",
-    url: BaseURL + "/sysmgmt/dictionary/detail/{id}" + data,
-  });
 
-// 分页查询状态
-const queryDictionary = (data) =>
+const editDic = (data) =>
   Request({
-    method: "post",
-    url: BaseURL + "/sysmgmt/dictionary/page",
+    method: "put",
+    url: BaseURL + "/sysmgmt/dictionary/update",
     data,
   });
 export {
-    queryDictionary
+    editDic ,createDic,manualPage,deleteDic
 };
