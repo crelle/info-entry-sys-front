@@ -10,6 +10,15 @@ import { loginout } from "@/util/publicapis/index.js";
 // 引入vue-echarts
 import ECharts from "vue-echarts";
 import "echarts";
+// 引入百度地图
+import BaiduMap from "vue-baidu-map";
+import { BmlMarkerClusterer } from "vue-baidu-map";
+Vue.use(BaiduMap, {
+  // ak 是在百度地图开发者平台申请的密钥 详见 http://lbsyun.baidu.com/apiconsole/key */
+  ak: "OxETb6diaEcgGesobwhYEBoV5TZmMaf9",
+});
+Vue.component("bml-marker-cluster", BmlMarkerClusterer);
+
 Vue.component("ECharts", ECharts);
 
 Vue.config.productionTip = false;

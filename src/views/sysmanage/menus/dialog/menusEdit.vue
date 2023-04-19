@@ -60,7 +60,7 @@
                     type="text"
                     v-model="userEditForm.menuSort"
                     placeholder="菜单顺序"
-                    disabled="false"
+                    :disabled="false"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>

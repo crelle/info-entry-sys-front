@@ -53,7 +53,7 @@ const routes = [
           title: "用户管理",
         },
       },
-    
+
       {
         path: "menu",
         name: "menus",
@@ -62,11 +62,12 @@ const routes = [
           title: "菜单管理",
         },
       },
-     
+
       {
         path: "personalInformation",
         name: "personalInformation",
-        component: () => import("@/views/sysmanage/personal-information/index.vue"),
+        component: () =>
+          import("@/views/sysmanage/personal-information/index.vue"),
         meta: {
           title: "个人信息",
         },
@@ -76,7 +77,7 @@ const routes = [
         name: "dictionary",
         component: () => import("@/views/sysmanage/dictionary/Dictionary.vue"),
         meta: {
-          title: "个人信息",
+          title: "字典",
         },
       }
     ],
@@ -85,21 +86,22 @@ const routes = [
     path: "/app",
     name: "app",
     component: Home,
-    children:[
+    children: [
       {
-        path:"employeeAsset",
-        name:"employeeAssets",
-        component:()=>import("@/views/app/employee-asset/EmployeeAsset.vue"),
-        meta:{
-          title:"员工信息"
-        }
-      }, {
+        path: "employeeAsset",
+        name: "employeeAssets",
+        component: () => import("@/views/app/employee-asset/EmployeeAsset.vue"),
+        meta: {
+          title: "员工信息",
+        },
+      },
+      {
         path: "customer",
         name: "customers",
         component: () => import("@/views/app/customer/index.vue"),
         meta: {
           title: "客户管理",
-        }
+        },
       },
       {
         path: "interface",
@@ -149,7 +151,23 @@ const routes = [
           title: "部门管理",
         },
       },
-    ]
+      // {
+      //   path: "largeScreen",
+      //   name: "largeScreens",
+      //   component: () => import("@/views/app/large-screen/index.vue"),
+      //   meta: {
+      //     title: "管理大屏",
+      //   },
+      // },
+    ],
+  },
+  {
+    path: "/app/largeScreen",
+    name: "largeScreens",
+    component: () => import("@/views/app/large-screen/index.vue"),
+    meta: {
+      title: "管理大屏",
+    },
   },
 ];
 

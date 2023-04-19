@@ -15,6 +15,7 @@
     "element-ui": "^2.15.1",
     "mockjs": "^1.1.0",
     "vue": "^2.6.11",
+    "vue-baidu-map": "^0.21.22",
     "vue-echarts": "^6.2.3",
     "vue-router": "^3.2.0",
     "vuedraggable": "^2.24.3",
@@ -28,6 +29,6 @@
     "@vue/composition-api": "^1.7.1",
     "less": "^3.0.4",
     "less-loader": "^5.0.0",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.14"
   }
 }
