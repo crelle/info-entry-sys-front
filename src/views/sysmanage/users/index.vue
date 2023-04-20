@@ -469,7 +469,7 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .btn-custom-cancel {
   float: right;
   margin-left: 10px;
