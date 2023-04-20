@@ -24,7 +24,7 @@ const routes = [
       {
         path: "firstscreen",
         name: "firstscreen",
-        component: () => import("@/views/otherview/FirstScreen.vue"),
+        component: () => import("@/views/app/large-screen/components/largeScreen.vue"),
         meta: {
           title: "概览首屏",
         },

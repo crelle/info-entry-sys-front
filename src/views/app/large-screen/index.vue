@@ -96,50 +96,14 @@
             ></el-col>
           </el-row>
         </div>
-        <!-- 内容主体部分 上半 -->
-        <div class="subjectContent upperHalf">
-          <!-- 左侧内容 -->
-          <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <!-- 左侧上 -->
-              <div class="grid-content bg-purple">
-                <span>性别分布</span>
-              </div>
-              <!-- 左侧中 -->
-              <div class="grid-content bg-purple">
-                <span>年龄分布</span>
-              </div>
-              <!-- 左侧下 -->
-              <div class="grid-content bg-purple">
-                <span>年龄分布</span>
-              </div>
-            </el-col>
-            <!-- 中间地图 -->
-            <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-              <div class="grid-content bg-purple-light">
-                <china></china>
-              </div>
-              <div class="grid-content bg-purple-chart">
-                <span>图表</span>
-              </div>
-            </el-col>
-            <!-- 右侧内容 -->
-            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-              <!-- 右侧上 -->
-              <div class="grid-content bg-purple">
-                <span>工龄分布</span>
-              </div>
-              <!-- 右侧中 -->
-              <div class="grid-content bg-purple">
-                <span>客户分布</span>
-              </div>
-              <!-- 右侧下 -->
-              <div class="grid-content bg-purple">
-                <span>交付经理人数分析</span>
-              </div>
-            </el-col>
-          </el-row>
-        </div>
+        <!-- 内容主体部分 -->
+<!--        <large-screen></large-screen>-->
+<!--        <el-main>-->
+<!--          <router-view />-->
+<!--          <div v-if="$route.path === '/sys'">-->
+<!--            <el-button @click="queryuser">查询</el-button>-->
+<!--          </div>-->
+<!--        </el-main>-->
       </div>
     </div>
     <!-- 弹窗菜单 -->
@@ -197,17 +161,52 @@
         </div>
         <!-- 管理模块 -->
         <div class="managementModule">
-          <!-- 系统管理 -->
-          <div class="menuHead">
-            <span>系统管理</span>
-          </div>
-          <div class="menuHead">
-            <span>需求管理</span>
-          </div>
-          <div class="menuHead">
-            <span>员工管理</span>
-          </div>
-  
+          <el-container>
+            <el-aside width="300px">
+              <el-scrollbar style="height: 100%; width: 300px">
+                <el-menu
+                    :default-active="nowMenu"
+                    class="el-menu-vertical-demo"
+                    @open="handleOpen"
+                    @close="handleClose"
+                    :unique-opened="true"
+                    router
+                >
+                  <!-- 侧边栏 -->
+                  <div v-for="item in userdetail.roles[0].menus" :key="item.path">
+                    <el-submenu
+                        :index="item.path"
+                        v-if="item.childrenMenus.length > 0"
+                    >
+                      <template slot="title">
+                        <i :class="item.iconLs ? item.iconLs : `el-icon-setting`"></i>
+                        <span>{{ item.name }}</span>
+                      </template>
+                      <el-menu-item-group>
+                        <el-menu-item
+                            :index="subitem.path"
+                            v-for="subitem in item.childrenMenus"
+                            :key="subitem.path"
+                        >{{ subitem.name }}
+                        </el-menu-item>
+                      </el-menu-item-group>
+                    </el-submenu>
+                    <el-menu-item v-else :index="item.path">
+                      <i :class="item.iconLs ? item.iconLs : `el-icon-setting`"></i>
+                      <span slot="title">{{ item.name }}</span>
+                    </el-menu-item>
+                  </div>
+                </el-menu>
+              </el-scrollbar>
+            </el-aside>
+<!--            <el-main>-->
+<!--              <router-view />-->
+<!--              <div v-if="$route.path === '/sys'">-->
+<!--                <el-button @click="queryuser">查询</el-button>-->
+<!--              </div>-->
+<!--            </el-main>-->
+          </el-container>
+
           <!-- <el-aside width="420px" style="background-color: rgb(238, 241, 246)">
             <el-menu :default-openeds="['1']">
               <el-submenu index="1">
@@ -265,14 +264,24 @@
 </template>
 
 <script>
-import China from "./components/china-map.vue";
+import LargeScreen from "./components/largeScreen.vue";
+import { Decrypt } from "@/util/crypto/secret";
+import { queryUserAll } from "@/api/firstscreen/index";
 export default {
   name: "index",
   components: {
-    China,
+    LargeScreen
   },
   data() {
     return {
+      //登录后菜单展示
+      tableData: [],
+      userdetail: {},
+      nowMenu: "",
+      // 时间
+      monthValue: "",
+      // 时间段
+      timeslot: "",
       // 菜单弹窗1
       drawer: true,
       direction: "rtl",
@@ -357,8 +366,78 @@ export default {
       sizeList: ["small"],
     };
   },
+  //菜单生成部分
+  computed: {
+    pathNow() {
+      return this.$route.path;
+    },
+  },
+  watch: {
+    // 侦听路由 路由改变则联动菜单
+    pathNow(n) {
+      this.nowMenu = n;
+    },
+  },
   mounted() {},
-  methods: {},
+  created() {
+    this.userdetail = window.localStorage.getItem("userdetail")
+        ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
+        : {};
+    // console.log(window.localStorage.getItem("userdetail"));
+    // console.log(this.userdetail, "---我是（当前用户信息）");
+    // 当前时间  判断上午-中午 -下午 欢迎语
+    this.timeslot = "";
+    var data = new Date();
+    var hours = data.getHours();
+    var toMonth = hours;
+    this.monthValue = toMonth;
+    console.log(this.monthValue, "---------时间");
+    if (this.monthValue <= 11 && this.monthValue > 8) {
+      this.timeslot = "上午好";
+    } else {
+      if (this.monthValue <= 13 && this.monthValue > 11) {
+        this.timeslot = "中午好";
+      } else {
+        if (this.monthValue <= 18 && this.monthValue > 13) {
+          this.timeslot = "下午好";
+        } else {
+          return (this.timeslot = "你好");
+        }
+      }
+    }
+
+    if (Object.keys(this.userdetail).length === 0) {
+      this.$message.warning("用户信息失效，请重新登录！");
+      return this.$router.push("/login");
+    }
+    // 刷新时 菜单定位到当前路由
+    this.nowMenu = this.$route.path;
+  },
+  methods: {
+  //  生成菜单跳转
+    handleOpen(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    handleClose(key, keyPath) {
+      console.log(key, keyPath);
+    },
+    loginout() {
+      this.$loginout();
+    },
+    queryuser() {
+      queryUserAll().then((res) => {
+        console.log(res);
+      });
+    },
+    // 个人信息跳转
+    personal() {
+      if (this.$route.path !== "/sys/personalInformation") {
+        this.$nextTick(() => {
+          this.$router.push({ path: "/sys/personalInformation" });
+        });
+      }
+    },
+  },
 };
 </script>
 <style lang='less'>
@@ -493,50 +572,50 @@ html {
       }
     }
   }
-  // 主体内容
-  .subjectContent {
-    margin-top: 15px;
-    margin: 20px 20px 0;
-    position:absolute .el-col {
-      border-radius: 4px;
-    }
-    .bg-purple-dark {
-      background: #99a9bf;
-    }
-    .bg-purple {
-      background: #d3dce6;
-    }
-    .bg-purple-light {
-      background: #e5e9f2;
-      // position: relative;
-      // top: -30px;
-    }
-    .grid-content {
-      border-radius: 4px;
-      min-height: 36px;
-    }
-  }
-  // 主体内容 上半内容
-  .upperHalf {
-    // 两侧
-    .bg-purple {
-      width: 100%;
-      height: 28vh;
-      background-color: rgba(224, 236, 211, 0.2);
-      margin: 5px 0;
-    }
-    .bg-purple-light {
-      width: 100%;
-      height: 60vh;
-      background-color: rgba(224, 236, 211, 0.2);
-    }
-    .bg-purple-chart {
-      margin-top: 6px;
-      width: 100%;
-      height: 25vh;
-      background-color: rgba(224, 236, 211, 0.2);
-    }
-  }
+  //// 主体内容
+  //.subjectContent {
+  //  margin-top: 15px;
+  //  margin: 20px 20px 0;
+  //  position:absolute .el-col {
+  //    border-radius: 4px;
+  //  }
+  //  .bg-purple-dark {
+  //    background: #99a9bf;
+  //  }
+  //  .bg-purple {
+  //    background: #d3dce6;
+  //  }
+  //  .bg-purple-light {
+  //    background: #e5e9f2;
+  //    // position: relative;
+  //    // top: -30px;
+  //  }
+  //  .grid-content {
+  //    border-radius: 4px;
+  //    min-height: 36px;
+  //  }
+  //}
+  //// 主体内容 上半内容
+  //.upperHalf {
+  //  // 两侧
+  //  .bg-purple {
+  //    width: 100%;
+  //    height: 28vh;
+  //    background-color: rgba(224, 236, 211, 0.2);
+  //    margin: 5px 0;
+  //  }
+  //  .bg-purple-light {
+  //    width: 100%;
+  //    height: 60vh;
+  //    background-color: rgba(224, 236, 211, 0.2);
+  //  }
+  //  .bg-purple-chart {
+  //    margin-top: 6px;
+  //    width: 100%;
+  //    height: 25vh;
+  //    background-color: rgba(224, 236, 211, 0.2);
+  //  }
+  //}
 }
 // 菜单弹窗
 .el-menu {
@@ -631,7 +710,70 @@ html {
     }
   }
 }
+//右侧下拉菜单
+@deep: ~">>>";
+.el-header {
+  background-color: #383f49;
+  border-bottom: 4px solid #eee;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  h1 {
+    color: #fff;
+    font-size: 20px;
+  }
+  .header_main {
+    width: 100%;
+    display: flex;
+    color: #fff;
+    justify-content: space-between;
+    align-items: center;
+    .header_avatar {
+      display: flex;
+      align-items: center;
+      div {
+        display: flex;
+        align-items: center;
+      }
+      span {
+        margin: 0 10px;
+        cursor: pointer;
+      }
+    }
+  }
+}
 
+.el-container {
+  height: calc(100vh - 400px);
+  .el-menu {
+    border-right: none;
+    height: calc(100vh - 400px);
+  }
+  @{deep} .el-scrollbar__wrap {
+    overflow-x: hidden !important;
+    border-right: 1px solid #eee;
+  }
+}
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409eff;
+  font-size: 12px;
+}
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+.demonstration {
+  display: block;
+  color: #8492a6;
+  font-size: 14px;
+  margin-bottom: 20px;
+}
+.el-dropdown {
+  color: #fff;
+}
+.el-dropdown-menu {
+  padding: 0;
+}
 // 头部操作按钮左侧下拉透明
 </style>
 <style lang="less" scoped>
