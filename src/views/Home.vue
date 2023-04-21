@@ -393,17 +393,16 @@ export default {
   color: #fff;
 }
 // 退出透明
-.el-popover{
+.el-popover {
   background-color: #283555 !important;
   color: #fff !important;
   border: 1px solid #05080e !important;
-  
 }
 // 按钮透明
-.el-button--primary{
-  background-color: #283555 !important;
+.el-button--primary {
+  // background-color: #283555 !important;
   color: #fff !important;
-  border: 1px solid #05080e !important;
+  // border: 1px solid #05080e !important;
 }
 // 背景透明
 .el-card {
@@ -422,24 +421,25 @@ export default {
   background-color: transparent !important;
 }
 // 左上下拉透明
-.el-select-dropdown{
+.el-select-dropdown {
   background-color: #283555 !important;
   color: #fff !important;
   border: 1px solid #05080e !important;
 }
 // 左上下拉选中颜色
-.el-select-dropdown__item{
+.el-select-dropdown__item {
   color: #fff !important;
 }
-.el-select-dropdown__item.hover, .el-select-dropdown__item:hover {
+.el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
   background-color: #283555 !important;
 }
 // 左上小三角
-.el-popper[x-placement^=bottom] .popper__arrow::after {
-    top: 1px;
-    margin-left: -6px;
-    border-top-width: 0;
-    border-bottom-color: #283555 !important;
+.el-popper[x-placement^="bottom"] .popper__arrow::after {
+  top: 1px;
+  margin-left: -6px;
+  border-top-width: 0;
+  border-bottom-color: #283555 !important;
 }
 // 右侧下拉透明
 .el-scrollbar__view {
@@ -448,7 +448,7 @@ export default {
     .el-submenu__title {
       color: #eee;
       display: flex;
-      justify-content: center;
+      justify-content: left;
     }
     .el-menu-item {
       color: #eee;
@@ -459,11 +459,11 @@ export default {
 }
 // 分割线透明
 .el-container[data-v-fae5bece] .el-scrollbar__wrap {
-    border-right: none !important;
+  border-right: none !important;
 }
 // 下拉箭头
 .el-submenu__title i {
-    color: #fff !important;
+  color: #fff !important;
 }
 // 下拉菜单 hove
 .el-menu-item:focus,
@@ -485,6 +485,17 @@ export default {
   // background-color: aqua !important;
   background-image: linear-gradient(to right, #121e34, #2a418e, #121e34);
 }
+
+// 表格头字体颜色
+.el-table thead {
+  color: #000 !important;
+  font-weight: 500;
+}
+// 表格单数行颜色
+.el-table tr {
+    // background-color: #e32525 !important;
+    // background-color: rgba(0, 0, 0, 0.7)!important;
+}
 // 表格头透明
 </style>
 <style lang='less' scoped>
@@ -492,6 +503,7 @@ body,
 html {
   // height: 100%;
 }
+
 // 组件背景
 body .el-main {
   background-color: transparent !important;
