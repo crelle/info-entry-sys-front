@@ -84,6 +84,12 @@
                     <span>项目经理</span>
                     <!-- @click="centerDialogVisible = true" -->
                     <img
+                      style="cursor: pointer"
+                      src="../assets/img/uihomepage/home.png"
+                      alt=""
+                    />
+                    <img
+                      style="cursor: pointer"
                       @click="drawer = true"
                       src="../assets/img/uihomepage/菜单icon.png"
                       alt=""
@@ -386,6 +392,7 @@ export default {
 };
 </script>
 <style lang='less'>
+
 .el-scrollbar {
   // background-color: #1d2e5d !important;
   background-color: transparent !important;
@@ -493,8 +500,8 @@ export default {
 }
 // 表格单数行颜色
 .el-table tr {
-    // background-color: #e32525 !important;
-    // background-color: rgba(0, 0, 0, 0.7)!important;
+  // background-color: #e32525 !important;
+  // background-color: rgba(0, 0, 0, 0.7)!important;
 }
 // 表格头透明
 </style>

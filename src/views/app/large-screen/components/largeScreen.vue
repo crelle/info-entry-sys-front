@@ -34,13 +34,14 @@
           <div class="grid-content bg-purple workCom" >
             <age-com class="ageCount" :aName="workName" :aValue="workValue"  v-if="bb" ></age-com>
           </div>
-          <!-- 右侧中 -->
-          <div class="grid-content bg-purple">
-            <span>客户分布</span>
+          <!-- 右侧中  客户分布-->
+          <div class="grid-content guestDepartment bg-purple">
+            <radarchart> </radarchart>
           </div>
           <!-- 右侧下 -->
-          <div class="grid-content bg-purple">
-            <span>交付经理人数分析</span>
+          <div class="grid-content bg-purple cakeBackground">
+            <!-- 3D饼图 -->
+            <delivery-manager></delivery-manager>
           </div>
         </el-col>
       </el-row>
@@ -51,12 +52,16 @@
 <script>
 import China from "./china-map.vue";
 import ageCom from "./ageCom.vue";
+import Radarchart from "./radar-chart.vue";
+import DeliveryManager from "./delivery-manager.vue";
 import { employeeAge, employeeSeniority } from "@/api/largeScreen";
 export default {
   name: "index",
   components: {
     China,
     ageCom,
+    Radarchart,
+    DeliveryManager,
   },
   data() {
     return {
@@ -188,7 +193,7 @@ html {
   .bg-purple {
     width: 100%;
     height: 28vh;
-    // background-color: rgba(224, 236, 211, 0.2);
+    // // background-color: rgba(224, 236, 211, 0.2);
     margin: 5px 0;
   }
   .bg-purple-light {
