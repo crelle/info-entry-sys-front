@@ -10,12 +10,13 @@
             <span>性别分布</span>
           </div>
           <!-- 左侧中 -->
-          <div class="grid-content bg-purple">
-            <span>年龄分布</span>
+          <div class="grid-content ageCom bg-purple">
+            <!-- <span>年龄分布</span> -->
+            <age-com class="ageCount"></age-com>
           </div>
           <!-- 左侧下 -->
           <div class="grid-content bg-purple">
-            <span>年龄分布</span>
+            <span>婚育情况</span>
           </div>
         </el-col>
         <!-- 中间地图 -->
@@ -49,13 +50,20 @@
 
 <script>
 import China from "./china-map.vue";
+import ageCom from "./ageCom.vue";
+import { employeeAge,employeeSeniority } from "@/api/largeScreen";
 export default {
   name: "index",
   components: {
-    China,
+    China,ageCom
   },
   data() {
-    return {}
+    return {
+      ageData:{
+      departmentName: '',
+      regionName: ''
+      }
+    }
   },
   //菜单生成部分
   computed: {
@@ -64,10 +72,17 @@ export default {
   watch: {
     // 侦听路由 路由改变则联动菜单
   },
-  mounted() {},
-  created() {
+  mounted() {
+    this.ageDeal(this.ageData)
   },
-  methods: {}
+
+  methods: {
+    ageDeal(age){
+      employeeAge(age).then(res=>{
+        console.log(res);
+      })
+    }
+  }
 };
 </script>
 <style lang='less'>
@@ -86,13 +101,13 @@ html {
     border-radius: 4px;
   }
   .bg-purple-dark {
-    background: #99a9bf;
+    // background: #99a9bf;
   }
   .bg-purple {
-    background: #d3dce6;
+    // background: #d3dce6;
   }
   .bg-purple-light {
-    background: #e5e9f2;
+    // background: #e5e9f2;
     // position: relative;
     // top: -30px;
   }
@@ -107,20 +122,32 @@ html {
   .bg-purple {
     width: 100%;
     height: 28vh;
-    background-color: rgba(224, 236, 211, 0.2);
+    // background-color: rgba(224, 236, 211, 0.2);
     margin: 5px 0;
   }
   .bg-purple-light {
     width: 100%;
     height: 60vh;
-    background-color: rgba(224, 236, 211, 0.2);
+    // background-color: rgba(224, 236, 211, 0.2);
   }
   .bg-purple-chart {
     margin-top: 6px;
     width: 100%;
     height: 25vh;
-    background-color: rgba(224, 236, 211, 0.2);
+    // background-color: rgba(224, 236, 211, 0.2);
   }
+  .ageCom{
+  background-image: url('./images/uihomepage/age.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  padding-top: 10%;
+}
+.ageCount{
+  width: 80%;
+  height: 80%;
+}
 }
 
 </style>
