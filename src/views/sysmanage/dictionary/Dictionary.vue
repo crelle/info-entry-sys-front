@@ -57,13 +57,15 @@
         <el-table-column prop="updateTime" label="更新时间" width="300"> </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="310" align="center">
           <template slot-scope="{ row}">
-            <el-button type="primary" @click="edit(row)" size="small"
+            <div style="width:120px;display:flex;justify-content: end;margin: 0 auto;">
+              <el-button type="primary" @click="edit(row)" size="small" v-if="row.children"
                 >编辑</el-button
               >
               <el-button type="danger" @click="delbtn(row.id)" size="small"
                 >删除</el-button
               >
-              <!-- <el-button type="primary" size="small">新增</el-button> -->
+            </div>
+            
           </template>
         </el-table-column>
      
@@ -72,7 +74,6 @@
       <el-pagination
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage1"
-      v-if="total>10"
       layout="total, prev, pager, next"
       :total="total">
     </el-pagination>
@@ -92,7 +93,7 @@ export default {
     return {
       parent: "",
       child: "",
-      total: "",
+      total: 0,
       currentPage1:1,
       // -----------------------
       fatherData: [],
@@ -200,13 +201,18 @@ export default {
               item.children=item.children.filter(item=>item.name.includes(this.child.split("-")[1]))
             });
           }
-          this.total = res.data.total;
-          console.log("qaz",this.total);
+          this.total = Number(res.data.total) ;
+         if(this.total==0&&this.currentPage1>1){
+          this.currentPage1--
+            this.onSubmit()
+         }else{
           this.dictionaryData = res.data.records;
-          this.dictionaryData.forEach(item=>{
+         }
+          
+          // this.dictionaryData.forEach(item=>{
             // item.updateTime=this.timeDeal(item.updateTime)
             // item.children.forEach(item=>item.updateTime=this.timeDeal(item.updateTime))
-          })
+          // })
           
         }
       });

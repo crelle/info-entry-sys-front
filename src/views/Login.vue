@@ -165,8 +165,8 @@ this.changecode()
 }
 .login {
   position: absolute;
-  width: 30%;
-  height: 80%;
+  width: 504px;
+  height: 751px;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
@@ -228,5 +228,13 @@ this.changecode()
 ::v-deep .el-image__error{
     background-color: #021037;
     color: white;
+}
+::v-deep .el-form-item__content{
+  margin-right: 20px;
+}
+::v-deep input:-internal-autofill-previewed,
+::v-deep input:-internal-autofill-selected {
+    -webkit-text-fill-color: #4b94d3;
+    transition: background-color 5000s ease-out 0.5s;
 }
 </style>
