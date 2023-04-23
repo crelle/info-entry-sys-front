@@ -470,7 +470,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deletesDepartments(row.departmentId).then((res) => {
+          deletesDepartments(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该部门");
             if (res.code == "00000") {
               this.queryUserList();
