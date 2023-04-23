@@ -17,8 +17,8 @@
                   <ul class="box">
                     <li>
                       <span>部门名:</span
-                      ><span :title="userEditForm.department">{{
-                        userEditForm.department
+                      ><span :title="userEditForm.name">{{
+                        userEditForm.name
                       }}</span>
                     </li>
                     <li>
@@ -148,7 +148,7 @@
                             :show-overflow-tooltip="true"
                           >
                           </el-table-column>
-                          <el-table-column prop="department" label="所属部门">
+                          <el-table-column prop="name" label="所属部门">
                           </el-table-column>
                           <el-table-column prop="people" label="项目人数">
                           </el-table-column>
@@ -198,7 +198,7 @@ export default {
       userEditForm: {
         address: "",
         cellPhone: "",
-        department: "",
+        name: "",
         departmentId: "",
         email: "",
         introduce: "",

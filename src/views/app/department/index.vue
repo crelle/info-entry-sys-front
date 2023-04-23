@@ -16,9 +16,9 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="部门名称" prop="department">
+            <el-form-item label="部门名称" prop="name">
               <el-input
-                v-model="formOptions.department"
+                v-model="formOptions.name"
                 placeholder="请输入部门名称"
                 clearable
               ></el-input>
@@ -70,7 +70,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="department"
+          prop="name"
           label="部门名"
           min-width="80"
           show-overflow-tooltip
