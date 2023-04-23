@@ -213,7 +213,6 @@ html {
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
-    padding-top: 10%;
   }
   .workCom{
     background-image: url("./images/uihomepage/work.png");
@@ -221,11 +220,11 @@ html {
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
-    padding-top: 10%;
   }
   .ageCount {
     width: 90%;
     height: 80%;
+    margin-top: 10%;
   }
 }
 </style>
