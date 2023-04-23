@@ -161,14 +161,6 @@ const routes = [
       // },
     ],
   },
-  {
-    path: "/app/largeScreen",
-    name: "largeScreens",
-    component: () => import("@/views/app/large-screen/index.vue"),
-    meta: {
-      title: "管理大屏",
-    },
-  },
 ];
 
 const router = new VueRouter({
