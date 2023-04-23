@@ -12,10 +12,10 @@ export default {
   },
   props: ["aName", "aValue"],
   mounted() {
-    this.test();
+    this.start();
   },
   methods: {
-    test() {
+    start() {
       var myChart = echarts.init(this.$refs.echarts);
       let option = {
         grid: {

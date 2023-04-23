@@ -12,11 +12,11 @@
           <!-- 左侧中 -->
           <div class="grid-content ageCom bg-purple">
             <!-- <span>年龄分布</span> -->
-            <age-com class="ageCount" :aName="ageName" :aValue="ageValue"  v-if="aa"></age-com>
+            <age-com class="ageCount" :aName="ageName" :aValue="ageValue" ref="age"></age-com>
           </div>
           <!-- 左侧下 -->
-          <div class="grid-content bg-purple">
-            <span>婚育情况</span>
+          <div class="grid-content bg-purple marriageCom" >
+            <marriage-com class="ageCount" :dataArr="marriageArr" ></marriage-com>
           </div>
         </el-col>
         <!-- 中间地图 -->
@@ -32,7 +32,7 @@
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
           <!-- 右侧上 -->
           <div class="grid-content bg-purple workCom" >
-            <age-com class="ageCount" :aName="workName" :aValue="workValue"  v-if="bb" ></age-com>
+            <age-com class="ageCount" :aName="workName" :aValue="workValue" ref="work"></age-com>
           </div>
           <!-- 右侧中  客户分布-->
           <div class="grid-content guestDepartment bg-purple">
@@ -54,6 +54,7 @@ import China from "./china-map.vue";
 import ageCom from "./ageCom.vue";
 import Radarchart from "./radar-chart.vue";
 import DeliveryManager from "./delivery-manager.vue";
+import marriageCom from './marriageCom.vue'
 import { employeeAge, employeeSeniority } from "@/api/largeScreen";
 export default {
   name: "index",
@@ -62,6 +63,7 @@ export default {
     ageCom,
     Radarchart,
     DeliveryManager,
+    marriageCom
   },
   data() {
     return {
@@ -69,16 +71,19 @@ export default {
         departmentName: "",
         regionName: "",
       },
-      woekAgeData:{
+      workAgeData:{
+        departmentName: "",
+        regionName: "",
+      },
+      marriageDate:{
         departmentName: "",
         regionName: "",
       },
       ageName:[],
       ageValue:[],
-      aa:0,
-      bb:0,
       workName:[],
-      workValue:[]
+      workValue:[],
+      marriageArr:[]
     };
   },
   //菜单生成部分
@@ -88,7 +93,8 @@ export default {
   },
   mounted() {
     this.ageDeal(this.ageData);
-    this.workAge(this.woekAgeData)
+    this.workAge(this.workAgeData)
+    this.marriageDeal()
   },
 
   methods: {
@@ -103,24 +109,12 @@ export default {
           this.ageName=Object.keys(dataArr).reverse()
           this.ageValue=Object.values(dataArr).reverse()
           // this.ageValue=this.ageFirst(Object.values(dataArr)).reverse()
-          this.aa=1
-          // console.log( this.$refs.ageCom);
-          // this.$refs.ageCom.test()
+          this.$nextTick(() => {
+        this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
+      });
         }
       });
     },
-    // ageFirst(data) {
-    //   const total = data.reduce((acc, val) => acc + val, 0);
-    //   const percentages = data.map((val) => Math.round((val / total) * 100));
-    //   let sumPercentages = percentages.reduce((acc, val) => acc + val, 0);
-    //   while (sumPercentages !== 100) {
-    //     const maxPercentage = Math.max(...percentages);
-    //     const maxPercentageIndex = percentages.indexOf(maxPercentage);
-    //     percentages[maxPercentageIndex] -= sumPercentages - 100;
-    //     sumPercentages = percentages.reduce((acc, val) => acc + val, 0);
-    //   }
-    //   return percentages;
-    // },
     workAge(data){
       employeeSeniority(data).then(res=>{
         if (res && res.code && res.code === "00000") {
@@ -148,11 +142,34 @@ export default {
           })
           this.workName=Object.keys(workData)
           this.workValue=Object.values(workData)
-          this.bb=1
+          this.$nextTick(() => {
+        this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
+      });
           console.log('workAge',this.workName,this.workValue);
         }
         
       })
+    },
+    marriageDeal(data){
+      setTimeout(()=>{
+        this.marriageArr=[
+        {
+          name: "火车",
+          value: 20,
+        },
+        {
+          name: "飞机",
+          value: 10,
+        },
+        {
+          name: "客车",
+          value: 30,
+        },
+      ];
+      
+      
+      console.log('触发11111');
+      },500)
     }
   },
 };
@@ -225,6 +242,13 @@ html {
     width: 90%;
     height: 80%;
     margin-top: 10%;
+  }
+  .marriageCom{
+    background-image: url('./images/uihomepage/bg_marriage.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
   }
 }
 </style>
