@@ -17,9 +17,9 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="地域名称" prop="regionName">
+            <el-form-item label="地域名称" prop="name">
               <el-input
-                v-model="formOptions.regionName"
+                v-model="formOptions.name"
                 placeholder="请输入地域名称"
               ></el-input>
             </el-form-item>
@@ -69,7 +69,7 @@
         ></el-table-column>
         <el-table-column
           label="地域名称"
-          prop="regionName"
+          prop="name"
           min-width="100"
           fixed
         ></el-table-column>
@@ -133,7 +133,9 @@ export default {
     return {
       list: "",
       formOptions: {
-        regionName: "",
+        id: "",
+        name: "",
+        code: "",
       },
       tableData: [],
       paginationOptions: {
@@ -144,7 +146,7 @@ export default {
       },
       // 验证
       rules: {
-        regionName: [
+        name: [
           {
             required: false,
             message: "请输入地域名称",
@@ -210,7 +212,7 @@ export default {
       })
         .then(() => {
           // 点击确认，发起后台请求，删除该用户
-          deletesRegion(row.regionId).then((res) => {
+          deletesRegion(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               this.queryRoles();
@@ -246,7 +248,7 @@ export default {
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
       this.list = "修改地域信息";
-      console.log("编辑", row, row.regionId);
+      console.log("编辑", row, row.id);
     },
     // 重置表单
     resetForm(formName) {

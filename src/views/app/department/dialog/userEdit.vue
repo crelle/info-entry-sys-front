@@ -19,9 +19,9 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="部门名" prop="department">
+                <el-form-item label="部门名" prop="name">
                   <el-input
-                    v-model="userEditForm.department"
+                    v-model="userEditForm.name"
                     placeholder="部门名"
                     @change="queryson"
                     clearable
@@ -75,12 +75,12 @@
                     <el-option
                       v-for="item in tableDataUp"
                       :key="item.index"
-                      :label="item.department"
-                      :value="item.department"
+                      :label="item.name"
+                      :value="item.name"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                
+
                 <el-form-item label="部门总部地址" prop="address">
                   <el-input
                     type="email"
@@ -149,8 +149,8 @@ export default {
         cellPhone: "",
         createBy: "",
         createTime: "",
-        department: "",
-        departmentId: "",
+        name: "",
+        id: "",
         departmentUp: "",
         email: "",
         enabled: "",
@@ -273,7 +273,7 @@ export default {
       } else {
         console.log("我是新增");
         // 指定删除的
-        delete this.userEditForm.departmentId;
+        delete this.userEditForm.id;
       }
     },
     initForm(data) {
@@ -288,7 +288,7 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      this.userEditForm.departmentId = "";
+      this.userEditForm.id = "";
     },
     // 重置表单
     resetForm(formName) {
@@ -303,11 +303,8 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log(
-        this.initFormData.departmentId,
-        "this.initFormData.departmentId---编辑有"
-      );
-      if (this.initFormData.departmentId) {
+      console.log(this.initFormData.id, "this.initFormData.id---编辑有");
+      if (this.initFormData.id) {
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {

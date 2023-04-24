@@ -3,7 +3,7 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       width="20%"
       lock-scroll
       @close="closeDialog"
@@ -16,7 +16,16 @@
                 <div class="regionbox">
                   <ul>
                     <li>
-                      <span>地域名称 : </span> <span>{{ userEditForm.regionName }}</span>
+                      <span>地域名称 : </span>
+                      <span>{{ userEditForm.name }}</span>
+                    </li>
+                  </ul>
+                </div>
+                <div class="regionbox">
+                  <ul>
+                    <li>
+                      <span>地域编码 : </span>
+                      <span>{{ userEditForm.code }}</span>
                     </li>
                   </ul>
                 </div>
@@ -49,7 +58,8 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        regionName:"",
+        name: "",
+        code: "",
       },
       initFormData: {},
     };
@@ -96,10 +106,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-ul,li{
+ul,
+li {
   margin: 0;
   padding: 0;
-  list-style:none
+  list-style: none;
 }
 @deep: ~">>>";
 @{deep} .register_form_main {
@@ -117,11 +128,11 @@ ul,li{
     text-shadow: 0 1px -3px #409eff;
   }
 }
-.regionbox{
-  ul{
-    li{
+.regionbox {
+  ul {
+    li {
       display: flex;
-      span{
+      span {
         display: block;
         margin-right: 15px;
         font-size: 14px;
@@ -129,19 +140,19 @@ ul,li{
     }
   }
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   width: 20%;
 }
-.dialog-footer{
+.dialog-footer {
   text-align: center;
 }
-::v-deep .el-dialog__footer{
-  padding: 0 20px 20px ;
+::v-deep .el-dialog__footer {
+  padding: 0 20px 20px;
 }
-::v-deep .el-dialog__body{
+::v-deep .el-dialog__body {
   padding: 20px;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 300px;
 }
 </style>

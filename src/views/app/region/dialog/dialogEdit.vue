@@ -18,12 +18,12 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="地域名称 :" prop="regionName">
-                  <el-input
-                    v-model="userEditForm.regionName"
-                    clearable
-                    filterable
-                  >
+                <el-form-item label="地域名称 :" prop="name">
+                  <el-input v-model="userEditForm.name" clearable filterable>
+                  </el-input>
+                </el-form-item>
+                <el-form-item label="地域编码 :" prop="code">
+                  <el-input v-model="userEditForm.code" clearable filterable>
                   </el-input>
                 </el-form-item>
               </el-form>
@@ -62,11 +62,12 @@ export default {
       nowIndex: -1,
       // baseURL: BaseURL,
       userEditForm: {
-        regionName: "",
+        name: "",
+        code: "",
       },
       initFormData: {},
       userEditFormRules: {
-        regionName: [
+        name: [
           {
             required: true,
             message: "请输入地域名称",
@@ -91,7 +92,7 @@ export default {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
       this.initFormData = {};
-      this.userEditForm.regionId = "";
+      this.userEditForm.id = "";
       if (row) {
         // let editRow = JSON.parse(JSON.stringify(row));
         // editRow.regionName = this.getCityCode(editRow.regionName);
@@ -132,7 +133,7 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log("保存了------", this.userEditForm.regionName);
+      console.log("保存了------", this.userEditForm.name);
       // if (this.userEditForm.regionName) {
       //   var loc = "";
       //   for (let i = 0; i < this.userEditForm.regionName.length; i++) {
@@ -142,12 +143,12 @@ export default {
       //   this.userEditForm.regionName = loc;
       //   console.log("保存了------", this.userEditForm.regionName);
       // }
-      if (this.initFormData.regionId) {
-        this.userEditForm.regionId = this.initFormData.regionId;
+      if (this.initFormData.id) {
+        this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
         console.log(this.userEditForm, "保存执行了");
         console.log(
-          this.userEditForm.regionId,
+          this.userEditForm.id,
           this.userEditForm,
           "this.initFormData.regionId"
         );
@@ -155,17 +156,15 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            editRegion(this.userEditForm, this.userEditForm.regionId).then(
-              (res) => {
-                console.log(res, "res11111");
-                if (res && res.code && res.code === "00000") {
-                  this.$message.success("修改成功！");
-                  this.dialogClose();
-                  console.log("修改成功！");
-                  this.$parent.queryRoles();
-                }
+            editRegion(this.userEditForm, this.userEditForm.id).then((res) => {
+              console.log(res, "res11111");
+              if (res && res.code && res.code === "00000") {
+                this.$message.success("修改成功！");
+                this.dialogClose();
+                console.log("修改成功！");
+                this.$parent.queryRoles();
               }
-            );
+            });
           } else {
             return false;
           }
@@ -176,11 +175,11 @@ export default {
           console.log(valid, "增加了的valid");
           console.log(
             this.userEditForm,
-            this.userEditForm.regionId,
+            this.userEditForm.id,
             "----------地域"
           );
           if (valid) {
-            establishRegion(this.userEditForm, this.userEditForm.regionId).then(
+            establishRegion(this.userEditForm, this.userEditForm.id).then(
               (res) => {
                 console.log(res, "增加了...res11111");
                 if (res && res.code && res.code === "00000") {
