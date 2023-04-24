@@ -455,7 +455,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
@@ -477,6 +477,6 @@ export default {
   overflow: hidden;
 }
 .demo-form-inline {
-  min-width: 1300px;
+  // min-width: 1300px;
 }
 </style>

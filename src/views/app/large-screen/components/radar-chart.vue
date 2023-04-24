@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div id="myChart" style="width: 100%; height: 25vh"></div>
+    <div id="myChart" style="width: 100%; height: 23vh"></div>
   </div>
 </template>
   
@@ -126,13 +126,6 @@ export default {
 </script>
   
 <style lang="less" scoped>
-.contain {
-  background-image: url("./images/uihomepage/客户分布-背景框.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  padding-top: 8%;
-}
+
 </style>
   

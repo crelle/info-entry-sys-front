@@ -15,9 +15,9 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="接口人" prop="interfaceName">
+            <el-form-item label="接口人" prop="name">
               <el-input
-                v-model="formOptions.interfaceName"
+                v-model="formOptions.name"
                 placeholder="接口人姓名"
                 clearable
               ></el-input>
@@ -85,7 +85,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="interfaceName"
+          prop="name"
           label="接口人"
           min-width="80"
           show-overflow-tooltip
@@ -194,8 +194,8 @@ export default {
         customerId: "",
         email: "",
         gender: "",
-        interfaceId: "",
-        interfaceName: "",
+        id: "",
+        name: "",
         introduce: "",
       },
       paginationOptions: {
@@ -257,8 +257,8 @@ export default {
                       }
                       // 接口人表格
                       this.InterfaceProject.forEach((sitem) => {
-                        if (item.interfaceId == sitem.interfaceId) {
-                          item.interfaceName = sitem.interfaceName;
+                        if (item.id == sitem.id) {
+                          item.name = sitem.name;
                           item.cellPhone = sitem.cellPhone;
                           item.email = sitem.email;
                           // 客户
@@ -343,7 +343,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该接口人
-          deletesInterface(row.interfaceId).then((res) => {
+          deletesInterface(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该接口人");
             if (res.code == "00000") {
               return this.$message({
@@ -452,7 +452,7 @@ export default {
   width: 253px;
 }
 .demo-form-inline {
-  min-width: 1300px;
+  // min-width: 1300px;
 }
 @media screen and (min-width: 1600px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
@@ -460,7 +460,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

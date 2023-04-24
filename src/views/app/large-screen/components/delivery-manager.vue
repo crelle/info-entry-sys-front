@@ -67,12 +67,5 @@ export default {
 </script>
   
 <style lang="less" scoped>
-.contain {
-  background-image: url("./images/uihomepage/交付经理人数分析-背景框.png");
-  background-size: contain;
-  background-repeat: no-repeat;
-  display: flex;
-  justify-content: center;
-  padding-top: 10%;
-}
+
 </style>

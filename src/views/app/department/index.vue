@@ -578,7 +578,7 @@ export default {
   width: 280px;
 }
 .demo-form-inline {
-  min-width: 500px;
+  // min-width: 500px;
 }
 @media screen and (min-width: 800px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
@@ -586,7 +586,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

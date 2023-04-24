@@ -16,9 +16,9 @@
       >
         <el-row>
           <el-col :span="7">
-            <el-form-item label="项目名称" prop="project">
+            <el-form-item label="项目名称" prop="name">
               <el-input
-                v-model="formOptions.project"
+                v-model="formOptions.name"
                 placeholder="项目名称"
                 clearable
               ></el-input>
@@ -162,7 +162,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="project"
+          prop="name"
           label="项目名称"
           min-width="80"
           show-overflow-tooltip
@@ -296,7 +296,7 @@ export default {
         departmentId: "",
         interfaceId: "",
         introduce: "",
-        project: "",
+        name: "",
         regionId: "",
         status: "",
       },
@@ -433,9 +433,9 @@ export default {
                       this.tableyPoststaff = res6.data.records; // 岗位表格数据赋值
                       this.tableDatastaff.forEach((item) => {
                         this.tableProjectstaff.forEach((items) => {
-                          if (item.projectId == items.projectId) {
+                          if (item.id == items.id) {
                             // console.log(items, "------------111");
-                            item.project = items.project; //根据项目id给项目名称赋值
+                            item.name = items.name; //根据项目id给项目名称赋值
                             this.Usersstaff.forEach((itemli) => {
                               if (items.departmentId == itemli.departmentId) {
                                 item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
@@ -487,7 +487,7 @@ export default {
           this.tableData.splice(index, 1);
           console.log(row, "删除--------");
           // 点击确认，发起后台请求，删除该用户
-          deletesProject(row.projectId).then((res) => {
+          deletesProject(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               this.queryUserList();
@@ -602,7 +602,7 @@ export default {
   width: 68px;
 }
 .demo-form-inline {
-  min-width: 1380px;
+  // min-width: 1380px;
 }
 @media screen and (min-width: 1800px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
@@ -610,7 +610,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

@@ -18,7 +18,7 @@
                   <ul class="lis">
                     <li>
                       <span>接口人名:</span
-                      ><span :title="userEditForm.interfaceName">{{ userEditForm.interfaceName }}</span>
+                      ><span :title="userEditForm.name">{{ userEditForm.name }}</span>
                     </li>
                     <li>
                       <span>性别:</span><span>{{ userEditForm.gender }}</span>
@@ -172,7 +172,7 @@ export default {
         email: "",
         gender: "",
         interfaceId: "",
-        interfaceName: "",
+        name: "",
         introduce: "",
       },
       initFormData: {},
