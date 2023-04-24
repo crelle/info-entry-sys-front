@@ -72,7 +72,9 @@
                   <el-switch
                     v-model="userEditForm.enabled"
                     active-text="可用"
+                    active-value="1"
                     inactive-text="不可用"
+                    inactive-value="0"
                   >
                   </el-switch>
                 </el-form-item>
@@ -84,7 +86,9 @@
                   <el-switch
                     v-model="userEditForm.requireAuth"
                     active-text="未鉴权"
+                    active-value="1"
                     inactive-text="鉴权"
+                    inactive-value="0"
                   ></el-switch>
                 </el-form-item>
               </el-form>

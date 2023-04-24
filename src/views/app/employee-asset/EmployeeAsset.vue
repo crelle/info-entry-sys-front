@@ -72,6 +72,8 @@
 </template>
 
 <script>
+// 查询资产
+import { queryPropertyManual } from "@/api/employee";
 import AddAssetDialog from "@/views/app/employee-asset/dialog/AddAsset.vue";
 export default {
   components: {
@@ -93,6 +95,7 @@ export default {
   methods: {
     onCreate() {
       this.$refs.AddAssetDialogRef.openDialog();
+      this.list = "添加资产";
     },
     onDelete() {},
     onUpdate() {},
@@ -108,6 +111,20 @@ export default {
         createTime: "",
         enabled: "",
       };
+    },
+    // 查询资产分页
+    //table数据
+    queryAssetList() {
+      // let data = { records: [{ ...this.formOptions }] };
+      // data.current = this.paginationOptions.pageNo;
+      // data.size = this.paginationOptions.pageSize;
+      // queryEmployeeManual(data).then((res) => {
+      //   if (res && res.code && res.code === "00000") {
+      //     this.tableData = res.data.records; // 表格数据赋值
+      //     // console.log(this.tableData, "员工表格数据赋值");
+      //     this.paginationOptions.total = res.data.total; // 分页器赋值
+      //   }
+      // });
     },
   },
 };

@@ -16,9 +16,9 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="岗位名称" prop="postName">
+            <el-form-item label="岗位名称" prop="name">
               <el-input
-                v-model="formOptions.postName"
+                v-model="formOptions.name"
                 placeholder="岗位名称"
                 clearable
               ></el-input>
@@ -117,7 +117,7 @@
         ></el-table-column>
         <el-table-column
           label="岗位名称"
-          prop="postName"
+          prop="name"
           min-width="100"
           fixed
         ></el-table-column>
@@ -157,6 +157,12 @@
           min-width="100"
           fixed
         ></el-table-column>
+        <!-- <el-table-column
+          label="最晚到岗日期"
+          prop="latestArrivalTime"
+          min-width="100"
+          fixed
+        ></el-table-column> -->
         <el-table-column
           label="截止今日岗位缺口/人"
           prop="number"
@@ -252,8 +258,8 @@ export default {
         latestArrivalTime: "",
         number: "",
         position: "",
-        postId: "",
-        postName: "",
+        id: "",
+        name: "",
         project: "",
         requirements: "",
         skill: "",
@@ -361,7 +367,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deletesPost(row.postId).then((res) => {
+          deletesPost(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               return this.$message({
@@ -400,7 +406,7 @@ export default {
     onEditRole(row) {
       this.$refs.roleEditDialogRef.openDialog(row);
       this.list = "编辑岗位信息";
-      console.log("编辑", row, row.postId);
+      console.log("编辑", row, row.id);
     },
     // 重置表单
     resetForm(formName) {

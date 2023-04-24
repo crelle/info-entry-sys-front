@@ -1,6 +1,6 @@
 <template>
   <div class="contain">
-    <div style="width: 100%; height: 25vh" id="manage"></div>
+    <div style="width: 100%; height: 24vh" id="manage"></div>
   </div>
 </template>
   

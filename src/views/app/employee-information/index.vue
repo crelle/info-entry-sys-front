@@ -829,7 +829,7 @@ export default {
       })
         .then(() => {
           // 点击确认，发起后台请求，删除该接口人
-          deleteEmployee(row.jobNo).then((res) => {
+          deleteEmployee(row.id).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.queryTableList();
               return this.$message({
