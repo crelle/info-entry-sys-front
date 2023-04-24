@@ -10,9 +10,7 @@
 import "echarts/extension/bmap/bmap";
 import * as echarts from "echarts";
 export default {
-  components: {
-
-  },
+  components: {},
   data() {
     return {
       map: null,
@@ -477,6 +475,7 @@ export default {
             {
               featureType: "railway",
               elementType: "all",
+              // 指定要显示的元素类型：
               stylers: {
                 visibility: "off",
               },
@@ -602,7 +601,6 @@ export default {
           },
           itemStyle: {
             color: "#ddb926",
-            
           },
           emphasis: {
             label: {
@@ -662,7 +660,7 @@ export default {
   mounted() {
     // this.initMap()
   },
-  
+
   methods: {
     initMap({ BMap, map }) {
       console.log(BMap, map);

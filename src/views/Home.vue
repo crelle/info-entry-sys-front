@@ -87,6 +87,7 @@
                       style="cursor: pointer"
                       src="../assets/img/uihomepage/home.png"
                       alt=""
+                      @click="jumpHomepage"
                     />
                     <img
                       style="cursor: pointer"
@@ -365,6 +366,10 @@ export default {
     this.nowMenu = this.$route.path;
   },
   methods: {
+    // 跳转首页
+    jumpHomepage() {
+      this.$router.push("/sys/firstscreen");
+    },
     //  生成菜单跳转
     handleOpen(key, keyPath) {
       console.log(key, keyPath);
@@ -392,7 +397,6 @@ export default {
 };
 </script>
 <style lang='less'>
-
 .el-scrollbar {
   // background-color: #1d2e5d !important;
   background-color: transparent !important;
@@ -521,7 +525,7 @@ body .el-main {
 }
 .el-card__body,
 .el-main {
-  padding: 10px 10px 0;
+  padding: 0 10px 0;
 }
 // 背景
 .box {

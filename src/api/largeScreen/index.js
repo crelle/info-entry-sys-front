@@ -21,5 +21,12 @@ const guestDepartment = (data) =>
     url: BaseURL + "/app/reportForm/employeeCustomer",
     data,
   });
+// 地域分析
+const regionalAnalysis = (data) =>
+  Request({
+    method: "post",
+    url: BaseURL + "/app/reportForm/regionAnalysis",
+    data,
+  });
 
-export { employeeAge, employeeSeniority, guestDepartment };
+export { employeeAge, employeeSeniority, guestDepartment,regionalAnalysis };
