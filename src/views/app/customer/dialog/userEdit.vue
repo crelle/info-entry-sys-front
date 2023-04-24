@@ -34,8 +34,8 @@
                     <el-option
                       v-for="item in regionData"
                       :key="item.index"
-                      :label="item.regionName"
-                      :value="item.regionId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -150,7 +150,13 @@ export default {
           //   trigger: "blur",
           // },
         ],
-
+        regionId:[
+            {
+              required: true,
+            message: "请选择地域",
+            trigger: ["blur", "change"],
+            }
+        ],
         email: [
           {
             required: false,

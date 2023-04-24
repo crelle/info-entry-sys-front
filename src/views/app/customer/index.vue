@@ -35,8 +35,8 @@
                 <el-option
                   v-for="item in regionData"
                   :key="item.index"
-                  :label="item.regionName"
-                  :value="item.regionId"
+                  :label="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -52,7 +52,7 @@
                 <el-option
                   v-for="item in UserList"
                   :key="item.index"
-                  :label="item.username"
+                  :label="item.userNickName"
                   :value="item.id"
                 ></el-option>
               </el-select>
@@ -294,8 +294,8 @@ export default {
                 // });
                 this.tableData.forEach((item) => {
                   this.regionData.forEach((items) => {
-                    if (item.regionId == items.regionId) {
-                      item.regionName = items.regionName;
+                    if (item.regionId == items.id) {
+                      item.regionName = items.name;
                       // this.$set(item, item.regionName, items.regionName);
                     }
                   });

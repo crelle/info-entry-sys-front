@@ -74,8 +74,8 @@
                     <el-option
                       v-for="item in Interface"
                       :key="item.index"
-                      :label="item.interfaceName"
-                      :value="item.interfaceId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -110,8 +110,8 @@
                     <el-option
                       v-for="item in Users"
                       :key="item.index"
-                      :label="item.department"
-                      :value="item.departmentId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -197,8 +197,8 @@ export default {
         email: "",
         customerName: "",
         cooperation: "",
-        departmentId: "333",
-        interfaceId: "3",
+        departmentId: "",
+        interfaceId: "",
         introduce: "",
         name: "",
         regionId: "",

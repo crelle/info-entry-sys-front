@@ -70,8 +70,8 @@
                 <el-option
                   v-for="item in MockUser"
                   :key="item.index"
-                  :label="item.regionName"
-                  :value="item.regionId"
+                  :label="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -114,8 +114,8 @@
                 <el-option
                   v-for="item in Interface"
                   :key="item.index"
-                  :label="item.interfaceName"
-                  :value="item.interfaceId"
+                  :label="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -131,8 +131,8 @@
                 <el-option
                   v-for="item in Users"
                   :key="item.index"
-                  :label="item.department"
-                  :value="item.departmentId"
+                  :label="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -375,7 +375,7 @@ export default {
                       // 接口人表格
                       this.Interface.forEach((sitem) => {
                         if (item.interfaceId == sitem.interfaceId) {
-                          item.interfaceName = sitem.interfaceName;
+                          item.interfaceName = sitem.name;
                           item.cellPhone = sitem.cellPhone;
                           item.email = sitem.email;
                           // 客户
@@ -389,7 +389,7 @@ export default {
                         // 部门表格
                         this.Users.forEach((itemis) => {
                           if (item.departmentId == itemis.departmentId) {
-                            item.department = itemis.department;
+                            item.department = itemis.name;
                           }
                           if (sitem.customerId == itemis.customerId) {
                             item.customerName = itemis.customerName;
@@ -438,12 +438,12 @@ export default {
                             item.name = items.name; //根据项目id给项目名称赋值
                             this.Usersstaff.forEach((itemli) => {
                               if (items.departmentId == itemli.departmentId) {
-                                item.department = itemli.department; //根据项目id查找部门id给部门名称赋值
+                                item.department = itemli.name; //根据项目id查找部门id给部门名称赋值
                               }
                             });
                             this.Interfacestaff.forEach((itemis) => {
                               if (items.interfaceId == itemis.interfaceId) {
-                                item.interfaceName = itemis.interfaceName; //根据项目id查找接口人id给接口人名称赋值
+                                item.interfaceName = itemis.name; //根据项目id查找接口人id给接口人名称赋值
                                 this.tableCustomerstaff.forEach((itemiss) => {
                                   if (itemis.customerId == itemiss.customerId) {
                                     item.customerName = itemiss.customerName; //根据接口人id 查找客户id给客户名称赋值
