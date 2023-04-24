@@ -17,7 +17,7 @@
                   <ul class="lis">
                     <li>
                       <span>项目名称:</span
-                      ><span :title="initFormData.project">{{ initFormData.project }}</span>
+                      ><span :title="initFormData.name">{{ initFormData.name }}</span>
                     </li>
                     <li>
                       <span>项目人数:</span
@@ -155,7 +155,7 @@ export default {
         customer: "",
         status: "",
         department: "",
-        project: "",
+        name: "",
         address: "",
         createTime: "",
         cooperation: "",
@@ -175,8 +175,9 @@ export default {
 
     openDialog(row) {
       // 修改时间格式
-      row.updateTime = row.updateTime.split("T")[0];
-      // console.log(this.userEditForm, "001001");
+      console.log(row, "001001");
+      row.updateTime = row.updateTime?.split("T")[0];
+      
       this.tableData1 = [];
       this.dialogFormVisible = true; // 让弹窗显示
 
@@ -185,9 +186,9 @@ export default {
         // console.log(this.tableDatastaff, "-----------员工全部");
         // 根据项目 id  查找 员工 赋值给 tableData1
         this.tableDatastaff.forEach((item) => {
-          // console.log(item.projectId, item.project, "----员工----");
+          // console.log(item.projectId, item.name, "----员工----");
           if (this.initFormData.projectId == item.projectId) {
-            // console.log(item.projectId, item.project, "同项目的id---");
+            // console.log(item.projectId, item.name, "同项目的id---");
             this.tableData1.push(item);
           }
         });

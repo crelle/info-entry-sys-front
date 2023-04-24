@@ -17,8 +17,8 @@
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span :title="userEditForm.customerName">{{
-                        userEditForm.customerName
+                      ><span :title="userEditForm.name">{{
+                        userEditForm.name
                       }}</span>
                     </li>
                     <li>
@@ -135,7 +135,7 @@ export default {
         address: "",
         cellPhone: "",
         customerId: "",
-        customerName: "",
+        name: "",
         email: "",
         introduce: "",
         regionId: "",

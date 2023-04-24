@@ -101,7 +101,6 @@
           </el-row>
         </div>
         <!-- 内容主体部分 -->
-        <large-screen></large-screen>
         <el-main>
           <router-view />
           <div v-if="$route.path === '/sys'">

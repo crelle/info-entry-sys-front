@@ -18,9 +18,9 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="接口人名称" prop="interfaceName">
+                <el-form-item label="接口人名称" prop="name">
                   <el-input
-                    v-model="userEditForm.interfaceName"
+                    v-model="userEditForm.name"
                     placeholder="接口人名称"
                     clearable
                   ></el-input>
@@ -144,13 +144,13 @@ export default {
         customerId: "",
         email: "",
         gender: "",
-        interfaceId: "",
-        interfaceName: "",
+        id: "",
+        name: "",
         introduce: "",
       },
       initFormData: {},
       userEditFormRules: {
-        interfaceName: [
+        name: [
           {
             required: true,
             message: "请输入用户名",
@@ -205,7 +205,7 @@ export default {
             trigger: "blur",
           },
         ],
-        interfaceName: [
+        name: [
           {
             required: true,
             message: "请填写接口人名称",
@@ -248,7 +248,7 @@ export default {
         ],
         address: [
           {
-            required: false,
+            required: true,
             message: "请输入接口人办公地址",
             trigger: ["blur", "change"],
           },
@@ -288,7 +288,7 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.userEditForm.interfaceId = "";
+      this.userEditForm.id = "";
       this.initFormData = {};
       if (row) {
         // let editRow = JSON.parse(JSON.stringify(row));
@@ -339,8 +339,8 @@ export default {
       //   loc = loc.slice(0, loc.length - 1);
       //   this.userEditForm.address = loc;
       // }
-      if (this.initFormData.interfaceId) {
-        this.userEditForm.interfaceId = this.initFormData.interfaceId;
+      if (this.initFormData.id) {
+        this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
@@ -348,7 +348,7 @@ export default {
           if (valid) {
             editInterface(
               this.userEditForm,
-              this.userEditForm.interfaceId
+              this.userEditForm.id
             ).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
