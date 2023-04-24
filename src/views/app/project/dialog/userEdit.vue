@@ -18,10 +18,10 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="项目名称" prop="project">
+                <el-form-item label="项目名称" prop="name">
                   <el-input
                     placeholder="项目名称"
-                    v-model="userEditForm.project"
+                    v-model="userEditForm.name"
                     clearable
                   ></el-input>
                 </el-form-item>
@@ -197,10 +197,10 @@ export default {
         email: "",
         customerName: "",
         cooperation: "",
-        departmentId: "",
-        interfaceId: "",
+        departmentId: "333",
+        interfaceId: "3",
         introduce: "",
-        project: "",
+        name: "",
         regionId: "",
         status: "",
         time: "",
@@ -235,7 +235,7 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        project: [
+        name: [
           {
             required: true,
             message: "请填写项目名称",
@@ -338,7 +338,7 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.userEditForm.projectId = "";
+      this.userEditForm.id = "";
       this.initFormData = {};
       if (row) {
         this.initFormData = row;
@@ -425,8 +425,8 @@ export default {
 
     /* 保存  */
     onCertain() {
-      if (this.initFormData.projectId) {
-        this.userEditForm.projectId = this.initFormData.projectId;
+      if (this.initFormData.id) {
+        this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {

@@ -16,9 +16,9 @@
       >
         <el-row>
           <el-col :span="5">
-            <el-form-item label="客户" prop="customerName">
+            <el-form-item label="客户" prop="name">
               <el-input
-                v-model="formOptions.customerName"
+                v-model="formOptions.name"
                 placeholder="请填写客户名称"
                 clearable
               ></el-input>
@@ -103,7 +103,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="customerName"
+          prop="name"
           label="客户"
           min-width="80"
           show-overflow-tooltip
@@ -177,13 +177,13 @@
         </el-pagination>
       </div>
     </el-card>
-    <user-edit-dialog
+    <User-edit-dialog
       :toChild="list"
       :UserList="UserList"
       :regionData="regionData"
       ref="userEditDialogRef"
     ></user-edit-dialog>
-    <user-dait-dialog
+    <User-dait-dialog
       :toChild="list"
       :tableDataProject="tableDataProject"
       ref="userDaitDialogRef"
@@ -356,9 +356,9 @@ export default {
                           item.email = sitem.email;
                           // 客户
                           this.tableCustomerProject.forEach((items) => {
-                            if (sitem.customerId == items.customerId) {
-                              item.customerName = items.customerName;
-                              item.customerId = items.customerId;
+                            if (sitem.id == items.id) {
+                              item.name = items.name;
+                              item.id = items.id;
                             }
                           });
                         }
@@ -367,8 +367,8 @@ export default {
                           if (item.departmentId == itemis.departmentId) {
                             item.department = itemis.department;
                           }
-                          if (sitem.customerId == itemis.customerId) {
-                            item.customerName = itemis.customerName;
+                          if (sitem.id == itemis.id) {
+                            item.name = itemis.name;
                           }
                         });
                       });
@@ -395,7 +395,7 @@ export default {
         .then(() => {
           this.tableData.splice(index, 1);
           // 点击确认，发起后台请求，删除该用户
-          deletesCustomer(row.customerId).then((res) => {
+          deletesCustomer(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
               this.queryUserList();
@@ -503,7 +503,7 @@ export default {
   width: 254px;
 }
 .demo-form-inline {
-  min-width: 1300px;
+  // min-width: 1300px;
 }
 @media screen and (min-width: 1600px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
@@ -511,7 +511,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

@@ -18,9 +18,9 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="客户名称" prop="customerName">
+                <el-form-item label="客户名称" prop="name">
                   <el-input
-                    v-model="userEditForm.customerName"
+                    v-model="userEditForm.name"
                     placeholder="客户名称"
                   ></el-input>
                 </el-form-item>
@@ -129,8 +129,8 @@ export default {
       userEditForm: {
         address: "",
         cellPhone: "",
-        customerId: "",
-        customerName: "",
+        id: "",
+        name: "",
         email: "",
         introduce: "",
         regionId: "",
@@ -140,7 +140,7 @@ export default {
       userEditFormRules: {
         userId: [
           {
-            required: false,
+            required: true,
             message: "请输选择负责人",
             trigger: ["blur", "change"],
           },
@@ -164,7 +164,7 @@ export default {
             trigger: "blur",
           },
         ],
-        customerName: [
+        name: [
           {
             required: true,
             message: "请填写客户名",
@@ -195,7 +195,7 @@ export default {
         ],
         address: [
           {
-            required: false,
+            required: true,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
@@ -257,7 +257,7 @@ export default {
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.userEditForm.customerId = "";
+      this.userEditForm.id = "";
       this.initFormData = {};
       console.log(this.UserList, "父亲传来的用户表----------");
       if (row) {
@@ -268,7 +268,7 @@ export default {
         });
       } else {
         console.log("我是新增");
-        delete this.userEditForm.customerId;
+        delete this.userEditForm.id;
         // this.initForm("");
       }
     },
@@ -299,14 +299,14 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      if (this.initFormData.customerId) {
-        this.userEditForm.customerId = this.initFormData.customerId;
+      if (this.initFormData.id) {
+        this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid");
           if (valid) {
-            editCustomer(this.userEditForm, this.userEditForm.customerId).then(
+            editCustomer(this.userEditForm, this.userEditForm.id).then(
               (res) => {
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
