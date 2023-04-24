@@ -239,7 +239,7 @@ export default {
                     this.UsersProject = res2.data.records; // 部门表格数据赋值
                     this.MockUserProject = res3.data.records; // 地域表格数据赋值
                     this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
-                    // console.log(this.Users, "部门表格数据");
+                    console.log(this.tableCustomerProject, "部门表格数据1111111111");
                     // console.log(this.Interface, "接口人表格数据");
                     console.log(
                       this.tableDataProject,
@@ -319,7 +319,7 @@ export default {
               this.tableCustomer = res1.data.records; //客户表格数据赋值
               this.tableData.forEach((item) => {
                 this.tableCustomer.forEach((sitem) => {
-                  if (item.customerId == sitem.customerId) {
+                  if (item.customerId == sitem.id) {
                     item.customerName = sitem.customerName;
                   }
                 });

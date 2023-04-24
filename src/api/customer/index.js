@@ -12,7 +12,7 @@ const establishCustomer = (data) =>
 const queryCustomer = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/app/customer/pageByCondition",
+    url: BaseURL + "/app/customer/manualPage",
     data,
   });
 
