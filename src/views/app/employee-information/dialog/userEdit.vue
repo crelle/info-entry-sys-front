@@ -92,8 +92,8 @@
                         <el-option
                           v-for="item in tableProject"
                           :key="item.index"
-                          :label="item.project"
-                          :value="item.projectId"
+                          :label="item.name"
+                          :value="item.id"
                         ></el-option>
                       </el-select>
                     </el-form-item>
@@ -215,10 +215,10 @@
                         clearable
                       >
                         <el-option
-                          v-for="item in tableyPostlist"
+                          v-for="item in tableyPost"
                           :key="item.index"
-                          :label="item.postName"
-                          :value="item.postId"
+                          :label="item.name"
+                          :value="item.id"
                         ></el-option>
                       </el-select>
                     </el-form-item>
