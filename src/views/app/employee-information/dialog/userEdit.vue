@@ -48,6 +48,7 @@
                       <el-select
                         v-model="userEditForm.education"
                         placeholder="最高学历"
+                        clearable
                       >
                         <el-option
                           label="博士研究生"
@@ -120,6 +121,7 @@
                       <el-select
                         v-model="userEditForm.marriage"
                         placeholder="请选择婚姻状况"
+                        clearable
                       >
                         <el-option label="已婚" value="已婚"></el-option>
                         <el-option label="未婚" value="未婚"></el-option>
@@ -150,6 +152,7 @@
                       <el-select
                         v-model="userEditForm.gender"
                         placeholder="请选择性别"
+                        clearable
                       >
                         <el-option label="男" value="男"></el-option>
                         <el-option label="女" value="女"></el-option>
@@ -195,6 +198,7 @@
                       <el-select
                         v-model="userEditForm.skill"
                         placeholder="请选择工作技能"
+                        clearable
                       >
                         <el-option label="Web" value="Web"></el-option>
                         <el-option label="UI" value="UI"></el-option>
@@ -244,6 +248,7 @@
                       <el-select
                         v-model="userEditForm.child"
                         placeholder="请选择小孩状况"
+                        clearable
                       >
                         <el-option label="有" value="有"></el-option>
                         <el-option label="无" value="无"></el-option>

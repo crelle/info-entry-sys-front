@@ -18,10 +18,10 @@
                 ref="userEditRef"
                 size="mini"
               >
-                <el-form-item label="岗位名称 :" prop="postName">
+                <el-form-item label="岗位名称 :" prop="name">
                   <el-input
                     type="text"
-                    v-model="userEditForm.postName"
+                    v-model="userEditForm.name"
                     placeholder="请填写岗位名称"
                     clearable
                   ></el-input>
@@ -176,8 +176,8 @@ export default {
         latestArrivalTime: "",
         number: "",
         position: "",
-        postId: "",
-        postName: "",
+        id: "",
+        name: "",
         projectId: "",
         requirements: "",
         skill: "",
@@ -185,7 +185,7 @@ export default {
       initFormData: {},
       // 正则验证
       userEditFormRules: {
-        postName: [
+        name: [
           {
             required: true,
             message: "请填写岗位名称",
@@ -199,7 +199,7 @@ export default {
         ],
         position: [
           {
-            required: false,
+            required: true,
             message: "请填写岗位职责",
             trigger: ["blur", "change"],
           },
@@ -211,14 +211,14 @@ export default {
         ],
         skill: [
           {
-            required: false,
+            required: true,
             message: "请输入岗位技能",
             trigger: ["blur", "change"],
           },
         ],
         requirements: [
           {
-            required: false,
+            required: true,
             message: "请填写岗位需求",
             trigger: ["blur", "change"],
           },
@@ -230,7 +230,7 @@ export default {
         ],
         projectId: [
           {
-            required: true,
+            required: false,
             message: "请选择项目名称",
             trigger: ["blur", "change"],
           },
@@ -249,7 +249,7 @@ export default {
         ],
         number: [
           {
-            required: false,
+            required: true,
             message: "请填写需求人数",
             trigger: ["blur", "change"],
           },
@@ -261,21 +261,21 @@ export default {
         ],
         date: [
           {
-            required: false,
+            required: true,
             message: "请选择完成时间",
             trigger: ["blur", "change"],
           },
         ],
         latestArrivalTime: [
           {
-            required: false,
+            required: true,
             message: "请选择最晚到岗时间",
             trigger: ["blur", "change"],
           },
         ],
         address: [
           {
-            required: false,
+            required: true,
             message: "请填写办公地点",
             trigger: ["blur", "change"],
           },
@@ -287,7 +287,7 @@ export default {
         ],
         detailAddress: [
           {
-            required: false,
+            required: true,
             message: "请填写详细地址",
             trigger: ["blur", "change"],
           },
@@ -332,7 +332,7 @@ export default {
     openDialog(row) {
       this.initFormData = {};
       this.ProjectAll = [];
-      this.userEditForm.postId = "";
+      this.userEditForm.id = "";
       this.queryProjectAll();
       this.queryson();
       console.log(row, "表单的数据");
@@ -385,8 +385,8 @@ export default {
       //   loc = loc.slice(0, loc.length - 1);
       //   this.userEditForm.address = loc;
       // }
-      if (this.initFormData.postId) {
-        this.userEditForm.postId = this.initFormData.postId;
+      if (this.initFormData.id) {
+        this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
@@ -394,9 +394,9 @@ export default {
             console.log(
               this.userEditForm,
               "----修改的-----",
-              this.initFormData.postId
+              this.initFormData.id
             );
-            editPost(this.userEditForm, this.userEditForm.postId).then(
+            editPost(this.userEditForm, this.userEditForm.id).then(
               (res) => {
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
@@ -417,7 +417,7 @@ export default {
             console.log(
               this.userEditForm,
               "----增加的-----",
-              this.initFormData.postId
+              this.initFormData.id
             );
             establishPost(this.userEditForm).then((res) => {
               console.log(res, "增加了.........");
@@ -546,7 +546,7 @@ export default {
   display: flex;
 }
 ::v-deep .el-form-item__label {
-  width: 110px;
+  width: 120px;
   text-align: left;
 }
 ::v-deep .el-input__inner {
