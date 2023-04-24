@@ -22,10 +22,9 @@
         <!-- 中间地图 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <div class="grid-content bg-purple-light">
-            <!-- <china></china> -->
+            <china></china>
           </div>
-          <div class="grid-content bg-purple-chart">
-            <span>图表</span>
+          <div class="grid-content bg-purple-chart region">
           </div>
         </el-col>
         <!-- 右侧内容 -->
@@ -35,13 +34,12 @@
             <age-com class="ageCount" :aName="workName" :aValue="workValue" ref="work"></age-com>
           </div>
           <!-- 右侧中  客户分布-->
-          <div class="grid-content guestDepartment bg-purple">
-            <radarchart> </radarchart>
+          <div class="grid-content bg-purple client">
+            <radarchart class="ageCount"></radarchart>
           </div>
-          <!-- 右侧下 -->
-          <div class="grid-content bg-purple cakeBackground">
-            <!-- 3D饼图 -->
-            <delivery-manager></delivery-manager>
+          <!-- 右侧下 交付经理-->
+          <div class="grid-content bg-purple deliver">
+            <delivery-manager class="ageCount"></delivery-manager>
           </div>
         </el-col>
       </el-row>
@@ -106,8 +104,8 @@ export default {
             let name = String(item.birthdayYear).substr(2, 1) + "0后";
             dataArr[name] = dataArr[name] ? dataArr[name] + item.num : item.num;
           });
-          this.ageName=Object.keys(dataArr).reverse()
-          this.ageValue=Object.values(dataArr).reverse()
+          this.ageName = Object.keys(dataArr).reverse();
+          this.ageValue = Object.values(dataArr).reverse();
           // this.ageValue=this.ageFirst(Object.values(dataArr)).reverse()
           this.$nextTick(() => {
         this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
@@ -118,25 +116,32 @@ export default {
     workAge(data){
       employeeSeniority(data).then(res=>{
         if (res && res.code && res.code === "00000") {
-          let workData={'1年以下':0,'1-2年':0,'2-3年':0,'3-4年':0,'4-5年':0,'5年以上':0}
-          res.data.forEach(item=>{
-            if(item.seniority==0){
-              workData['1年以下']+=item.num
+          let workData = {
+            "1年以下": 0,
+            "1-2年": 0,
+            "2-3年": 0,
+            "3-4年": 0,
+            "4-5年": 0,
+            "5年以上": 0,
+          };
+          res.data.forEach((item) => {
+            if (item.seniority == 0) {
+              workData["1年以下"] += item.num;
             }
-            if(item.seniority==1){
-              workData['1-2年']+=item.num
+            if (item.seniority == 1) {
+              workData["1-2年"] += item.num;
             }
-            if(item.seniority==2){
-              workData['2-3年']+=item.num
+            if (item.seniority == 2) {
+              workData["2-3年"] += item.num;
             }
-            if(item.seniority==3){
-              workData['3-4年']+=item.num
+            if (item.seniority == 3) {
+              workData["3-4年"] += item.num;
             }
-            if(item.seniority==4){
-              workData['4-5年']+=item.num
+            if (item.seniority == 4) {
+              workData["4-5年"] += item.num;
             }
-            if(item.seniority>=5){
-              workData['5年以上']+=item.num
+            if (item.seniority >= 5) {
+              workData["5年以上"] += item.num;
             }
 
           })
@@ -174,8 +179,6 @@ export default {
   },
 };
 </script>
-<style lang='less'>
-</style>
 <style lang='less' scoped>
 body,
 html {
@@ -188,17 +191,6 @@ html {
   position:absolute .el-col {
     border-radius: 4px;
   }
-  .bg-purple-dark {
-    // background: #99a9bf;
-  }
-  .bg-purple {
-    // background: #d3dce6;
-  }
-  .bg-purple-light {
-    // background: #e5e9f2;
-    // position: relative;
-    // top: -30px;
-  }
   .grid-content {
     border-radius: 4px;
     min-height: 36px;
@@ -209,7 +201,7 @@ html {
   // 两侧
   .bg-purple {
     width: 100%;
-    height: 28vh;
+    height: 270px;
     // // background-color: rgba(224, 236, 211, 0.2);
     margin: 5px 0;
   }
@@ -221,8 +213,9 @@ html {
   .bg-purple-chart {
     margin-top: 6px;
     width: 100%;
-    height: 25vh;
+    height: 255px;
     // background-color: rgba(224, 236, 211, 0.2);
+    padding-top: 2px;
   }
   .ageCom {
     background-image: url("./images/uihomepage/age.png");
@@ -231,12 +224,30 @@ html {
     display: flex;
     justify-content: center;
   }
-  .workCom{
+  .workCom {
     background-image: url("./images/uihomepage/work.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
+  }
+  .client {
+    background-image: url("./images/uihomepage/客户分布-背景框.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+  }
+  .deliver {
+    background-image: url("./images/uihomepage/交付经理人数分析-背景框.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
+  }
+  .region {
+    background: url(./images/uihomepage/地域分布-背景框.png) no-repeat center;
+    background-size: 100% 100%;
   }
   .ageCount {
     width: 90%;
