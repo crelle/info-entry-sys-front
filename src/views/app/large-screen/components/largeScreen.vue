@@ -12,26 +12,42 @@
           <!-- 左侧中 -->
           <div class="grid-content ageCom bg-purple">
             <!-- <span>年龄分布</span> -->
-            <age-com class="ageCount" :aName="ageName" :aValue="ageValue" ref="age"></age-com>
+            <age-com
+              class="ageCount"
+              :aName="ageName"
+              :aValue="ageValue"
+              ref="age"
+            ></age-com>
           </div>
           <!-- 左侧下 -->
-          <div class="grid-content bg-purple marriageCom" >
-            <marriage-com class="ageCount" :dataArr="marriageArr" ></marriage-com>
+          <div class="grid-content bg-purple marriageCom">
+            <marriage-com
+              class="ageCount"
+              :dataArr="marriageArr"
+            ></marriage-com>
           </div>
         </el-col>
         <!-- 中间地图 -->
         <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
           <div class="grid-content bg-purple-light">
-            <china></china>
+            <!-- <china></china> -->
           </div>
           <div class="grid-content bg-purple-chart region">
+            <geographical-distribution
+              class="agecountColumn"
+            ></geographical-distribution>
           </div>
         </el-col>
         <!-- 右侧内容 -->
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
           <!-- 右侧上 -->
-          <div class="grid-content bg-purple workCom" >
-            <age-com class="ageCount" :aName="workName" :aValue="workValue" ref="work"></age-com>
+          <div class="grid-content bg-purple workCom">
+            <age-com
+              class="ageCount"
+              :aName="workName"
+              :aValue="workValue"
+              ref="work"
+            ></age-com>
           </div>
           <!-- 右侧中  客户分布-->
           <div class="grid-content bg-purple client">
@@ -52,7 +68,8 @@ import China from "./china-map.vue";
 import ageCom from "./ageCom.vue";
 import Radarchart from "./radar-chart.vue";
 import DeliveryManager from "./delivery-manager.vue";
-import marriageCom from './marriageCom.vue'
+import marriageCom from "./marriageCom.vue";
+import GeographicalDistribution from "./geographical-distribution.vue";
 import { employeeAge, employeeSeniority } from "@/api/largeScreen";
 export default {
   name: "index",
@@ -61,7 +78,8 @@ export default {
     ageCom,
     Radarchart,
     DeliveryManager,
-    marriageCom
+    marriageCom,
+    GeographicalDistribution,
   },
   data() {
     return {
@@ -69,19 +87,19 @@ export default {
         departmentName: "",
         regionName: "",
       },
-      workAgeData:{
+      workAgeData: {
         departmentName: "",
         regionName: "",
       },
-      marriageDate:{
+      marriageDate: {
         departmentName: "",
         regionName: "",
       },
-      ageName:[],
-      ageValue:[],
-      workName:[],
-      workValue:[],
-      marriageArr:[]
+      ageName: [],
+      ageValue: [],
+      workName: [],
+      workValue: [],
+      marriageArr: [],
     };
   },
   //菜单生成部分
@@ -91,8 +109,8 @@ export default {
   },
   mounted() {
     this.ageDeal(this.ageData);
-    this.workAge(this.workAgeData)
-    this.marriageDeal()
+    this.workAge(this.workAgeData);
+    this.marriageDeal();
   },
 
   methods: {
@@ -108,13 +126,13 @@ export default {
           this.ageValue = Object.values(dataArr).reverse();
           // this.ageValue=this.ageFirst(Object.values(dataArr)).reverse()
           this.$nextTick(() => {
-        this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
-      });
+            this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
+          });
         }
       });
     },
-    workAge(data){
-      employeeSeniority(data).then(res=>{
+    workAge(data) {
+      employeeSeniority(data).then((res) => {
         if (res && res.code && res.code === "00000") {
           let workData = {
             "1年以下": 0,
@@ -143,39 +161,36 @@ export default {
             if (item.seniority >= 5) {
               workData["5年以上"] += item.num;
             }
-
-          })
-          this.workName=Object.keys(workData)
-          this.workValue=Object.values(workData)
+          });
+          this.workName = Object.keys(workData);
+          this.workValue = Object.values(workData);
           this.$nextTick(() => {
-        this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
-      });
-          console.log('workAge',this.workName,this.workValue);
+            this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
+          });
+          console.log("workAge", this.workName, this.workValue);
         }
-        
-      })
+      });
     },
-    marriageDeal(data){
-      setTimeout(()=>{
-        this.marriageArr=[
-        {
-          name: "火车",
-          value: 20,
-        },
-        {
-          name: "飞机",
-          value: 10,
-        },
-        {
-          name: "客车",
-          value: 30,
-        },
-      ];
-      
-      
-      console.log('触发11111');
-      },500)
-    }
+    marriageDeal(data) {
+      setTimeout(() => {
+        this.marriageArr = [
+          {
+            name: "火车",
+            value: 20,
+          },
+          {
+            name: "飞机",
+            value: 10,
+          },
+          {
+            name: "客车",
+            value: 30,
+          },
+        ];
+
+        console.log("触发11111");
+      }, 500);
+    },
   },
 };
 </script>
@@ -254,8 +269,11 @@ html {
     height: 80%;
     margin-top: 10%;
   }
-  .marriageCom{
-    background-image: url('./images/uihomepage/bg_marriage.png');
+  .agecountColumn {
+    margin-top: 2%;
+  }
+  .marriageCom {
+    background-image: url("./images/uihomepage/bg_marriage.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;

@@ -394,7 +394,7 @@ export default {
       : {};
     // console.log(window.localStorage.getItem("userdetail"));
     console.log(
-      this.userdetail.fullname,
+      this.userdetail.userNickName,
       this.userdetail.jobNo,
       "我是 当前----用户"
     );
