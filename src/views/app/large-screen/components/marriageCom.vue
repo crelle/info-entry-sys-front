@@ -53,7 +53,7 @@ export default {
             },
           },
           {
-            value: 1,//数值控制间隔大小
+            value: this.dataArr[0].value/15,//数值控制间隔大小
             name: "",
             itemStyle: {
               normal: {
@@ -88,7 +88,7 @@ export default {
                   }
                 },
                 rich:{
-                    a:{color:'#e6e937',
+                    a:{color:'#FFD700',
                     fontSize:22
                 },
                     b:{color:'white',
@@ -100,6 +100,7 @@ export default {
                   length:40,
                   length2:20,
                 },
+                
             },
           },
           data: data,

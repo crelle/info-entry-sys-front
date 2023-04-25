@@ -172,6 +172,10 @@ this.changecode()
   transform: translate(-50%, -50%);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  .top{
+    width: 83%;
+  }
 }
 
 .middle {
@@ -217,7 +221,7 @@ this.changecode()
     
 }
 ::v-deep .el-input__inner{
-    background-color: #142739;
+    background-color: #142739 !important;
     border: 1px solid transparent;
     color:#4b94d3;
     padding-left: 0px;
@@ -235,6 +239,6 @@ this.changecode()
 ::v-deep input:-internal-autofill-previewed,
 ::v-deep input:-internal-autofill-selected {
     -webkit-text-fill-color: #4b94d3;
-    transition: background-color 5000s ease-out 0.5s;
+    transition: background-color 50000s ease-out 0.5s;
 }
 </style>

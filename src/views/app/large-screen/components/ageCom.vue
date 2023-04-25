@@ -54,6 +54,9 @@ export default {
 
           splitArea: { show: false },
         },
+        // tooltip: {
+        //   show:true,
+        // },
         series: [
           {
             data: this.aValue,
