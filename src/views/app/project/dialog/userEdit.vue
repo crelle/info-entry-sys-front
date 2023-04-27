@@ -63,13 +63,29 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="接口人" prop="interfaceId">
+                <!-- <el-select
+                  v-model="value2"
+                  multiple
+                  collapse-tags
+                  style="margin-left: 20px"
+                  placeholder="请选择接口人"
+                >
+                  <el-option
+                    v-for="item in options"
+                    :key="item.value"
+                    :label="item.label"
+                    :value="item.value"
+                  >
+                  </el-option>
+                </el-select> -->
+                <el-form-item label="接口人" prop="interfaceData">
+                  <!-- @change="queryson" 自动选择 -->
                   <el-select
-                    v-model="userEditForm.interfaceId"
+                    v-model="userEditForm.interfaceData"
                     placeholder="请选择接口人"
+                    multiple
                     clearable
                     filterable
-                    @change="queryson"
                   >
                     <el-option
                       v-for="item in Interface"
@@ -79,7 +95,7 @@
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <el-form-item label="手机号" prop="cellPhone">
+                <!-- <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     v-model="userEditForm.cellPhone"
                     placeholder="手机号"
@@ -92,7 +108,7 @@
                     placeholder="邮箱"
                     disabled
                   ></el-input>
-                </el-form-item>
+                </el-form-item> -->
                 <el-form-item label="客户名称" prop="customerName">
                   <el-input
                     v-model="userEditForm.customerName"
@@ -185,6 +201,8 @@ export default {
       }
     };
     return {
+      // 接口人id暂存
+      inIdTemporarilyDeposit: [],
       textarea: "",
       dialogFormVisible: false,
       fileType: {
@@ -198,7 +216,9 @@ export default {
         customerName: "",
         cooperation: "",
         departmentId: "",
-        interfaceId: "",
+        // interfaceData 接口人存id
+        interfaceData: [],
+        contactPeoples: [],
         introduce: "",
         name: "",
         regionId: "",
@@ -207,7 +227,7 @@ export default {
       },
       initFormData: {},
       userEditFormRules: {
-        interfaceId: [
+        interfaceData: [
           {
             required: true,
             message: "请选择接口人",
@@ -311,22 +331,22 @@ export default {
   },
   methods: {
     //自动选择
-    queryson(e) {
-      console.log(e, "---自动选择自动选择eee", this.Interface);
-      if (e) {
-        this.Interface.forEach((sitem) => {
-          if (e == sitem.id) {
-            this.userEditForm.email = sitem.email;
-            this.userEditForm.cellPhone = sitem.cellPhone;
-            this.userEditForm.customerName = sitem.customerName;
-          }
-        });
-      } else {
-        this.userEditForm.customerName = null;
-        this.userEditForm.email = null;
-        this.userEditForm.cellPhone = null;
-      }
-    },
+    // queryson(e) {
+    //   console.log(e, "---自动选择自动选择eee", this.Interface);
+    //   if (e) {
+    //     this.Interface.forEach((sitem) => {
+    //       if (e == sitem.id) {
+    //         this.userEditForm.email = sitem.email;
+    //         this.userEditForm.cellPhone = sitem.cellPhone;
+    //         this.userEditForm.customerName = sitem.customerName;
+    //       }
+    //     });
+    //   } else {
+    //     this.userEditForm.customerName = null;
+    //     this.userEditForm.email = null;
+    //     this.userEditForm.cellPhone = null;
+    //   }
+    // },
     //
     // 弹窗
     openDialog(row) {
@@ -371,54 +391,18 @@ export default {
       this.ifLogin = true;
       this.userEditForm.roles = [];
     },
-    // // 头像上传相关
-    // handleAvatarSuccess(res, file) {
-    //   this.imageUrl = URL.createObjectURL(file.raw);
-    //   this.nowIndex = -1; // 取消默认头像选中样式
-    //   console.log(this.imageUrl);
-    // },
-    // beforeAvatarUpload(file) {
-    //   console.log(file.type);
-    //   // 判断上传文件的类型
-    //   if (/^image\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 0;
-    //   } else if (/^video\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 1;
-    //   } else if (/^audio\/+?/.test(file.type)) {
-    //     this.fileType.fileType = 2;
-    //   } else if (/^application\/vnd.ms-+?/.test(file.type)) {
-    //     this.fileType.fileType = 3;
-    //   } else {
-    //     this.$message.error("此文件类型不支持!");
-    //     return false;
-    //   }
-
-    //   const isLt2M = file.size / 1024 / 1024 < 100;
-
-    //   // if (!isJPG) {
-    //   //   this.$message.error("上传头像图片只能是 JPG 格式!");
-    //   // }
-    //   if (!isLt2M) {
-    //     this.$message.error("上传头像图片大小不能超过 100MB!");
-    //   }
-    //   // return isJPG && isLt2M;
-    //   return isLt2M;
-    // },
-    // // 选择默认头像
-    // choosedefaultImg(index, url) {
-    //   if (index !== this.nowIndex) {
-    //     console.log(this.nowIndex);
-    //     this.nowIndex = index;
-    //     this.imageUrl = url;
-    //   } else {
-    //     console.log(this.nowIndex, -1);
-    //     this.nowIndex = -1;
-    //     this.imageUrl = "";
-    //   }
-    // },
-
     /* 保存  */
     onCertain() {
+      // 处理接口人id为对象问题
+      console.log(this.userEditForm.interfaceData, "-------接口人id----");
+      this.userEditForm.contactPeoples = [];
+      this.userEditForm.interfaceData.forEach((item) => {
+        console.log(item, "--------xxxx");
+        this.userEditForm.contactPeoples.push({
+          id: item,
+        });
+      });
+      console.log(this.userEditForm.contactPeoples, "-----我要的----");
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         this.initFormData = this.userEditForm;

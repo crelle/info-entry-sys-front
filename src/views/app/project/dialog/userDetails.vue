@@ -39,13 +39,13 @@
                       <span>地域:</span
                       ><span>{{ initFormData.regionName }}</span>
                     </li>
-                    <li>
+                    <!-- <li>
                       <span>电话:</span
                       ><span :title="initFormData.cellPhone">{{ initFormData.cellPhone }}</span>
                     </li>
                     <li>
                       <span>邮箱:</span><span :title="initFormData.email">{{ initFormData.email }}</span>
-                    </li>
+                    </li> -->
 
                     <li>
                       <span>立项时间:</span
