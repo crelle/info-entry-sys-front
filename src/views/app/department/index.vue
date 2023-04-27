@@ -55,7 +55,6 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         border
         stripe
         size="mini"
@@ -77,7 +76,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="userId"
+          prop="userName"
           label="负责人"
           min-width="80"
           show-overflow-tooltip
@@ -106,7 +105,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="departmentUp"
+          prop="parentName"
           label="上级部门"
           min-width="100"
           show-overflow-tooltip
@@ -145,7 +144,7 @@
           :current-page="paginationOptions.pageNo"
           :page-sizes="paginationOptions.pageSizes"
           :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total, sizes, prev, pager, next"
           :total="paginationOptions.total"
           size="mini"
         >
@@ -198,7 +197,6 @@ export default {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        userPhone: "",
         username: "",
         department: "",
       },
@@ -206,25 +204,10 @@ export default {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        layout: "total, sizes, prev, pager, next, jumper",
       },
       tableData: [],
       tableDataUp: [],
       UserData: [],
-      multipleSelection: [],
-      userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-      },
-      // 验证
-      rules: {},
       //查看的员工表
       tableDataLook: "",
       // 查看项目表
@@ -500,12 +483,14 @@ export default {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加部门";
       console.log("我要添加");
+      this.queryUserListUp();
     },
     // 编辑
     handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑部门信息";
       console.log("编辑", row, row.departmentId);
+      this.queryUserListUp();
     },
     // 详情
     detailsClick(row) {
@@ -517,10 +502,6 @@ export default {
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
-    },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {

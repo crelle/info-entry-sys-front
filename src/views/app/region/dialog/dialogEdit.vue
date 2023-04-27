@@ -84,6 +84,18 @@ export default {
             trigger: "blur",
           },
         ],
+        code: [
+          {
+            required: true,
+            message: "请输入地域编码",
+            trigger: ["blur", "change"],
+          },
+          {
+            pattern: /^[^\s]*$/,
+            message: "不支持空格格式",
+            trigger: "blur",
+          },
+        ],
       },
     };
   },

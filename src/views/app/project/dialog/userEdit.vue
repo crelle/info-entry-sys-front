@@ -108,7 +108,7 @@
                     filterable
                   >
                     <el-option
-                      v-for="item in Users"
+                      v-for="item in department"
                       :key="item.index"
                       :label="item.name"
                       :value="item.id"
@@ -160,7 +160,7 @@ export default {
     tableData: "",
     Interface: "",
     MockUser: "",
-    Users: "",
+    department: "",
     tableCustomer: "",
   },
   data() {
@@ -312,19 +312,13 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      console.log(e, "---eee");
+      console.log(e, "---自动选择自动选择eee", this.Interface);
       if (e) {
         this.Interface.forEach((sitem) => {
-          if (e == sitem.interfaceId) {
+          if (e == sitem.id) {
             this.userEditForm.email = sitem.email;
             this.userEditForm.cellPhone = sitem.cellPhone;
-            // sitem.customerId = e;
-            this.tableCustomer.forEach((items) => {
-              if (sitem.customerId == items.customerId) {
-                this.userEditForm.customerName = items.customerName;
-                this.userEditForm.customerId = items.customerId;
-              }
-            });
+            this.userEditForm.customerName = sitem.customerName;
           }
         });
       } else {

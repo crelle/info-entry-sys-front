@@ -8,14 +8,14 @@
     >
       <el-form label-width="100px" class="demo-dynamic">
         <el-card>
-          <el-form-item prop="father" label="父级名称">
+          <el-form-item prop="father" label="父级名称" required>
             <el-input
               placeholder="请输入父级名称"
               v-model="dynamicValidateForm.name"
               class="dictionary"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="father" label="父级编码">
+          <el-form-item prop="father" label="父级编码" required>
             <el-input
               placeholder="请输入父级编码"
               v-model="dynamicValidateForm.code"
@@ -28,14 +28,14 @@
           <div
             v-for="(item, index) in dynamicValidateForm.children" :key="index"   :class="status?'add':'edit'"
           >
-            <el-form-item label="子级名称">
+            <el-form-item label="子级名称" required>
               <el-input
                 placeholder="请输入子级名称"
                 v-model="item.name"
                 class="dictionary"
               ></el-input>
             </el-form-item>
-            <el-form-item label="子级编码">
+            <el-form-item label="子级编码" required>
               <el-input
                 placeholder="请输入子级编码"
                 v-model="item.code"

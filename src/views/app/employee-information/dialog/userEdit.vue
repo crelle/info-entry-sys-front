@@ -81,7 +81,7 @@
                         v-model="userEditForm.jobNo"
                       ></el-input>
                     </el-form-item>
-                    <el-form-item label="项目" prop="projectId">
+                    <el-form-item label="项目" prop="projectId" required>
                       <el-select
                         v-model="userEditForm.projectId"
                         placeholder="请选择项目"
@@ -207,7 +207,7 @@
                       </el-select>
                     </el-form-item>
 
-                    <el-form-item label="岗位 :" prop="postId">
+                    <el-form-item label="岗位 :" prop="postId" required>
                       <el-select
                         v-model="userEditForm.postId"
                         placeholder="请选择岗位"

@@ -6,8 +6,8 @@
       <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
           <!-- 左侧上 -->
-          <div class="grid-content bg-purple">
-            <span>性别分布</span>
+          <div class="grid-content bg-purple gender" >
+            <gender-com class="ageCount"></gender-com>
           </div>
           <!-- 左侧中 -->
           <div class="grid-content ageCom bg-purple">
@@ -70,6 +70,7 @@ import Radarchart from "./radar-chart.vue";
 import DeliveryManager from "./delivery-manager.vue";
 import marriageCom from "./marriageCom.vue";
 import GeographicalDistribution from "./geographical-distribution.vue";
+import genderCom from './genderCom.vue'
 import { employeeAge, employeeSeniority } from "@/api/largeScreen";
 export default {
   name: "index",
@@ -80,6 +81,7 @@ export default {
     DeliveryManager,
     marriageCom,
     GeographicalDistribution,
+    genderCom,
   },
   data() {
     return {
@@ -115,83 +117,56 @@ export default {
 
   methods: {
     ageDeal(age) {
-      employeeAge(age).then((res) => {
-        if (res && res.code && res.code === "00000") {
-          let dataArr = {};
-          res.data.forEach((item) => {
-            let name = String(item.birthdayYear).substr(2, 1) + "0后";
-            dataArr[name] = dataArr[name] ? dataArr[name] + item.num : item.num;
-          });
-          this.ageName = Object.keys(dataArr).reverse();
-          this.ageValue = Object.values(dataArr).reverse();
-          // this.ageValue=this.ageFirst(Object.values(dataArr)).reverse()
+      this.ageName = ['50后','60后','70后','80后','90后','00后']
+          this.ageValue = [20,35,50,30,60,15]
           this.$nextTick(() => {
-            this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
-          });
-        }
+        this.$refs.age.start(); 
       });
+      // employeeAge(age).then((res) => {
+      //   if (res && res.code && res.code === "00000") {
+      //     let dataArr = {};
+      //     res.data.forEach((item) => {
+      //       let name = String(item.birthdayYear).substr(2, 1) + "0后";
+      //       dataArr[name] = dataArr[name] ? dataArr[name] + item.num : item.num;
+      //     });
+      //     this.ageName = Object.keys(dataArr).reverse();
+      //     this.ageValue = Object.values(dataArr).reverse();
+      //     // this.ageValue=this.ageFirst(Object.values(dataArr)).reverse()
+      //     this.$nextTick(() => {
+      //   this.$refs.age.start(); // 调用 ECharts 组件的初始化方法
+      // });
+      //   }
+      // });
     },
-    workAge(data) {
-      employeeSeniority(data).then((res) => {
-        if (res && res.code && res.code === "00000") {
-          let workData = {
-            "1年以下": 0,
-            "1-2年": 0,
-            "2-3年": 0,
-            "3-4年": 0,
-            "4-5年": 0,
-            "5年以上": 0,
-          };
-          res.data.forEach((item) => {
-            if (item.seniority == 0) {
-              workData["1年以下"] += item.num;
-            }
-            if (item.seniority == 1) {
-              workData["1-2年"] += item.num;
-            }
-            if (item.seniority == 2) {
-              workData["2-3年"] += item.num;
-            }
-            if (item.seniority == 3) {
-              workData["3-4年"] += item.num;
-            }
-            if (item.seniority == 4) {
-              workData["4-5年"] += item.num;
-            }
-            if (item.seniority >= 5) {
-              workData["5年以上"] += item.num;
-            }
-          });
-          this.workName = Object.keys(workData);
-          this.workValue = Object.values(workData);
+    workAge(data){
+      this.workName=['1年以下','1-2年','2-3年','3-4年','5年以上']
+          this.workValue=[20,35,50,30,60]
           this.$nextTick(() => {
             this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
           });
           console.log("workAge", this.workName, this.workValue);
         }
-      });
-    },
-    marriageDeal(data) {
-      setTimeout(() => {
-        this.marriageArr = [
-          {
-            name: "火车",
-            value: 20,
-          },
-          {
-            name: "飞机",
-            value: 10,
-          },
-          {
-            name: "客车",
-            value: 30,
-          },
-        ];
 
-        console.log("触发11111");
-      }, 500);
     },
-  },
+    marriageDeal(data){
+      setTimeout(()=>{
+        this.marriageArr=[
+        {
+          name: "已婚已育",
+          value: 380,
+        },
+        {
+          name: "已婚未育",
+          value: 200,
+        },
+        {
+          name: "未婚未育",
+          value: 800,
+        },
+      ];
+      console.log('触发11111');
+      },500)
+    }
 };
 </script>
 <style lang='less' scoped>
@@ -269,11 +244,15 @@ html {
     height: 80%;
     margin-top: 10%;
   }
-  .agecountColumn {
-    margin-top: 2%;
+  .marriageCom{
+    background-image: url('./images/uihomepage/bg_marriage.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: center;
   }
-  .marriageCom {
-    background-image: url("./images/uihomepage/bg_marriage.png");
+  .gender{
+    background-image: url('./images/uihomepage/gender.png');
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;

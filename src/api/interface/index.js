@@ -9,11 +9,11 @@ const establishInterface = (data) =>
     data,
   });
 
-// 分页查询接口人
+//手动分页 分页查询接口人
 const queryInterface = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/app/contact-person/pageByCondition",
+    url: BaseURL + "/app/contact-person/manualPage",
     data,
   });
 
@@ -30,7 +30,6 @@ const deletesInterface = (data) =>
   Request({
     method: "DELETE",
     url: BaseURL + "/app/contact-person/deleteById/" + data,
-    
   });
 
 export { establishInterface, queryInterface, editInterface, deletesInterface };
