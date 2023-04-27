@@ -6,7 +6,6 @@
       :close-on-click-modal="false"
       width="50%"
       lock-scroll
-      @close="closeDialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -32,7 +31,7 @@
                       }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span><span>{{ userEditForm.userId }}</span>
+                      <span>负责人:</span><span>{{ userEditForm.userName }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
@@ -54,7 +53,7 @@
                     </li>
                   </ul>
                   <div>
-                    <el-tabs v-model="activeName" @tab-click="handleClick">
+                    <el-tabs v-model="activeName" >
                       <el-tab-pane label="客户项目" name="first">
                         <el-table
                           :data="tableData1"
@@ -65,20 +64,16 @@
                           <el-table-column
                             label="序号"
                             type="index"
-                            :index="indexMethod"
-                            width="50"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="project"
+                            prop="name"
                             label="项目"
-                            width="180"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="department"
+                            prop="departmentName"
                             label="所属部门"
-                            width="120"
                           >
                           </el-table-column>
                           <el-table-column prop="interfaceName" label="接口人">
@@ -109,6 +104,8 @@
 </template>
 
 <script>
+// 项目
+import { queryProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
@@ -122,15 +119,7 @@ export default {
 
       // 假数据
       activeName: "first",
-      textarea:
-        "诚迈科技（南京）股份有限公司（300598.SZ）成立于2006年，总部位于南京，专注于智能互联与操作系统技术的研发与创新，致力于成为全球领先的智能科技专家，以科技造福人类",
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
         address: "",
         cellPhone: "",
@@ -139,48 +128,53 @@ export default {
         email: "",
         introduce: "",
         regionId: "",
-        userId: "",
+        userName: "",
         regionName: "",
       },
       initFormData: {},
     };
   },
   methods: {
-    // 表格
-    handleClick(tab, event) {
-      console.log(tab, event);
-    },
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(row, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
+      
       this.tableData1 = [];
       if (row) {
         this.initFormData = row;
-        console.log(this.tableDataProject, "------父亲传来全部项目");
-        // 根据客户id 查询项目 赋值给 tableData1
-        this.tableDataProject.forEach((item) => {
-          if (this.initFormData.customerId == item.customerId) {
-            // console.log(item, "----客户对应的项目----");
-            this.tableData1.push(item);
-          }
-        });
-        console.log(this.tableData1, "----客户对应的项目----");
-        this.initFormData.customerId;
+        this.projectList()
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(this.initFormData); // 为表单赋值
         });
       }
+      
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
       });
     },
-    closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
+    projectList(){
+      queryProject({
+        current: 1,
+        size: 1000000,
+        records:[{}]
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          res.data.records.forEach((item) => {
+          if (this.initFormData.id == item.customerId) {
+            this.tableData1.push(item);
+            console.log(this.tableData1,'11111111');
+          }
+        });
+        }
+      });
     },
+    // closeDialog() {
+    //   this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
+    //   this.resetForm("userEditRef"); // 重置表单
+    // },
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
@@ -197,9 +191,9 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-    indexMethod(index) {
-      return index + 1;
-    },
+    // indexMethod(index) {
+    //   return index + 1;
+    // },
   },
 };
 </script>
@@ -228,8 +222,7 @@ export default {
   text-align: center;
 }
 ::v-deep .el-dialog__body {
-  margin: 0 40px;
-  padding: 0 40px;
+  padding: 0 20px;
 }
 .lis {
   padding: 0;

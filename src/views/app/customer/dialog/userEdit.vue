@@ -250,7 +250,6 @@ export default {
           if (item.id == e) {
             this.userEditForm.cellPhone = item.userPhone;
             this.userEditForm.email = item.userEmail;
-            this.userEditForm.userId = item.userNickName;
           }
         });
       } else {
@@ -275,7 +274,7 @@ export default {
       } else {
         console.log("我是新增");
         delete this.userEditForm.id;
-        // this.initForm("");
+
       }
     },
     initForm(data) {
@@ -316,7 +315,7 @@ export default {
               (res) => {
                 if (res && res.code && res.code === "00000") {
                   this.$message.success("修改成功！");
-                  this.$parent.queryUserList();
+                  this.$parent.queryUserListclick();
                   // this.dialogFormVisible = false; // 让弹窗显
                   this.dialogClose();
                 }
@@ -330,13 +329,14 @@ export default {
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
             // console.log(this.userEditForm,'---创建传入');
+            console.log(this.userEditForm,'--------this.userEditForm');
             establishCustomer(this.userEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 // this.$parent.resetForm();
                 // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
+                this.$parent.queryUserListclick();
               }
             });
           } else {

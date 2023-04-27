@@ -299,13 +299,8 @@ export default {
     /* 保存  */
     onCertain() {
       this.queryRoleData.forEach((item) => {
-        // console.log(item,"--------循环的item");
-        // console.log(this.userEditForm.roles[0].id,"------选择的id");
         if (this.userEditForm.roles[0].nameZh == item.nameZh) {
-          // console.log(item, "==============xtq");
           this.userEditForm.roles[0] = item;
-          // console.log(this.userEditForm.roles[0], "------roles[0]-----");
-          // console.log(this.userEditForm, "------roles-----");
         }
       });
       console.log(this.initFormData.id, "------修改 有 创建无------");
@@ -341,17 +336,15 @@ export default {
             "增加了的内容"
           );
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.roles).then((res) => {
+            addUser(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
                 this.$nextTick(() => {
                   // 这个要加上
                   this.$parent.queryUserList();
-                  this.dialogFormVisible = false; // 让弹窗显示
+                  this.dialogFormVisible = false; 
                 });
               }
             });
