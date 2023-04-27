@@ -6,7 +6,7 @@
       <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
         <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
           <!-- 左侧上 -->
-          <div class="grid-content bg-purple gender" >
+          <div class="grid-content bg-purple gender">
             <gender-com class="ageCount"></gender-com>
           </div>
           <!-- 左侧中 -->
@@ -51,7 +51,7 @@
           </div>
           <!-- 右侧中  客户分布-->
           <div class="grid-content bg-purple client">
-            <radarchart class="ageCount"></radarchart>
+            <!-- <radarchart class="ageCount"></radarchart> -->
           </div>
           <!-- 右侧下 交付经理-->
           <div class="grid-content bg-purple deliver">
@@ -70,8 +70,9 @@ import Radarchart from "./radar-chart.vue";
 import DeliveryManager from "./delivery-manager.vue";
 import marriageCom from "./marriageCom.vue";
 import GeographicalDistribution from "./geographical-distribution.vue";
-import genderCom from './genderCom.vue'
+import genderCom from "./genderCom.vue";
 import { employeeAge, employeeSeniority } from "@/api/largeScreen";
+import { manualPage } from "@/api/dictionary";
 export default {
   name: "index",
   components: {
@@ -113,14 +114,15 @@ export default {
     this.ageDeal(this.ageData);
     this.workAge(this.workAgeData);
     this.marriageDeal();
+    this.queryDictionary();
   },
 
   methods: {
     ageDeal(age) {
-      this.ageName = ['50后','60后','70后','80后','90后','00后']
-          this.ageValue = [20,35,50,30,60,15]
-          this.$nextTick(() => {
-        this.$refs.age.start(); 
+      this.ageName = ["50后", "60后", "70后", "80后", "90后", "00后"];
+      this.ageValue = [20, 35, 50, 30, 60, 15];
+      this.$nextTick(() => {
+        this.$refs.age.start();
       });
       // employeeAge(age).then((res) => {
       //   if (res && res.code && res.code === "00000") {
@@ -138,19 +140,18 @@ export default {
       //   }
       // });
     },
-    workAge(data){
-      this.workName=['1年以下','1-2年','2-3年','3-4年','5年以上']
-          this.workValue=[20,35,50,30,60]
-          this.$nextTick(() => {
-            this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
-          });
-          console.log("workAge", this.workName, this.workValue);
-        }
-
+    workAge(data) {
+      this.workName = ["1年以下", "1-2年", "2-3年", "3-4年", "5年以上"];
+      this.workValue = [20, 35, 50, 30, 60];
+      this.$nextTick(() => {
+        this.$refs.work.start(); // 调用 ECharts 组件的初始化方法
+      });
+      console.log("workAge", this.workName, this.workValue);
     },
-    marriageDeal(data){
-      setTimeout(()=>{
-        this.marriageArr=[
+
+  marriageDeal(data) {
+    setTimeout(() => {
+      this.marriageArr = [
         {
           name: "已婚已育",
           value: 380,
@@ -164,9 +165,29 @@ export default {
           value: 800,
         },
       ];
-      console.log('触发11111');
-      },500)
-    }
+      console.log("触发11111");
+    }, 500);
+  },
+  queryDictionary() {
+    manualPage({
+      records: [
+        {
+          childrenName: "",
+          name: "",
+        },
+      ],
+      size: 10000000,
+      current: 1,
+    }).then((res) => {
+      if (res && res.code && res.code === "00000") {
+        sessionStorage.setItem(
+          "dictionaryList",
+          JSON.stringify(res.data.records)
+        );
+      }
+    });
+  },
+}
 };
 </script>
 <style lang='less' scoped>
@@ -244,15 +265,15 @@ html {
     height: 80%;
     margin-top: 10%;
   }
-  .marriageCom{
-    background-image: url('./images/uihomepage/bg_marriage.png');
+  .marriageCom {
+    background-image: url("./images/uihomepage/bg_marriage.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;
     justify-content: center;
   }
-  .gender{
-    background-image: url('./images/uihomepage/gender.png');
+  .gender {
+    background-image: url("./images/uihomepage/gender.png");
     background-size: contain;
     background-repeat: no-repeat;
     display: flex;

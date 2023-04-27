@@ -124,7 +124,7 @@
         >
         </el-table-column>
         <el-table-column
-          prop="userId"
+          prop="userName"
           label="负责人"
           min-width="80"
           show-overflow-tooltip
@@ -170,7 +170,7 @@
           :current-page="paginationOptions.pageNo"
           :page-sizes="paginationOptions.pageSizes"
           :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total, sizes, prev, pager, next"
           :total="paginationOptions.total"
           size="mini"
         >
@@ -182,12 +182,12 @@
       :UserList="UserList"
       :regionData="regionData"
       ref="userEditDialogRef"
-    ></user-edit-dialog>
+    ></User-edit-dialog>
     <User-dait-dialog
       :toChild="list"
       :tableDataProject="tableDataProject"
       ref="userDaitDialogRef"
-    ></user-dait-dialog>
+    ></User-dait-dialog>
   </div>
 </template>
 
@@ -197,12 +197,6 @@
 import { queryCustomer, deletesCustomer } from "@/api/customer";
 // 地域
 import { queryRegion } from "@/api/region";
-// 接口人
-import { queryInterface } from "@/api/interface";
-// 部门
-import { queryDepartments } from "@/api/department";
-// 项目
-import { queryProject } from "@/api/project";
 // 用户
 import { queryUser } from "@/api/user";
 import UserEditDialog from "@/views/app/customer/dialog/userEdit.vue";
@@ -216,17 +210,15 @@ export default {
     return {
       list: "",
       formOptions: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        userPhone: "",
-        username: "",
+        regionId:'',
+        name: '',
+        userId:''
       },
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        layout: "total, sizes, prev, pager, next, jumper",
+        total:0
       },
       tableData: [],
       // 地域
@@ -252,138 +244,161 @@ export default {
     };
   },
   mounted() {
-    this.queryUserList();
-    this.queryProject();
+    this.queryUserListclick();
+    this.queryRegion()
+    this.queryUserList()
+    // this.queryProject();
+    console.log(this.$dictionaryList("区域"), "67666666666666666");
   },
   methods: {
     // 手动 查询客户列表
     queryUserListclick() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          this.paginationOptions.pageNo = 1;
-          this.queryUserList();
-        } else {
-          return false;
+      
+      queryCustomer({ current: this.paginationOptions.pageNo, size: this.paginationOptions.pageSize,records:[this.formOptions] }).then(
+        (res) => {
+          if (res && res.code && res.code === "00000") {
+            this.tableData=res.data.records
+            this.paginationOptions.total=res.data.total
+          }
+        }
+      );
+    },
+    queryRegion(){
+      queryRegion({
+        current: 1,
+        size: 1000000,
+        records:[{}]
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.regionData = res.data.records;
         }
       });
     },
     // 客户列表
     queryUserList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          queryCustomer(data).then((res) => {
-            data.current = 1;
-            data.size = 999;
-            // 地域数据
-            queryRegion(data).then((res2) => {
-              // 用户列表
-              queryUser(data).then((res3) => {
-                this.tableData = res.data.records; // 客户表格数据赋值
-                this.regionData = res2.data.records; // 地域表格数据赋值
-                console.log(this.regionData, "*--地域表--");
-                this.UserList = res3.data.records; // 用户表格数据赋值
-                console.log(this.UserList, "=========用户表格数据赋值");
-                // --- 过滤掉管理员admin
-                // this.UserList.forEach((item, index) => {
-                //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
-                //     this.UserList.splice(index, 1);
-                //   }
-                // });
-                this.tableData.forEach((item) => {
-                  this.regionData.forEach((items) => {
-                    if (item.regionId == items.id) {
-                      item.regionName = items.name;
-                      // this.$set(item, item.regionName, items.regionName);
-                    }
-                  });
-                });
-                console.log(this.tableData, "客户数据");
-                this.paginationOptions.total = res.data.total; // 分页器赋值
-              });
-            });
-          });
-        } else {
-          return false;
+      queryUser({
+        current: 1,
+        size: 1000000,
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.UserList = res.data.records;
         }
       });
+      // this.$refs["userQueryRef"].validate((valid) => {
+      //   if (valid) {
+      //     let data = { records: [{ ...this.formOptions }] };
+      //     data.current = this.paginationOptions.pageNo;
+      //     data.size = this.paginationOptions.pageSize;
+      //     queryCustomer(data).then((res) => {
+      //       data.current = 1;
+      //       data.size = 999;
+      // 地域数据
+      // queryRegion(data).then((res2) => {
+      //   // 用户列表
+      //   queryUser(data).then((res3) => {
+      //     this.tableData = res.data.records; // 客户表格数据赋值
+      //     this.regionData = res2.data.records; // 地域表格数据赋值
+      //     console.log(this.regionData, "*--地域表--");
+      //     this.UserList = res3.data.records; // 用户表格数据赋值
+      //     console.log(this.UserList, "=========用户表格数据赋值");
+      //     // --- 过滤掉管理员admin
+      //     // this.UserList.forEach((item, index) => {
+      //     //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+      //     //     this.UserList.splice(index, 1);
+      //     //   }
+      //     // });
+      //     this.tableData.forEach((item) => {
+      //       this.regionData.forEach((items) => {
+      //         if (item.regionId == items.id) {
+      //           item.regionName = items.name;
+      //           // this.$set(item, item.regionName, items.regionName);
+      //         }
+      //       });
+      //     });
+      //     console.log(this.tableData, "客户数据");
+      //     this.paginationOptions.total = res.data.total; // 分页器赋值
+      //   });
+      // });
+      //     });
+      //   } else {
+      //     return false;
+      //   }
+      // });
     },
     //  全部项目数据
-    queryProject() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          // 项目表格数据
-          queryProject(data).then((res) => {
-            // //  数据接口人查询方法
-            queryInterface(data).then((res1) => {
-              // 部门表格数据
-              queryDepartments(data).then((res2) => {
-                // 地域表格数据
-                queryRegion(data).then((res3) => {
-                  // 客户表格数据
-                  queryCustomer(data).then((res4) => {
-                    this.tableDataProject = res.data.records; // 项目表格数据赋值
-                    this.InterfaceProject = res1.data.records; // 接口人表格数据赋值
-                    this.UsersProject = res2.data.records; // 部门表格数据赋值
-                    this.MockUserProject = res3.data.records; // 地域表格数据赋值
-                    this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
-                    // console.log(this.Users, "部门表格数据");
-                    // console.log(this.Interface, "接口人表格数据");
-                    console.log(
-                      this.tableDataProject,
-                      "------全部项目表格数据"
-                    );
-                    this.tableDataProject.forEach((item) => {
-                      if (item.status == 1) {
-                        item.status = "开发中";
-                      }
-                      if (item.status == 2) {
-                        item.status = "前期投入";
-                      }
-                      if (item.status == 3) {
-                        item.status = "交付阶段";
-                      }
-                      // 接口人表格
-                      this.InterfaceProject.forEach((sitem) => {
-                        if (item.interfaceId == sitem.interfaceId) {
-                          item.interfaceName = sitem.interfaceName;
-                          item.cellPhone = sitem.cellPhone;
-                          item.email = sitem.email;
-                          // 客户
-                          this.tableCustomerProject.forEach((items) => {
-                            if (sitem.id == items.id) {
-                              item.name = items.name;
-                              item.id = items.id;
-                            }
-                          });
-                        }
-                        // 部门表格
-                        this.UsersProject.forEach((itemis) => {
-                          if (item.departmentId == itemis.departmentId) {
-                            item.department = itemis.department;
-                          }
-                          if (sitem.id == itemis.id) {
-                            item.name = itemis.name;
-                          }
-                        });
-                      });
-                    });
-                    // this.paginationOptions.total = res.data.total; // 分页器赋值
-                  });
-                });
-              });
-            });
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // queryProject() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = 1;
+    //       data.size = 999;
+    //       // 项目表格数据
+    //       queryProject(data).then((res) => {
+    //         // //  数据接口人查询方法
+    //         queryInterface(data).then((res1) => {
+    //           // 部门表格数据
+    //           queryDepartments(data).then((res2) => {
+    //             // 地域表格数据
+    //             queryRegion(data).then((res3) => {
+    //               // 客户表格数据
+    //               queryCustomer(data).then((res4) => {
+    //                 this.tableDataProject = res.data.records; // 项目表格数据赋值
+    //                 this.InterfaceProject = res1.data.records; // 接口人表格数据赋值
+    //                 this.UsersProject = res2.data.records; // 部门表格数据赋值
+    //                 this.MockUserProject = res3.data.records; // 地域表格数据赋值
+    //                 this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
+    //                 // console.log(this.Users, "部门表格数据");
+    //                 // console.log(this.Interface, "接口人表格数据");
+    //                 console.log(
+    //                   this.tableDataProject,
+    //                   "------全部项目表格数据"
+    //                 );
+    //                 this.tableDataProject.forEach((item) => {
+    //                   if (item.status == 1) {
+    //                     item.status = "开发中";
+    //                   }
+    //                   if (item.status == 2) {
+    //                     item.status = "前期投入";
+    //                   }
+    //                   if (item.status == 3) {
+    //                     item.status = "交付阶段";
+    //                   }
+    //                   // 接口人表格
+    //                   this.InterfaceProject.forEach((sitem) => {
+    //                     if (item.interfaceId == sitem.interfaceId) {
+    //                       item.interfaceName = sitem.interfaceName;
+    //                       item.cellPhone = sitem.cellPhone;
+    //                       item.email = sitem.email;
+    //                       // 客户
+    //                       this.tableCustomerProject.forEach((items) => {
+    //                         if (sitem.id == items.id) {
+    //                           item.name = items.name;
+    //                           item.id = items.id;
+    //                         }
+    //                       });
+    //                     }
+    //                     // 部门表格
+    //                     this.UsersProject.forEach((itemis) => {
+    //                       if (item.departmentId == itemis.departmentId) {
+    //                         item.department = itemis.department;
+    //                       }
+    //                       if (sitem.id == itemis.id) {
+    //                         item.name = itemis.name;
+    //                       }
+    //                     });
+    //                   });
+    //                 });
+    //                 // this.paginationOptions.total = res.data.total; // 分页器赋值
+    //               });
+    //             });
+    //           });
+    //         });
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该客户, 是否继续?", "删除客户", {
@@ -393,23 +408,16 @@ export default {
         type: "warning",
       })
         .then(() => {
-          this.tableData.splice(index, 1);
-          // 点击确认，发起后台请求，删除该用户
+          console.log(row.id,'111111111111111111111111');
           deletesCustomer(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
-              this.queryUserList();
+              this.queryUserListclick();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
               });
             }
-            //  else {
-            //   this.$message({
-            //     type: "success",
-            //     message: "删除失败!",
-            //   });
-            // }
           });
         })
         .catch(() => {
@@ -451,12 +459,12 @@ export default {
     // 分页器 页容量变更行为
     handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
-      this.queryUserList();
+      this.queryUserListclick();
     },
     // 分页器 页码变更行为
     handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
-      this.queryUserList();
+      this.queryUserListclick();
     },
     indexMethod(index) {
       return (

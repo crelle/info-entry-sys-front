@@ -10,5 +10,12 @@ let loginout = () => {
         }
     });
 }
-
-export { loginout }
+let dictionaryList=(name)=>{
+    let list=JSON.parse(sessionStorage.getItem('dictionaryList')); 
+    for(let item of list){
+        if(item.name==name){
+            return item
+        }
+    }
+}
+export { loginout,dictionaryList }

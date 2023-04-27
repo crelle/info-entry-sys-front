@@ -34,8 +34,8 @@
                 <el-option
                   v-for="item in tableCustomer"
                   :key="item.index"
-                  :label="item.customerName"
-                  :value="item.customerId"
+                  :label="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
@@ -70,7 +70,6 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         border
         stripe
         size="mini"
@@ -146,7 +145,7 @@
           :current-page="paginationOptions.pageNo"
           :page-sizes="paginationOptions.pageSizes"
           :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
+          layout="total, sizes, prev, pager, next"
           :total="paginationOptions.total"
           size="mini"
         >
@@ -170,12 +169,6 @@
 <script>
 // 客户查询
 import { queryCustomer } from "@/api/customer";
-// 地域
-import { queryRegion } from "@/api/region";
-// 部门
-import { queryDepartments } from "@/api/department";
-// 项目
-import { queryProject } from "@/api/project";
 // 接口人表/删除
 import { queryInterface, deletesInterface } from "@/api/interface";
 import UserEditDialog from "@/views/app/interface/dialog/userEdit.vue";
@@ -189,20 +182,14 @@ export default {
     return {
       list: "",
       formOptions: {
-        address: "",
-        cellPhone: "",
         customerId: "",
-        email: "",
-        gender: "",
-        id: "",
         name: "",
-        introduce: "",
       },
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        layout: "total, sizes, prev, pager, next, jumper",
+        toatl:0
       },
       tableData: [],
       tableCustomer: [],
@@ -213,84 +200,10 @@ export default {
   },
   mounted() {
     this.queryUserList();
-    this.queryProject();
-    // this.queryCustomerList();
+    this.queryCustomer()
   },
   methods: {
-    //  查询全部项目
-    queryProject() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          // 项目表格数据
-          queryProject(data).then((res) => {
-            // //  数据接口人查询方法
-            queryInterface(data).then((res1) => {
-              // 部门表格数据
-              queryDepartments(data).then((res2) => {
-                // 地域表格数据
-                queryRegion(data).then((res3) => {
-                  // 客户表格数据
-                  queryCustomer(data).then((res4) => {
-                    this.tableDataProject = res.data.records; // 项目表格数据赋值
-                    this.InterfaceProject = res1.data.records; // 接口人表格数据赋值
-                    this.UsersProject = res2.data.records; // 部门表格数据赋值
-                    this.MockUserProject = res3.data.records; // 地域表格数据赋值
-                    this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
-                    console.log(this.tableCustomerProject, "部门表格数据1111111111");
-                    // console.log(this.Interface, "接口人表格数据");
-                    console.log(
-                      this.tableDataProject,
-                      "------全部项目表格数据"
-                    );
-                    this.tableDataProject.forEach((item) => {
-                      if (item.status == 1) {
-                        item.status = "开发中";
-                      }
-                      if (item.status == 2) {
-                        item.status = "前期投入";
-                      }
-                      if (item.status == 3) {
-                        item.status = "交付阶段";
-                      }
-                      // 接口人表格
-                      this.InterfaceProject.forEach((sitem) => {
-                        if (item.id == sitem.id) {
-                          item.name = sitem.name;
-                          item.cellPhone = sitem.cellPhone;
-                          item.email = sitem.email;
-                          // 客户
-                          this.tableCustomerProject.forEach((items) => {
-                            if (sitem.customerId == items.customerId) {
-                              item.customerName = items.customerName;
-                              item.customerId = items.customerId;
-                            }
-                          });
-                        }
-                        // 部门表格
-                        this.UsersProject.forEach((itemis) => {
-                          if (item.departmentId == itemis.departmentId) {
-                            item.department = itemis.department;
-                          }
-                          if (sitem.customerId == itemis.customerId) {
-                            item.customerName = itemis.customerName;
-                          }
-                        });
-                      });
-                    });
-                    // this.paginationOptions.total = res.data.total; // 分页器赋值
-                  });
-                });
-              });
-            });
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+   
     //手动 查询接口人
     queryUserListclick() {
       this.$refs["userQueryRef"].validate((valid) => {
@@ -304,31 +217,26 @@ export default {
     },
     // 查询接口人列表
     queryUserList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = this.paginationOptions.pageNo;
-          data.size = this.paginationOptions.pageSize;
-          // 接口人表
-          queryInterface(data).then((res) => {
-            data.current = 1;
-            data.size = 999;
-            // 客户表
-            queryCustomer(data).then((res1) => {
-              this.tableData = res.data.records; // 接口人表格数据赋值
-              this.tableCustomer = res1.data.records; //客户表格数据赋值
-              this.tableData.forEach((item) => {
-                this.tableCustomer.forEach((sitem) => {
-                  if (item.customerId == sitem.id) {
-                    item.customerName = sitem.customerName;
-                  }
-                });
-              });
-              this.paginationOptions.total = res.data.total; // 分页器赋值
-            });
-          });
-        } else {
-          return false;
+      queryInterface({
+        current: this.paginationOptions.pageNo,
+        size: this.paginationOptions.pageSize,
+        records:[this.formOptions]
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.tableData = res.data.records;
+          this.paginationOptions.total=res.data.total
+        }
+      });
+      
+    },
+    queryCustomer(){
+      queryCustomer({
+        current: 1,
+        size: 1000000,
+        records:[{}]
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.tableCustomer = res.data.records;
         }
       });
     },
@@ -351,12 +259,6 @@ export default {
                 message: "删除成功!",
               });
             }
-            // else {
-            //   this.$message({
-            //     type: "success",
-            //     message: "删除失败!",
-            //   });
-            // }
           });
         })
         .catch(() => {
@@ -389,10 +291,6 @@ export default {
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
-    },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
