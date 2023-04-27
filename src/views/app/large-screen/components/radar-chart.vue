@@ -100,23 +100,28 @@ export default {
       let clientdata = {};
       this.datas = [];
       guestDepartment(clientdata).then((res) => {
-        this.guestDepartmentData = res.data;
-        console.log(this.guestDepartmentData, "-----客户分布");
-        this.option.series[0].data[0].value = [];
-        this.option.radar.indicator = [];
-        console.log(this.option.radar.indicator, "-------22222222");
-        this.guestDepartmentData.forEach((item) => {
-          this.option.radar.indicator.push({
-            name: item.customerName,
-            max: 2,
-            color: "#ffffff",
-          });
-          this.option.series[0].data[0].value.push(item.employeeNum);
-        });
+        if ((res.code = "00000")) {
+          console.log(res.data, "----------------");
+          if (res.data != "") {
+            this.guestDepartmentData = res.data;
+            console.log(this.guestDepartmentData, "-----客户分布");
+            this.option.series[0].data[0].value = [];
+            this.option.radar.indicator = [];
+            console.log(this.option.radar.indicator, "-------22222222");
+            this.guestDepartmentData.forEach((item) => {
+              this.option.radar.indicator.push({
+                name: item.customerName,
+                max: 2,
+                color: "#ffffff",
+              });
+              this.option.series[0].data[0].value.push(item.employeeNum);
+            });
 
-        var myChartDdom = document.getElementById("myChart");
-        var myChart = echarts.init(myChartDdom);
-        this.option && myChart.setOption(this.option);
+            var myChartDdom = document.getElementById("myChart");
+            var myChart = echarts.init(myChartDdom);
+            this.option && myChart.setOption(this.option);
+          }
+        }
       });
     },
   },
@@ -126,6 +131,5 @@ export default {
 </script>
   
 <style lang="less" scoped>
-
 </style>
   

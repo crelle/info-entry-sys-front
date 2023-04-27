@@ -44,8 +44,8 @@
                     </li>
                     <li>
                       <span>上级部门:</span
-                      ><span :title="userEditForm.departmentUp">{{
-                        userEditForm.departmentUp
+                      ><span :title="userEditForm.parentName">{{
+                        userEditForm.parentName
                       }}</span>
                     </li>
                     <li class="new">
@@ -204,7 +204,7 @@ export default {
         introduce: "",
         jobNo: "",
         userId: "",
-        departmentUp: "",
+        parentName: "",
       },
       initFormData: {},
     };

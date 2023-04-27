@@ -191,7 +191,7 @@ export default {
 
         userEmail: [
           {
-            required: false,
+            required: true,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },

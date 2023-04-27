@@ -78,10 +78,16 @@
             <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="6"
               ><div class="grid-content bg-purple">
                 <div class="bg-purple-right">
-                  <img src="../assets/img/uihomepage/小圆头像.png" alt="" />
+                  <img
+                    style="cursor: pointer"
+                    @click="personal"
+                    src="../assets/img/uihomepage/小圆头像.png"
+                    alt=""
+                  />
                   <div class="userInfo">
-                    <span>杨小飞</span>
-                    <span>项目经理</span>
+                    <span
+                      >{{ this.timeslot }} {{ userdetail.userNickName }}</span
+                    >
                     <!-- @click="centerDialogVisible = true" -->
                     <img
                       style="cursor: pointer"
@@ -101,7 +107,7 @@
           </el-row>
         </div>
         <!-- 内容主体部分 -->
-        <large-screen></large-screen>
+        <!-- <large-screen></large-screen> -->
         <el-main>
           <router-view />
           <div v-if="$route.path === '/sys'">
@@ -219,6 +225,8 @@
 </template>
 
 <script>
+// 字典查询
+import { manualPage } from "@/api/dictionary";
 import { Decrypt } from "@/util/crypto/secret";
 import { queryUserAll } from "@/api/firstscreen/index";
 export default {
@@ -226,6 +234,9 @@ export default {
   components: {},
   data() {
     return {
+      // 字典
+      dictionaryData: [],
+      child: "",
       //登录后菜单展示
       tableData: [],
       userdetail: {},
@@ -330,7 +341,9 @@ export default {
       this.nowMenu = n;
     },
   },
-  mounted() {},
+  mounted() {
+  this.onSubmit();
+  },
   created() {
     this.userdetail = window.localStorage.getItem("userdetail")
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
@@ -366,9 +379,46 @@ export default {
     this.nowMenu = this.$route.path;
   },
   methods: {
+    // 字典
+    // 查询字典
+    onSubmit() {
+      manualPage({
+        records: [
+          {
+            childrenName: this.child.split("-")[1] || "",
+            name: this.parent,
+          },
+        ],
+        size: 10,
+        current: this.currentPage1,
+      }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data.records, this.child, "11111");
+          if (this.child) {
+            res.data.records.forEach((item) => {
+              item.children = item.children.filter((item) =>
+                item.name.includes(this.child.split("-")[1])
+              );
+            });
+          }
+          this.total = Number(res.data.total);
+          if (this.total == 0 && this.currentPage1 > 1) {
+            this.currentPage1--;
+            this.onSubmit();
+          } else {
+            this.dictionaryData = res.data.records;
+            console.log(this.dictionaryData, "-----------字典表");
+          }
+        }
+      });
+    },
     // 跳转首页
     jumpHomepage() {
-      this.$router.push("/sys/firstscreen");
+      if (this.$route.path !== "/sys/firstscreen") {
+        this.$nextTick(() => {
+          this.$router.push({ path: "/sys/firstscreen" });
+        });
+      }
     },
     //  生成菜单跳转
     handleOpen(key, keyPath) {
@@ -634,7 +684,7 @@ body .el-main {
         span {
           white-space: nowrap;
           display: block;
-          width: 70px;
+          width: 130px;
           text-align: center;
         }
         img {

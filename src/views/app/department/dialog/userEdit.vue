@@ -36,10 +36,10 @@
                     clearable
                   >
                     <el-option
-                      v-for="(item, index) in UserData"
+                      v-for="item in UserData"
                       :key="item.index"
                       :label="item.userNickName"
-                      :value="index"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -66,9 +66,9 @@
                     disabled
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="上级部门" prop="departmentUp">
+                <el-form-item label="上级部门" prop="parentId">
                   <el-select
-                    v-model="userEditForm.departmentUp"
+                    v-model="userEditForm.parentId"
                     clearable
                     filterable
                   >
@@ -76,7 +76,7 @@
                       v-for="item in tableDataUp"
                       :key="item.index"
                       :label="item.name"
-                      :value="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -151,7 +151,6 @@ export default {
         createTime: "",
         name: "",
         id: "",
-        departmentUp: "",
         email: "",
         enabled: "",
         id: "",
@@ -160,10 +159,12 @@ export default {
         updateBy: "",
         updateTime: "",
         userId: "",
+        parentName: "",
+        parentId: "",
       },
       initFormData: {},
       userEditFormRules: {
-        department: [
+        name: [
           {
             required: true,
             message: "请输部门名",
@@ -219,12 +220,12 @@ export default {
         ],
         address: [
           {
-            required: false,
+            required: true,
             message: "请填写部门总部地址",
             trigger: ["blur", "change"],
           },
         ],
-        departmentUp: [
+        parentId: [
           {
             required: false,
             message: "请选择上级部门",
@@ -245,13 +246,25 @@ export default {
   methods: {
     //自动选择
     queryson(e) {
-      if (this.UserData[e]) {
-        console.log(this.UserData[e], "--------this.UserData[e]");
+      if (this.UserData) {
+        console.log(this.UserData, "--------this.UserData[e]", e);
+        this.UserData.forEach((item) => {
+          if (e) {
+            console.log(item, "--------xxxx");
+            this.userEditForm.cellPhone = item.userPhone;
+            this.userEditForm.email = item.userEmail;
+            this.userEditForm.jobNo = item.jobNo;
+          } else {
+            this.userEditForm.cellPhone = "";
+            this.userEditForm.email = "";
+            this.userEditForm.jobNo = "";
+          }
+        });
         // this.userEditForm = this.tableData[e];
-        this.userEditForm.userId = this.UserData[e].userNickName;
-        this.userEditForm.cellPhone = this.UserData[e].userPhone;
-        this.userEditForm.email = this.UserData[e].userEmail;
-        this.userEditForm.jobNo = this.UserData[e].jobNo;
+        // this.userEditForm.userId = this.UserData[e].userNickName;
+        // this.userEditForm.cellPhone = this.UserData[e].userPhone;
+        // this.userEditForm.email = this.UserData[e].userEmail;
+        // this.userEditForm.jobNo = this.UserData[e].jobNo;
         // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
       } else {
         return;
@@ -303,7 +316,7 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log(this.initFormData.id, "this.initFormData.id---编辑有");
+      console.log(this.userEditForm.id, "this.userEditForm.id---编辑有");
       if (this.initFormData.id) {
         this.initFormData = this.userEditForm;
         // 修改

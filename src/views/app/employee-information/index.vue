@@ -344,6 +344,8 @@
 </template>
 
 <script>
+// 字典查询
+import { manualPage } from "@/api/dictionary";
 // // 假的员工表/项目表/地域/部门/接口人表/客户
 // import {
 //   reqMockUser,
@@ -388,6 +390,9 @@ export default {
   },
   data() {
     return {
+      // 字典
+      dictionaryData: [],
+      child: "",
       // 批量
       tokens: {
         Authorization: localStorage.getItem("token"),
@@ -492,6 +497,7 @@ export default {
     };
   },
   mounted() {
+    this.child = "",
     this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
@@ -499,6 +505,7 @@ export default {
     this.searchHeader();
   },
   methods: {
+   
     // 下载模板
     downloadTemplate() {
       downloadTemplate().then((res) => {
@@ -736,7 +743,7 @@ export default {
       queryEmployeeManual(data).then((res) => {
         if (res && res.code && res.code === "00000") {
           this.tableData = res.data.records; // 表格数据赋值
-          // console.log(this.tableData, "员工表格数据赋值");
+          console.log(this.tableData, "员工表格数据赋值============徐天奇");
           this.paginationOptions.total = res.data.total; // 分页器赋值
         }
       });
