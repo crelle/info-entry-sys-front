@@ -51,7 +51,7 @@
           </div>
           <!-- 右侧中  客户分布-->
           <div class="grid-content bg-purple client">
-            <!-- <radarchart class="ageCount"></radarchart> -->
+            <radarchart class="ageCount"></radarchart>
           </div>
           <!-- 右侧下 交付经理-->
           <div class="grid-content bg-purple deliver">

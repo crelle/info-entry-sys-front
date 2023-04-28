@@ -175,7 +175,7 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="cellPhone"
           label="手机号"
           min-width="100"
@@ -188,7 +188,7 @@
           min-width="100"
           show-overflow-tooltip
         >
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="status"
           label="项目状态"
