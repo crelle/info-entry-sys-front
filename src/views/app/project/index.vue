@@ -24,6 +24,19 @@
               ></el-input>
             </el-form-item>
           </el-col>
+          <el-col :span="7">
+            <el-form-item label="项目状态" prop="status">
+              <el-select
+                v-model="formOptions.status"
+                clearable
+                placeholder="请选择"
+              >
+                <el-option label="前期投入" value="1"></el-option>
+                <el-option label="开发中" value="2"></el-option>
+                <el-option label="交付阶段" value="3"></el-option>
+              </el-select>
+            </el-form-item>
+          </el-col>
           <!-- <el-col :span="7">
             <el-form-item label="客户" prop="customer">
               <el-select
@@ -41,7 +54,7 @@
               </el-select>
             </el-form-item>
           </el-col> -->
-          <el-col :span="7">
+          <!-- <el-col :span="7">
             <el-form-item label="客户" prop="customer">
               <el-select
                 v-model="formOptions.customer"
@@ -57,7 +70,7 @@
                 ></el-option>
               </el-select>
             </el-form-item>
-          </el-col>
+          </el-col> -->
 
           <el-col :span="6">
             <el-form-item label="地域" prop="regionId">
@@ -90,19 +103,7 @@
           </el-col>
         </el-row>
         <el-row class="searchinpt">
-          <el-col :span="7">
-            <el-form-item label="项目状态" prop="status">
-              <el-select
-                v-model="formOptions.status"
-                clearable
-                placeholder="请选择"
-              >
-                <el-option label="前期投入" value="1"></el-option>
-                <el-option label="开发中" value="2"></el-option>
-                <el-option label="交付阶段" value="3"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+        
           <el-col :span="7">
             <el-form-item label="接口人" prop="interfaceId">
               <el-select
@@ -196,13 +197,13 @@
           min-width="80"
         >
         </el-table-column>
-        <el-table-column
+        <!-- <el-table-column
           prop="customerName"
           label="客户"
           min-width="80"
           show-overflow-tooltip
         >
-        </el-table-column>
+        </el-table-column> -->
         <el-table-column
           prop="departmentName"
           label="所属部门"
@@ -291,7 +292,7 @@ export default {
         interfaceId: "",
         cellPhone: "",
         email: "",
-        customerName: "",
+        // customerName: "",
         cooperation: "",
         departmentId: "",
         interfaceId: "",
