@@ -58,8 +58,8 @@
                     <el-option
                       v-for="item in MockUser"
                       :key="item.index"
-                      :label="item.regionName"
-                      :value="item.regionId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
