@@ -1,7 +1,8 @@
 <template>
-  <div class="contain">
-    <div id="myChart" style="width: 100%; height: 23vh"></div>
+  <div>
+    <div id="myChart" style="width: 100%; height: 100%"></div>
   </div>
+    
 </template>
   
 <script>
