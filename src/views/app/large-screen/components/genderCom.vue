@@ -273,8 +273,8 @@ export default {
 <style lang='less' scoped>
 .chart-container {
   position: relative;
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
  
   .chart{
     width: 100%;

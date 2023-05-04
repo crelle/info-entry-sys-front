@@ -27,8 +27,7 @@
                 </el-form-item>
                 <el-form-item label="性别" prop="gender">
                   <el-select v-model="userEditForm.gender" placeholder="请选择">
-                    <el-option label="男" value="男"></el-option>
-                    <el-option label="女" value="女"></el-option>
+                    <el-option  v-for="(item,i) in $dictionaryList('性别').children" :key="i" :label="item.name" :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="接口人办公地址" prop="address">
@@ -75,13 +74,12 @@
                     placeholder="请选择客户"
                     filterable
                     clearable
-                    @change="queryson"
                   >
                     <el-option
                       v-for="item in tableCustomer"
                       :key="item.index"
-                      :label="item.customerName"
-                      :value="item.customerId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
@@ -274,15 +272,7 @@ export default {
     };
   },
   methods: {
-    //自动选择
-    queryson(e) {
-      // console.log("选择的触发///////////");
-      // console.log(e, "----------------");
-      // console.log(this.tableData[e], "+++++++++++++++");
-      // this.userEditForm = this.tableData[e];
-      // this.userEditForm.responsibility = this.tableCustomer[e].userNickName;
-      // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
-    },
+
     //
     // 弹窗
     openDialog(row) {

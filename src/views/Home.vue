@@ -1,119 +1,95 @@
 <template>
   <div>
-    <div class="box bigScreenbox">
+    <div class="box">
       <!-- 头部 -->
       <div class="title">
-        <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
-          <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
-            <div class="grid-content bg-purple"></div>
-          </el-col>
-        </el-row>
+        <!-- 顶部操作 -->
+        <div class="block_left">
+          <div class="btn-top">
+            <el-select
+              v-model="value1"
+              placeholder="部门"
+              :popper-append-to-body="false"
+            >
+              <el-option
+                v-for="item in options1"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                filterable
+                size="mini"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="btn-top">
+            <el-select
+              v-model="value2"
+              placeholder="客户"
+              :popper-append-to-body="false"
+            >
+              <el-option
+                v-for="item in options2"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                filterable
+                size="mini"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="btn-top">
+            <el-select
+              v-model="value3"
+              placeholder="交付经理"
+              :popper-append-to-body="false"
+            >
+              <el-option
+                v-for="item in options3"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"
+                filterable
+                size="mini"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+          <div class="bg-purple-right">
+            <img
+              style="cursor: pointer"
+              @click="personal"
+              src="../assets/img/uihomepage/小圆头像.png"
+              alt=""
+            />
+            <div class="userInfo">
+              <span>{{ this.timeslot }} {{ userdetail.userNickName }}</span>
+              <!-- @click="centerDialogVisible = true" -->
+              <img
+                style="cursor: pointer"
+                src="../assets/img/uihomepage/home.png"
+                alt=""
+                @click="jumpHomepage"
+              />
+              <img
+                style="cursor: pointer"
+                @click="drawer = true"
+                src="../assets/img/uihomepage/菜单icon.png"
+                alt=""
+              />
+            </div>
+          </div>
       </div>
       <!-- 内容 -->
       <div class="content">
-        <!-- 顶部操作 -->
-        <div class="operate">
-          <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
-            <!-- 左侧 -->
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="6"
-              ><div class="grid-content bg-purple">
-                <div class="block_left">
-                  <div class="btn-top">
-                    <el-select
-                      v-model="value1"
-                      placeholder="部门"
-                      :popper-append-to-body="false"
-                    >
-                      <el-option
-                        v-for="item in options1"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        filterable
-                        size="mini"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                  <div class="btn-top">
-                    <el-select
-                      v-model="value2"
-                      placeholder="客户"
-                      :popper-append-to-body="false"
-                    >
-                      <el-option
-                        v-for="item in options2"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        filterable
-                        size="mini"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                  <div class="btn-top">
-                    <el-select
-                      v-model="value3"
-                      placeholder="交付经理"
-                      :popper-append-to-body="false"
-                    >
-                      <el-option
-                        v-for="item in options3"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value"
-                        filterable
-                        size="mini"
-                      >
-                      </el-option>
-                    </el-select>
-                  </div>
-                </div></div
-            ></el-col>
-            <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="12"
-              ><div class="grid-content bg-purple-light"></div
-            ></el-col>
-            <!-- 右侧 -->
-            <el-col :xs="7" :sm="7" :md="7" :lg="7" :xl="6"
-              ><div class="grid-content bg-purple">
-                <div class="bg-purple-right">
-                  <img
-                    style="cursor: pointer"
-                    @click="personal"
-                    src="../assets/img/uihomepage/小圆头像.png"
-                    alt=""
-                  />
-                  <div class="userInfo">
-                    <span
-                      >{{ this.timeslot }} {{ userdetail.userNickName }}</span
-                    >
-                    <!-- @click="centerDialogVisible = true" -->
-                    <img
-                      style="cursor: pointer"
-                      src="../assets/img/uihomepage/home.png"
-                      alt=""
-                      @click="jumpHomepage"
-                    />
-                    <img
-                      style="cursor: pointer"
-                      @click="drawer = true"
-                      src="../assets/img/uihomepage/菜单icon.png"
-                      alt=""
-                    />
-                  </div>
-                </div></div
-            ></el-col>
-          </el-row>
-        </div>
-        <!-- 内容主体部分 -->
-        <!-- <large-screen></large-screen> -->
-        <el-main>
+        <!-- <el-main> -->
           <router-view />
-          <div v-if="$route.path === '/sys'">
+          <!-- <div v-if="$route.path === '/sys'">
             <el-button @click="queryuser">查询</el-button>
           </div>
-        </el-main>
+        </el-main> -->
       </div>
     </div>
     <!-- 弹窗菜单 -->
@@ -225,8 +201,6 @@
 </template>
 
 <script>
-// 字典查询
-import { manualPage } from "@/api/dictionary";
 import { Decrypt } from "@/util/crypto/secret";
 import { queryUserAll } from "@/api/firstscreen/index";
 export default {
@@ -234,9 +208,6 @@ export default {
   components: {},
   data() {
     return {
-      // 字典
-      dictionaryData: [],
-      child: "",
       //登录后菜单展示
       tableData: [],
       userdetail: {},
@@ -341,9 +312,6 @@ export default {
       this.nowMenu = n;
     },
   },
-  mounted() {
-  this.onSubmit();
-  },
   created() {
     this.userdetail = window.localStorage.getItem("userdetail")
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
@@ -379,39 +347,6 @@ export default {
     this.nowMenu = this.$route.path;
   },
   methods: {
-    // 字典
-    // 查询字典
-    onSubmit() {
-      manualPage({
-        records: [
-          {
-            childrenName: this.child.split("-")[1] || "",
-            name: this.parent,
-          },
-        ],
-        size: 10,
-        current: this.currentPage1,
-      }).then((res) => {
-        if (res && res.code && res.code === "00000") {
-          console.log(res.data.records, this.child, "11111");
-          if (this.child) {
-            res.data.records.forEach((item) => {
-              item.children = item.children.filter((item) =>
-                item.name.includes(this.child.split("-")[1])
-              );
-            });
-          }
-          this.total = Number(res.data.total);
-          if (this.total == 0 && this.currentPage1 > 1) {
-            this.currentPage1--;
-            this.onSubmit();
-          } else {
-            this.dictionaryData = res.data.records;
-            console.log(this.dictionaryData, "-----------字典表");
-          }
-        }
-      });
-    },
     // 跳转首页
     jumpHomepage() {
       if (this.$route.path !== "/sys/firstscreen") {
@@ -448,7 +383,6 @@ export default {
 </script>
 <style lang='less'>
 .el-scrollbar {
-  // background-color: #1d2e5d !important;
   background-color: transparent !important;
   border: none;
   color: #fff;
@@ -461,9 +395,7 @@ export default {
 }
 // 按钮透明
 .el-button--primary {
-  // background-color: #283555 !important;
   color: #fff !important;
-  // border: 1px solid #05080e !important;
 }
 // 背景透明
 .el-card {
@@ -529,7 +461,6 @@ export default {
 // 下拉菜单 hove
 .el-menu-item:focus,
 .el-menu-item:hover {
-  // background-color: #fd0303 !important;
   background-color: transparent !important;
 }
 .el-submenu__title:hover {
@@ -537,13 +468,11 @@ export default {
 }
 .el-submenu__title:hover {
   color: #fff !important;
-  // background-color: aqua !important;
   background-image: linear-gradient(to right, #121e34, #2a418e, #121e34);
 }
 .el-menu-item:focus,
 .el-menu-item:hover {
   color: #fff !important;
-  // background-color: aqua !important;
   background-image: linear-gradient(to right, #121e34, #2a418e, #121e34);
 }
 
@@ -551,11 +480,6 @@ export default {
 .el-table thead {
   color: #000 !important;
   font-weight: 500;
-}
-// 表格单数行颜色
-.el-table tr {
-  // background-color: #e32525 !important;
-  // background-color: rgba(0, 0, 0, 0.7)!important;
 }
 // 表格头透明
 </style>
@@ -579,10 +503,11 @@ body .el-main {
 }
 // 背景
 .box {
-  background-color: coral;
   width: 100%;
   min-width: 1200px;
   height: 100vh;
+  display: flex;
+  flex-direction: column;
   background: url(../assets/img/uihomepage/页面大背景.png);
   background-size: cover;
   background-repeat: no-repeat;
@@ -590,75 +515,25 @@ body .el-main {
 }
 // 头部
 .title {
-  // background-position: center;
-  // overflow: hidden;
-  width: 100%;
-  // height: 90px;
-  // background-color: aqua;
-  .bg-purple {
-    text-align: center;
-    line-height: 50px;
-    font-size: 18px;
-    letter-spacing: 6px;
-    font-weight: bold;
-    color: #dce1ef;
-    background: url(../assets/img/uihomepage/顶部栏.png);
-    background-size: cover;
-  }
-  // 响应式布局
-  .el-col {
-    border-radius: 4px;
-  }
-  .bg-purple {
-    // background: #164090;
-    height: 60px;
-  }
-  .bg-purple-light {
-    // background: #e5e9f2;
-  }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
-  }
-}
-// // 内容
-// // 上
-// .el-cascader-menu {
-//   background-color: aqua !important;
-// }
-// 顶部操作部分
-.content {
-  position: relative;
-  top: -20px;
-  .operate {
-    // 下拉框
-
-    .el-col {
-      border-radius: 4px;
-    }
-    .bg-purple-dark {
-      background: #99a9bf;
-    }
-    .bg-purple {
-      // background: #d3dce6;
-    }
-    .bg-purple-light {
-      // background: #e5e9f2;
-    }
-    .grid-content {
-      border-radius: 4px;
-      min-height: 36px;
-    }
-    .block_left {
+  height: 40px;
+  color: #dce1ef;
+  background: url(../assets/img/uihomepage/顶部栏.png);
+  background-size: cover;
+  display: flex;
+  justify-content: space-between;
+  padding: 40px 20px 0;
+  .block_left {
       display: flex;
-      align-items: center;
-      height: 40px;
+      height: 30px;
+      width: 30%;
       .btn-top {
-        width: 30%;
+        flex: 1;
+        height: 100%;
         background: url(../assets/img/uihomepage/xiaoxisc.com小夕素材81.png);
-        background-size: cover;
+        background-size: contain;
+        background-repeat: no-repeat;
         margin: 0 10px;
-        padding: 0 15px;
+
         ::v-deep .el-input__inner {
           background-color: transparent !important;
           border: none;
@@ -694,7 +569,15 @@ body .el-main {
         }
       }
     }
-  }
+}
+// // 内容
+// // 上
+// .el-cascader-menu {
+//   background-color: aqua !important;
+// }
+// 顶部操作部分
+.content {
+  flex: 1;
 }
 // 菜单弹窗
 .el-menu {

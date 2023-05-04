@@ -1,7 +1,8 @@
 <template>
-  <div class="contain">
-    <div style="width: 100%; height: 24vh" id="region"></div>
+  <div>
+    <div style="height: 100%" id="region"></div>
   </div>
+    
 </template>
       
   <script>
