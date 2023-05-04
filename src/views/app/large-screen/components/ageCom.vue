@@ -1,5 +1,5 @@
 <template>
-  <div class="contain">
+  <div >
     <div style="width: 100%; height: 100%" ref="echarts"></div>
   </div>
 </template>

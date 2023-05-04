@@ -1,7 +1,8 @@
 <template>
-  <div class="contain">
-    <div style="width: 100%; height: 24vh" id="manage"></div>
+  <div>
+    <div style="width: 100%; height: 100%;" id="manage"></div>
   </div>
+   
 </template>
   
   <script>

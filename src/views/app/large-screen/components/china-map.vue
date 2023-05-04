@@ -1,7 +1,7 @@
 
 <template>
-  <div class="users_content">
-    <div id="main" style="width: 100%; height: 60vh"></div>
+  <div style="height:100%">
+    <div id="main" style="width: 100%; height: 100%"></div>
     <baidu-map :center="center" :zoom="zoom" @ready="initMap"></baidu-map>
   </div>
 </template>

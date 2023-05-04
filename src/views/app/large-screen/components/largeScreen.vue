@@ -1,17 +1,12 @@
 <template>
-  <div>
     <!-- 内容主体部分 -->
-    <div class="subjectContent upperHalf">
-      <!-- 左侧内容 -->
-      <el-row :gutter="10" style="margin-left: 0px; margin-right: 0px">
-        <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-          <!-- 左侧上 -->
-          <div class="grid-content bg-purple gender">
+    <div class="subjectContent">
+      <div class="large_left">
+        <div class=" bg-purple gender">
             <gender-com class="ageCount"></gender-com>
           </div>
-          <!-- 左侧中 -->
-          <div class="grid-content ageCom bg-purple">
-            <!-- <span>年龄分布</span> -->
+          
+          <div class=" ageCom bg-purple">
             <age-com
               class="ageCount"
               :aName="ageName"
@@ -19,29 +14,32 @@
               ref="age"
             ></age-com>
           </div>
-          <!-- 左侧下 -->
-          <div class="grid-content bg-purple marriageCom">
+          
+          <div class=" bg-purple marriageCom">
             <marriage-com
               class="ageCount"
               :dataArr="marriageArr"
             ></marriage-com>
           </div>
-        </el-col>
+     
+      </div>
         <!-- 中间地图 -->
-        <el-col :xs="12" :sm="12" :md="12" :lg="12" :xl="12">
-          <div class="grid-content bg-purple-light">
-            <!-- <china></china> -->
+        <div class="large_middle">
+          <div class=" bg-purple" style="flex:2;">
+            <china></china>
           </div>
-          <div class="grid-content bg-purple-chart region">
+          <div class="bg-purple region">
             <geographical-distribution
-              class="agecountColumn"
+              class="ageCount" style="margin-top:6%;"
             ></geographical-distribution>
           </div>
-        </el-col>
+        </div>
+          
+       
         <!-- 右侧内容 -->
-        <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6">
-          <!-- 右侧上 -->
-          <div class="grid-content bg-purple workCom">
+        <div class="large_right">
+         
+            <div class="bg-purple workCom">
             <age-com
               class="ageCount"
               :aName="workName"
@@ -49,18 +47,18 @@
               ref="work"
             ></age-com>
           </div>
-          <!-- 右侧中  客户分布-->
-          <div class="grid-content bg-purple client">
+         
+          <div class="bg-purple client" >
             <radarchart class="ageCount"></radarchart>
           </div>
-          <!-- 右侧下 交付经理-->
-          <div class="grid-content bg-purple deliver">
+     
+          <div class="bg-purple deliver">
             <delivery-manager class="ageCount"></delivery-manager>
           </div>
-        </el-col>
-      </el-row>
+        </div>
+        
+      
     </div>
-  </div>
 </template>
 
 <script>
@@ -191,93 +189,81 @@ export default {
 };
 </script>
 <style lang='less' scoped>
-body,
-html {
-  height: 100%;
-}
 // 主体内容
 .subjectContent {
-  margin-top: 15px;
-  margin: 20px 20px 0;
-  position:absolute .el-col {
-    border-radius: 4px;
+  height: 100%;
+  display: flex;
+  .large_left,
+  .large_right{
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
   }
-  .grid-content {
-    border-radius: 4px;
-    min-height: 36px;
+  .large_middle{
+    flex: 2;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .bg-purple{
+    flex: 1;
+    margin: 5px 0;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
   }
 }
-// 主体内容 上半内容
-.upperHalf {
-  // 两侧
-  .bg-purple {
-    width: 100%;
-    height: 270px;
-    // // background-color: rgba(224, 236, 211, 0.2);
-    margin: 5px 0;
-  }
-  .bg-purple-light {
-    width: 100%;
-    height: 60vh;
-    // background-color: rgba(224, 236, 211, 0.2);
-  }
-  .bg-purple-chart {
-    margin-top: 6px;
-    width: 100%;
-    height: 255px;
-    // background-color: rgba(224, 236, 211, 0.2);
-    padding-top: 2px;
+.ageCount {
+    width: 90%;
+    height: 80%;
+    // box-sizing: content-box;
+    // padding: 10%;
+    margin-top: 10%;
   }
   .ageCom {
-    background-image: url("./images/uihomepage/age.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/age.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
   .workCom {
-    background-image: url("./images/uihomepage/work.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/work.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
   .client {
-    background-image: url("./images/uihomepage/客户分布-背景框.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/客户分布-背景框.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
   .deliver {
-    background-image: url("./images/uihomepage/交付经理人数分析-背景框.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/交付经理人数分析-背景框.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
   .region {
     background: url(./images/uihomepage/地域分布-背景框.png) no-repeat center;
     background-size: 100% 100%;
+    display: flex;
+    justify-content: center;
+  
   }
-  .ageCount {
-    width: 90%;
-    height: 80%;
-    margin-top: 10%;
-  }
+  
   .marriageCom {
-    background-image: url("./images/uihomepage/bg_marriage.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/bg_marriage.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
   .gender {
-    background-image: url("./images/uihomepage/gender.png");
-    background-size: contain;
-    background-repeat: no-repeat;
+    background: url("./images/uihomepage/gender.png") no-repeat center;
+    background-size: 100% 100%;
     display: flex;
     justify-content: center;
   }
-}
+
 </style>
