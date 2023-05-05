@@ -14,8 +14,19 @@ let dictionaryList=(name)=>{
     let list=JSON.parse(sessionStorage.getItem('dictionaryList')); 
     for(let item of list){
         if(item.name==name){
-            return item
+            return item.children
         }
     }
 }
-export { loginout,dictionaryList }
+let  debounce=(func, wait)=>{
+    var timeout;
+    return function () {
+        var context = this;
+        var args = arguments;
+        clearTimeout(timeout)
+        timeout = setTimeout(function(){
+            func.apply(context, args)
+        }, wait);
+    }
+}
+export { loginout,dictionaryList ,debounce}

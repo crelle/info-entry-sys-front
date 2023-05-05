@@ -41,37 +41,30 @@
                 placeholder="请选择状态"
                 prop="enabled"
               >
-                <el-option label="启用" :value="true"></el-option>
-                <el-option label="禁用" :value="false"></el-option>
+                <el-option v-for="(item,i) in $dictionaryList('状态')" :key="i" :label="item.name" :value="item.code"></el-option>
+                
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
             <el-form-item label="角色" prop="roles[0].id">
               <el-select
-                v-model="formOptions.roles[0].id"
+                v-model="formOptions.roleName"
                 placeholder="请选择角色"
                 clearable
                 filterable
               >
                 <el-option
-                  v-for="item in queryRoleData"
+                v-for="item in queryRoleData"
                   :key="item.index"
                   :label="item.nameZh"
-                  :value="item.id"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col
             :span="4"
-            :class="
-              Object.keys(formOptions).length % 3 === 0
-                ? 'nextline_action_button_content'
-                : Object.keys(formOptions).length % 3 === 1
-                ? 'inline2_action_button_content'
-                : 'inline1_action_button_content'
-            "
           >
             <el-form-item>
               <el-button type="primary" @click="resetForm('userQueryRef')"
@@ -93,11 +86,10 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         border
         stripe
         size="mini"
-        height="550"
+        :height="tableHeight"
       >
         <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
         <el-table-column
@@ -191,7 +183,6 @@
         </el-table-column>
       </el-table>
       <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -229,23 +220,15 @@ export default {
   },
   data() {
     return {
-      // 权限
-      quanxian: "",
       list: "",
+      tableHeight:window.innerHeight-418,
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
-        enabled: true,
+        enabled: "true",
         userPhone: "",
         username: "",
-        jobNo: "",
-        roles: [
-          {
-            id: "",
-            name: "",
-            nameZh: "",
-          },
-        ],
+        roleName:'',      
       },
       paginationOptions: {
         pageNo: 1,
@@ -274,75 +257,45 @@ export default {
   },
   mounted() {
     this.queryUserList();
-    // this.queryRoleList();
+    this.permissionList()
   },
   methods: {
     //手动 查询用户列表
     queryUserListclick() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
           this.paginationOptions.pageNo = 1;
           this.queryUserList();
-        } else {
-          return false;
-        }
-      });
     },
 
     // 查询用户列表
     queryUserList() {
       console.log(this.formOptions.roles, "----------角色地=id---");
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
           queryUser(data).then((res) => {
-            data.current = 1;
-            data.size = 999;
-            // 查询角色列表;
-            queryRole(data).then((res) => {
-              if (res && res.code && res.code === "00000") {
-                this.queryRoleData = res.data.records; // 表格数据赋值
-                console.log(this.queryRoleData, "查询角色列表++++++");
-              }
-            });
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
               console.log(this.tableData, "查询用户列表++++++");
               // 过滤掉管理员admin
-              this.tableData.forEach((item, index) => {
-                if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
-                  this.tableData.splice(index, 1);
-                }
-              });
+              // this.tableData.forEach((item, index) => {
+              //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+              //     this.tableData.splice(index, 1);
+              //   }
+              // });
             }
           });
-        } else {
-          return false;
-        }
-      });
     },
-    // 查询角色列表
-    // queryRoleList() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = 1;
-    //       data.size = 999;
-    //       queryRole(data).then((res) => {
-    //         if (res && res.code && res.code === "00000") {
-    //           this.queryRoleData = res.data.records; // 表格数据赋值
-    //           console.log(this.queryRoleData, "查询角色列表++++++");
-    //         }
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
+    permissionList(){
+            // 查询角色列表;
+            queryRole({current:1,size:1000000}).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.queryRoleData = res.data.records; // 表格数据赋值
+                console.log(this.queryRoleData, "查询角色列表++++++");
+              }
+            });
+    },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "删除用户", {
@@ -356,7 +309,7 @@ export default {
           deleteMenu(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该用户");
             if (res.code == "00000") {
-              this.tableData.splice(index, 1);
+              // this.tableData.splice(index, 1);
               this.queryUserList();
               return this.$message({
                 type: "success",
@@ -364,7 +317,7 @@ export default {
               });
             } else {
               this.$message({
-                type: "success",
+                type: "error",
                 message: "删除失败!",
               });
             }
@@ -443,10 +396,6 @@ export default {
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
-    },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {

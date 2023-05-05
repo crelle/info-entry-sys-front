@@ -131,8 +131,9 @@ export default {
               name: query,
             },
           ],
-          size: 1,
-          total: 10,
+          current:1,
+          size: 1000000,
+          // total: 10,
         }).then((res) => {
           if (res && res.code && res.code === "00000") {
             res.data.records.forEach((item) => {
@@ -157,8 +158,8 @@ export default {
               name: "",
             },
           ],
-          size: 1,
-          total: 10,
+          current:1,
+          size: 1000000,
         }).then((res) => {
           if (res && res.code && res.code === "00000") {
             res.data.records.forEach((item) => {

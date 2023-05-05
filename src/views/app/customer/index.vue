@@ -248,7 +248,6 @@ export default {
     this.queryRegion()
     this.queryUserList()
     // this.queryProject();
-    console.log(this.$dictionaryList("区域"), "67666666666666666");
   },
   methods: {
     // 手动 查询客户列表
