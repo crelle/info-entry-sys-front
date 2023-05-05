@@ -8,7 +8,7 @@ import "element-ui/lib/theme-chalk/index.css";
 import * as echarts from "echarts";
 import 'echarts-gl' 
 Vue.prototype.$echarts = echarts;
-import { loginout,dictionaryList } from "@/util/publicapis/index.js";
+import { loginout,dictionaryList,debounce } from "@/util/publicapis/index.js";
 // 引入百度地图
 import BaiduMap from "vue-baidu-map";
 import { BmlMarkerClusterer } from "vue-baidu-map";
@@ -21,7 +21,8 @@ Vue.config.productionTip = false;
 Vue.use(ElementUI);
 Vue.prototype.$echarts = echarts; // 挂载echarts
 Vue.prototype.$loginout = loginout; // 挂载登出功能
-Vue.prototype.$dictionaryList = dictionaryList; // 挂载登出功能
+Vue.prototype.$dictionaryList = dictionaryList; 
+Vue.prototype.$debounce = debounce; 
 window.__proto__.$loginout = loginout; // 挂载登出功能
 
 new Vue({

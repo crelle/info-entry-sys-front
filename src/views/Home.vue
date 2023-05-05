@@ -521,19 +521,18 @@ body .el-main {
   background-size: cover;
   display: flex;
   justify-content: space-between;
-  padding: 40px 20px 0;
+  padding: 40px 20px 15px;
   .block_left {
       display: flex;
-      height: 30px;
       width: 30%;
       .btn-top {
         flex: 1;
         height: 100%;
         background: url(../assets/img/uihomepage/xiaoxisc.com小夕素材81.png);
-        background-size: contain;
+        background-size: 100% 100%;
         background-repeat: no-repeat;
         margin: 0 10px;
-
+        padding-left: 20px;
         ::v-deep .el-input__inner {
           background-color: transparent !important;
           border: none;

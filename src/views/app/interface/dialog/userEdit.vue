@@ -27,7 +27,7 @@
                 </el-form-item>
                 <el-form-item label="性别" prop="gender">
                   <el-select v-model="userEditForm.gender" placeholder="请选择">
-                    <el-option  v-for="(item,i) in $dictionaryList('性别').children" :key="i" :label="item.name" :value="item.id"></el-option>
+                    <el-option  v-for="(item,i) in $dictionaryList('性别')" :key="i" :label="item.name" :value="item.id"></el-option>
                   </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="接口人办公地址" prop="address">
