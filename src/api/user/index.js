@@ -20,8 +20,7 @@ const changePassword = (data) =>
 const queryUser = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/sysmgmt/user/page",
-    // url: BaseURL + "/sysmgmt/user/manualPage",
+    url: BaseURL + "/sysmgmt/user/manualPage",
     data,
   });
 

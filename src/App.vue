@@ -5,7 +5,19 @@
 </template>
 <script>
 export default {
-  
+  mounted() {
+    //窗口尺寸改变
+    window.addEventListener("resize", () => this.Refresh());
+  },
+  methods: {
+	Refresh() {
+      this.$router.go(0);
+    },
+  },
+  destroyed() {
+    // 销毁
+    window.removeEventListener("resize", this.Refresh());
+  },
 }
 </script>
 <style lang="less">
