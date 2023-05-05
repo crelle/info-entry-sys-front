@@ -17,39 +17,42 @@
                   <ul class="lis">
                     <li>
                       <span>项目名称:</span
-                      ><span :title="initFormData.name">{{ initFormData.name }}</span>
+                      ><span :title="initFormData.name">{{
+                        initFormData.name
+                      }}</span>
                     </li>
                     <li>
                       <span>项目人数:</span
-                      ><span >{{ initFormData.number }} 人</span>
+                      ><span>{{ initFormData.number }} 人</span>
                     </li>
                     <li>
                       <span>所属部门:</span
-                      ><span :title="initFormData.department">{{ initFormData.department }}</span>
+                      ><span :title="initFormData.department">{{
+                        initFormData.department
+                      }}</span>
                     </li>
                     <li>
                       <span>客户:</span
                       ><span>{{ initFormData.customerName }}</span>
                     </li>
                     <li>
-                      <span>接口人:</span
-                      ><span>{{ initFormData.interfaceName }}</span>
+                      <span>接口人:</span>
+
+                      <span
+                        v-for="item in initFormData.contactPeoples"
+                        :key="item.id"
+                        >{{ item.name }}</span
+                      >
                     </li>
                     <li>
                       <span>地域:</span
                       ><span>{{ initFormData.regionName }}</span>
                     </li>
-                    <!-- <li>
-                      <span>电话:</span
-                      ><span :title="initFormData.cellPhone">{{ initFormData.cellPhone }}</span>
-                    </li>
-                    <li>
-                      <span>邮箱:</span><span :title="initFormData.email">{{ initFormData.email }}</span>
-                    </li> -->
-
                     <li>
                       <span>立项时间:</span
-                      ><span :title="initFormData.updateTime">{{ initFormData.updateTime }}</span>
+                      ><span :title="initFormData.updateTime">{{
+                        initFormData.updateTime
+                      }}</span>
                     </li>
                     <li>
                       <span>合作模式:</span
@@ -61,7 +64,9 @@
                     </li>
                     <li class="new">
                       <span>介绍:</span
-                      ><span :title="initFormData.introduce">{{ initFormData.introduce }}</span>
+                      ><span :title="initFormData.introduce">{{
+                        initFormData.introduce
+                      }}</span>
                     </li>
                   </ul>
                   <div>
@@ -177,7 +182,7 @@ export default {
       // 修改时间格式
       console.log(row, "001001");
       row.updateTime = row.updateTime?.split("T")[0];
-      
+
       this.tableData1 = [];
       this.dialogFormVisible = true; // 让弹窗显示
 
@@ -286,6 +291,7 @@ export default {
       display: -webkit-box;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 1; /* 超出几行省略 */
+      margin-right: 10px;
     }
   }
   .new {

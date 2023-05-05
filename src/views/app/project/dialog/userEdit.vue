@@ -58,28 +58,12 @@
                     <el-option
                       v-for="item in MockUser"
                       :key="item.index"
-                      :label="item.regionName"
-                      :value="item.regionId"
+                      :label="item.name"
+                      :value="item.id"
                     ></el-option>
                   </el-select>
                 </el-form-item>
-                <!-- <el-select
-                  v-model="value2"
-                  multiple
-                  collapse-tags
-                  style="margin-left: 20px"
-                  placeholder="请选择接口人"
-                >
-                  <el-option
-                    v-for="item in options"
-                    :key="item.value"
-                    :label="item.label"
-                    :value="item.value"
-                  >
-                  </el-option>
-                </el-select> -->
                 <el-form-item label="接口人" prop="interfaceData">
-                  <!-- @change="queryson" 自动选择 -->
                   <el-select
                     v-model="userEditForm.interfaceData"
                     placeholder="请选择接口人"
@@ -94,27 +78,6 @@
                       :value="item.id"
                     ></el-option>
                   </el-select>
-                </el-form-item>
-                <!-- <el-form-item label="手机号" prop="cellPhone">
-                  <el-input
-                    v-model="userEditForm.cellPhone"
-                    placeholder="手机号"
-                    disabled
-                  ></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                  <el-input
-                    v-model="userEditForm.email"
-                    placeholder="邮箱"
-                    disabled
-                  ></el-input>
-                </el-form-item> -->
-                <el-form-item label="客户名称" prop="customerName">
-                  <el-input
-                    v-model="userEditForm.customerName"
-                    placeholder="客户名称"
-                    disabled
-                  ></el-input>
                 </el-form-item>
                 <el-form-item label="部门名称" prop="departmentId">
                   <el-select
@@ -211,9 +174,6 @@ export default {
       imageUrl: "",
       nowIndex: -1,
       userEditForm: {
-        cellPhone: "",
-        email: "",
-        customerName: "",
         cooperation: "",
         departmentId: "",
         // interfaceData 接口人存id
@@ -300,70 +260,32 @@ export default {
             trigger: "blur",
           },
         ],
-        cellPhone: [
-          {
-            required: false,
-            message: "请填手机号",
-            trigger: ["blur", "change"],
-          },
-          // {
-          //   pattern: /^1[3-9]\d{9}$/,
-          //   message: "请填正确的手机号",
-          //   trigger: "blur",
-          // },
-        ],
-        email: [
-          {
-            required: false,
-            message: "请填邮箱号",
-            trigger: ["blur", "change"],
-          },
-        ],
-        customerName: [
-          {
-            required: false,
-            message: "请填客户名称",
-            trigger: ["blur", "change"],
-          },
-        ],
       },
     };
   },
   methods: {
-    //自动选择
-    // queryson(e) {
-    //   console.log(e, "---自动选择自动选择eee", this.Interface);
-    //   if (e) {
-    //     this.Interface.forEach((sitem) => {
-    //       if (e == sitem.id) {
-    //         this.userEditForm.email = sitem.email;
-    //         this.userEditForm.cellPhone = sitem.cellPhone;
-    //         this.userEditForm.customerName = sitem.customerName;
-    //       }
-    //     });
-    //   } else {
-    //     this.userEditForm.customerName = null;
-    //     this.userEditForm.email = null;
-    //     this.userEditForm.cellPhone = null;
-    //   }
-    // },
-    //
     // 弹窗
     openDialog(row) {
-      console.log(row, "表单的数据");
-      this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.interfaceData = [];
       this.userEditForm.id = "";
       this.initFormData = {};
+      console.log(row, "表单的数据");
       if (row) {
-        this.initFormData = row;
+        row.interfaceData = [];
+        this.userEditForm = row;
+        console.log(this.userEditForm, "---------row");
+        this.userEditForm.contactPeoples.forEach((item) => {
+          this.userEditForm.interfaceData.push(item.id);
+        });
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(this.userEditForm); // 为表单赋值
         });
       } else {
         console.log("我是新增");
         // this.initForm("");
       }
+      this.dialogFormVisible = true; // 让弹窗显示
     },
     initForm(data) {
       Object.keys(this.userEditForm).forEach((item) => {
@@ -385,7 +307,6 @@ export default {
       this.initForm(this.userEditForm);
       this.resetFormData();
     },
-
     // 初始化页面数据 重置
     resetFormData() {
       this.ifLogin = true;
@@ -403,20 +324,16 @@ export default {
         });
       });
       console.log(this.userEditForm.contactPeoples, "-----我要的----");
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
+      if (this.userEditForm.id) {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            // 删除指定的 对象 （delete）
-            delete this.userEditForm.customerName;
-            if (this.initFormData.status == "开发中") {
-              this.initFormData.status = 1;
-            } else if (this.initFormData.status == "前期投入") {
-              this.initFormData.status = 2;
-            } else if (this.initFormData.status == "交付阶段") {
-              this.initFormData.status = 3;
+            if (this.userEditForm.status == "开发中") {
+              this.userEditForm.status = 1;
+            } else if (this.userEditForm.status == "前期投入") {
+              this.userEditForm.status = 2;
+            } else if (this.userEditForm.status == "交付阶段") {
+              this.userEditForm.status = 3;
             }
             console.log(this.userEditForm, "----保存传递的内容");
             editProject(this.userEditForm, this.userEditForm.id).then((res) => {

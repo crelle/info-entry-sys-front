@@ -317,7 +317,7 @@ export default {
       ? JSON.parse(Decrypt(window.localStorage.getItem("userdetail")))
       : {};
     // console.log(window.localStorage.getItem("userdetail"));
-    // console.log(this.userdetail, "---我是（当前用户信息）");
+    console.log(this.userdetail, "---我是（当前用户信息）");
     // 当前时间  判断上午-中午 -下午 欢迎语
     this.timeslot = "";
     var data = new Date();

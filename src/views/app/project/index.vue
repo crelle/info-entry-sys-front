@@ -24,41 +24,19 @@
               ></el-input>
             </el-form-item>
           </el-col>
-          <!-- <el-col :span="7">
-            <el-form-item label="客户" prop="customer">
-              <el-select
-                v-model="formOptions.customer"
-                placeholder="请选择客户名称"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in tableCustomer"
-                  :key="item.index"
-                  :label="item.customerName"
-                  :value="item.customerId"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col> -->
           <el-col :span="7">
-            <el-form-item label="客户" prop="customer">
+            <el-form-item label="项目状态" prop="status">
               <el-select
-                v-model="formOptions.customer"
-                placeholder="请选择客户名称"
+                v-model="formOptions.status"
                 clearable
-                filterable
+                placeholder="请选择"
               >
-                <el-option
-                  v-for="item in tableCustomer"
-                  :key="item.index"
-                  :label="item.customerName"
-                  :value="item.customerId"
-                ></el-option>
+                <el-option label="前期投入" value="1"></el-option>
+                <el-option label="开发中" value="2"></el-option>
+                <el-option label="交付阶段" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-
           <el-col :span="6">
             <el-form-item label="地域" prop="regionId">
               <el-select
@@ -90,19 +68,6 @@
           </el-col>
         </el-row>
         <el-row class="searchinpt">
-          <el-col :span="7">
-            <el-form-item label="项目状态" prop="status">
-              <el-select
-                v-model="formOptions.status"
-                clearable
-                placeholder="请选择"
-              >
-                <el-option label="前期投入" value="1"></el-option>
-                <el-option label="开发中" value="2"></el-option>
-                <el-option label="交付阶段" value="3"></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
           <el-col :span="7">
             <el-form-item label="接口人" prop="interfaceId">
               <el-select
@@ -168,39 +133,18 @@
           show-overflow-tooltip
         >
         </el-table-column>
-        <el-table-column
-          prop="interfaceName"
-          label="接口人"
-          min-width="80"
-          show-overflow-tooltip
-        >
+        <el-table-column label="接口人" min-width="80" show-overflow-tooltip>
+          <template slot-scope="{ row }">
+            <span v-for="item in row.contactPeoples" :key="item.id">{{
+              item.name + " "
+            }}</span>
+          </template>
         </el-table-column>
-        <!-- <el-table-column
-          prop="cellPhone"
-          label="手机号"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          label="邮箱"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column> -->
         <el-table-column
           prop="status"
           label="项目状态"
           show-overflow-tooltip
           min-width="80"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          label="客户"
-          min-width="80"
-          show-overflow-tooltip
         >
         </el-table-column>
         <el-table-column
@@ -291,7 +235,7 @@ export default {
         interfaceId: "",
         cellPhone: "",
         email: "",
-        customerName: "",
+        // customerName: "",
         cooperation: "",
         departmentId: "",
         interfaceId: "",
@@ -351,55 +295,56 @@ export default {
               //   // 部门表格数据
               queryDepartments(data).then((res2) => {
                 //     // 地域表格数据
-                //     queryRegion(data).then((res3) => {
-                //       // 客户表格数据
-                //       queryCustomer(data).then((res4) => {
-                this.tableData = res.data.records; // 项目表格数据赋值
-                this.Interface = res1.data.records; // 接口人表格数据赋值
-                this.department = res2.data.records; // 部门表格数据赋值
-                // this.MockUser = res3.data.records; // 地域表格数据赋值
-                // this.tableCustomer = res4.data.records; // 客户表格数据赋值
-                console.log(this.department, "----部门表格数据");
-                // console.log(this.Interface, "接口人表格数据");
-                console.log(this.tableData, "------项目表格数据");
-                this.tableData.forEach((item) => {
-                  if (item.status == 1) {
-                    item.status = "前期投入";
-                  }
-                  if (item.status == 2) {
-                    item.status = "开发中";
-                  }
-                  if (item.status == 3) {
-                    item.status = "交付阶段";
-                  }
-                  // // 接口人表格
-                  // this.Interface.forEach((sitem) => {
-                  //   if (item.interfaceId == sitem.interfaceId) {
-                  //     item.interfaceName = sitem.name;
-                  //     item.cellPhone = sitem.cellPhone;
-                  //     item.email = sitem.email;
-                  //     // 客户
-                  //     this.tableCustomer.forEach((items) => {
-                  //       if (sitem.customerId == items.customerId) {
-                  //         item.customerName = items.customerName;
-                  //         item.customerId = items.customerId;
-                  //       }
-                  //     });
-                  //   }
-                  //   // 部门表格
-                  //   this.Users.forEach((itemis) => {
-                  //     if (item.departmentId == itemis.departmentId) {
-                  //       item.departmentName = itemis.name;
-                  //     }
-                  //     if (sitem.customerId == itemis.customerId) {
-                  //       item.customerName = itemis.customerName;
-                  //     }
-                  //   });
+                queryRegion(data).then((res3) => {
+                  //       // 客户表格数据
+                  //       queryCustomer(data).then((res4) => {
+                  this.tableData = res.data.records; // 项目表格数据赋值
+                  this.Interface = res1.data.records; // 接口人表格数据赋值
+                  this.department = res2.data.records; // 部门表格数据赋值
+                  this.MockUser = res3.data.records; // 地域表格数据赋值
+                  console.log(this.MockUser ,"------地域表");
+                  // this.tableCustomer = res4.data.records; // 客户表格数据赋值
+                  // console.log(this.department, "----部门表格数据");
+                  // console.log(this.Interface, "接口人表格数据");
+                  // console.log(this.tableData, "------项目表格数据");
+                  this.tableData.forEach((item) => {
+                    if (item.status == 1) {
+                      item.status = "前期投入";
+                    }
+                    if (item.status == 2) {
+                      item.status = "开发中";
+                    }
+                    if (item.status == 3) {
+                      item.status = "交付阶段";
+                    }
+                    // // 接口人表格
+                    // this.Interface.forEach((sitem) => {
+                    //   if (item.interfaceId == sitem.interfaceId) {
+                    //     item.interfaceName = sitem.name;
+                    //     item.cellPhone = sitem.cellPhone;
+                    //     item.email = sitem.email;
+                    //     // 客户
+                    //     this.tableCustomer.forEach((items) => {
+                    //       if (sitem.customerId == items.customerId) {
+                    //         item.customerName = items.customerName;
+                    //         item.customerId = items.customerId;
+                    //       }
+                    //     });
+                    //   }
+                    //   // 部门表格
+                    //   this.Users.forEach((itemis) => {
+                    //     if (item.departmentId == itemis.departmentId) {
+                    //       item.departmentName = itemis.name;
+                    //     }
+                    //     if (sitem.customerId == itemis.customerId) {
+                    //       item.customerName = itemis.customerName;
+                    //     }
+                    //   });
+                    // });
+                  });
+                  this.paginationOptions.total = res.data.total; // 分页器赋值
                   // });
                 });
-                this.paginationOptions.total = res.data.total; // 分页器赋值
-                // });
-                //     });
               });
             });
           });
