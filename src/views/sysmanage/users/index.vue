@@ -218,7 +218,7 @@
 </template>
 
 <script>
-import { queryUser, deleteMenu,resetPassword } from "@/api/user";
+import { queryUser, deleteMenu, resetPassword } from "@/api/user";
 import { queryRole } from "@/api/role";
 import userEditDialog from "@/views/sysmanage/users/dialog/userEdit.vue";
 import userDaitDialog from "@/views/sysmanage/users/dialog/userDetails.vue";
@@ -274,7 +274,7 @@ export default {
   },
   mounted() {
     this.queryUserList();
-    this.queryRoleList();
+    // this.queryRoleList();
   },
   methods: {
     //手动 查询用户列表
@@ -299,10 +299,25 @@ export default {
           data.size = this.paginationOptions.pageSize;
           console.log(data, "data---------");
           queryUser(data).then((res) => {
+            data.current = 1;
+            data.size = 999;
+            // 查询角色列表;
+            queryRole(data).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.queryRoleData = res.data.records; // 表格数据赋值
+                console.log(this.queryRoleData, "查询角色列表++++++");
+              }
+            });
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
               console.log(this.tableData, "查询用户列表++++++");
+              // 过滤掉管理员admin
+              this.tableData.forEach((item, index) => {
+                if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
+                  this.tableData.splice(index, 1);
+                }
+              });
             }
           });
         } else {
@@ -311,23 +326,23 @@ export default {
       });
     },
     // 查询角色列表
-    queryRoleList() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 999;
-          queryRole(data).then((res) => {
-            if (res && res.code && res.code === "00000") {
-              this.queryRoleData = res.data.records; // 表格数据赋值
-              console.log(this.queryRoleData, "查询角色列表++++++");
-            }
-          });
-        } else {
-          return false;
-        }
-      });
-    },
+    // queryRoleList() {
+    //   this.$refs["userQueryRef"].validate((valid) => {
+    //     if (valid) {
+    //       let data = { records: [{ ...this.formOptions }] };
+    //       data.current = 1;
+    //       data.size = 999;
+    //       queryRole(data).then((res) => {
+    //         if (res && res.code && res.code === "00000") {
+    //           this.queryRoleData = res.data.records; // 表格数据赋值
+    //           console.log(this.queryRoleData, "查询角色列表++++++");
+    //         }
+    //       });
+    //     } else {
+    //       return false;
+    //     }
+    //   });
+    // },
     // 删除弹框
     deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "删除用户", {
@@ -365,6 +380,7 @@ export default {
     },
     // 重置密码弹框
     resetpassword(row) {
+      console.log(row, "-----重置密码弹框的数据");
       this.$confirm(
         "此操作将重置该用户的登录密码, 是否继续?",
         "重置用户登录密码",
@@ -376,10 +392,13 @@ export default {
         }
       )
         .then(() => {
-          console.log(row.id,"---------row.id");
+          console.log(row, "---------row");
+          let data = {};
+          data.userId = row.id;
           // 点击确认，发起后台请求，
-          resetPassword(row.id).then((res) => {
-            console.log(res,"-------重置密码");
+          console.log(data, "----重置密码传入的内容----");
+          resetPassword(data, data.userId).then((res) => {
+            console.log(res, "-------重置密码");
             // console.log(res, "点击确认，发起后台请求");
             // if (res.code == "00000") {
             //   return this.$message({
@@ -450,7 +469,7 @@ export default {
 };
 </script>
 
-<style lang='less'>
+<style lang='less' scoped>
 .btn-custom-cancel {
   float: right;
   margin-left: 10px;
@@ -474,7 +493,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

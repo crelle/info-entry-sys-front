@@ -180,9 +180,9 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, "data---------");
+          // console.log(data, "data---------");
           queryRole(data).then((res) => {
-            console.log(res, "res++++++++++");
+            // console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               // this.resetForm("queryRoleRef"); // 重置表单
               this.tableData = res.data.records; // 表格数据赋值
@@ -213,13 +213,14 @@ export default {
                 type: "success",
                 message: "删除成功!",
               });
-            } else {
-              this.queryRoles();
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
             }
+            // else {
+            //   this.queryRoles();
+            //   this.$message({
+            //     type: "success",
+            //     message: "删除失败!",
+            //   });
+            // }
           });
         })
         .catch(() => {
@@ -313,7 +314,7 @@ export default {
   width: 267px;
 }
 .demo-form-inline {
-  min-width: 500px;
+  // min-width: 500px;
 }
 @media screen and (min-width: 800px) {
   ::v-deep .el-card__body::-webkit-scrollbar {
@@ -321,7 +322,7 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  overflow-x: scroll;
+  // overflow-x: scroll;
 
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;

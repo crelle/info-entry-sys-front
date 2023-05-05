@@ -105,6 +105,7 @@ import { updateUser, addUser } from "@/api/user";
 export default {
   props: {
     toChild: String,
+    // queryRoleData: "",
     queryRoleData: "",
   },
   data() {
@@ -129,7 +130,7 @@ export default {
           },
         ],
       },
-      initFormData: {},
+      initFormData: [],
       userEditFormRules: {
         username: [
           {
@@ -155,7 +156,7 @@ export default {
         ],
         userNickName: [
           {
-            required: false,
+            required: true,
             message: "请输入姓名",
             trigger: ["blur", "change"],
           },
@@ -190,7 +191,7 @@ export default {
 
         userEmail: [
           {
-            required: false,
+            required: true,
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
@@ -233,7 +234,7 @@ export default {
 
         roles: [
           {
-            required: false,
+            required: true,
             message: "请选择权限",
             trigger: ["blur", "change"],
           },
@@ -252,8 +253,10 @@ export default {
   methods: {
     // 弹窗
     openDialog(row) {
-      console.log(row, "ROW");
+      console.log(row, "---ROW---", this.queryRoleData);
       this.dialogFormVisible = true; // 让弹窗显示
+      this.userEditForm.id = "";
+      this.initFormData = {};
       if (row) {
         this.initFormData = row;
         this.$nextTick(() => {
@@ -262,6 +265,7 @@ export default {
         });
       } else {
         console.log("我是新增");
+        this.userEditForm.roles[0].nameZh = "";
       }
     },
     initForm(data) {
@@ -271,6 +275,7 @@ export default {
     },
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置
+      this.dialogClose(); // 取消触发
       this.resetForm("userEditRef"); // 重置表单
     },
     // 取消
@@ -294,28 +299,27 @@ export default {
     /* 保存  */
     onCertain() {
       this.queryRoleData.forEach((item) => {
-        // console.log(item,"--------循环的item");
-        // console.log(this.userEditForm.roles[0].id,"------选择的id");
         if (this.userEditForm.roles[0].nameZh == item.nameZh) {
-          // console.log(item, "==============xtq");
           this.userEditForm.roles[0] = item;
-          // console.log(this.userEditForm.roles[0], "------roles[0]-----");
-          // console.log(this.userEditForm, "------roles-----");
         }
       });
+      console.log(this.initFormData.id, "------修改 有 创建无------");
       if (this.initFormData.id) {
         this.userEditForm.id = this.initFormData.id;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            // console.log(this.userEditForm, "--传入的东西0");
+            console.log(this.userEditForm, "--传入的东西0");
             updateUser(this.userEditForm, this.userEditForm.id).then((res) => {
               // console.log(res, "----res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
-                // this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显
+                this.dialogClose();
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; // 让弹窗隐
+                });
               }
             });
           } else {
@@ -332,15 +336,16 @@ export default {
             "增加了的内容"
           );
           if (valid) {
-            addUser(this.userEditForm, this.userEditForm.roles).then((res) => {
+            addUser(this.userEditForm).then((res) => {
               console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
-                // this.$parent.resetForm();
-                // this.nowIndex = -1; // 重置选中
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显示
+                this.$nextTick(() => {
+                  // 这个要加上
+                  this.$parent.queryUserList();
+                  this.dialogFormVisible = false; 
+                });
               }
             });
           } else {
@@ -358,9 +363,9 @@ export default {
   display: none;
 }
 ::v-deep .el-form-item__label {
-    padding-right: 0 !important;
+  padding-right: 0 !important;
 }
-::v-deep .el-dialog{
+::v-deep .el-dialog {
   min-width: 300px;
 }
 </style>

@@ -3,9 +3,10 @@
     <el-dialog
       :title="toChild"
       :visible.sync="dialogFormVisible"
-      :close-on-click-modal='false'
+      :close-on-click-modal="false"
       lock-scroll
       @close="closeDialog"
+      @open="onOpenDialog"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -54,11 +55,12 @@
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
-                <el-form-item label="菜单顺序" prop="menuSort">
+                <el-form-item label="菜单顺序">
                   <el-input
                     type="text"
                     v-model="userEditForm.menuSort"
                     placeholder="菜单顺序"
+                    :disabled="false"
                     ><i class="el-icon-message" slot="prepend"></i
                   ></el-input>
                 </el-form-item>
@@ -70,7 +72,9 @@
                   <el-switch
                     v-model="userEditForm.enabled"
                     active-text="可用"
+                    active-value="1"
                     inactive-text="不可用"
+                    inactive-value="0"
                   >
                   </el-switch>
                 </el-form-item>
@@ -82,7 +86,9 @@
                   <el-switch
                     v-model="userEditForm.requireAuth"
                     active-text="未鉴权"
+                    active-value="1"
                     inactive-text="鉴权"
+                    inactive-value="0"
                   ></el-switch>
                 </el-form-item>
               </el-form>
@@ -103,7 +109,7 @@
 </template>
 
 <script>
-import { modifyTheMenu, createMenu } from "@/api/menu";
+import { modifyTheMenu, createMenu, getMenuSort } from "@/api/menu";
 
 export default {
   props: {
@@ -127,8 +133,8 @@ export default {
         path: "",
         requireAuth: true,
         url: "",
-        menuSort:"",
-        parentId:""
+        menuSort: "",
+        parentId: "",
       },
       initFormData: {},
       userEditFormRules: {
@@ -176,13 +182,6 @@ export default {
             trigger: ["blur", "change"],
           },
         ],
-        menuSort: [
-          {
-            required: true,
-            message: "请填写菜单顺序",
-            trigger: ["blur", "change"],
-          },
-        ],
         iconLs: [
           {
             required: false,
@@ -207,12 +206,18 @@ export default {
         console.log("我是新增");
       }
     },
+    onOpenDialog() {
+      getMenuSort().then((res) => {
+        console.log(res, "-------res");
+        if (res && res.code && res.code === "00000") {
+          this.userEditForm.menuSort = res.data;
+        }
+      });
+    },
     initForm(data) {
-     
       Object.keys(this.userEditForm).forEach((item) => {
         // console.log(Object.keys(this.userEditForm),'------------1');
         this.userEditForm[item] = data[item] ? data[item] : null;
-        
       });
       // console.log(this.userEditForm, '------------');
     },

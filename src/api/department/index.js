@@ -8,11 +8,11 @@ const establishDepartments = (data) =>
     url: BaseURL + "/app/department/create",
     data,
   });
-// 分页查询部门
+// 手动分页查询部门
 const queryDepartments = (data) =>
   Request({
     method: "post",
-    url: BaseURL + "/app/department/pageByCondition",
+    url: BaseURL + "/app/department/manualPage",
     data,
   });
 //查询上级部门

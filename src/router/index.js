@@ -24,7 +24,7 @@ const routes = [
       {
         path: "firstscreen",
         name: "firstscreen",
-        component: () => import("@/views/otherview/FirstScreen.vue"),
+        component: () => import("@/views/app/large-screen/components/largeScreen.vue"),
         meta: {
           title: "概览首屏",
         },
@@ -53,22 +53,7 @@ const routes = [
           title: "用户管理",
         },
       },
-      {
-        path: "region",
-        name: "regions",
-        component: () => import("@/views/sysmanage/region/index.vue"),
-        meta: {
-          title: "地域管理",
-        },
-      },
-      {
-        path: "department",
-        name: "departments",
-        component: () => import("@/views/sysmanage/department/index.vue"),
-        meta: {
-          title: "部门管理",
-        },
-      },
+
       {
         path: "menu",
         name: "menus",
@@ -77,28 +62,51 @@ const routes = [
           title: "菜单管理",
         },
       },
+
+      {
+        path: "personalInformation",
+        name: "personalInformation",
+        component: () =>
+          import("@/views/sysmanage/personal-information/index.vue"),
+        meta: {
+          title: "个人信息",
+        },
+      },
+      {
+        path: "dictionary",
+        name: "dictionary",
+        component: () => import("@/views/sysmanage/dictionary/Dictionary.vue"),
+        meta: {
+          title: "字典",
+        },
+      }
+    ],
+  },
+  {
+    path: "/app",
+    name: "app",
+    component: Home,
+    children: [
+      {
+        path: "employeeAsset",
+        name: "employeeAssets",
+        component: () => import("@/views/app/employee-asset/EmployeeAsset.vue"),
+        meta: {
+          title: "员工信息",
+        },
+      },
       {
         path: "customer",
         name: "customers",
-        component: () => import("@/views/discipline/customer/index.vue"),
+        component: () => import("@/views/app/customer/index.vue"),
         meta: {
           title: "客户管理",
         },
-        // children: [
-        //   {
-        //     path: 'details',
-        //     name: 'details',
-        //     component: () => import('@/views/discipline/maths/newly_build/details.vue'),
-        //     meta: {
-        //       title: "详情"
-        //     }
-        //   },
-        // ]
       },
       {
         path: "interface",
         name: "interfaces",
-        component: () => import("@/views/discipline/interface/index.vue"),
+        component: () => import("@/views/app/interface/index.vue"),
         meta: {
           title: "接口人管理",
         },
@@ -106,7 +114,7 @@ const routes = [
       {
         path: "project",
         name: "projects",
-        component: () => import("@/views/discipline/project/index.vue"),
+        component: () => import("@/views/app/project/index.vue"),
         meta: {
           title: "项目管理",
         },
@@ -114,37 +122,46 @@ const routes = [
       {
         path: "post",
         name: "posts",
-        component: () => import("@/views/discipline/post/index.vue"),
+        component: () => import("@/views/app/post/index.vue"),
         meta: {
           title: "项目管理",
         },
       },
       {
-        path: "plant",
-        name: "plants",
-        component: () => import("@/views/biological/plants/index.vue"),
+        path: "employeeInformation",
+        name: "employeeInformation",
+        component: () => import("@/views/app/employee-information/index.vue"),
         meta: {
-          title: "植物",
+          title: "员工信息",
         },
       },
       {
-        path: "animal",
-        name: "animals",
-        component: () => import("@/views/biological/animals/index.vue"),
+        path: "region",
+        name: "regions",
+        component: () => import("@/views/app/region/index.vue"),
         meta: {
-          title: "动物",
+          title: "地域管理",
         },
       },
       {
-        path: "plan",
-        name: "plans",
-        component: () => import("@/views/plans/index.vue"),
+        path: "department",
+        name: "departments",
+        component: () => import("@/views/app/department/index.vue"),
         meta: {
-          title: "个人信息",
+          title: "部门管理",
         },
       },
+      // {
+      //   path: "largeScreen",
+      //   name: "largeScreens",
+      //   component: () => import("@/views/app/large-screen/index.vue"),
+      //   meta: {
+      //     title: "管理大屏",
+      //   },
+      // },
     ],
   },
+
 ];
 
 const router = new VueRouter({

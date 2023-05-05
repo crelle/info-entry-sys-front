@@ -21,6 +21,7 @@ const queryUser = (data) =>
   Request({
     method: "post",
     url: BaseURL + "/sysmgmt/user/page",
+    // url: BaseURL + "/sysmgmt/user/manualPage",
     data,
   });
 
@@ -31,19 +32,25 @@ const updateUser = (data, id) =>
     url: `${BaseURL}/sysmgmt/user/update/${id}`,
     data,
   });
-
+// 重置密码
+const resetPassword = (data, id) =>
+  Request({
+    method: "put",
+    url: `${BaseURL}/sysmgmt/user/resetPassword/${id}`,
+    data,
+  });
+// // 重置密码
+// const resetPassword = (data) =>
+//   Request({
+//     method: "put",
+//     url: BaseURL + "/sysmgmt/user/resetPassword",
+//     data,
+//   });
 // 新增用户
 const addUser = (data) =>
   Request({
     method: "post",
     url: BaseURL + "/sysmgmt/user/create",
-    data,
-  });
-// 重置密码
-const resetPassword = (data) =>
-  Request({
-    method: "put",
-    url: BaseURL + "/sysmgmt/user/resetPassword",
     data,
   });
 

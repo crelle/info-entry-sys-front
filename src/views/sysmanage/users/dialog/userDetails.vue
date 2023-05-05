@@ -16,7 +16,7 @@
                 <div class="userbox">
                   <ul class="lis">
                     <li>
-                      <span>姓名:</span><span>{{}}</span>
+                      <span>姓名:</span><span>{{userEditForm.userNickName}}</span>
                     </li>
                     <li>
                       <span>手机号 :</span

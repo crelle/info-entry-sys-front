@@ -43,7 +43,7 @@ export default {
   methods: {
     onMove(e) {
       if (
-         e.relatedContext.element &&
+        e.relatedContext.element &&
         e.draggedContext.element.childrenMenus.length > 0 &&
         e.relatedContext.element.childrenMenus.length == 0
       ) {
