@@ -146,28 +146,28 @@ export default {
         if (valid) {
           if (this.dynamicValidateForm.id) {
             console.log(this.dynamicValidateForm, "编辑的内容---");
-            // editDic(this.dynamicValidateForm).then((res) => {
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message({
-            //       type: "success",
-            //       message: "编辑成功!",
-            //     });
-            //     this.dialogVisible = false;
-            //     this.$parent.onSubmit();
-            //   }
-            // });
+            editDic(this.dynamicValidateForm).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.$message({
+                  type: "success",
+                  message: "编辑成功!",
+                });
+                this.dialogVisible = false;
+                this.$parent.onSubmit();
+              }
+            });
           } else {
             console.log(this.dynamicValidateForm, "新增的内容---");
-            // createDic(this.dynamicValidateForm).then((res) => {
-            //   if (res && res.code && res.code === "00000") {
-            //     this.$message({
-            //       type: "success",
-            //       message: "新增成功!",
-            //     });
-            //     this.dialogVisible = false;
-            //     this.$parent.onSubmit();
-            //   }
-            // });
+            createDic(this.dynamicValidateForm).then((res) => {
+              if (res && res.code && res.code === "00000") {
+                this.$message({
+                  type: "success",
+                  message: "新增成功!",
+                });
+                this.dialogVisible = false;
+                this.$parent.onSubmit();
+              }
+            });
           }
         } else {
           return false;

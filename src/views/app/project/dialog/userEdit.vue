@@ -33,9 +33,10 @@
                     filterable
                     placeholder="请选择项目状态"
                   >
-                    <el-option label="前期投入" value="1"></el-option>
+                  <el-option v-for="(item,i) in $dictionaryList('项目状态')" :key="i" :label="item.name" :value="item.id"></el-option>
+                    <!-- <el-option label="前期投入" value="1"></el-option>
                     <el-option label="开发中" value="2"></el-option>
-                    <el-option label="交付阶段" value="3"></el-option>
+                    <el-option label="交付阶段" value="3"></el-option> -->
                   </el-select>
                 </el-form-item>
                 <el-form-item label="立项时间" prop="time">
@@ -55,12 +56,13 @@
                     clearable
                     filterable
                   >
-                    <el-option
+                  <el-option v-for="(item,i) in $dictionaryList('区域')" :key="i" :label="item.name" :value="item.id"></el-option>
+                    <!-- <el-option
                       v-for="item in MockUser"
                       :key="item.index"
                       :label="item.name"
                       :value="item.id"
-                    ></el-option>
+                    ></el-option> -->
                   </el-select>
                 </el-form-item>
                 <el-form-item label="接口人" prop="interfaceData">
@@ -100,8 +102,9 @@
                     placeholder="请选择合作模式"
                     clearable
                   >
-                    <el-option label="TM" value="TM"></el-option>
-                    <el-option label="OD" value="OD"></el-option>
+                  <el-option v-for="(item,i) in $dictionaryList('合作模式')" :key="i" :label="item.name" :value="item.id"></el-option>
+                    <!-- <el-option label="TM" value="TM"></el-option>
+                    <el-option label="OD" value="OD"></el-option> -->
                   </el-select>
                 </el-form-item>
                 <el-form-item label="介绍" prop="introduce">
@@ -328,13 +331,13 @@ export default {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            if (this.userEditForm.status == "开发中") {
-              this.userEditForm.status = 1;
-            } else if (this.userEditForm.status == "前期投入") {
-              this.userEditForm.status = 2;
-            } else if (this.userEditForm.status == "交付阶段") {
-              this.userEditForm.status = 3;
-            }
+            // if (this.userEditForm.status == "开发中") {
+            //   this.userEditForm.status = 1;
+            // } else if (this.userEditForm.status == "前期投入") {
+            //   this.userEditForm.status = 2;
+            // } else if (this.userEditForm.status == "交付阶段") {
+            //   this.userEditForm.status = 3;
+            // }
             console.log(this.userEditForm, "----保存传递的内容");
             editProject(this.userEditForm, this.userEditForm.id).then((res) => {
               console.log(res, "---编辑调取了接口");
