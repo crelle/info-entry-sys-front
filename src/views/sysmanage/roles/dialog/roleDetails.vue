@@ -12,12 +12,12 @@
         <el-row style="height: 100%">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form :model="userEditForm" ref="userEditRef" size="mini">
+              <el-form :model="roleEditForm" ref="roleEditRef" size="mini">
                 <div class="regionbox">
                   <ul>
                     <li>
                       <span>角色名称 : </span>
-                      <span>{{ userEditForm.nameZh }}</span>
+                      <span>{{ roleEditForm.nameZh }}</span>
                     </li>
                   </ul>
                   <span>角色权限配置</span>
@@ -163,7 +163,7 @@ export default {
       imageUrl: "",
       nowIndex: -1,
       // baseURL: BaseURL,
-      userEditForm: {
+      roleEditForm: {
         nameZh: "",
       },
       initFormData: {},
@@ -171,13 +171,13 @@ export default {
   },
   methods: {
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
+      console.log(this.roleEditForm, "001001");
 
       this.datas = [];
       if (row) {
         this.initFormData = row;
         // 查询菜单
-        let data = { records: [{ ...this.userEditForm }] };
+        let data = { records: [{ ...this.roleEditForm }] };
         data.id = this.initFormData.id;
         console.log(data, "---查询角色菜单data---------");
         queryRoleMenu(data).then((res) => {
@@ -197,23 +197,23 @@ export default {
       }
     },
     initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
+      Object.keys(this.roleEditForm).forEach((item) => {
+        this.roleEditForm[item] = data[item] ? data[item] : null;
       });
     },
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
+      this.resetForm("roleEditRef"); // 重置表单
     },
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "确定231确定3131");
+      console.log(this.roleEditForm, "确定231确定3131");
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
+      this.initForm(this.roleEditForm);
       this.resetFormData();
     },
 
