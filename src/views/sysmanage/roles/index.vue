@@ -6,7 +6,6 @@
       <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
     <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         :inline="true"

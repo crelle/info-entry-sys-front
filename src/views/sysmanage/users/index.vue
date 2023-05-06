@@ -6,7 +6,6 @@
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
     <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         :inline="true"
@@ -399,82 +398,24 @@ export default {
 </script>
 
 <style lang='less' scoped>
-/*最外层透明*/
-/deep/ .el-table,
-/deep/ .el-table__expanded-cell {
-  background-color: transparent !important;
-  color: #fff;
-}
-/* 表格内背景颜色 */
-/deep/ .el-table th,
-/deep/ .el-table tr,
-/deep/ .el-table td {
-  background-color: transparent !important;
-}
-/deep/ .el-table tr {
-  &:nth-child(even) {
-    background-color: rgba(28, 53, 78, 0.7) !important;
-  }
-}
-/deep/ .el-table th {
-  color: #71cdf9;
-  background-color: rgba(20, 53, 110, 0.7) !important;
-}
-.operate-btn {
-  margin: 0 4px;
-  cursor: pointer;
-  color: #4776cb;
-  &:nth-child(1) {
-    margin-left: 0;
-  }
-}
-/deep/ .el-card {
-  border: none;
-}
-/deep/ .el-pagination,
-/deep/ .el-pagination__jump,
-/deep/ .el-input__inner,
-/deep/ .el-pager li.active,
-/deep/ .el-pagination__total {
-  color: #fff;
-}
-.card-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  > img {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-  }
+/deep/ .el-dialog {
+  background-color: rgba(12, 21, 37, 0.9);
   .el-form-item__label {
     color: #fff;
   }
 }
-/deep/ .el-input {
-  width: 83%;
-  color: #70757e;
+/deep/ .el-dialog__title {
+  background-image: linear-gradient(to bottom, #d8e2ff, #a2c5ff);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-style: italic;
 }
-/**
-改变边框颜色
- */
-/deep/ .el-table--border,
-/deep/ .el-table--group {
-  border: 1px solid #0f3961 !important;
+/deep/ .el-button--primary {
+  background: url(../../../assets/img/dialog/tc-button1.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
-/**
-改变表格内行线颜色
- */
-/deep/ .el-table td,
-/deep/ .el-table th.is-leaf {
-  border-bottom: 1px solid #0f3961 !important;
-}
-/deep/ .el-table::before,
-/deep/ .el-table__fixed-right::before,
-/deep/ .el-table__fixed::before {
-  content: none;
-}
-
 .btn-custom-cancel {
   float: right;
   margin-left: 10px;
@@ -482,7 +423,6 @@ export default {
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {
-  // text-align: center;
   line-height: 36.9px;
 }
 ::v-deep .el-col-4 {
@@ -498,8 +438,6 @@ export default {
   }
 }
 ::v-deep .el-card__body {
-  // overflow-x: scroll;
-
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }
@@ -510,17 +448,10 @@ export default {
 ::v-deep .el-pagination {
   margin: 10px 0;
 }
-// ::v-deep .el-form-item__label {
-//   color: #fff;
-//   // padding-right: 20px;
-// }
 .el-form-item {
   width: 261px;
 }
 ::v-deep .el-col-5 {
   overflow: hidden;
-}
-.demo-form-inline {
-  // min-width: 1300px;
 }
 </style>
