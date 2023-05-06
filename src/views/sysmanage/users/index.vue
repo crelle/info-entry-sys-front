@@ -398,6 +398,24 @@ export default {
 </script>
 
 <style lang='less' scoped>
+/deep/ .el-dialog {
+  background-color: rgba(12, 21, 37, 0.9);
+  .el-form-item__label {
+    color: #fff;
+  }
+}
+/deep/ .el-dialog__title {
+  background-image: linear-gradient(to bottom, #d8e2ff, #a2c5ff);
+  -webkit-background-clip: text;
+  color: transparent;
+  font-style: italic;
+}
+/deep/ .el-button--primary {
+  background: url(../../../assets/img/dialog/tc-button1.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+}
 .btn-custom-cancel {
   float: right;
   margin-left: 10px;
