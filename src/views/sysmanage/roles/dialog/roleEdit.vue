@@ -13,15 +13,15 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form
-                :model="userEditForm"
-                :rules="userEditFormRules"
-                ref="userEditRef"
+                :model="roleEditForm"
+                :rules="roleEditFormRules"
+                ref="roleEditRef"
                 size="mini"
               >
                 <el-form-item style="display: none" label="id" prop="id">
                   <el-input
                     type="text"
-                    v-model="userEditForm.id"
+                    v-model="roleEditForm.id"
                     placeholder="ID"
                     clearable
                   ></el-input>
@@ -29,7 +29,7 @@
                 <el-form-item label="角色名称" prop="nameZh">
                   <el-input
                     type="text"
-                    v-model="userEditForm.nameZh"
+                    v-model="roleEditForm.nameZh"
                     placeholder="角色名称"
                     clearable
                   ></el-input>
@@ -37,7 +37,7 @@
                 <el-form-item label="英文名称" prop="name">
                   <el-input
                     type="text"
-                    v-model="userEditForm.name"
+                    v-model="roleEditForm.name"
                     placeholder="请以  ROLE_  开头"
                     clearable
                   ></el-input>
@@ -127,14 +127,14 @@ export default {
         fileType: 0,
       },
       nowIndex: -1,
-      userEditForm: {
+      roleEditForm: {
         id: "",
         nameZh: "",
         name: "",
         menus: [],
       },
       initFormData: {},
-      userEditFormRules: {
+      roleEditFormRules: {
         nameZh: [
           {
             required: true,
@@ -174,7 +174,7 @@ export default {
     },
     openDialog(row) {
       this.dialogFormVisible = true; // 让弹窗显示
-      this.userEditForm.id = "";
+      this.roleEditForm.id = "";
       this.initFormData = {};
       if (row) {
         this.initFormData = row;
@@ -182,14 +182,13 @@ export default {
         this.$nextTick(() => {
           // 这个要加上
           this.initForm(row); // 为表单赋值
-
           //查询菜单名字
           queryMenuAll().then((res) => {
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data; // 表格数据赋值
               console.log(this.tableData, "----所有菜单---");
-              let data = { records: [{ ...this.userEditForm }] };
-              data.id = this.userEditForm.id;
+              let data = { records: [{ ...this.roleEditForm }] };
+              data.id = this.roleEditForm.id;
               console.log(data, "---查询角色菜单data---------");
               // 查询 菜单当前是否选中
               queryRoleMenu(data).then((res) => {
@@ -219,14 +218,15 @@ export default {
       }
     },
     initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
+      Object.keys(this.roleEditForm).forEach((item) => {
+        this.roleEditForm[item] = data[item] ? data[item] : null;
       });
     },
     // 弹窗执行了
     closeDialog() {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
+      this.resetForm("roleEditRef"); // 重置表单
+      this.resetChecked();
     },
     // 取消
     dialogClose() {
@@ -235,7 +235,7 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
+      this.initForm(this.roleEditForm);
       this.resetFormData();
     },
     // 初始化页面数据 重置
@@ -256,15 +256,15 @@ export default {
       // );
       console.log(this.initFormData.id, "---新增无 ---修改有---");
       if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
+        this.roleEditForm.id = this.initFormData.id;
+        this.initFormData = this.roleEditForm;
         // console.log(this.initFormData, "----保存de 内容");
         // 修改
-        this.$refs["userEditRef"].validate((valid) => {
+        this.$refs["roleEditRef"].validate((valid) => {
           // console.log(valid, "修改的valid");
           if (valid) {
-            // console.log(this.userEditForm, "---修改传递的内容111111111----");
-            updateRole(this.userEditForm, this.userEditForm.id).then((res) => {
+            // console.log(this.roleEditForm, "---修改传递的内容111111111----");
+            updateRole(this.roleEditForm, this.roleEditForm.id).then((res) => {
               // console.log(res, "-----------角色菜单名称修改");
               if (res && res.code && res.code === "00000") {
                 this.dialogClose();
@@ -272,19 +272,19 @@ export default {
               }
             });
 
-            (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
+            (this.roleEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
               // 赋值父级菜单
               this.$refs.tree_n.getHalfCheckedNodes().forEach((item) => {
-                this.userEditForm.menus.push(item);
+                this.roleEditForm.menus.push(item);
               });
 
-            // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+            // (this.roleEditForm.menus = Array.from(this.roleEditForm.menus));
             console.log(
-              this.userEditForm,
-              this.userEditForm.menus,
+              this.roleEditForm,
+              this.roleEditForm.menus,
               "---修改传递的内容22222222----"
             );
-            updateRoleMenu(this.userEditForm).then((res) => {
+            updateRoleMenu(this.roleEditForm).then((res) => {
               // console.log(res, "-----------角色菜单权限修改");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
@@ -298,22 +298,22 @@ export default {
         });
       } else {
         console.log("增加了...");
-        this.$refs["userEditRef"].validate((valid) => {
+        this.$refs["roleEditRef"].validate((valid) => {
           if (valid) {
             // console.log(this.$refs.tree_n.getHalfCheckedNodes(),"--------------xz");
-            //   this.userEditForm.menus.push(this.$refs.tree_n.getHalfCheckedNodes()),
-            (this.userEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
+            //   this.roleEditForm.menus.push(this.$refs.tree_n.getHalfCheckedNodes()),
+            (this.roleEditForm.menus = this.$refs.tree_n.getCheckedNodes()),
               // 赋值父级菜单
               this.$refs.tree_n.getHalfCheckedNodes().forEach((item) => {
-                this.userEditForm.menus.push(item);
+                this.roleEditForm.menus.push(item);
               });
-            // (this.userEditForm.menus = Array.from(this.userEditForm.menus));
+            // (this.roleEditForm.menus = Array.from(this.roleEditForm.menus));
             console.log(
-              this.userEditForm,
+              this.roleEditForm,
               "---增加传递的内容-----菜单----",
-              this.userEditForm.menus
+              this.roleEditForm.menus
             );
-            addRole(this.userEditForm).then((res) => {
+            addRole(this.roleEditForm).then((res) => {
               // console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 console.log("成功增加--用户！");
