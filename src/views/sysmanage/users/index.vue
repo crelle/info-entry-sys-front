@@ -59,20 +59,13 @@
                   v-for="item in queryRoleData"
                   :key="item.index"
                   :label="item.nameZh"
-                  :value="item.id"
+                  :value="item.name"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col
             :span="4"
-            :class="
-              Object.keys(formOptions).length % 3 === 0
-                ? 'nextline_action_button_content'
-                : Object.keys(formOptions).length % 3 === 1
-                ? 'inline2_action_button_content'
-                : 'inline1_action_button_content'
-            "
           >
             <el-form-item>
               <el-button class="header-btn" type="primary" @click="resetForm('userQueryRef')"
@@ -100,10 +93,9 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         stripe
         size="mini"
-        height="550"
+        :height="tableHeight"
       >
         <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
         <el-table-column
@@ -235,7 +227,7 @@ export default {
   data () {
     return {
       list: "",
-      tableHeight:window.innerHeight-418,
+      tableHeight:window.innerHeight>=908?550:window.innerHeight-418,
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -265,12 +257,9 @@ export default {
   methods: {
     //手动 查询用户列表
     queryUserListclick() {
-      this.$refs["userQueryRef"].validate((valid) => {
-        if (valid) {
           this.paginationOptions.pageNo = 1;
           this.queryUserList();
-    }})},
-
+    },
     // 查询用户列表
     queryUserList () {
       console.log(this.formOptions.roles, "----------角色地=id---");
@@ -387,10 +376,6 @@ export default {
     resetForm (formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
-    },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
     handleSizeChange (val) {
