@@ -5,7 +5,9 @@
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>用户管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <div class="card-container">
+      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
+    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         :inline="true"
         :model="formOptions"
@@ -41,13 +43,13 @@
                 placeholder="请选择状态"
                 prop="enabled"
               >
-                <el-option v-for="(item,i) in $dictionaryList('状态')" :key="i" :label="item.name" :value="item.code"></el-option>
-                
+                <el-option label="启用" :value="true"></el-option>
+                <el-option label="禁用" :value="false"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col :span="5">
-            <el-form-item label="角色" prop="roles[0].id">
+            <el-form-item label="角色" prop="roleName">
               <el-select
                 v-model="formOptions.roleName"
                 placeholder="请选择角色"
@@ -55,41 +57,54 @@
                 filterable
               >
                 <el-option
-                v-for="item in queryRoleData"
+                  v-for="item in queryRoleData"
                   :key="item.index"
                   :label="item.nameZh"
-                  :value="item.name"
+                  :value="item.id"
                 ></el-option>
               </el-select>
             </el-form-item>
           </el-col>
           <el-col
             :span="4"
+            :class="
+              Object.keys(formOptions).length % 3 === 0
+                ? 'nextline_action_button_content'
+                : Object.keys(formOptions).length % 3 === 1
+                ? 'inline2_action_button_content'
+                : 'inline1_action_button_content'
+            "
           >
             <el-form-item>
-              <el-button type="primary" @click="resetForm('userQueryRef')"
-                >重置</el-button
+              <el-button class="header-btn" type="primary" @click="resetForm('userQueryRef')"
+                >
+                <img src="../../../assets/img/globalTable/icon2-reset.png" alt="">
+                重置</el-button
               >
-              <el-button type="primary" @click="queryUserListclick"
-                >查询</el-button
+              <el-button class="header-btn" type="primary" @click="queryUserListclick"
+                >
+                <img src="../../../assets/img/globalTable/icon1-search.png" alt="">
+                查询</el-button
               >
-              <el-button type="primary" @click="addClick">新增</el-button>
+              <el-button class="header-btn" type="primary" @click="addClick">
+                <img src="../../../assets/img/globalTable/icon3-add.png" alt="">
+                新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </el-card>
 
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        border
+        @selection-change="handleSelectionChange"
         stripe
         size="mini"
-        :height="tableHeight"
+        height="550"
       >
         <!-- <el-table-column type="selection" width="55" fixed> </el-table-column> -->
         <el-table-column
@@ -152,37 +167,36 @@
           min-width="80"
         >
           <template slot-scope="scope">
-            <el-tag
-              type="primary"
-              disable-transitions
+            <span
               v-for="item in scope.row.roles"
               :key="item.id"
-              >{{ item.nameZh }}</el-tag
+              >{{ item.nameZh }}</span
             >
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="310">
           <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >查看</el-button
+            <span class="operate-btn" @click="detailsClick(row)" type="primary" size="mini"
+              >查看</span
             >
-            <el-button @click="handleClick(row)" type="primary" size="mini"
-              >编辑</el-button
+            <span class="operate-btn" @click="handleClick(row)" type="primary" size="mini"
+              >编辑</span
             >
-            <el-button
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
-            <el-button @click="resetpassword(row)" type="primary" size="mini"
-              >重置密码</el-button
+            </span>
+            <span class="operate-btn" @click="resetpassword(row)" type="primary" size="mini"
+              >重置密码</span
             >
           </template>
         </el-table-column>
       </el-table>
       <div class="block">
+        <!-- <span class="demonstration">完整功能</span> -->
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -196,6 +210,7 @@
         </el-pagination>
       </div>
     </el-card>
+    </div>
     <user-edit-dialog
       :toChild="list"
       :queryRoleData="queryRoleData"
@@ -218,7 +233,7 @@ export default {
     userEditDialog,
     userDaitDialog,
   },
-  data() {
+  data () {
     return {
       list: "",
       tableHeight:window.innerHeight-418,
@@ -255,19 +270,21 @@ export default {
       rules: {},
     };
   },
-  mounted() {
+  mounted () {
     this.queryUserList();
     this.permissionList()
   },
   methods: {
     //手动 查询用户列表
     queryUserListclick() {
+      this.$refs["userQueryRef"].validate((valid) => {
+        if (valid) {
           this.paginationOptions.pageNo = 1;
           this.queryUserList();
-    },
+    }})},
 
     // 查询用户列表
-    queryUserList() {
+    queryUserList () {
       console.log(this.formOptions.roles, "----------角色地=id---");
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
@@ -297,7 +314,7 @@ export default {
             });
     },
     // 删除弹框
-    deleteMenu(row, index) {
+    deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "删除用户", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -332,7 +349,7 @@ export default {
         });
     },
     // 重置密码弹框
-    resetpassword(row) {
+    resetpassword (row) {
       console.log(row, "-----重置密码弹框的数据");
       this.$confirm(
         "此操作将重置该用户的登录密码, 是否继续?",
@@ -375,50 +392,130 @@ export default {
         });
     },
     // 添加
-    addClick() {
+    addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加用户";
       console.log("我要添加");
     },
     // 编辑
-    handleClick(row) {
+    handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑用户信息";
       console.log("编辑----", row);
     },
     // 详情
-    detailsClick(row) {
+    detailsClick (row) {
       console.log("详情", row);
       this.list = "查看用户详情";
       this.$refs.userDaitDialogRef.openDialog(row);
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
+    // 表格复选动作
+    handleSelectionChange(val) {
+      this.multipleSelection = val;
+    },
     // 分页器 页容量变更行为
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },
     // 分页器 页码变更行为
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +
         1
       );
     },
-  },
-};
+  }
+}
 </script>
 
 <style lang='less' scoped>
+/*最外层透明*/
+/deep/ .el-table,
+/deep/ .el-table__expanded-cell {
+  background-color: transparent !important;
+  color: #fff;
+}
+/* 表格内背景颜色 */
+/deep/ .el-table th,
+/deep/ .el-table tr,
+/deep/ .el-table td {
+  background-color: transparent !important;
+}
+/deep/ .el-table tr {
+  &:nth-child(even) {
+    background-color: rgba(28, 53, 78, 0.7) !important;
+  }
+}
+/deep/ .el-table th {
+  color: #71cdf9;
+  background-color: rgba(20, 53, 110, 0.7) !important;
+}
+.operate-btn {
+  margin: 0 4px;
+  cursor: pointer;
+  color: #4776cb;
+  &:nth-child(1) {
+    margin-left: 0;
+  }
+}
+/deep/ .el-card {
+  border: none;
+}
+/deep/ .el-pagination,
+/deep/ .el-pagination__jump,
+/deep/ .el-input__inner,
+/deep/ .el-pager li.active,
+/deep/ .el-pagination__total {
+  color: #fff;
+}
+.card-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  > img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+  }
+  .el-form-item__label {
+    color: #fff;
+  }
+}
+/deep/ .el-input {
+  width: 83%;
+  color: #70757e;
+}
+/**
+改变边框颜色
+ */
+/deep/ .el-table--border,
+/deep/ .el-table--group {
+  border: 1px solid #0f3961 !important;
+}
+/**
+改变表格内行线颜色
+ */
+/deep/ .el-table td,
+/deep/ .el-table th.is-leaf {
+  border-bottom: 1px solid #0f3961 !important;
+}
+/deep/ .el-table::before,
+/deep/ .el-table__fixed-right::before,
+/deep/ .el-table__fixed::before {
+  content: none;
+}
+
 .btn-custom-cancel {
   float: right;
   margin-left: 10px;
@@ -426,7 +523,7 @@ export default {
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {
-  text-align: center;
+  // text-align: center;
   line-height: 36.9px;
 }
 ::v-deep .el-col-4 {
@@ -454,9 +551,10 @@ export default {
 ::v-deep .el-pagination {
   margin: 10px 0;
 }
-::v-deep .el-form-item__label {
-  padding-right: 25px;
-}
+// ::v-deep .el-form-item__label {
+//   color: #fff;
+//   // padding-right: 20px;
+// }
 .el-form-item {
   width: 261px;
 }
@@ -464,6 +562,6 @@ export default {
   overflow: hidden;
 }
 .demo-form-inline {
-  min-width: 1300px;
+  // min-width: 1300px;
 }
 </style>

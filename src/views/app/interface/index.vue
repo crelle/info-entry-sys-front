@@ -4,154 +4,178 @@
       <el-breadcrumb-item>需求管理</el-breadcrumb-item>
       <el-breadcrumb-item>接口人管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
-      <el-form
-        :inline="true"
-        :model="formOptions"
-        class="demo-form-inline"
-        size="mini"
-        ref="userQueryRef"
-        label-position="right"
+    <div class="card-container">
+      <img
+        src="../../../assets/img/globalTable/bg-1.png"
+        alt=""
       >
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="接口人" prop="name">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="接口人姓名"
-                clearable
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="客户" prop="customerId">
-              <el-select
-                v-model="formOptions.customerId"
-                placeholder="请选择客户名称"
-                clearable
-                filterable
+      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+        <el-form
+          :inline="true"
+          :model="formOptions"
+          class="demo-form-inline"
+          size="mini"
+          ref="userQueryRef"
+          label-position="right"
+        >
+          <el-row>
+            <el-col :span="5">
+              <el-form-item
+                label="接口人"
+                prop="name"
               >
-                <el-option
-                  v-for="item in tableCustomer"
-                  :key="item.index"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :span="14"
-            :class="
+                <el-input
+                  v-model="formOptions.name"
+                  placeholder="接口人姓名"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="客户"
+                prop="customerId"
+              >
+                <el-select
+                  v-model="formOptions.customerId"
+                  placeholder="请选择客户名称"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in tableCustomer"
+                    :key="item.index"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="14"
+              :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
                 : Object.keys(formOptions).length % 3 === 1
                 ? 'inline2_action_button_content'
                 : 'inline1_action_button_content'
             "
-          >
-            <el-form-item>
-              <el-button type="primary" @click="resetForm('userQueryRef')"
-                >重置</el-button
-              >
-              <el-button type="primary" @click="queryUserListclick"
-                >查询</el-button
-              >
-              <el-button type="primary" @click="addClick">新增</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+            >
+              <el-form-item>
+                <el-button
+                  type="primary"
+                  @click="resetForm('userQueryRef')"
+                >重置</el-button>
+                <el-button
+                  type="primary"
+                  @click="queryUserListclick"
+                >查询</el-button>
+                <el-button
+                  type="primary"
+                  @click="addClick"
+                >新增</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
 
-    <el-card>
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        border
-        stripe
-        size="mini"
-        height="550"
-      >
-        <el-table-column
-          label="序号"
-          type="index"
-          :index="indexMethod"
-          width="55"
-          fixed
-        >
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="接口人"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="gender"
-          label="性别"
-          min-width="50"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-
-        <el-table-column
-          prop="cellPhone"
-          label="手机号"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="email"
-          label="邮箱"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="customerName"
-          label="客户名"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="210">
-          <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >查看</el-button
-            >
-            <el-button @click="handleClick(row)" type="primary" size="mini"
-              >编辑</el-button
-            >
-            <el-button
-              type="primary"
-              size="mini"
-              @click="deleteMenu(row, $index)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="paginationOptions.pageNo"
-          :page-sizes="paginationOptions.pageSizes"
-          :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next"
-          :total="paginationOptions.total"
+      <el-card :body-style="{paddingBottom: '60px'}">
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          stripe
           size="mini"
+          height="550"
         >
-        </el-pagination>
-      </div>
-    </el-card>
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="55"
+            fixed
+          >
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="接口人"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="gender"
+            label="性别"
+            min-width="50"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+
+          <el-table-column
+            prop="cellPhone"
+            label="手机号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="email"
+            label="邮箱"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="customerName"
+            label="客户名"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="210"
+          >
+            <template slot-scope="{ row, $index }">
+              <el-button
+                @click="detailsClick(row)"
+                type="primary"
+                size="mini"
+              >查看</el-button>
+              <el-button
+                @click="handleClick(row)"
+                type="primary"
+                size="mini"
+              >编辑</el-button>
+              <el-button
+                type="primary"
+                size="mini"
+                @click="deleteMenu(row, $index)"
+              >
+                删除
+              </el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="block">
+          <!-- <span class="demonstration">完整功能</span> -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationOptions.pageNo"
+            :page-sizes="paginationOptions.pageSizes"
+            :page-size="paginationOptions.pageSize"
+            layout="total, sizes, prev, pager, next"
+            :total="paginationOptions.total"
+            size="mini"
+          >
+          </el-pagination>
+        </div>
+      </el-card>
+    </div>
     <user-edit-dialog
       :toChild="list"
       :tableData="tableData"
@@ -178,7 +202,7 @@ export default {
     UserEditDialog,
     UserDaitDialog,
   },
-  data() {
+  data () {
     return {
       list: "",
       formOptions: {
@@ -189,7 +213,7 @@ export default {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        toatl:0
+        toatl: 0
       },
       tableData: [],
       tableCustomer: [],
@@ -198,14 +222,14 @@ export default {
       tableDataProject: [],
     };
   },
-  mounted() {
+  mounted () {
     this.queryUserList();
     this.queryCustomer()
   },
   methods: {
-   
+
     //手动 查询接口人
-    queryUserListclick() {
+    queryUserListclick () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
@@ -216,24 +240,24 @@ export default {
       });
     },
     // 查询接口人列表
-    queryUserList() {
+    queryUserList () {
       queryInterface({
         current: this.paginationOptions.pageNo,
         size: this.paginationOptions.pageSize,
-        records:[this.formOptions]
+        records: [this.formOptions]
       }).then((res) => {
         if (res && res.code && res.code === "00000") {
           this.tableData = res.data.records;
-          this.paginationOptions.total=res.data.total
+          this.paginationOptions.total = res.data.total
         }
       });
-      
+
     },
-    queryCustomer(){
+    queryCustomer () {
       queryCustomer({
         current: 1,
         size: 1000000,
-        records:[{}]
+        records: [{}]
       }).then((res) => {
         if (res && res.code && res.code === "00000") {
           this.tableCustomer = res.data.records;
@@ -241,7 +265,7 @@ export default {
       });
     },
     // 删除弹框
-    deleteMenu(row, index) {
+    deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该接口人, 是否继续?", "删除接口人", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -270,39 +294,39 @@ export default {
         });
     },
     // 添加
-    addClick() {
+    addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加接口人";
       console.log("我要添加");
     },
     // 编辑
-    handleClick(row) {
+    handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑接口人信息";
       console.log("编辑", row);
     },
     // 详情
-    detailsClick(row) {
+    detailsClick (row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看接口人详情";
       console.log("详情", row);
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
     // 分页器 页容量变更行为
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },
     // 分页器 页码变更行为
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +

@@ -33,5 +33,15 @@ body {
     padding: 10px;
   }
 }
+/*最外层透明*/
+/deep/ .el-table, /deep/ .el-table__expanded-cell{
+  background-color: transparent !important;
+}
+/* 表格内背景颜色 */
+/deep/ .el-table th,
+/deep/ .el-table tr,
+/deep/ .el-table td {
+  background-color: transparent !important;
+}
 
 </style>

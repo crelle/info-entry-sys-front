@@ -5,7 +5,9 @@
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>角色管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <div class="card-container">
+      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
+    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         :inline="true"
         class="demo-form-inline"
@@ -35,27 +37,32 @@
             "
           >
             <el-form-item>
-              <el-button type="primary" @click="resetForm('queryRoleRef')"
-                >重置</el-button
+              <el-button class="header-btn" type="primary" @click="resetForm('queryRoleRef')"
+                >
+                <img src="../../../assets/img/globalTable/icon2-reset.png" alt="">
+                重置</el-button
               >
-              <el-button type="primary" @click="queryRolesclick"
-                >查询</el-button
+              <el-button class="header-btn" type="primary" @click="queryRolesclick"
+                >
+                <img src="../../../assets/img/globalTable/icon1-search.png" alt="">
+                查询</el-button
               >
-              <el-button type="primary" @click="addClick">新增</el-button>
+              <el-button class="header-btn" type="primary" @click="addClick">
+                <img src="../../../assets/img/globalTable/icon3-add.png" alt="">
+                新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </el-card>
 
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        border
         stripe
         size="mini"
         height="550"
@@ -89,19 +96,19 @@
         ></el-table-column>
         <el-table-column label="操作" min-width="210" fixed="right">
           <template slot-scope="{ row, $index }">
-            <el-button @click="lookClick(row)" type="primary" size="mini"
-              >查看</el-button
+            <span class="operate-btn" @click="lookClick(row)" type="primary" size="mini"
+              >查看</span
             >
-            <el-button @click="onEditRole(row)" type="primary" size="mini"
-              >编辑</el-button
+            <span class="operate-btn" @click="onEditRole(row)" type="primary" size="mini"
+              >编辑</span
             >
-            <el-button
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -120,6 +127,7 @@
         </el-pagination>
       </div>
     </el-card>
+  </div>
     <role-edit-dialog
       :toChild="list"
       ref="roleEditDialogRef"
