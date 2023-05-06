@@ -43,8 +43,7 @@
                 placeholder="请选择状态"
                 prop="enabled"
               >
-                <el-option label="启用" :value="true"></el-option>
-                <el-option label="禁用" :value="false"></el-option>
+                <el-option v-for="(item,i) in $dictionaryList('状态')" :key="i" :label="item.name" :value="item.code=='true'"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -240,7 +239,7 @@ export default {
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
-        enabled: "true",
+        enabled: true,
         userPhone: "",
         username: "",
         roleName:'',      
@@ -254,18 +253,6 @@ export default {
       queryRoleData: [],
       tableData: [],
       multipleSelection: [],
-      userEditForm: {
-        accountNonExpired: true,
-        accountNonLocked: true,
-        enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
-        roles: "",
-      },
       // 验证
       rules: {},
     };
@@ -273,6 +260,7 @@ export default {
   mounted () {
     this.queryUserList();
     this.permissionList()
+    console.log('99999',this.$dictionaryList('状态'));
   },
   methods: {
     //手动 查询用户列表
@@ -294,6 +282,7 @@ export default {
             if (res && res.code && res.code === "00000") {
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
+              this.paginationOptions.pageNo=res.data.current
               console.log(this.tableData, "查询用户列表++++++");
               // 过滤掉管理员admin
               // this.tableData.forEach((item, index) => {
@@ -325,7 +314,7 @@ export default {
           // 点击确认，发起后台请求，删除该用户
           deleteMenu(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该用户");
-            if (res.code == "00000") {
+            if (res && res.code && res.code === "00000") {
               // this.tableData.splice(index, 1);
               this.queryUserList();
               return this.$message({
@@ -349,46 +338,31 @@ export default {
         });
     },
     // 重置密码弹框
-    resetpassword (row) {
-      console.log(row, "-----重置密码弹框的数据");
-      this.$confirm(
-        "此操作将重置该用户的登录密码, 是否继续?",
-        "重置用户登录密码",
-        {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          cancelButtonClass: "btn-custom-cancel",
-          type: "warning",
-        }
-      )
-        .then(() => {
-          console.log(row, "---------row");
-          let data = {};
-          data.userId = row.id;
-          // 点击确认，发起后台请求，
-          console.log(data, "----重置密码传入的内容----");
-          resetPassword(data, data.userId).then((res) => {
+    resetpassword(row) {
+      this.$confirm('此操作将重置该用户的登录密码, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          resetPassword(row.id).then((res) => {
             console.log(res, "-------重置密码");
-            // console.log(res, "点击确认，发起后台请求");
-            // if (res.code == "00000") {
-            //   return this.$message({
-            //     type: "success",
-            //     message: "重置密码成功! 初始密码为：[ 123456 ]",
-            //   });
-            // } else {
-            //   this.$message({
-            //     type: "success",
-            //     message: "失败!",
-            //   });
-            // }
+            if (res && res.code && res.code === "00000") {
+              return this.$message({
+                type: "success",
+                message: "重置密码成功! 初始密码为：[ 123456 ]",
+              });
+            } else {
+              this.$message({
+                type: "error",
+                message: "重置密码失败!",
+              });
+            }
           });
-        })
-        .catch(() => {
-          // 点击取消，取消该操作
+        }).catch(() => {
           this.$message({
-            type: "info",
-            message: "已取消",
-          });
+            type: 'info',
+            message: '已取消操作'
+          });          
         });
     },
     // 添加

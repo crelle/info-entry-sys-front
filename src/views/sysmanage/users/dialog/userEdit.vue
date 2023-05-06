@@ -317,8 +317,8 @@ export default {
                 this.dialogClose();
                 this.$nextTick(() => {
                   // 这个要加上
+                  this.$parent.paginationOptions.pageNo = 1;
                   this.$parent.queryUserList();
-                  this.dialogFormVisible = false; // 让弹窗隐
                 });
               }
             });
@@ -337,14 +337,13 @@ export default {
           );
           if (valid) {
             addUser(this.userEditForm).then((res) => {
-              console.log(res, "增加了...res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
                 this.dialogClose();
                 this.$nextTick(() => {
                   // 这个要加上
+                  this.$parent.paginationOptions.pageNo = 1;
                   this.$parent.queryUserList();
-                  this.dialogFormVisible = false; 
                 });
               }
             });

@@ -76,18 +76,6 @@
           width="55"
           fixed
         ></el-table-column>
-        <!-- <el-table-column
-          label="角色标识"
-          prop="id"
-          min-width="120"
-          fixed
-        ></el-table-column> -->
-        <!-- <el-table-column
-          label="角色编码"
-          prop="name"
-          min-width="120"
-          fixed
-        ></el-table-column> -->
         <el-table-column
           label="角色名称"
           prop="nameZh"
@@ -215,20 +203,13 @@ export default {
           // 点击确认，发起后台请求，删除该用户
           deleteRole(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
-            if (res.code == "00000") {
+            if (res && res.code && res.code === "00000") {
               this.queryRoles();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
               });
             }
-            // else {
-            //   this.queryRoles();
-            //   this.$message({
-            //     type: "success",
-            //     message: "删除失败!",
-            //   });
-            // }
           });
         })
         .catch(() => {
@@ -261,6 +242,7 @@ export default {
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
+      this.queryRoles();
     },
     // 表格复选动作
     handleSelectionChange(val) {
@@ -331,7 +313,6 @@ export default {
 }
 ::v-deep .el-card__body {
   // overflow-x: scroll;
-
   .el-form-item--mini.el-form-item {
     margin-bottom: 0;
   }

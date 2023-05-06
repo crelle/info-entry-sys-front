@@ -32,19 +32,12 @@ const updateUser = (data, id) =>
     data,
   });
 // 重置密码
-const resetPassword = (data, id) =>
+const resetPassword = (id) =>
   Request({
     method: "put",
     url: `${BaseURL}/sysmgmt/user/resetPassword/${id}`,
-    data,
   });
-// // 重置密码
-// const resetPassword = (data) =>
-//   Request({
-//     method: "put",
-//     url: BaseURL + "/sysmgmt/user/resetPassword",
-//     data,
-//   });
+
 // 新增用户
 const addUser = (data) =>
   Request({
