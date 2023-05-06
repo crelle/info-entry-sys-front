@@ -1,6 +1,5 @@
 <template>
   <div class="card-container">
-    <img src="../../../assets/img/globalTable/bg-1.png" alt="">
     <el-card :body-style="{ height: '6vh', paddingTop: '60px',paddingBottom: '0px' }">
       <el-form :inline="true" ref="ruleForm">
         <el-form-item label="父级菜单名称">

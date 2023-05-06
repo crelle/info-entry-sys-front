@@ -1,10 +1,5 @@
 <template>
   <div class="card-container">
-    <!-- <div class="card-container"> -->
-      <img
-        src="../../../assets/img/globalTable/bg-1.png"
-        alt=""
-      >
     <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form :inline="true" :model="asset" class="demo-form-inline">
         <el-form-item label="使用人">
@@ -72,7 +67,6 @@
         </el-table-column>
       </el-table>
     </el-card>
-    <!-- </div> -->
     <add-asset-dialog ref="AddAssetDialogRef"> </add-asset-dialog>
   </div>
 </template>
