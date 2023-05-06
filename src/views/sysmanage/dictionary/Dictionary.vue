@@ -1,6 +1,7 @@
 <template>
-  <div>
-    <el-card :body-style="{ height: '6vh' }">
+  <div class="card-container">
+    <img src="../../../assets/img/globalTable/bg-1.png" alt="">
+    <el-card :body-style="{ height: '6vh', paddingTop: '60px',paddingBottom: '0px' }">
       <el-form :inline="true" ref="ruleForm">
         <el-form-item label="父级菜单名称">
           <el-select
@@ -41,13 +42,12 @@
         </el-form-item>
       </el-form>
     </el-card>
-    <el-card :body-style="{ height: '67vh' }">
+    <el-card :body-style="{ height: '67vh'}">
       <el-table
         :data="dictionaryData"
         style="width: 90%"
         row-key="id"
         max-height="619"
-        border
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column prop="name" label="名称" width="180">

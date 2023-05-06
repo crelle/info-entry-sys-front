@@ -5,7 +5,9 @@
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>菜单管理</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <div class="card-container">
+      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
+    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         class="demo-form-inline"
         size="mini"
@@ -63,14 +65,13 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
         @selection-change="handleSelectionChange"
-        border
         stripe
         size="mini"
         height="550"
@@ -177,6 +178,7 @@
         </el-pagination>
       </div>
     </el-card>
+    </div>
     <user-edit-dialog
       :toChild="list"
       ref="menusEditDialogRef"

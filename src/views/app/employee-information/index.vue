@@ -5,7 +5,9 @@
       <el-breadcrumb-item>员工管理</el-breadcrumb-item>
       <el-breadcrumb-item>员工信息</el-breadcrumb-item>
     </el-breadcrumb>
-    <el-card>
+    <div class="card-container">
+      <img src="../../../assets/img/globalTable/bg-1.png" alt="">
+    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form
         :inline="true"
         :model="formOptions"
@@ -206,13 +208,12 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table
         ref="multipleTable"
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        border
         stripe
         size="mini"
         height="506"
@@ -287,22 +288,22 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="278">
           <template slot-scope="{ row, $index }">
-            <el-button @click="stateClick(row)" type="primary" size="mini"
-              >状态</el-button
+            <span class="operate-btn" @click="stateClick(row)" type="primary" size="mini"
+              >状态</span
             >
-            <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >查看</el-button
+            <span class="operate-btn" @click="detailsClick(row)" type="primary" size="mini"
+              >查看</span
             >
-            <el-button @click="handleClick(row)" type="primary" size="mini"
-              >编辑</el-button
+            <span class="operate-btn" @click="handleClick(row)" type="primary" size="mini"
+              >编辑</span
             >
-            <el-button
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
+          </span>
           </template>
         </el-table-column>
       </el-table>
@@ -321,6 +322,7 @@
         </el-pagination>
       </div>
     </el-card>
+    </div>
     <user-edit-dialog
       :toChild="list"
       :tableData="tableData"

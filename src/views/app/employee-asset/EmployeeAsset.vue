@@ -1,6 +1,11 @@
 <template>
-  <div>
-    <el-card>
+  <div class="card-container">
+    <!-- <div class="card-container"> -->
+      <img
+        src="../../../assets/img/globalTable/bg-1.png"
+        alt=""
+      >
+    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form :inline="true" :model="asset" class="demo-form-inline">
         <el-form-item label="使用人">
           <el-input v-model="asset.employeeId" placeholder="使用人"></el-input>
@@ -43,7 +48,7 @@
       </el-form>
     </el-card>
 
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table :data="assets" stripe style="width: 100%">
         <el-table-column prop="employeeName" label="使用人" width="180">
         </el-table-column>
@@ -67,6 +72,7 @@
         </el-table-column>
       </el-table>
     </el-card>
+    <!-- </div> -->
     <add-asset-dialog ref="AddAssetDialogRef"> </add-asset-dialog>
   </div>
 </template>
