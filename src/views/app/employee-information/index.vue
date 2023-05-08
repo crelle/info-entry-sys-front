@@ -70,21 +70,21 @@
           </el-col>
           <el-col :span="4" class="btn" style="display: flex; float: right">
             <el-form-item>
-              <el-button
+              <el-button class="header-btn"
                 type="primary"
                 size="mini"
                 style="width: 80px"
                 @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button
+              <el-button class="header-btn"
                 type="primary"
                 size="mini"
                 style="width: 80px"
                 @click="queryUserList"
                 >查询</el-button
               >
-              <el-button
+              <el-button class="header-btn"
                 type="primary"
                 size="mini"
                 style="width: 80px"
@@ -170,10 +170,10 @@
             class="btn"
             style="display: flex; float: right; height: 28px"
           >
-            <el-button type="primary" size="mini" @click="downloadTemplate()"
+            <el-button class="header-btn" type="primary" size="mini" @click="downloadTemplate()"
               >下载模板</el-button
             >
-            <el-button type="primary" size="mini" @click="downloadApi()"
+            <el-button class="header-btn" type="primary" size="mini" @click="downloadApi()"
               >批量导出</el-button
             >
             <el-upload
@@ -195,7 +195,7 @@
               <el-button
                 type="primary"
                 size="small"
-                class="btn"
+                class="btn header-btn"
                 style="width: 80px; padding: 7px 15px"
                 @click="uploadmore"
               >
@@ -834,6 +834,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           // 点击确认，发起后台请求，删除该接口人

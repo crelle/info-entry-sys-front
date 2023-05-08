@@ -64,13 +64,13 @@
 
           <el-col :span="4" class="btn">
             <el-form-item>
-              <el-button type="primary" @click="resetForm('userQueryRef')"
+              <el-button class="header-btn" type="primary" @click="resetForm('userQueryRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryUserListclick"
+              <el-button class="header-btn" type="primary" @click="queryUserListclick"
                 >查询</el-button
               >
-              <el-button type="primary" @click="addClick">新增</el-button>
+              <el-button class="header-btn" type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -162,19 +162,19 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" min-width="210">
           <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >查看</el-button
+            <span class="operate-btn" @click="detailsClick(row)" type="primary" size="mini"
+              >查看</span
             >
-            <el-button @click="handleClick(row)" type="primary" size="mini"
-              >编辑</el-button
+            <span class="operate-btn" @click="handleClick(row)" type="primary" size="mini"
+              >编辑</span
             >
-            <el-button
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -310,6 +310,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           this.tableData.splice(index, 1);

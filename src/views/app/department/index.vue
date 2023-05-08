@@ -6,151 +6,186 @@
       <el-breadcrumb-item>部门管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
-      <el-form
-        :inline="true"
-        :model="formOptions"
-        class="demo-form-inline"
-        size="mini"
-        ref="userQueryRef"
-        label-position="right"
-      >
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="部门名称" prop="name">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="请输入部门名称"
-                clearable
-              ></el-input>
-            </el-form-item>
-          </el-col>
+      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+        <el-form
+          :inline="true"
+          :model="formOptions"
+          class="demo-form-inline"
+          size="mini"
+          ref="userQueryRef"
+          label-position="right"
+        >
+          <el-row>
+            <el-col :span="5">
+              <el-form-item
+                label="部门名称"
+                prop="name"
+              >
+                <el-input
+                  v-model="formOptions.name"
+                  placeholder="请输入部门名称"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </el-col>
 
-          <el-col
-            :span="19"
-            :class="
+            <el-col
+              :span="19"
+              :class="
               Object.keys(formOptions).length % 3 === 0
                 ? 'nextline_action_button_content'
                 : Object.keys(formOptions).length % 3 === 1
                 ? 'inline2_action_button_content'
                 : 'inline1_action_button_content'
             "
-          >
-            <el-form-item>
-              <el-button type="primary" @click="resetForm('userQueryRef')"
-                >重置</el-button
-              >
-              <el-button type="primary" @click="queryUserListclick"
-                >查询</el-button
-              >
-              <el-button type="primary" @click="addClick">新增</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+            >
+              <el-form-item>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="resetForm('userQueryRef')"
+                >
+                <!-- <img
+                    src="../../../assets/img/globalTable/icon2-reset.png"
+                    alt=""
+                  > -->
+                  重置</el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="queryUserListclick"
+                >
+                <!-- <img
+                    src="../../../assets/img/globalTable/icon1-search.png"
+                    alt=""
+                  > -->
+                  查询
+                </el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="addClick"
+                >
+                <!-- <img
+                    src="../../../assets/img/globalTable/icon3-add.png"
+                    alt=""
+                  > -->
+                  新增</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
 
-    <el-card :body-style="{paddingBottom: '60px'}">
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        stripe
-        size="mini"
-        height="550"
-      >
-        <el-table-column
-          label="序号"
-          type="index"
-          :index="indexMethod"
-          width="55"
-          fixed
-        >
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="部门名"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="userName"
-          label="负责人"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="jobNo"
-          label="工号"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="cellPhone"
-          label="手机号"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-
-        <el-table-column
-          prop="address"
-          label="部门总部地址"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="parentName"
-          label="上级部门"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="retained"
-          label="留存率"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="210">
-          <template slot-scope="{ row, $index }">
-            <el-button @click="detailsClick(row)" type="primary" size="mini"
-              >查看</el-button
-            >
-            <el-button @click="handleClick(row)" type="primary" size="mini"
-              >编辑</el-button
-            >
-            <el-button
-              type="primary"
-              size="mini"
-              @click="deleteMenu(row, $index)"
-            >
-              删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="paginationOptions.pageNo"
-          :page-sizes="paginationOptions.pageSizes"
-          :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next"
-          :total="paginationOptions.total"
+      <el-card :body-style="{paddingBottom: '60px'}">
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          stripe
           size="mini"
+          height="550"
         >
-        </el-pagination>
-      </div>
-    </el-card>
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="55"
+            fixed
+          >
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="部门名"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="userName"
+            label="负责人"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="jobNo"
+            label="工号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="cellPhone"
+            label="手机号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+
+          <el-table-column
+            prop="address"
+            label="部门总部地址"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="parentName"
+            label="上级部门"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="retained"
+            label="留存率"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="210"
+          >
+            <template slot-scope="{ row, $index }">
+              <span class="operate-btn"
+                @click="detailsClick(row)"
+                type="primary"
+                size="mini"
+              >查看</span>
+              <span class="operate-btn"
+                @click="handleClick(row)"
+                type="primary"
+                size="mini"
+              >编辑</span>
+              <span class="operate-btn"
+                type="primary"
+                size="mini"
+                @click="deleteMenu(row, $index)"
+              >
+                删除
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="block">
+          <!-- <span class="demonstration">完整功能</span> -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationOptions.pageNo"
+            :page-sizes="paginationOptions.pageSizes"
+            :page-size="paginationOptions.pageSize"
+            layout="total, sizes, prev, pager, next"
+            :total="paginationOptions.total"
+            size="mini"
+          >
+          </el-pagination>
+        </div>
+      </el-card>
     </div>
     <user-edit-dialog
       :toChild="list"
@@ -191,7 +226,7 @@ export default {
     UserEditDialog,
     UserDaitDialog,
   },
-  data() {
+  data () {
     return {
       list: "",
       formOptions: {
@@ -217,7 +252,7 @@ export default {
       tableDataProject: [],
     };
   },
-  mounted() {
+  mounted () {
     this.queryUserList();
     this.queryUser();
     this.queryTableList();
@@ -226,7 +261,7 @@ export default {
   },
   methods: {
     //手动 查询部门列表
-    queryUserListclick() {
+    queryUserListclick () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
@@ -237,7 +272,7 @@ export default {
       });
     },
     // 查询部门列表
-    queryUserList() {
+    queryUserList () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
@@ -257,7 +292,7 @@ export default {
     },
     // 全部部门
     // 查询部门列表
-    queryUserListUp() {
+    queryUserListUp () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
@@ -275,7 +310,7 @@ export default {
       });
     },
     // 查询用户列表
-    queryUser() {
+    queryUser () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
@@ -300,7 +335,7 @@ export default {
     },
     // 全部项目
     // 数据拿取查询方法
-    queryProjectList() {
+    queryProjectList () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
@@ -375,7 +410,7 @@ export default {
     },
     // 全部人员
     //table数据
-    queryTableList() {
+    queryTableList () {
       let data = { records: [{ ...this.formOptions }] };
       data.current = 1;
       data.size = 999;
@@ -443,13 +478,14 @@ export default {
       });
     },
     // 删除弹框
-    deleteMenu(row, index) {
+    deleteMenu (row, index) {
       console.log(row, "------------------------*********");
       this.$confirm("此操作将永久删除该部门, 是否继续?", "删除部门", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           this.tableData.splice(index, 1);
@@ -480,41 +516,41 @@ export default {
         });
     },
     // 添加
-    addClick() {
+    addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加部门";
       console.log("我要添加");
       this.queryUserListUp();
     },
     // 编辑
-    handleClick(row) {
+    handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑部门信息";
       console.log("编辑", row, row.departmentId);
       this.queryUserListUp();
     },
     // 详情
-    detailsClick(row) {
+    detailsClick (row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看部门详情";
       console.log("详情", row, row.id);
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
     // 分页器 页容量变更行为
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },
     // 分页器 页码变更行为
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +
@@ -526,10 +562,10 @@ export default {
 </script>
 
 <style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
+// .btn-custom-cancel {
+//   float: right;
+//   margin-left: 10px;
+// }
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {

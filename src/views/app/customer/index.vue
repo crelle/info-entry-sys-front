@@ -79,15 +79,15 @@
             "
             >
               <el-form-item>
-                <el-button
+                <el-button class="header-btn"
                   type="primary"
                   @click="resetForm('userQueryRef')"
                 >重置</el-button>
-                <el-button
+                <el-button class="header-btn"
                   type="primary"
                   @click="queryUserListclick"
                 >查询</el-button>
-                <el-button
+                <el-button class="header-btn"
                   type="primary"
                   @click="addClick"
                 >新增</el-button>
@@ -164,23 +164,23 @@
             min-width="210"
           >
             <template slot-scope="{ row, $index }">
-              <el-button
+              <span class="operate-btn"
                 @click="detailsClick(row)"
                 type="primary"
                 size="mini"
-              >查看</el-button>
-              <el-button
+              >查看</span>
+              <span class="operate-btn"
                 @click="handleClick(row)"
                 type="primary"
                 size="mini"
-              >编辑</el-button>
-              <el-button
+              >编辑</span>
+              <span class="operate-btn"
                 type="primary"
                 size="mini"
                 @click="deleteMenu(row, $index)"
               >
                 删除
-              </el-button>
+              </span>
             </template>
           </el-table-column>
         </el-table>
@@ -428,6 +428,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           console.log(row.id, '111111111111111111111111');
@@ -499,10 +500,10 @@ export default {
 };
 </script>
 <style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
+// .btn-custom-cancel {
+//   float: right;
+//   margin-left: 10px;
+// }
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {

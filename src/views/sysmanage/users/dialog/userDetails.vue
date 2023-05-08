@@ -225,9 +225,6 @@ export default {
 //     }
 //   }
 // }
-.dialog-footer {
-  text-align: center;
-}
 ::v-deep .el-dialog {
   min-width: 350px;
 }
