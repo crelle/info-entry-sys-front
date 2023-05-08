@@ -196,6 +196,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           this.tableData.splice(index, 1);
@@ -269,10 +270,10 @@ export default {
 </script>
 
 <style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
+// .btn-custom-cancel {
+//   float: right;
+//   margin-left: 10px;
+// }
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {

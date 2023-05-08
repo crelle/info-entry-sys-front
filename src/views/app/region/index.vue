@@ -36,13 +36,13 @@
             "
           >
             <el-form-item>
-              <el-button type="primary" @click="resetForm('queryRoleRef')"
+              <el-button class="header-btn" type="primary" @click="resetForm('queryRoleRef')"
                 >重置</el-button
               >
-              <el-button type="primary" @click="queryRolesclick"
+              <el-button class="header-btn" type="primary" @click="queryRolesclick"
                 >查询</el-button
               >
-              <el-button type="primary" @click="addClick">新增</el-button>
+              <el-button class="header-btn" type="primary" @click="addClick">新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
@@ -76,19 +76,19 @@
 
         <el-table-column label="操作" min-width="210" fixed="right">
           <template slot-scope="{ row, $index }">
-            <el-button @click="lookClick(row)" type="primary" size="mini"
-              >查看</el-button
+            <span class="operate-btn" @click="lookClick(row)" type="primary" size="mini"
+              >查看</span
             >
-            <el-button @click="onEditRole(row)" type="primary" size="mini"
-              >编辑</el-button
+            <span class="operate-btn" @click="onEditRole(row)" type="primary" size="mini"
+              >编辑</span
             >
-            <el-button
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -210,6 +210,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           // 点击确认，发起后台请求，删除该用户
@@ -281,10 +282,10 @@ export default {
 </script>
 ​
 <style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
+// .btn-custom-cancel {
+//   float: right;
+//   margin-left: 10px;
+// }
 </style>
 <style lang="less" scoped>
 ::v-deep .cell {

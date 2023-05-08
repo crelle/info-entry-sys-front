@@ -57,11 +57,11 @@
         <el-table-column fixed="right" label="操作" min-width="310" align="center">
           <template slot-scope="{ row}">
             <div style="width:120px;display:flex;justify-content: end;margin: 0 auto;">
-              <el-button type="primary" @click="edit(row)" size="small" v-if="row.children"
-                >编辑</el-button
+              <span class="operate-btn" type="primary" @click="edit(row)" size="small" v-if="row.children"
+                >编辑</span
               >
-              <el-button type="danger" @click="delbtn(row.id)" size="small"
-                >删除</el-button
+              <span class="operate-btn" type="danger" @click="delbtn(row.id)" size="small"
+                >删除</span
               >
             </div>
             

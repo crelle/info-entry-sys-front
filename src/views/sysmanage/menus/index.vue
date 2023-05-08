@@ -42,9 +42,9 @@
           </el-col>
           <el-col :span="9">
             <el-form-item style="float: right">
-              <el-button type="primary" @click="queryMenus">查询</el-button>
+              <el-button class="header-btn" type="primary" @click="queryMenus">查询</el-button>
               <el-button
-                class="filter-item"
+                class="filter-item header-btn"
                 style="margin-left: 10px"
                 type="primary"
                 @click="addClick()"
@@ -52,7 +52,7 @@
                 添加
               </el-button>
               <el-button
-                class="filter-item"
+                class="filter-item header-btn"
                 style="margin-left: 10px"
                 type="primary"
                 @click="sortClick"
@@ -149,16 +149,16 @@
             <!-- <el-button type="primary" size="small" icon="el-icon-share"
               >详情</el-button
             > -->
-            <el-button type="primary" size="mini" @click="handleClick(row)">
+            <span class="operate-btn" type="primary" size="mini" @click="handleClick(row)">
               编辑
-            </el-button>
-            <el-button
+            </span>
+            <span class="operate-btn"
               type="primary"
               size="mini"
               @click="deleteMenu(row, $index)"
             >
               删除
-            </el-button>
+            </span>
           </template>
         </el-table-column>
       </el-table>
@@ -248,6 +248,7 @@ export default {
         cancelButtonText: "取消",
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
+        modal: false,
       })
         .then(() => {
           this.tableData.splice(index, 1);
@@ -321,10 +322,10 @@ export default {
 };
 </script>
 <style lang='less'>
-.btn-custom-cancel {
-  float: right;
-  margin-left: 10px;
-}
+// .btn-custom-cancel {
+//   float: right;
+//   margin-left: 10px;
+// }
 </style>
 <style lang="less" scoped>
 .el-breadcrumb {

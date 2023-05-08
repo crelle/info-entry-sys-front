@@ -399,9 +399,6 @@ export default {
   background-position: center center;
   color: #797d85;
 }
-/deep/ .el-dialog__footer {
-  text-align: center;
-}
 /deep/ .el-button--mini {
   padding: 4% 0;
   border: none;
