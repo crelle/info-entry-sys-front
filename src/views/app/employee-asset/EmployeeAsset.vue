@@ -1,4 +1,10 @@
 <template>
+  <div class="users_content">
+  <el-breadcrumb separator-class="el-icon-arrow-right">
+      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
+      <el-breadcrumb-item>员工管理</el-breadcrumb-item>
+      <el-breadcrumb-item>员工资产</el-breadcrumb-item>
+    </el-breadcrumb>
   <div class="card-container">
     <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
       <el-form :inline="true" :model="asset" class="demo-form-inline">
@@ -44,7 +50,7 @@
     </el-card>
 
     <el-card :body-style="{paddingBottom: '60px'}">
-      <el-table :data="assets" stripe style="width: 100%">
+      <el-table :data="assets" stripe style="width: 100%" :height="tableHight">
         <el-table-column prop="employeeName" label="使用人" width="180">
         </el-table-column>
         <el-table-column prop="assetNo" label="资产编号" width="180">
@@ -69,6 +75,7 @@
     </el-card>
     <add-asset-dialog ref="AddAssetDialogRef"> </add-asset-dialog>
   </div>
+</div>
 </template>
 
 <script>
@@ -79,6 +86,7 @@ export default {
   },
   data() {
     return {
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       asset: {
         employeeId: "",
         assetNo: "",

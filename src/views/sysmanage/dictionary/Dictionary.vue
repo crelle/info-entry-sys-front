@@ -47,6 +47,7 @@
         style="width: 90%"
         row-key="id"
         max-height="619"
+        :height="tableHeight"
         :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
       >
         <el-table-column prop="name" label="名称" width="180">
@@ -90,6 +91,7 @@ export default {
   },
   data() {
     return {
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       parent: "",
       child: "",
       total: 0,

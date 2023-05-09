@@ -226,7 +226,7 @@ export default {
   data () {
     return {
       list: "",
-      tableHeight:window.innerHeight>=908?550:window.innerHeight-418,
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,

@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
@@ -74,7 +75,6 @@
                       <el-tab-pane label="项目人员" name="first">
                         <el-table
                           :data="tableData1"
-                          border
                           height="311"
                           style="width: 100%"
                         >
@@ -324,7 +324,7 @@ export default {
 }
 ::v-deep .el-textarea__inner {
   margin: 15px 0;
-  color: #606266;
+  // color: #606266;
   font-size: 14px;
   font-family: "微软雅黑";
 }
