@@ -6,7 +6,7 @@
       :close-on-click-modal="false"
       width="20%"
       lock-scroll
-      @close="closeDialog"
+      top="25vh"
     >
       <div class="register_form_main">
         <el-row style="height: 100%">
@@ -51,12 +51,6 @@ export default {
   data() {
     return {
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
         name: "",
         code: "",
@@ -66,40 +60,14 @@ export default {
   },
   methods: {
     openDialog(row) {
-      console.log(this.userEditForm, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
       if (row) {
-        this.initFormData = row;
-        this.$nextTick(() => {
-          // 这个要加上
-          this.initForm(row); // 为表单赋值
-        });
+        this.userEditForm = row;
       }
-    },
-    initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
-      });
-    },
-    closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
     },
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "确定231确定3131");
-    },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
-      this.resetFormData();
-    },
-
-    // 初始化页面数据 重置
-    resetFormData() {
-      this.ifLogin = true;
     },
   },
 };

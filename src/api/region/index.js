@@ -28,7 +28,6 @@ const deletesRegion = (data) =>
   Request({
     method: "DELETE",
     url: BaseURL + "/app/region/deleteById/" + data,
-    data,
   });
 
 export { establishRegion, queryRegion, editRegion, deletesRegion };
