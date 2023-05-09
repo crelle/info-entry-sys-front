@@ -1,7 +1,6 @@
 <template>
   <div class="roles_content">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
       <el-breadcrumb-item>地域管理</el-breadcrumb-item>
     </el-breadcrumb>
@@ -27,13 +26,6 @@
           </el-col>
           <el-col
             :span="19"
-            :class="
-              Object.keys(formOptions).length % 3 === 0
-                ? 'nextline_action_button_content'
-                : Object.keys(formOptions).length % 3 === 1
-                ? 'inline2_action_button_content'
-                : 'inline1_action_button_content'
-            "
           >
             <el-form-item>
               <el-button class="header-btn" type="primary" @click="resetForm('queryRoleRef')"
@@ -55,7 +47,6 @@
         :data="tableData"
         tooltip-effect="dark"
         style="width: 100%"
-        @selection-change="handleSelectionChange"
         stripe
         size="mini"
         height="550"
@@ -93,7 +84,6 @@
         </el-table-column>
       </el-table>
       <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
         <el-pagination
           @size-change="handleSizeChange"
           @current-change="handleCurrentChange"
@@ -189,13 +179,13 @@ export default {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
           data.size = this.paginationOptions.pageSize;
-          console.log(data, data.current, data.size, "data----xu-----");
           queryRegion(data).then((res) => {
             console.log(res, "res++++++++++");
             if (res && res.code && res.code === "00000") {
               // this.resetForm("queryRoleRef"); // 重置表单
               this.tableData = res.data.records; // 表格数据赋值
               this.paginationOptions.total = res.data.total; // 分页器赋值
+              this.paginationOptions.pageNo=res.data.current
             }
           });
         } else {
@@ -216,9 +206,8 @@ export default {
           // 点击确认，发起后台请求，删除该用户
           deletesRegion(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
-            if (res.code == "00000") {
+            if (res && res.code && res.code === "00000") {
               this.queryRoles();
-              this.tableData.splice(index, 1);
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -255,10 +244,6 @@ export default {
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-    },
-    // 表格复选动作
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
