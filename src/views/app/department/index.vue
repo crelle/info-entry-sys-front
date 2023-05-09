@@ -1,5 +1,5 @@
 <template>
-  <div class="users_content">
+  <div class="department_content">
     <el-breadcrumb separator-class="el-icon-arrow-right">
       <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>系统管理</el-breadcrumb-item>
@@ -12,7 +12,7 @@
           :model="formOptions"
           class="demo-form-inline"
           size="mini"
-          ref="userQueryRef"
+          ref="departmentQueryRef"
           label-position="right"
         >
           <el-row>
@@ -43,7 +43,7 @@
                 <el-button
                   class="header-btn"
                   type="primary"
-                  @click="resetForm('userQueryRef')"
+                  @click="resetForm('departmentQueryRef')"
                 >
                 <!-- <img
                     src="../../../assets/img/globalTable/icon2-reset.png"
@@ -53,7 +53,7 @@
                 <el-button
                   class="header-btn"
                   type="primary"
-                  @click="queryUserListclick"
+                  @click="queryDepartmentListclick"
                 >
                 <!-- <img
                     src="../../../assets/img/globalTable/icon1-search.png"
@@ -252,28 +252,28 @@ export default {
       tableDataProject: [],
     };
   },
-  mounted () {
-    this.queryUserList();
+  mounted() {
+    this.queryDepartmentList();
     this.queryUser();
     this.queryTableList();
     this.queryProjectList();
-    this.queryUserListUp();
+    this.queryDepartmentListUp();
   },
   methods: {
     //手动 查询部门列表
-    queryUserListclick () {
-      this.$refs["userQueryRef"].validate((valid) => {
+    queryDepartmentListclick() {
+      this.$refs["departmentQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
-          this.queryUserList();
+          this.queryDepartmentList();
         } else {
           return false;
         }
       });
     },
     // 查询部门列表
-    queryUserList () {
-      this.$refs["userQueryRef"].validate((valid) => {
+    queryDepartmentList() {
+      this.$refs["departmentQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = this.paginationOptions.pageNo;
@@ -292,8 +292,8 @@ export default {
     },
     // 全部部门
     // 查询部门列表
-    queryUserListUp () {
-      this.$refs["userQueryRef"].validate((valid) => {
+    queryDepartmentListUp() {
+      this.$refs["departmentQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
@@ -310,21 +310,15 @@ export default {
       });
     },
     // 查询用户列表
-    queryUser () {
-      this.$refs["userQueryRef"].validate((valid) => {
+    queryUser() {
+      this.$refs["departmentQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
-          data.size = 999;
+          data.size = 99999;
           queryUser(data).then((res) => {
             if (res && res.code && res.code === "00000") {
               this.UserData = res.data.records; // 表格数据赋值
-              // --- 过滤掉管理员admin
-              // this.UserData.forEach((item, index) => {
-              //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
-              //     this.UserData.splice(index, 1);
-              //   }
-              // });
               console.log(this.UserData, " // 真的查询用户列表");
             }
           });
@@ -335,8 +329,8 @@ export default {
     },
     // 全部项目
     // 数据拿取查询方法
-    queryProjectList () {
-      this.$refs["userQueryRef"].validate((valid) => {
+    queryProjectList() {
+      this.$refs["departmentQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
           data.current = 1;
@@ -493,7 +487,7 @@ export default {
           deletesDepartments(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除该部门");
             if (res.code == "00000") {
-              this.queryUserList();
+              this.queryDepartmentList();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
@@ -520,14 +514,14 @@ export default {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加部门";
       console.log("我要添加");
-      this.queryUserListUp();
+      this.queryDepartmentListUp();
     },
     // 编辑
     handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑部门信息";
       console.log("编辑", row, row.departmentId);
-      this.queryUserListUp();
+      this.queryDepartmentListUp();
     },
     // 详情
     detailsClick (row) {
@@ -543,12 +537,12 @@ export default {
     // 分页器 页容量变更行为
     handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
-      this.queryUserList();
+      this.queryDepartmentList();
     },
     // 分页器 页码变更行为
     handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
-      this.queryUserList();
+      this.queryDepartmentList();
     },
     indexMethod (index) {
       return (
