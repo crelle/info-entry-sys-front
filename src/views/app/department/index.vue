@@ -194,7 +194,7 @@ export default {
   },
   data() {
     return {
-      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
+      tableHeight: window.innerHeight >= 908 ? 550 : window.innerHeight - 418,
       list: "",
       formOptions: {
         accountNonExpired: true,
@@ -247,7 +247,7 @@ export default {
         }
       });
     },
-    // 
+    //
     // 查询全部部门列表
     queryDepartmentListUp() {
       this.$refs["departmentQueryRef"].validate((valid) => {
@@ -292,26 +292,25 @@ export default {
         cancelButtonClass: "btn-custom-cancel",
         type: "warning",
         modal: false,
-      })
-        .then(() => {
-          this.tableData.splice(index, 1);
-          // 点击确认，发起后台请求，删除该用户
-          deletesDepartments(row.id).then((res) => {
-            console.log(res, "点击确认，发起后台请求，删除该部门");
-            if (res && res.code && res.code === "00000") {
-              this.queryDepartmentList();
-              return this.$message({
-                type: "success",
-                message: "删除成功!",
-              });
-            } else {
-              this.$message({
-                type: "success",
-                message: "删除失败!",
-              });
-            }
-          });
-        })
+      }).then(() => {
+        this.tableData.splice(index, 1);
+        // 点击确认，发起后台请求，删除该用户
+        deletesDepartments(row.id).then((res) => {
+          console.log(res, "点击确认，发起后台请求，删除该部门");
+          if (res && res.code && res.code === "00000") {
+            this.queryDepartmentList();
+            return this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+          } else {
+            this.$message({
+              type: "success",
+              message: "删除失败!",
+            });
+          }
+        });
+      });
     },
     // 添加
     addClick() {
@@ -339,6 +338,7 @@ export default {
     resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
+      this.queryDepartmentListclick();
     },
     // 分页器 页容量变更行为
     handleSizeChange(val) {
