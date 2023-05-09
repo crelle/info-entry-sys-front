@@ -383,7 +383,6 @@ import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/app/employee-information/dialog/userEdit.vue";
 import UserDetailsDialog from "@/views/app/employee-information/dialog/userDetails.vue";
 import UserStateDialog from "@/views/app/employee-information/dialog/state.vue";
-import { table } from "console";
 export default {
   components: {
     UserEditDialog,

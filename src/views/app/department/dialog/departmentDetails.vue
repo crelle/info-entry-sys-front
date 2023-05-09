@@ -12,46 +12,47 @@
         <el-row style="height: 100%">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form :model="userEditForm" ref="userEditRef" size="mini">
+              <el-form :model="initFormData" ref="userEditRef" size="mini">
                 <div class="boxmax">
                   <ul class="box">
                     <li>
                       <span>部门名:</span
-                      ><span :title="userEditForm.name">{{
-                        userEditForm.name
+                      ><span :title="initFormData.name">{{
+                        initFormData.name
                       }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span><span>{{ userEditForm.userId }}</span>
+                      <span>负责人:</span
+                      ><span>{{ initFormData.userName }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span :title="userEditForm.cellPhone">{{
-                        userEditForm.cellPhone
+                      ><span :title="initFormData.cellPhone">{{
+                        initFormData.cellPhone
                       }}</span>
                     </li>
                     <li>
                       <span>邮箱:</span
-                      ><span :title="userEditForm.email">{{
-                        userEditForm.email
+                      ><span :title="initFormData.email">{{
+                        initFormData.email
                       }}</span>
                     </li>
                     <li>
                       <span>部门总部地址:</span
-                      ><span :title="userEditForm.address">{{
-                        userEditForm.address
+                      ><span :title="initFormData.address">{{
+                        initFormData.address
                       }}</span>
                     </li>
                     <li>
                       <span>上级部门:</span
-                      ><span :title="userEditForm.parentName">{{
-                        userEditForm.parentName
+                      ><span :title="initFormData.parentName">{{
+                        initFormData.parentName
                       }}</span>
                     </li>
                     <li class="new">
                       <span>部门介绍:</span>
-                      <span :title="userEditForm.introduce">{{
-                        userEditForm.introduce
+                      <span :title="initFormData.introduce">{{
+                        initFormData.introduce
                       }}</span>
                     </li>
                   </ul>
@@ -59,7 +60,7 @@
                     <el-tabs v-model="activeName" @tab-click="handleClick">
                       <el-tab-pane label="部门人员" name="first">
                         <el-table
-                          :data="tableData1"
+                          :data="departmentTabledata"
                           border
                           height="310"
                           style="width: 100%"
@@ -96,22 +97,22 @@
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="project"
+                            prop="projectName"
                             label="所在项目"
                             :show-overflow-tooltip="true"
                           >
                           </el-table-column>
                           <el-table-column prop="interfaceName" label="接口人">
                           </el-table-column>
-                          <el-table-column prop="sonstate" label="状态">
+                          <el-table-column prop="status" label="状态">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
                       <el-tab-pane label="部门项目" name="second">
                         <el-table
-                          :data="tableData2"
+                          :data="projectTabledata"
                           border
-                          height="310"
+                          height="312"
                           style="width: 100%"
                         >
                           <el-table-column
@@ -122,20 +123,27 @@
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="project"
+                            prop="name"
                             label="项目名称"
                             width="100"
                             :show-overflow-tooltip="true"
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="interfaceName"
                             label="接口人"
-                            width="90"
+                            min-width="80"
+                            show-overflow-tooltip
                           >
+                            <template slot-scope="{ row }">
+                              <span
+                                v-for="item in row.contactPeoples"
+                                :key="item.id"
+                                >{{ item.name + " " }}</span
+                              >
+                            </template>
                           </el-table-column>
-                          <el-table-column prop="cellPhone" label="联系方式">
-                          </el-table-column>
+                          <!-- <el-table-column prop="cellPhone" label="联系方式">
+                          </el-table-column> -->
                           <el-table-column
                             prop="status"
                             width="100"
@@ -143,14 +151,14 @@
                           >
                           </el-table-column>
                           <el-table-column
-                            prop="project"
+                            prop="customerName"
                             label="客户"
                             :show-overflow-tooltip="true"
                           >
                           </el-table-column>
                           <el-table-column prop="name" label="所属部门">
                           </el-table-column>
-                          <el-table-column prop="people" label="项目人数">
+                          <el-table-column prop="employeeNum" label="项目人数">
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -172,6 +180,10 @@
 </template>
 
 <script>
+// 查询员工
+import { queryEmployeeManual } from "@/api/employee";
+// 查询项目
+import { queryProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
@@ -181,31 +193,13 @@ export default {
   data() {
     return {
       // 根据部门id查询部门人员
-      tableData1: [],
+      departmentTabledata: [],
+      // 根据项目id查询项目
+      projectTabledata: [],
       // 假数据
-      tableData2: [],
-      // 假数据
-      activeName: "first",
-      textarea:
-        "诚迈科技（南京）股份有限公司（300598.SZ）成立于2006年，总部位于南京，专注于智能互联与操作系统技术的研发与创新，致力于成为全球领先的智能科技专家，以科技造福人类",
+      activeName: "",
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
       nowIndex: -1,
-      // baseURL: BaseURL,
-      userEditForm: {
-        address: "",
-        cellPhone: "",
-        name: "",
-        departmentId: "",
-        email: "",
-        introduce: "",
-        jobNo: "",
-        userId: "",
-        parentName: "",
-      },
       initFormData: {},
     };
   },
@@ -215,35 +209,39 @@ export default {
       console.log(tab, event);
     },
     openDialog(row) {
-      ((this.tableData1 = []), (this.tableData2 = [])),
-        console.log(this.userEditForm, "001001");
-      // console.log(this.tableDataLook, "员工----");
-      this.dialogFormVisible = true; // 让弹窗显示
-      //操作  员工   根据负责人对应的部门 的id 查找同部门的人员  赋值到 tableData1 中
-      this.tableDataLook.forEach((item) => {
-        if (row.departmentId == item.departmentId) {
-          this.tableData1.push(item);
-        }
-      });
-      //操作  项目   根据负责人对应的部门 的id 查找同部门的项目  赋值到 tableData2 中
-      this.tableDataProject.forEach((item) => {
-        if (row.departmentId == item.departmentId) {
-          this.tableData2.push(item);
-        }
-      });
-      // console.log(this.tableData1, "push来的内容1");
-      console.log(this.tableData2, "push来的内容2");
       if (row) {
+        console.log(row, "传来的");
+        (this.activeName = "first"), (this.dialogFormVisible = true); // 让弹窗显示
+        //操作  员工   根据负责人对应的部门 的id 查找同部门的人员  赋值到 tableData1 中
+        let data = { records: [{ departmentId: row.id }] };
+        data.current = 1;
+        data.size = 99999;
+        // 查人员
+        queryEmployeeManual(data).then((res) => {
+          if (res && res.code && res.code === "00000") {
+            console.log(res.data.records, "查人员*---------------------");
+            this.departmentTabledata = res.data.records;
+          }
+        });
+        // 查项目
+        queryProject(data).then((res) => {
+          if (res && res.code && res.code === "00000") {
+            console.log(res.data.records, "查项目*---------------------");
+            this.projectTabledata = res.data.records;
+          }
+        });
+        //操作  项目   根据负责人对应的部门 的id 查找同部门的项目  赋值到 tableData2 中
+
         this.initFormData = row;
         this.$nextTick(() => {
           // 这个要加上
-          this.initForm(row); // 为表单赋值
+          this.initForm(this.initFormData); // 为表单赋值
         });
       }
     },
     initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
+      Object.keys(this.initFormData).forEach((item) => {
+        this.initFormData[item] = data[item] ? data[item] : null;
       });
     },
     closeDialog() {
@@ -253,12 +251,12 @@ export default {
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "确定231确定3131");
+      console.log(this.initFormData, "确定231确定3131");
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
+      this.initForm(this.initFormData);
       this.resetFormData();
     },
 
