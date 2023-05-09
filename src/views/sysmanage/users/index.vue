@@ -378,7 +378,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     // 分页器 页容量变更行为
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },

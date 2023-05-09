@@ -207,7 +207,7 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card>
+    <el-card :body-style="{paddingBottom: '60px'}">
       <el-table
         ref="multipleTable"
         :data="tableData"
