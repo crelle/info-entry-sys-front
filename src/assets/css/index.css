@@ -91,6 +91,14 @@
 .card-container .el-form-item__label {
   color: #fff;
 }
+.card-container .el-input, .el-dialog .el-input, .el-dialog .el-textarea__inner {
+  background: url(../img/dialog/tc-Input.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
+  color: #797d85;
+}
+
 .el-input {
   color: #70757e;
 }
@@ -118,6 +126,9 @@
   background-color: rgba(12, 21, 37, 0.9);
   /* color: #939dbd; */
 }
+.el-dialog .el-col-11{
+  width: 100%;
+}
 .el-message-box__title, .el-dialog__title {
   background-image: linear-gradient(to bottom, #d8e2ff, #a2c5ff);
   -webkit-background-clip: text;
@@ -130,24 +141,35 @@
 .el-dialog__footer, .el-message-box__btns {
   text-align: center;
 }
-.el-message-box__btns .el-button{
+.el-message-box__btns .el-button, .el-dialog__footer .el-button--mini{
   width: 26%;
   padding: 3%;
   border: none;
+}
+.el-dialog__footer .el-button--info{
+  background: url(../img/dialog/tc-button2.png);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  background-position: center center;
 }
 .el-message-box__btns .el-button--default {
   background: url(../img/dialog/tc-button2.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  -webkit-transform:translateX(110%)
+  -webkit-transform:translateX(110%);
+  border: none;
 }
 .el-message-box__btns .el-button--primary, .el-dialog__footer .el-button--primary {
   background: url(../img/dialog/tc-button1.png);
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center center;
+  border: none;
 }
 .el-message-box__btns .el-button--primary{
   -webkit-transform:translateX(-110%);
+}
+.el-dialog input::-webkit-input-placeholder .el-dialog textarea::-webkit-input-placeholder {   
+  color: #797c83;   
 }

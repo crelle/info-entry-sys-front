@@ -6,199 +6,244 @@
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
-      <el-form
-        :inline="true"
-        :model="formOptions"
-        class="demo-form-inline"
-        size="mini"
-        ref="userQueryRef"
-        label-position="left"
-      >
-        <el-row>
-          <el-col :span="7">
-            <el-form-item label="项目名称" prop="name">
-              <el-input
-                v-model="formOptions.name"
-                placeholder="项目名称"
-                clearable
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="7">
-            <el-form-item label="项目状态" prop="status">
-              <el-select
-                v-model="formOptions.status"
-                clearable
-                placeholder="请选择"
+      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+        <el-form
+          :inline="true"
+          :model="formOptions"
+          class="demo-form-inline"
+          size="mini"
+          ref="userQueryRef"
+          label-position="left"
+        >
+          <el-row>
+            <el-col :span="7">
+              <el-form-item
+                label="项目名称"
+                prop="name"
               >
-                <el-option
-                  v-for="(item, i) in $dictionaryList('项目状态')"
-                  :key="i"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-                <!-- <el-option label="前期投入" value="1"></el-option>
+                <el-input
+                  v-model="formOptions.name"
+                  placeholder="项目名称"
+                  clearable
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="7">
+              <el-form-item
+                label="项目状态"
+                prop="status"
+              >
+                <el-select
+                  v-model="formOptions.status"
+                  clearable
+                  placeholder="请选择"
+                >
+                  <el-option
+                    v-for="(item, i) in $dictionaryList('项目状态')"
+                    :key="i"
+                    :label="item.name"
+                    :value="item.name"
+                  ></el-option>
+                  <!-- <el-option label="前期投入" value="1"></el-option>
                 <el-option label="开发中" value="2"></el-option>
                 <el-option label="交付阶段" value="3"></el-option> -->
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="地域" prop="regionId">
-              <el-select
-                v-model="formOptions.regionId"
-                placeholder="请选择地域"
-                clearable
-                filterable
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="地域"
+                prop="regionId"
               >
-                <el-option
-                  v-for="(item, i) in $dictionaryList('区域')"
-                  :key="i"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
+                <el-select
+                  v-model="formOptions.regionId"
+                  placeholder="请选择地域"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="(item, i) in region"
+                    :key="i"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
 
-          <el-col :span="4" class="btn">
-            <el-form-item>
-              <el-button class="header-btn" type="primary" @click="resetForm('userQueryRef')"
-                >重置</el-button
+            <el-col
+              :span="4"
+              class="btn"
+            >
+              <el-form-item>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="resetForm('userQueryRef')"
+                >重置</el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="queryUserListclick"
+                >查询</el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  @click="addClick"
+                >新增</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="searchinpt">
+            <el-col :span="7">
+              <el-form-item
+                label="接口人"
+                prop="interfaceId"
               >
-              <el-button class="header-btn" type="primary" @click="queryUserListclick"
-                >查询</el-button
+                <el-select
+                  v-model="interfaceId"
+                  placeholder="请选择接口人姓名"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in Interface"
+                    :key="item.index"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="6">
+              <el-form-item
+                label="所属部门"
+                prop="departmentId"
               >
-              <el-button class="header-btn" type="primary" @click="addClick">新增</el-button>
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="searchinpt">
-          <el-col :span="7">
-            <el-form-item label="接口人" prop="interfaceId">
-              <el-select
-                v-model="formOptions.interfaceId"
-                placeholder="请选择接口人姓名"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in Interface"
-                  :key="item.index"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="所属部门" prop="departmentId">
-              <el-select
-                v-model="formOptions.departmentId"
-                placeholder="所属部门"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in department"
-                  :key="item.index"
-                  :label="item.name"
-                  :value="item.id"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
+                <el-select
+                  v-model="formOptions.departmentId"
+                  placeholder="所属部门"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in department"
+                    :key="item.index"
+                    :label="item.name"
+                    :value="item.id"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
 
-    <el-card :body-style="{paddingBottom: '60px'}">
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        @selection-change="handleSelectionChange"
-        stripe
-        size="mini"
-        height="550"
-      >
-        <el-table-column
-          label="序号"
-          type="index"
-          :index="indexMethod"
-          width="55"
-          fixed
+      <el-card :body-style="{paddingBottom: '60px'}">
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          @selection-change="handleSelectionChange"
+          stripe
+          size="mini"
+          :height="tableHeight"
         >
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="项目名称"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column label="接口人" min-width="80" show-overflow-tooltip>
-          <template slot-scope="{ row }">
-            <span v-for="item in row.contactPeoples" :key="item.id">{{
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="55"
+            fixed
+          >
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="项目名称"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            label="接口人"
+            min-width="80"
+            show-overflow-tooltip
+          >
+            <template slot-scope="{ row }">
+              <span
+                v-for="item in row.contactPeoples"
+                :key="item.id"
+              >{{
               item.name + " "
             }}</span>
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="status"
-          label="项目状态"
-          show-overflow-tooltip
-          min-width="80"
-        >
-        </el-table-column>
-        <el-table-column
-          prop="departmentName"
-          label="所属部门"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="210">
-          <template slot-scope="{ row, $index }">
-            <span class="operate-btn" @click="detailsClick(row)" type="primary" size="mini"
-              >查看</span
-            >
-            <span class="operate-btn" @click="handleClick(row)" type="primary" size="mini"
-              >编辑</span
-            >
-            <span class="operate-btn"
-              type="primary"
-              size="mini"
-              @click="deleteMenu(row, $index)"
-            >
-              删除
-            </span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="paginationOptions.pageNo"
-          :page-sizes="paginationOptions.pageSizes"
-          :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="paginationOptions.total"
-          size="mini"
-        >
-        </el-pagination>
-      </div>
-    </el-card>
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="status"
+            label="项目状态"
+            show-overflow-tooltip
+            min-width="80"
+          >
+          </el-table-column>
+          <el-table-column
+            prop="departmentName"
+            label="所属部门"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="210"
+          >
+            <template slot-scope="{ row, $index }">
+              <span
+                class="operate-btn"
+                @click="detailsClick(row)"
+                type="primary"
+                size="mini"
+              >查看</span>
+              <span
+                class="operate-btn"
+                @click="handleClick(row)"
+                type="primary"
+                size="mini"
+              >编辑</span>
+              <span
+                class="operate-btn"
+                type="primary"
+                size="mini"
+                @click="deleteMenu(row, $index)"
+              >
+                删除
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="block">
+          <!-- <span class="demonstration">完整功能</span> -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationOptions.pageNo"
+            :page-sizes="paginationOptions.pageSizes"
+            :page-size="paginationOptions.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="paginationOptions.total"
+            size="mini"
+          >
+          </el-pagination>
+        </div>
+      </el-card>
     </div>
     <user-edit-dialog
       :toChild="list"
       :tableData="tableData"
       :Interface="Interface"
       :department="department"
+      :region="region"
       ref="userEditDialogRef"
     ></user-edit-dialog>
     <user-dait-dialog
@@ -210,6 +255,8 @@
 </template>
 
 <script>
+// 地域
+import { queryRegion } from "@/api/region";
 // 接口人
 import { queryInterface } from "@/api/interface";
 // 部门
@@ -223,12 +270,15 @@ export default {
     UserEditDialog,
     UserDaitDialog,
   },
-  data() {
+  data () {
     return {
       xmzt: "",
       list: "",
+      tableHeight: window.innerHeight >= 908 ? 550 : window.innerHeight - 418,
+      interfaceId: '',
       formOptions: {
-        interfaceId: "",
+        // interfaceId: "",
+        contactPeoples: [],
         cellPhone: "",
         email: "",
         // customerName: "",
@@ -247,6 +297,7 @@ export default {
         layout: "total, sizes, prev, pager, next, jumper",
       },
       tableData: [],
+      region: [],
       Interface: [],
       department: [],
       multipleSelection: [],
@@ -254,15 +305,20 @@ export default {
       tableDatastaff: [],
     };
   },
-  mounted() {
+  mounted () {
     this.queryUserList();
   },
   methods: {
     // 手动  数据拿取查询方法
-    queryUserListclick() {
+    queryUserListclick () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
+          if (this.interfaceId) { 
+            this.formOptions.contactPeoples.push({ id: this.interfaceId }) 
+          } else { 
+            this.formOptions.contactPeoples = [] 
+          }
           this.queryUserList();
         } else {
           return false;
@@ -270,7 +326,7 @@ export default {
       });
     },
     //  数据拿取查询方法
-    queryUserList() {
+    queryUserList () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           let data = { records: [{ ...this.formOptions }] };
@@ -299,12 +355,22 @@ export default {
               });
             }
           });
+          // 地域查询
+          let data1 = { records: [{ code: '', name: '' }] };
+          data1.current = this.paginationOptions.pageNo;
+          data1.size = this.paginationOptions.pageSize;
+          queryRegion(data1).then((res3) => {
+            if (res3 && res3.code && res3.code === "00000") {
+              console.log(res3.data, "===");
+              this.region = res3.data.records // 地域下拉框赋值
+            }
+          })
         } else {
           return false;
         }
       });
     },
-    deleteMenu(row, index) {
+    deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -313,7 +379,7 @@ export default {
         modal: false,
       })
         .then(() => {
-          this.tableData.splice(index, 1);
+          // this.tableData.splice(index, 1);
           console.log(row, "删除--------");
           // 点击确认，发起后台请求，删除该用户
           deletesProject(row.id).then((res) => {
@@ -334,54 +400,55 @@ export default {
             // }
           });
         })
-        .catch(() => {
-          // 点击取消，取消该操作
-          this.$message({
-            type: "info",
-            message: "已取消删除",
-          });
-        });
+      // .catch(() => {
+      //   // 点击取消，取消该操作
+      //   this.$message({
+      //     type: "info",
+      //     message: "已取消删除",
+      //   });
+      // });
     },
     // 添加
-    addClick() {
+    addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加项目";
       console.log("我要添加");
     },
     // 编辑
-    handleClick(row) {
+    handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑项目信息";
       console.log("编辑-------", row);
     },
     // 详情
-    detailsClick(row) {
+    detailsClick (row) {
       console.log(row, "------查看");
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看项目详情";
       // console.log("详情", row);
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       console.log("重置-------", formName);
+      this.interfaceId = ""
       this.$refs[formName].resetFields();
       // this.queryUserList();
     },
     // 表格复选动作
-    handleSelectionChange(val) {
+    handleSelectionChange (val) {
       this.multipleSelection = val;
     },
     // 分页器 页容量变更行为
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },
     // 分页器 页码变更行为
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
       this.queryUserList();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +

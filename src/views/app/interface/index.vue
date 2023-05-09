@@ -84,7 +84,7 @@
           style="width: 100%"
           stripe
           size="mini"
-          height="550"
+          :height="tableHeight"
         >
           <el-table-column
             label="序号"
@@ -200,6 +200,7 @@ export default {
   },
   data () {
     return {
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       list: "",
       formOptions: {
         customerId: "",

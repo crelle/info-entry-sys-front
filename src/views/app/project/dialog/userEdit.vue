@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
@@ -33,7 +34,7 @@
                     filterable
                     placeholder="请选择项目状态"
                   >
-                  <el-option v-for="(item,i) in $dictionaryList('项目状态')" :key="i" :label="item.name" :value="item.id"></el-option>
+                  <el-option v-for="(item,i) in $dictionaryList('项目状态')" :key="i" :label="item.name" :value="item.name"></el-option>
                     <!-- <el-option label="前期投入" value="1"></el-option>
                     <el-option label="开发中" value="2"></el-option>
                     <el-option label="交付阶段" value="3"></el-option> -->
@@ -56,7 +57,7 @@
                     clearable
                     filterable
                   >
-                  <el-option v-for="(item,i) in $dictionaryList('区域')" :key="i" :label="item.name" :value="item.id"></el-option>
+                  <el-option v-for="(item,i) in region" :key="i" :label="item.name" :value="item.id"></el-option>
                     <!-- <el-option
                       v-for="item in MockUser"
                       :key="item.index"
@@ -144,6 +145,7 @@ export default {
     MockUser: "",
     department: "",
     tableCustomer: "",
+    region: "",
   },
   data() {
     let validateTel = (rule, value, callback) => {
@@ -233,21 +235,21 @@ export default {
         regionId: [
           {
             required: false,
-            message: "请选泽地域",
+            message: "请选择地域",
             trigger: ["blur", "change"],
           },
         ],
         time: [
           {
             required: false,
-            message: "请选泽立项时间",
+            message: "请选择立项时间",
             trigger: ["blur", "change"],
           },
         ],
         cooperation: [
           {
             required: false,
-            message: "请选泽合作模式",
+            message: "请选择合作模式",
             trigger: ["blur", "change"],
           },
         ],
@@ -476,12 +478,12 @@ export default {
 }
 ::v-deep .el-input__inner {
   width: 250px;
-  color: #606266 !important;
+  // color: #606266 !important;
 }
 ::v-deep .el-textarea__inner {
   min-height: 120px !important;
   width: 250px;
-  color: #606266;
+  // color: #606266; 
   font-size: 14px;
   font-family: "微软雅黑";
 }

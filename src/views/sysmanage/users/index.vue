@@ -226,7 +226,7 @@ export default {
   data () {
     return {
       list: "",
-      tableHeight:window.innerHeight>=908?550:window.innerHeight-418,
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       formOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
@@ -378,7 +378,7 @@ export default {
       this.$refs[formName].resetFields();
     },
     // 分页器 页容量变更行为
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
       this.queryUserList();
     },

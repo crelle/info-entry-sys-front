@@ -29,7 +29,7 @@
             <el-form-item label="部门" prop="department">
               <el-select
                 v-model="formOptions.department"
-                placeholder="请选择接部门"
+                placeholder="请选择部门"
                 clearable
                 filterable
               >
@@ -46,7 +46,7 @@
             <el-form-item label="地域" prop="regionName">
               <el-select
                 v-model="formOptions.regionName"
-                placeholder="请选择接地域名称"
+                placeholder="请选择地域名称"
                 clearable
                 filterable
               >
@@ -215,7 +215,7 @@
         style="width: 100%"
         stripe
         size="mini"
-        height="506"
+        :height="tableHeight"
       >
         <el-table-column
           label="序号"
@@ -383,6 +383,7 @@ import { queryPost } from "@/api/post";
 import UserEditDialog from "@/views/app/employee-information/dialog/userEdit.vue";
 import UserDetailsDialog from "@/views/app/employee-information/dialog/userDetails.vue";
 import UserStateDialog from "@/views/app/employee-information/dialog/state.vue";
+import { table } from "console";
 export default {
   components: {
     UserEditDialog,
@@ -391,6 +392,7 @@ export default {
   },
   data() {
     return {
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       // 字典
       dictionaryData: [],
       child: "",

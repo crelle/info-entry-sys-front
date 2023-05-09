@@ -64,7 +64,7 @@
         @selection-change="handleSelectionChange"
         stripe
         size="mini"
-        height="550"
+        :height="tableHeight"
       >
         <!-- 多选 -->
         <!-- <el-table-column type="selection" width="55" fixed></el-table-column> -->
@@ -138,6 +138,7 @@ export default {
   data() {
     return {
       list: "",
+      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
       formOptions: {
         name: "",
         nameZh: "",
