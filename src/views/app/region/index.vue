@@ -208,6 +208,9 @@ export default {
           deletesRegion(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res && res.code && res.code === "00000") {
+              if(this.tableData.length==1&&this.paginationOptions.pageNo!=1){
+                this.paginationOptions.pageNo--
+              }
               this.queryRoles();
               return this.$message({
                 type: "success",
