@@ -315,6 +315,7 @@ export default {
         if (valid) {
           this.paginationOptions.pageNo = 1;
           if (this.interfaceId) { 
+            this.formOptions.contactPeoples = []
             this.formOptions.contactPeoples.push({ id: this.interfaceId }) 
           } else { 
             this.formOptions.contactPeoples = [] 
