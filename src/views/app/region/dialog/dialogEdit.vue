@@ -5,6 +5,7 @@
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
       width="20%"
+      top="25vh"
       lock-scroll
       @close="closeDialog"
     >
@@ -44,28 +45,18 @@
 </template>
 
 <script>
-// 新增 * 编辑
 import { establishRegion, editRegion } from "@/api/region";
-// 地图
-// import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   props: {
     toChild: String,
   },
   data() {
     return {
-      // options: regionData,
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
         name: "",
         code: "",
       },
-      initFormData: {},
       userEditFormRules: {
         name: [
           {
@@ -101,48 +92,23 @@ export default {
   },
   methods: {
     openDialog(row) {
-      console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.initFormData = {};
-      this.userEditForm.id = "";
       if (row) {
-        // let editRow = JSON.parse(JSON.stringify(row));
-        // editRow.regionName = this.getCityCode(editRow.regionName);
-        this.initFormData = row;
-        this.$nextTick(() => {
-          // 这个要加上
-          this.initForm(row); // 为表单赋值
-        });
-      } else {
-        console.log("我是新增");
-        // this.initForm("");
-      }
-    },
-    initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
-      });
+        this.userEditForm = JSON.parse(JSON.stringify(row)) ;
+      } 
     },
     closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
       this.resetForm("userEditRef"); // 重置表单
     },
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
-      this.resetFormData();
     },
 
-    // 初始化页面数据 重置
-    resetFormData() {
-      this.ifLogin = true;
-    },
     /* 保存  */
     onCertain() {
       console.log("保存了------", this.userEditForm.name);
@@ -155,25 +121,16 @@ export default {
       //   this.userEditForm.regionName = loc;
       //   console.log("保存了------", this.userEditForm.regionName);
       // }
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
-        console.log(this.userEditForm, "保存执行了");
-        console.log(
-          this.userEditForm.id,
-          this.userEditForm,
-          "this.initFormData.regionId"
-        );
+      if (this.userEditForm.id) {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "修改的valid");
           if (valid) {
-            editRegion(this.userEditForm, this.userEditForm.id).then((res) => {
+            editRegion(this.userEditForm).then((res) => {
               console.log(res, "res11111");
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
                 this.dialogClose();
-                console.log("修改成功！");
+                this.$parent.paginationOptions.pageNo = 1;
                 this.$parent.queryRoles();
               }
             });
@@ -182,23 +139,15 @@ export default {
           }
         });
       } else {
-        console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
-          console.log(valid, "增加了的valid");
-          console.log(
-            this.userEditForm,
-            this.userEditForm.id,
-            "----------地域"
-          );
           if (valid) {
-            establishRegion(this.userEditForm, this.userEditForm.id).then(
+            establishRegion(this.userEditForm).then(
               (res) => {
                 console.log(res, "增加了...res11111");
                 if (res && res.code && res.code === "00000") {
-                  // this.$parent.resetForm();
-                  // this.nowIndex = -1; // 重置选中
                   this.dialogFormVisible = false; // 让弹窗隐藏
                   this.$message.success("创建成功！");
+                  this.$parent.paginationOptions.pageNo = 1;
                   this.$parent.queryRoles();
                 }
               }

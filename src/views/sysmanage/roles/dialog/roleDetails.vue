@@ -173,7 +173,6 @@ export default {
   methods: {
     openDialog(row) {
       console.log(this.roleEditForm, "001001");
-
       this.datas = [];
       if (row) {
         this.initFormData = row;
@@ -271,7 +270,6 @@ li {
   display: flex;
   justify-content: space-around;
   padding: 5px 20px 0;
-
   .sbox {
     width: 120px;
     span {
@@ -280,7 +278,6 @@ li {
     }
   }
 }
-
 ::v-deep .el-form-item {
   text-align: right;
   margin: 20px 0;
