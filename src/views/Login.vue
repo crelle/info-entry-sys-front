@@ -158,7 +158,7 @@ this.changecode()
     min-width: 1000px;
     z-index:-10;
     zoom: 1;
-    background: url("../assets/img/login/bg1.png") no-repeat center center ;
+    background: url("../assets/img/login/bg1.jpg") no-repeat center center ;
     background-size:100% 100%;
     background-attachment:fixed;
 
