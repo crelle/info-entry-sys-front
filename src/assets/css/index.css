@@ -173,3 +173,14 @@
 .el-dialog input::-webkit-input-placeholder .el-dialog textarea::-webkit-input-placeholder {   
   color: #797c83;   
 }
+ .el-table .el-table__body-wrapper {
+  overflow: hidden;
+  }
+.el-table__fixed-right-patch {
+   background-color: transparent; 
+   border-bottom: 0px;
+   display: none;
+  }
+  .el-table .el-table__cell.gutter{
+    display: none;
+  }
