@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"

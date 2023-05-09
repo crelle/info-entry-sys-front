@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"

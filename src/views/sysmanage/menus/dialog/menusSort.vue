@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       title="菜单调整"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
