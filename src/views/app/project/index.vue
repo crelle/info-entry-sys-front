@@ -338,7 +338,7 @@ export default {
               // console.log(res.data,'----------手动----------');
               data.current = 1;
               data.size = 999;
-              // // //  数据接口人查询方法
+              // 数据接口人查询方法
               queryInterface(data).then((res1) => {
                 if (res1 && res1.code && res1.code === "00000") {
                   //   // 部门表格数据

@@ -14,14 +14,14 @@
           <el-col :span="24">
             <div class="grid-content-right">
               <el-form
-                :model="userEditForm"
-                :rules="userEditFormRules"
+                :model="departmentEditForm"
+                :rules="departmentEditFormRules"
                 ref="userEditRef"
                 size="mini"
               >
                 <el-form-item label="部门名" prop="name">
                   <el-input
-                    v-model="userEditForm.name"
+                    v-model="departmentEditForm.name"
                     placeholder="部门名"
                     @change="queryson"
                     clearable
@@ -29,7 +29,7 @@
                 </el-form-item>
                 <el-form-item label="负责人" prop="userId">
                   <el-select
-                    v-model="userEditForm.userId"
+                    v-model="departmentEditForm.userId"
                     placeholder="请选择负责人"
                     filterable
                     @change="queryson"
@@ -46,14 +46,14 @@
                 <el-form-item label="工号" prop="jobNo">
                   <el-input
                     placeholder="工号"
-                    v-model="userEditForm.jobNo"
+                    v-model="departmentEditForm.jobNo"
                     disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="手机号" prop="cellPhone">
                   <el-input
                     type="tel"
-                    v-model="userEditForm.cellPhone"
+                    v-model="departmentEditForm.cellPhone"
                     placeholder="手机号"
                     disabled
                   ></el-input>
@@ -61,14 +61,14 @@
                 <el-form-item label="邮箱" prop="email">
                   <el-input
                     type="email"
-                    v-model="userEditForm.email"
+                    v-model="departmentEditForm.email"
                     placeholder="邮箱"
                     disabled
                   ></el-input>
                 </el-form-item>
                 <el-form-item label="上级部门" prop="parentId">
                   <el-select
-                    v-model="userEditForm.parentId"
+                    v-model="departmentEditForm.parentId"
                     clearable
                     filterable
                   >
@@ -85,7 +85,7 @@
                   <el-input
                     type="email"
                     placeholder="部门总部地址"
-                    v-model="userEditForm.address"
+                    v-model="departmentEditForm.address"
                     clearable
                   ></el-input>
                 </el-form-item>
@@ -94,20 +94,10 @@
                     type="textarea"
                     :rows="2"
                     placeholder="请输入内容"
-                    v-model="userEditForm.introduce"
+                    v-model="departmentEditForm.introduce"
                   >
                   </el-input>
                 </el-form-item>
-                <!-- <el-form-item label="" prop="password">
-                  <el-input
-                    class="passwordat"
-                    type="email"
-                    v-model="userEditForm.password"
-                    placeholder="密码"
-                    :disabled="true"
-                    ><i class="el-icon-message" slot="prepend"></i
-                  ></el-input>
-                </el-form-item> -->
               </el-form>
             </div>
           </el-col>
@@ -127,7 +117,6 @@
 
 <script>
 import { establishDepartments, editDepartments } from "@/api/department";
-
 export default {
   props: {
     toChild: String,
@@ -143,8 +132,7 @@ export default {
       },
       imageUrl: "",
       nowIndex: -1,
-      // baseURL: BaseURL,
-      userEditForm: {
+      departmentEditForm: {
         address: "",
         cellPhone: "",
         createBy: "",
@@ -163,7 +151,7 @@ export default {
         parentId: "",
       },
       initFormData: {},
-      userEditFormRules: {
+      departmentEditFormRules: {
         name: [
           {
             required: true,
@@ -251,21 +239,15 @@ export default {
         this.UserData.forEach((item) => {
           if (e) {
             console.log(item, "--------xxxx");
-            this.userEditForm.cellPhone = item.userPhone;
-            this.userEditForm.email = item.userEmail;
-            this.userEditForm.jobNo = item.jobNo;
+            this.departmentEditForm.cellPhone = item.userPhone;
+            this.departmentEditForm.email = item.userEmail;
+            this.departmentEditForm.jobNo = item.jobNo;
           } else {
-            this.userEditForm.cellPhone = "";
-            this.userEditForm.email = "";
-            this.userEditForm.jobNo = "";
+            this.departmentEditForm.cellPhone = "";
+            this.departmentEditForm.email = "";
+            this.departmentEditForm.jobNo = "";
           }
         });
-        // this.userEditForm = this.tableData[e];
-        // this.userEditForm.userId = this.UserData[e].userNickName;
-        // this.userEditForm.cellPhone = this.UserData[e].userPhone;
-        // this.userEditForm.email = this.UserData[e].userEmail;
-        // this.userEditForm.jobNo = this.UserData[e].jobNo;
-        // console.log(this.userEditForm,"this.tableData[e]----this.userEditForm");
       } else {
         return;
       }
@@ -286,12 +268,12 @@ export default {
       } else {
         console.log("我是新增");
         // 指定删除的
-        delete this.userEditForm.id;
+        delete this.departmentEditForm.id;
       }
     },
     initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
+      Object.keys(this.departmentEditForm).forEach((item) => {
+        this.departmentEditForm[item] = data[item] ? data[item] : null;
       });
     },
     closeDialog() {
@@ -301,12 +283,12 @@ export default {
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      this.userEditForm.id = "";
+      this.departmentEditForm.id = "";
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
+      this.initForm(this.departmentEditForm);
       this.resetFormData();
     },
 
@@ -316,17 +298,17 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log(this.userEditForm.id, "this.userEditForm.id---编辑有");
+      console.log(this.departmentEditForm.id, "this.departmentEditForm.id---编辑有");
       if (this.initFormData.id) {
-        this.initFormData = this.userEditForm;
+        this.initFormData = this.departmentEditForm;
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "传入修改的内容");
-            editDepartments(this.userEditForm).then((res) => {
+            console.log(this.departmentEditForm, "传入修改的内容");
+            editDepartments(this.departmentEditForm).then((res) => {
               if (res.code === "00000") {
                 this.$message.success("修改成功！");
-                this.$parent.queryUserList();
+                this.$parent.queryDepartmentList();
                 this.dialogFormVisible = false; // 让弹窗隐藏
               } else {
                 his.$message.success("修改失败！");
@@ -338,12 +320,12 @@ export default {
         console.log("新增了");
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "新增内容带字段------");
-            establishDepartments(this.userEditForm).then((res) => {
+            console.log(this.departmentEditForm, "新增内容带字段------");
+            establishDepartments(this.departmentEditForm).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("创建成功！");
                 this.dialogClose();
-                this.$parent.queryUserList();
+                this.$parent.queryDepartmentList();
               }
             });
           } else {
