@@ -142,8 +142,8 @@
   text-align: center;
 }
 .el-message-box__btns .el-button, .el-dialog__footer .el-button--mini{
-  width: 26%;
-  padding: 3%;
+  width: 110px;
+  padding: 12px;
   border: none;
 }
 .el-dialog__footer .el-button--info{

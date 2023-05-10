@@ -238,19 +238,19 @@
         </div>
       </el-card>
     </div>
-    <user-edit-dialog
+    <project-edit-dialog
       :toChild="list"
       :tableData="tableData"
       :Interface="Interface"
       :department="department"
       :region="region"
       ref="userEditDialogRef"
-    ></user-edit-dialog>
-    <user-dait-dialog
+    ></project-edit-dialog>
+    <project-dait-dialog
       :toChild="list"
       :tableDatastaff="tableDatastaff"
       ref="userDaitDialogRef"
-    ></user-dait-dialog>
+    ></project-dait-dialog>
   </div>
 </template>
 
@@ -263,12 +263,12 @@ import { queryInterface } from "@/api/interface";
 import { queryDepartments } from "@/api/department";
 // 项目
 import { queryProject, deletesProject } from "@/api/project";
-import UserEditDialog from "@/views/app/project/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/app/project/dialog/userDetails.vue";
+import ProjectEditDialog from "@/views/app/project/dialog/projectEdit.vue";
+import ProjectDaitDialog from "@/views/app/project/dialog/projectDetails.vue";
 export default {
   components: {
-    UserEditDialog,
-    UserDaitDialog,
+    ProjectEditDialog,
+    ProjectDaitDialog,
   },
   data () {
     return {
