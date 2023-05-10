@@ -124,6 +124,9 @@
           @click="submitForm('dynamicValidateForm')"
           >提交</el-button
         >
+        <el-button type="info" size="mini" @click="dialogClose"
+          >取 消</el-button
+        >
       </div>
     </el-dialog>
   </div>
@@ -211,6 +214,10 @@ export default {
         name: "",
         code: "",
       });
+    },
+    // 取消
+    dialogClose() {
+      this.dialogVisible = false;
     },
   },
 };
