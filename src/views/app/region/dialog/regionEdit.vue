@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      :modal="false"
       width="20%"
       top="25vh"
       lock-scroll
@@ -99,17 +99,14 @@ export default {
       } 
     },
     closeDialog() {
-      this.resetForm("userEditRef"); // 重置表单
+      this.userEditForm={}
+      this.$refs["userEditRef"].resetFields();
     },
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
     },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-    },
-
+   
     /* 保存  */
     onCertain() {
       console.log("保存了------", this.userEditForm.name);

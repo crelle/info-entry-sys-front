@@ -99,8 +99,8 @@ export default {
               },
                 labelLine: {
                   show: true,
-                  length:40,
-                  length2:20,
+                  length:25,
+                  length2:15,
                 },
                 
             },
