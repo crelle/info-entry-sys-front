@@ -111,8 +111,8 @@
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
-         :current-page="paginationOptions.pageNo"
-          :page-sizes="paginationOptions.pageSizes"
+        :current-page="paginationOptions.pageNo"
+        :page-sizes="paginationOptions.pageSizes"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
       >
@@ -268,6 +268,7 @@ export default {
     reset() {
       this.child = "";
       this.parent = "";
+      this.onSubmit();
     },
     edit(row) {
       this.$refs.AddDictionaryRef.openDialog(row);
