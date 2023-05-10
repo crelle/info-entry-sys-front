@@ -456,6 +456,10 @@ export default {
 ::v-deep .el-dialog {
   min-width: 400px;
 }
+.delbtn {
+  display: flex;
+  justify-content: right;
+}
 </style>
 
 
