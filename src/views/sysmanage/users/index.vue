@@ -437,4 +437,5 @@ export default {
 ::v-deep .el-col-5 {
   overflow: hidden;
 }
+
 </style>

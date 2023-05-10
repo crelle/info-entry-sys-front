@@ -75,25 +75,25 @@
                           <el-table-column
                             prop="jobNo"
                             label="工号"
-                            width="120"
+                            width="80"
                           >
                           </el-table-column>
                           <el-table-column
                             prop="name"
-                            label="人员姓名"
-                            width="100"
+                            label="姓名"
+                            width="50"
                           >
                           </el-table-column>
                           <el-table-column
                             prop="cellPhone"
                             label="联系方式"
-                            width="150"
+                            width="120"
                           >
                           </el-table-column>
                           <el-table-column
                             prop="regionName"
                             label="地域"
-                            width="80"
+                            width="50"
                           >
                           </el-table-column>
                           <el-table-column
@@ -156,8 +156,8 @@
                             :show-overflow-tooltip="true"
                           >
                           </el-table-column>
-                          <el-table-column prop="name" label="所属部门">
-                          </el-table-column>
+                          <!-- <el-table-column prop="departmentName" label="所属部门"  :show-overflow-tooltip="true">
+                          </el-table-column> -->
                           <el-table-column prop="employeeNum" label="项目人数">
                           </el-table-column>
                         </el-table>
