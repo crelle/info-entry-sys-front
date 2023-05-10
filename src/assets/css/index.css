@@ -224,3 +224,15 @@
 .el-dialog__body .el-tabs__nav-wrap::after {
   content: none;
 }
+
+ .el-table .el-table__body-wrapper {
+  overflow: hidden;
+  }
+.el-table__fixed-right-patch {
+   background-color: transparent; 
+   border-bottom: 0px;
+   display: none;
+  }
+  .el-table .el-table__cell.gutter{
+    display: none;
+  }

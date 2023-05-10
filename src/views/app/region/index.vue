@@ -113,8 +113,8 @@
 // 真的地域接口
 import { queryRegion, deletesRegion } from "@/api/region";
 
-import RoleEditDialog from "@/views/app/region/dialog/dialogEdit.vue";
-import RoleDataDialog from "@/views/app/region/dialog/dialogDetails.vue";
+import RoleEditDialog from "@/views/app/region/dialog/regionEdit.vue";
+import RoleDataDialog from "@/views/app/region/dialog/regionDetails.vue";
 export default {
   components: {
     RoleEditDialog,
