@@ -60,6 +60,7 @@
                   placeholder="请选择地域"
                   clearable
                   filterable
+                  @focus="queryRegionList"
                 >
                   <el-option
                     v-for="(item, i) in region"
@@ -105,6 +106,7 @@
                   placeholder="请选择接口人姓名"
                   clearable
                   filterable
+                  @focus="queryInterfaceList"
                 >
                   <el-option
                     v-for="item in Interface"
@@ -125,6 +127,7 @@
                   placeholder="所属部门"
                   clearable
                   filterable
+                  @focus="queryDepartmentList"
                 >
                   <el-option
                     v-for="item in department"
@@ -314,11 +317,11 @@ export default {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
-          if (this.interfaceId) { 
+          if (this.interfaceId) {
             this.formOptions.contactPeoples = []
-            this.formOptions.contactPeoples.push({ id: this.interfaceId }) 
-          } else { 
-            this.formOptions.contactPeoples = [] 
+            this.formOptions.contactPeoples.push({ id: this.interfaceId })
+          } else {
+            this.formOptions.contactPeoples = []
           }
           this.queryUserList();
         } else {
@@ -336,41 +339,51 @@ export default {
           // 项目表格数据
           queryProject(data).then((res) => {
             if (res && res.code && res.code === "00000") {
-              // console.log(res.data,'----------手动----------');
-              data.current = 1;
-              data.size = 999;
-              // 数据接口人查询方法
-              queryInterface(data).then((res1) => {
-                if (res1 && res1.code && res1.code === "00000") {
-                  //   // 部门表格数据
-                  queryDepartments(data).then((res2) => {
-                    if (res2 && res2.code && res2.code === "00000") {
-                      this.tableData = res.data.records; // 项目表格数据赋值
-                      this.Interface = res1.data.records; // 接口人表格数据赋值
-                      this.department = res2.data.records; // 部门表格数据赋值
-                      console.log(this.tableData, "------项目表格数据");
-                      this.paginationOptions.total = res.data.total; // 分页器赋值
-                    }
-                  });
-                }
-              });
+              this.tableData = res.data.records; // 项目表格数据赋值
+              this.paginationOptions.total = res.data.total; // 分页器赋值
             }
           });
-          // 地域查询
-          let data1 = { records: [{ code: '', name: '' }] };
-          data1.current = this.paginationOptions.pageNo;
-          data1.size = this.paginationOptions.pageSize;
-          queryRegion(data1).then((res3) => {
-            if (res3 && res3.code && res3.code === "00000") {
-              console.log(res3.data, "===");
-              this.region = res3.data.records // 地域下拉框赋值
-            }
-          })
         } else {
           return false;
         }
       });
     },
+    // 查询全部地域
+    queryRegionList () {
+      let data = { records: [{ code: '', name: '' }] };
+      data.current = 1;
+      data.size = 999;
+      queryRegion(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data, "===");
+          this.region = res.data.records // 地域下拉框赋值
+        }
+      })
+    },
+    // 查询全部部门
+    queryDepartmentList () {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 999;
+      queryDepartments(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.department = res.data.records; // 部门赋值
+        }
+      });
+    },
+    // 查询全部接口人
+    queryInterfaceList () { 
+      let data = { records: [{ code: '', name: '' }] };
+      data.current = 1;
+      data.size = 999;
+      queryInterface(data).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          console.log(res.data, "===");
+          this.Interface = res.data.records // 地域下拉框赋值
+        }
+      })
+    },
+
     deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
         confirmButtonText: "确定",
@@ -413,12 +426,18 @@ export default {
     addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加项目";
+      this.queryRegionList()
+      this.queryDepartmentList()
+      this.queryInterfaceList()
       console.log("我要添加");
     },
     // 编辑
     handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑项目信息";
+      this.queryRegionList()
+      this.queryDepartmentList()
+      this.queryInterfaceList()
       console.log("编辑-------", row);
     },
     // 详情
