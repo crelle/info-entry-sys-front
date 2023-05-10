@@ -50,7 +50,7 @@
                   </div>
                 </div>
                 <el-form-item class="dialog-footer">
-                  <el-button type="primary" @click="dialogClose" size="mini"
+                  <el-button class="cancel-btn" type="primary" @click="dialogClose" size="mini"
                     >取 消</el-button
                   >
                 </el-form-item>

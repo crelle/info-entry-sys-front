@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
@@ -61,7 +62,6 @@
                       <el-tab-pane label="部门人员" name="first">
                         <el-table
                           :data="departmentTabledata"
-                          border
                           height="310"
                           style="width: 100%"
                         >

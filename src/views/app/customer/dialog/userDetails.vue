@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
@@ -58,7 +59,6 @@
                         <el-table
                           :data="tableData1"
                           height="311"
-                          border
                           style="width: 100%"
                         >
                           <el-table-column

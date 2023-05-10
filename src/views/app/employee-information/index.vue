@@ -6,321 +6,374 @@
       <el-breadcrumb-item>员工信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-    <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
-      <el-form
-        :inline="true"
-        :model="formOptions"
-        class="demo-form-inline"
-        size="mini"
-        ref="userQueryRef"
-        label-position="right"
-      >
-        <el-row>
-          <el-col :span="5">
-            <el-form-item label="姓名" prop="name">
-              <el-input
-                class="namecss"
-                v-model="formOptions.name"
-                placeholder="姓名"
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="部门" prop="department">
-              <el-select
-                v-model="formOptions.department"
-                placeholder="请选择部门"
-                clearable
-                filterable
+      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+        <el-form
+          :inline="true"
+          :model="formOptions"
+          class="demo-form-inline"
+          size="mini"
+          ref="userQueryRef"
+          label-position="right"
+        >
+          <el-row>
+            <el-col :span="5">
+              <el-form-item
+                label="姓名"
+                prop="name"
               >
-                <el-option
-                  v-for="item in UsersHeader"
-                  :key="item.index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="地域" prop="regionName">
-              <el-select
-                v-model="formOptions.regionName"
-                placeholder="请选择地域名称"
-                clearable
-                filterable
+                <el-input
+                  class="namecss"
+                  v-model="formOptions.name"
+                  placeholder="姓名"
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="部门"
+                prop="department"
               >
-                <el-option
-                  v-for="item in RegionNameHeader"
-                  :key="item.index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="资产编号" prop="interfaceName">
-              <el-input
-                class="namecss"
-                v-model="formOptions.interfaceName"
-                placeholder="请输入资产编号--等待实现..."
-              ></el-input>
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" class="btn" style="display: flex; float: right">
-            <el-form-item>
-              <el-button class="header-btn"
-                type="primary"
-                size="mini"
-                style="width: 80px"
-                @click="resetForm('userQueryRef')"
-                >重置</el-button
-              >
-              <el-button class="header-btn"
-                type="primary"
-                size="mini"
-                style="width: 80px"
-                @click="queryUserList"
-                >查询</el-button
-              >
-              <el-button class="header-btn"
-                type="primary"
-                size="mini"
-                style="width: 80px"
-                @click="addClick"
-                >新增</el-button
-              >
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row class="name">
-          <el-col :span="5">
-            <el-form-item label="客户" prop="customerName">
-              <el-select
-                v-model="formOptions.customerName"
-                placeholder="请选择客户名称"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in CustomerNameHeader"
-                  :key="item.index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="项目" prop="project">
-              <el-select
-                v-model="formOptions.project"
-                placeholder="请选择项目名称"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in ProjectNameHeader"
-                  :key="item.index"
-                  :label="item"
-                  :value="item"
-                ></el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item label="岗位" prop="postName">
-              <el-select
-                v-model="formOptions.postName"
-                placeholder="请选择岗位"
-                clearable
-                filterable
-              >
-                <el-option
-                  v-for="item in PostNameHeader"
-                  :key="item.value"
-                  :label="item"
-                  :value="item"
+                <el-select
+                  v-model="formOptions.department"
+                  placeholder="请选择部门"
+                  clearable
+                  filterable
                 >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col :span="5">
-            <el-form-item class="lab" label="状态" prop="status">
-              <el-select
-                v-model="formOptions.status"
-                placeholder="请选择"
-                clearable
-                filterable
+                  <el-option
+                    v-for="item in UsersHeader"
+                    :key="item.index"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="地域"
+                prop="regionName"
               >
-                <el-option
-                  v-for="item in StatusNameHeader"
-                  :key="item.value"
-                  :label="item"
-                  :value="item"
+                <el-select
+                  v-model="formOptions.regionName"
+                  placeholder="请选择地域名称"
+                  clearable
+                  filterable
                 >
-                </el-option>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :span="4"
-            class="btn"
-            style="display: flex; float: right; height: 28px"
-          >
-            <el-button class="header-btn" type="primary" size="mini" @click="downloadTemplate()"
-              >下载模板</el-button
+                  <el-option
+                    v-for="item in RegionNameHeader"
+                    :key="item.index"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="资产编号"
+                prop="interfaceName"
+              >
+                <el-input
+                  class="namecss"
+                  v-model="formOptions.interfaceName"
+                  placeholder="请输入资产编号--等待实现..."
+                ></el-input>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="4"
+              class="btn"
+              style="display: flex; float: right"
             >
-            <el-button class="header-btn" type="primary" size="mini" @click="downloadApi()"
-              >批量导出</el-button
-            >
-            <el-upload
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :limit="7"
-              ref="enclosureUpload"
-              :file-list="fileList"
-              accept=".xlsx"
-              :headers="tokens"
-              :multiple="true"
-              :show-file-list="false"
-              :auto-upload="false"
-              :on-change="handleFileChange"
-              :on-success="enclosureHandleSuccess"
-              :on-exceed="handleExceed"
-              :before-upload="handlebeforeUpload"
-              style="margin-left: 10px"
+              <el-form-item>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  size="mini"
+                  style="width: 80px"
+                  @click="resetForm('userQueryRef')"
+                >重置</el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  size="mini"
+                  style="width: 80px"
+                  @click="queryUserList"
+                >查询</el-button>
+                <el-button
+                  class="header-btn"
+                  type="primary"
+                  size="mini"
+                  style="width: 80px"
+                  @click="addClick"
+                >新增</el-button>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row class="name">
+            <el-col :span="5">
+              <el-form-item
+                label="客户"
+                prop="customerName"
+              >
+                <el-select
+                  v-model="formOptions.customerName"
+                  placeholder="请选择客户名称"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in CustomerNameHeader"
+                    :key="item.index"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="项目"
+                prop="project"
+              >
+                <el-select
+                  v-model="formOptions.project"
+                  placeholder="请选择项目名称"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in ProjectNameHeader"
+                    :key="item.index"
+                    :label="item"
+                    :value="item"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                label="岗位"
+                prop="postName"
+              >
+                <el-select
+                  v-model="formOptions.postName"
+                  placeholder="请选择岗位"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in PostNameHeader"
+                    :key="item.value"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col :span="5">
+              <el-form-item
+                class="lab"
+                label="状态"
+                prop="status"
+              >
+                <el-select
+                  v-model="formOptions.status"
+                  placeholder="请选择"
+                  clearable
+                  filterable
+                >
+                  <el-option
+                    v-for="item in StatusNameHeader"
+                    :key="item.value"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :span="4"
+              class="btn"
+              style="display: flex; float: right; height: 28px"
             >
               <el-button
+                class="header-btn"
                 type="primary"
-                size="small"
-                class="btn header-btn"
-                style="width: 80px; padding: 7px 15px"
-                @click="uploadmore"
+                size="mini"
+                @click="downloadTemplate()"
+              >下载模板</el-button>
+              <el-button
+                class="header-btn"
+                type="primary"
+                size="mini"
+                @click="downloadApi()"
+              >批量导出</el-button>
+              <el-upload
+                action="https://jsonplaceholder.typicode.com/posts/"
+                :limit="7"
+                ref="enclosureUpload"
+                :file-list="fileList"
+                accept=".xlsx"
+                :headers="tokens"
+                :multiple="true"
+                :show-file-list="false"
+                :auto-upload="false"
+                :on-change="handleFileChange"
+                :on-success="enclosureHandleSuccess"
+                :on-exceed="handleExceed"
+                :before-upload="handlebeforeUpload"
+                style="margin-left: 10px"
               >
-                批量导入
-              </el-button>
-            </el-upload>
-            <el-form-item> </el-form-item>
-          </el-col>
-        </el-row>
-      </el-form>
-    </el-card>
-    <el-card :body-style="{paddingBottom: '60px'}">
-      <el-table
-        ref="multipleTable"
-        :data="tableData"
-        tooltip-effect="dark"
-        style="width: 100%"
-        stripe
-        size="mini"
-        :height="tableHeight"
-      >
-        <el-table-column
-          label="序号"
-          type="index"
-          :index="indexMethod"
-          width="55"
-          fixed
-        >
-        </el-table-column>
-        <el-table-column
-          prop="jobNo"
-          label="工号"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="name"
-          label="姓名"
-          min-width="50"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="cellPhone"
-          label="手机号"
-          min-width="100"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="regionName"
-          label="地域"
-          min-width="50"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-
-        <el-table-column
-          prop="department"
-          label="部门"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="project"
-          label="项目"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column
-          prop="interfaceName"
-          label="接口人"
-          min-width="80"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <!-- 员工状态 -->
-        <el-table-column prop="status" label="员工状态" show-overflow-tooltip>
-        </el-table-column>
-        <el-table-column
-          prop="postName"
-          label="岗位"
-          min-width="90"
-          show-overflow-tooltip
-        >
-        </el-table-column>
-        <el-table-column fixed="right" label="操作" min-width="278">
-          <template slot-scope="{ row, $index }">
-            <span class="operate-btn" @click="stateClick(row)" type="primary" size="mini"
-              >状态</span
-            >
-            <span class="operate-btn" @click="detailsClick(row)" type="primary" size="mini"
-              >查看</span
-            >
-            <span class="operate-btn" @click="handleClick(row)" type="primary" size="mini"
-              >编辑</span
-            >
-            <span class="operate-btn"
-              type="primary"
-              size="mini"
-              @click="deleteMenu(row, $index)"
-            >
-              删除
-          </span>
-          </template>
-        </el-table-column>
-      </el-table>
-      <div class="block">
-        <!-- <span class="demonstration">完整功能</span> -->
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="paginationOptions.pageNo"
-          :page-sizes="paginationOptions.pageSizes"
-          :page-size="paginationOptions.pageSize"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="paginationOptions.total"
+                <el-button
+                  type="primary"
+                  size="small"
+                  class="btn header-btn"
+                  style="width: 80px; padding: 7px 15px"
+                  @click="uploadmore"
+                >
+                  批量导入
+                </el-button>
+              </el-upload>
+              <el-form-item> </el-form-item>
+            </el-col>
+          </el-row>
+        </el-form>
+      </el-card>
+      <el-card :body-style="{paddingBottom: '60px'}">
+        <el-table
+          ref="multipleTable"
+          :data="tableData"
+          tooltip-effect="dark"
+          style="width: 100%"
+          stripe
           size="mini"
+          :height="tableHeight"
         >
-        </el-pagination>
-      </div>
-    </el-card>
+          <el-table-column
+            label="序号"
+            type="index"
+            :index="indexMethod"
+            width="55"
+            fixed
+          >
+          </el-table-column>
+          <el-table-column
+            prop="jobNo"
+            label="工号"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="name"
+            label="姓名"
+            min-width="50"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="cellPhone"
+            label="手机号"
+            min-width="100"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="regionName"
+            label="地域"
+            min-width="50"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+
+          <el-table-column
+            prop="department"
+            label="部门"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="project"
+            label="项目"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="interfaceName"
+            label="接口人"
+            min-width="80"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <!-- 员工状态 -->
+          <el-table-column
+            prop="status"
+            label="员工状态"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            prop="postName"
+            label="岗位"
+            min-width="90"
+            show-overflow-tooltip
+          >
+          </el-table-column>
+          <el-table-column
+            fixed="right"
+            label="操作"
+            min-width="278"
+          >
+            <template slot-scope="{ row, $index }">
+              <span
+                class="operate-btn"
+                @click="stateClick(row)"
+                type="primary"
+                size="mini"
+              >状态</span>
+              <span
+                class="operate-btn"
+                @click="detailsClick(row)"
+                type="primary"
+                size="mini"
+              >查看</span>
+              <span
+                class="operate-btn"
+                @click="handleClick(row)"
+                type="primary"
+                size="mini"
+              >编辑</span>
+              <span
+                class="operate-btn"
+                type="primary"
+                size="mini"
+                @click="deleteMenu(row, $index)"
+              >
+                删除
+              </span>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="block">
+          <!-- <span class="demonstration">完整功能</span> -->
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="paginationOptions.pageNo"
+            :page-sizes="paginationOptions.pageSizes"
+            :page-size="paginationOptions.pageSize"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="paginationOptions.total"
+            size="mini"
+          >
+          </el-pagination>
+        </div>
+      </el-card>
     </div>
     <user-edit-dialog
       :toChild="list"
@@ -389,9 +442,9 @@ export default {
     UserDetailsDialog,
     UserStateDialog,
   },
-  data() {
+  data () {
     return {
-      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
+      tableHeight: window.innerHeight >= 908 ? 550 : window.innerHeight - 418,
       // 字典
       dictionaryData: [],
       child: "",
@@ -498,18 +551,18 @@ export default {
       StatusNameHeader: [],
     };
   },
-  mounted() {
+  mounted () {
     this.child = "",
-    this.formClear = JSON.parse(JSON.stringify(this.formOptions));
+      this.formClear = JSON.parse(JSON.stringify(this.formOptions));
     this.queryTableList();
     this.queryProjectList();
     this.querySearch();
     this.searchHeader();
   },
   methods: {
-   
+
     // 下载模板
-    downloadTemplate() {
+    downloadTemplate () {
       downloadTemplate().then((res) => {
         if (res.message == "成功") {
           this.$message.success(res.data);
@@ -519,7 +572,7 @@ export default {
       });
     },
     // 下载员工(批量)
-    downloadApi() {
+    downloadApi () {
       downloadApi().then((res) => {
         if (res.message == "成功") {
           this.$message.success(res.data);
@@ -529,12 +582,12 @@ export default {
       });
     },
     // 批量
-    uploadmore(v) {
+    uploadmore (v) {
       console.log("批量导入", v);
     },
 
     // 过滤重复
-    filterRepetition(arr) {
+    filterRepetition (arr) {
       let arr1 = []; //存id
       let newArr = []; //存新数组
       for (let i in arr) {
@@ -546,12 +599,12 @@ export default {
       return newArr;
     },
 
-    handlebeforeUpload(file, fileList) {
+    handlebeforeUpload (file, fileList) {
       console.log("上传前", file, fileList);
     },
 
     // 修改 存放要上传的文件列表
-    handleFileChange(file, fileList) {
+    handleFileChange (file, fileList) {
       let arr = this.filterRepetition(fileList);
       // if (arr.length !== fileList.length) {
       //   this.$message("上传重复文件，已过滤重复文件");
@@ -563,7 +616,7 @@ export default {
 
     // element上传多个文件时，会把每个文件做个单独请求
     // 这里的方法是请求最后一次
-    debounce(fn, waits) {
+    debounce (fn, waits) {
       if (this.timer) {
         clearTimeout(this.timer);
         this.timer = null;
@@ -575,7 +628,7 @@ export default {
     },
 
     // 确定
-    async submitUpload() {
+    async submitUpload () {
       if (this.fileList.length === 0) {
         this.$message.success("请上传文件");
         return;
@@ -612,7 +665,7 @@ export default {
     },
 
     // 移除文件
-    async delIdlist(val) {
+    async delIdlist (val) {
       let flag = await this.$confirm(`确定移除吗？`);
       if (flag === "confirm") {
         this.enclosureList = this.enclosureList.filter((res) => res !== val);
@@ -620,13 +673,13 @@ export default {
     },
 
     // 重新上传
-    resetsubmitUpload() {
+    resetsubmitUpload () {
       this.enclosureList = [];
       this.fileList = [];
     },
 
     // 清除记录
-    async delUploadList() {
+    async delUploadList () {
       let flag = await this.$confirm(`确定清除所有附件ID吗？`);
       if (flag === "confirm") {
         this.enclosureList = [];
@@ -635,30 +688,30 @@ export default {
     },
 
     // 取消
-    approveCancel() {
+    approveCancel () {
       this.fileList = [];
       this.approve_dialog = false;
     },
 
     // 删除时的钩子
-    onFileRemove(file, fileList) {
+    onFileRemove (file, fileList) {
       console.log("删除时钩子-fileList", fileList);
       this.fileList = fileList;
     },
     // 删除之前钩子
-    beforeFileRemove(file, fileList) {
+    beforeFileRemove (file, fileList) {
       let flag = this.$confirm(`确定移除 ${file.name}？`);
       return flag;
     },
 
     // 上传成功
-    enclosureHandleSuccess(response, file, fileListile) {
+    enclosureHandleSuccess (response, file, fileListile) {
       console.log("上传成功:", response, file, fileListile);
       this.uploadLoading = false;
     },
 
     // 上传失败
-    enclosureHandleError(err, file, fileList) {
+    enclosureHandleError (err, file, fileList) {
       this.$message({
         showClose: true,
         message: err,
@@ -668,10 +721,10 @@ export default {
     },
 
     // 上传文件之前
-    beforeUpload(file) {},
+    beforeUpload (file) { },
 
     // 导入
-    handleExceed(files, fileList) {
+    handleExceed (files, fileList) {
       console.log("导入", files, fileList);
       this.$message.warning(
         `限制选择7个文件，本次选择了 ${files.length} 个文件`
@@ -679,7 +732,7 @@ export default {
     },
 
     // 头部搜索
-    searchHeader() {
+    searchHeader () {
       let data = { records: [{ ...this.formOptions }] };
       data.current = 1;
       data.size = 9999;
@@ -738,7 +791,7 @@ export default {
       });
     },
     //table数据
-    queryTableList() {
+    queryTableList () {
       let data = { records: [{ ...this.formOptions }] };
       data.current = this.paginationOptions.pageNo;
       data.size = this.paginationOptions.pageSize;
@@ -752,7 +805,7 @@ export default {
     },
 
     // 搜索查询
-    querySearch() {
+    querySearch () {
       let data = { records: [{ ...this.formSon }] };
       data.current = 1;
       data.size = 999;
@@ -789,11 +842,11 @@ export default {
     },
 
     // 搜索查询
-    resetForm() {
+    resetForm () {
       this.paginationOptions.pageNo = 1;
       this.formOptions = JSON.parse(JSON.stringify(this.formClear));
     },
-    queryProjectList() {
+    queryProjectList () {
       queryProject({
         current: 1,
         size: 1000000,
@@ -818,7 +871,7 @@ export default {
       });
     },
 
-    queryUserList() {
+    queryUserList () {
       this.$refs["userQueryRef"].validate((valid) => {
         if (valid) {
           this.paginationOptions.pageNo = 1;
@@ -829,7 +882,7 @@ export default {
       });
     },
     // 删除弹框
-    deleteMenu(row, index) {
+    deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该员工, 是否继续?", "删除员工", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -863,44 +916,44 @@ export default {
         });
     },
     // 添加
-    addClick() {
+    addClick () {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加员工";
     },
     // 编辑
-    handleClick(row) {
+    handleClick (row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑员工信息";
       console.log("编辑", row);
     },
     // 状态
-    stateClick(row) {
+    stateClick (row) {
       this.$refs.userStateDialogRef.openDialog(row);
       this.list = "更新员工状态";
       console.log("详情", row, row.id);
     },
     // 详情
-    detailsClick(row) {
+    detailsClick (row) {
       this.$refs.UserDetailsDialogRef.openDialog(row);
       this.list = "查看员工详情";
       console.log("详情", row);
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
     },
     // 分页器 页容量变更行为
-    handleSizeChange(val) {
+    handleSizeChange (val) {
       this.paginationOptions.pageSize = val;
       this.queryTableList();
     },
     // 分页器 页码变更行为
-    handleCurrentChange(val) {
+    handleCurrentChange (val) {
       this.paginationOptions.pageNo = val;
       this.queryTableList();
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +

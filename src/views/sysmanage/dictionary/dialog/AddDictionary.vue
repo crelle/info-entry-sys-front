@@ -1,6 +1,7 @@
 <template>
   <div>
     <el-dialog
+    :modal="false"
       :title="status ? '新增字典' : '编辑字典'"
       :visible.sync="dialogVisible"
       width="500px"
