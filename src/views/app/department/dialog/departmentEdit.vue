@@ -179,12 +179,12 @@ export default {
             message: "请填写邮箱",
             trigger: ["blur", "change"],
           },
-          {
-            pattern:
-              /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
-            message: "邮箱格式不正确",
-            trigger: "blur",
-          },
+          // {
+          //   pattern:
+          //     /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/,
+          //   message: "邮箱格式不正确",
+          //   trigger: "blur",
+          // },
         ],
         userId: [
           {
@@ -299,7 +299,10 @@ export default {
     },
     /* 保存  */
     onCertain() {
-      console.log(this.departmentEditForm.id, "this.departmentEditForm.id---编辑有");
+      console.log(
+        this.departmentEditForm.id,
+        "this.departmentEditForm.id---编辑有"
+      );
       if (this.initFormData.id) {
         this.initFormData = this.departmentEditForm;
         // 修改
@@ -327,6 +330,8 @@ export default {
                 this.$message.success("创建成功！");
                 this.dialogClose();
                 this.$parent.queryDepartmentList();
+              } else {
+                his.$message.success("创建失败！");
               }
             });
           } else {
