@@ -40,6 +40,7 @@
                   type="primary"
                   @click="resetForm('departmentQueryRef')"
                 >
+                <img src="../../../assets/img/globalTable/icon2-reset.png" alt="">
                   重置</el-button
                 >
                 <el-button
@@ -47,9 +48,11 @@
                   type="primary"
                   @click="queryDepartmentListclick"
                 >
+                <img src="../../../assets/img/globalTable/icon1-search.png" alt="">
                   查询
                 </el-button>
                 <el-button class="header-btn" type="primary" @click="addClick">
+                  <img src="../../../assets/img/globalTable/icon3-add.png" alt="">
                   新增</el-button
                 >
               </el-form-item>
