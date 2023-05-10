@@ -1,7 +1,8 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
+      :modal="false"
+      class="detail-dialog"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
@@ -28,8 +29,8 @@
                     </li>
                     <li>
                       <span>所属部门:</span
-                      ><span :title="initFormData.department">{{
-                        initFormData.department
+                      ><span :title="initFormData.departmentName">{{
+                        initFormData.departmentName
                       }}</span>
                     </li>
                     <li>
@@ -51,8 +52,8 @@
                     </li>
                     <li>
                       <span>立项时间:</span
-                      ><span :title="initFormData.updateTime">{{
-                        initFormData.updateTime
+                      ><span :title="initFormData.time">{{
+                        initFormData.time
                       }}</span>
                     </li>
                     <li>
@@ -269,6 +270,7 @@ export default {
 ::v-deep .el-dialog__body {
   margin: 0 40px;
   padding: 0 40px;
+  color: #939dbd;
 }
 .lis {
   padding: 0;

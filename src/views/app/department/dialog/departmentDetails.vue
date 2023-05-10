@@ -62,7 +62,6 @@
                       <el-tab-pane label="部门人员" name="first">
                         <el-table
                           :data="departmentTabledata"
-                          border
                           height="310"
                           style="width: 100%"
                         >

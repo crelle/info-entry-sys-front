@@ -45,6 +45,7 @@
                     <el-date-picker
                       type="date"
                       placeholder="选择日期"
+                      value-format="yyyy-MM-dd"
                       v-model="userEditForm.time"
                       style="width: 100%"
                     ></el-date-picker>
@@ -103,7 +104,7 @@
                     placeholder="请选择合作模式"
                     clearable
                   >
-                  <el-option v-for="(item,i) in $dictionaryList('合作模式')" :key="i" :label="item.name" :value="item.id"></el-option>
+                  <el-option v-for="(item,i) in $dictionaryList('合作模式')" :key="i" :label="item.name" :value="item.name"></el-option>
                     <!-- <el-option label="TM" value="TM"></el-option>
                     <el-option label="OD" value="OD"></el-option> -->
                   </el-select>

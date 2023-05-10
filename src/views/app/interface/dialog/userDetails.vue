@@ -52,7 +52,6 @@
                         <el-table
                           :data="tableData1"
                           height="311"
-                          border
                           style="width: 100%"
                         >
                           <el-table-column
