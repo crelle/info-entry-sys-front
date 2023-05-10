@@ -41,18 +41,29 @@
           </el-col>
           <el-col :span="9">
             <el-form-item>
-              <el-button class="header-btn" type="primary" @click="onSubmit"
-                >查询</el-button
+              <el-button class="header-btn" type="primary" @click="onSubmit">
+                <img
+                  src="../../../assets/img/globalTable/icon1-search.png"
+                  alt=""
+                />
+                查询</el-button
               >
             </el-form-item>
             <el-form-item>
-              <el-button class="header-btn" type="primary" @click="onCreate"
-                >新增</el-button
+              <el-button class="header-btn" type="primary" @click="onCreate">
+                <img
+                  src="../../../assets/img/globalTable/icon3-add.png"
+                  alt=""
+                />
+                新增</el-button
               >
             </el-form-item>
             <el-form-item>
-              <el-button class="header-btn" @click="reset" type="primary"
-                >重置</el-button
+              <el-button class="header-btn" @click="reset" type="primary">
+                <img
+                  src="../../../assets/img/globalTable/icon2-reset.png"
+                  alt=""
+                />重置</el-button
               >
             </el-form-item>
           </el-col>
