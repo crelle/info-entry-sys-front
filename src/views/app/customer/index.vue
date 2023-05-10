@@ -1,26 +1,22 @@
 <template>
   <div class="users_content">
     <el-breadcrumb separator-class="el-icon-arrow-right">
-      <!-- <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item> -->
       <el-breadcrumb-item>需求管理</el-breadcrumb-item>
       <el-breadcrumb-item>客户管理</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+      <el-card :body-style="{ paddingTop: '60px', paddingBottom: '0px' }">
         <el-form
           :inline="true"
           :model="formOptions"
           class="demo-form-inline"
           size="mini"
-          ref="userQueryRef"
+          ref="customQueryRef"
           label-position="right"
         >
           <el-row>
             <el-col :span="5">
-              <el-form-item
-                label="客户"
-                prop="name"
-              >
+              <el-form-item label="客户" prop="name">
                 <el-input
                   v-model="formOptions.name"
                   placeholder="请填写客户名称"
@@ -29,35 +25,25 @@
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item
-                label="地域"
-                prop="regionId"
-              >
+              <el-form-item label="地域" prop="regionId">
                 <el-select
                   v-model="formOptions.regionId"
                   placeholder="请选择地域名称"
                   clearable
                   filterable
                 >
-                  <el-option
-                    v-for="item in regionData"
-                    :key="item.index"
-                    :label="item.name"
-                    :value="item.id"
-                  ></el-option>
+                <el-option v-for="(item,i) in $dictionaryList('区域')" :key="i" :label="item.name" :value="item.code=='true'"></el-option>
                 </el-select>
               </el-form-item>
             </el-col>
             <el-col :span="5">
-              <el-form-item
-                label="负责人"
-                prop="userId"
-              >
+              <el-form-item label="负责人" prop="userId" >
                 <el-select
                   v-model="formOptions.userId"
                   placeholder="请选择负责人名称"
                   clearable
                   filterable
+                  @focus="queryUserList"
                 >
                   <el-option
                     v-for="item in UserList"
@@ -71,39 +57,40 @@
             <el-col
               :span="9"
               :class="
-              Object.keys(formOptions).length % 3 === 0
-                ? 'nextline_action_button_content'
-                : Object.keys(formOptions).length % 3 === 1
-                ? 'inline2_action_button_content'
-                : 'inline1_action_button_content'
-            "
+                Object.keys(formOptions).length % 3 === 0
+                  ? 'nextline_action_button_content'
+                  : Object.keys(formOptions).length % 3 === 1
+                  ? 'inline2_action_button_content'
+                  : 'inline1_action_button_content'
+              "
             >
               <el-form-item>
-                <el-button class="header-btn"
+                <el-button
+                  class="header-btn"
                   type="primary"
-                  @click="resetForm('userQueryRef')"
-                >重置</el-button>
-                <el-button class="header-btn"
+                  @click="resetForm('customQueryRef')"
+                  >重置</el-button
+                >
+                <el-button
+                  class="header-btn"
                   type="primary"
-                  @click="queryUserListclick"
-                >查询</el-button>
-                <el-button class="header-btn"
-                  type="primary"
-                  @click="addClick"
-                >新增</el-button>
+                  @click="queryCustomer"
+                  >查询</el-button
+                >
+                <el-button class="header-btn" type="primary" @click="addClick"
+                  >新增</el-button
+                >
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
       </el-card>
-
-      <el-card :body-style="{paddingBottom: '60px'}">
+      <el-card :body-style="{ paddingBottom: '60px' }">
         <el-table
           ref="multipleTable"
           :data="tableData"
           tooltip-effect="dark"
           style="width: 100%"
-          @selection-change="handleSelectionChange"
           stripe
           size="mini"
           :height="tableHeight"
@@ -158,23 +145,24 @@
             show-overflow-tooltip
           >
           </el-table-column>
-          <el-table-column
-            fixed="right"
-            label="操作"
-            min-width="210"
-          >
+          <el-table-column fixed="right" label="操作" min-width="210">
             <template slot-scope="{ row, $index }">
-              <span class="operate-btn"
+              <span
+                class="operate-btn"
                 @click="detailsClick(row)"
                 type="primary"
                 size="mini"
-              >查看</span>
-              <span class="operate-btn"
+                >查看</span
+              >
+              <span
+                class="operate-btn"
                 @click="handleClick(row)"
                 type="primary"
                 size="mini"
-              >编辑</span>
-              <span class="operate-btn"
+                >编辑</span
+              >
+              <span
+                class="operate-btn"
                 type="primary"
                 size="mini"
                 @click="deleteMenu(row, $index)"
@@ -185,7 +173,6 @@
           </el-table-column>
         </el-table>
         <div class="block">
-          <!-- <span class="demonstration">完整功能</span> -->
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -208,14 +195,12 @@
     ></User-edit-dialog>
     <User-dait-dialog
       :toChild="list"
-      :tableDataProject="tableDataProject"
       ref="userDaitDialogRef"
     ></User-dait-dialog>
   </div>
 </template>
 
 <script>
-//
 // 客户查询
 import { queryCustomer, deletesCustomer } from "@/api/customer";
 // 地域
@@ -229,201 +214,81 @@ export default {
     UserEditDialog,
     UserDaitDialog,
   },
-  data () {
+  data() {
     return {
       list: "",
-      tableHeight: window.innerHeight>=908?550:window.innerHeight-418,
+      tableHeight: window.innerHeight >= 908 ? 550 : window.innerHeight - 418,
       formOptions: {
-        regionId: '',
-        name: '',
-        userId: ''
+        regionId: "",
+        name: "",
+        userId: "",
       },
       paginationOptions: {
         pageNo: 1,
         pageSizes: [10, 20, 30, 50, 100],
         pageSize: 10,
-        total: 0
+        total: 0,
       },
       tableData: [],
       // 地域
       regionData: [],
       // 用户
       UserList: [],
-      multipleSelection: [],
-      userEditForm: {
+      // 验证
+      rules: {},
+      // 查用户全部
+      userformOptions: {
         accountNonExpired: true,
         accountNonLocked: true,
         enabled: true,
-        password: "123456",
-        userAvatar: "",
-        userEmail: "",
-        userNickName: "",
-        userPhone: "",
-        username: "",
       },
-      // 全部项目
-      tableDataProject: [],
-      // 验证
-      rules: {},
+      // 全部地域
+      regionalFormoptions: {},
     };
   },
-  mounted () {
-    this.queryUserListclick();
-    this.queryRegion()
-    this.queryUserList()
-    // this.queryProject();
+  mounted() {
+    this.queryCustomer();
   },
   methods: {
     // 手动 查询客户列表
-    queryUserListclick () {
-
-      queryCustomer({ current: this.paginationOptions.pageNo, size: this.paginationOptions.pageSize, records: [this.formOptions] }).then(
-        (res) => {
-          if (res && res.code && res.code === "00000") {
-            this.tableData = res.data.records
-            this.paginationOptions.total = res.data.total
-          }
-        }
-      );
-    },
-    queryRegion () {
-      queryRegion({
-        current: 1,
-        size: 1000000,
-        records: [{}]
+    queryCustomer() {
+      queryCustomer({
+        current: this.paginationOptions.pageNo,
+        size: this.paginationOptions.pageSize,
+        records: [this.formOptions],
       }).then((res) => {
+        if (res && res.code && res.code === "00000") {
+          this.tableData = res.data.records;
+          this.paginationOptions.total = res.data.total;
+        }
+      });
+    },
+    // 全部地域查询
+    queryRegion() {
+      let data = { records: [{ ...this.regionalFormoptions }] };
+      data.current = 1;
+      data.size = 9999;
+      queryRegion(data).then((res) => {
+        console.log(res, "--------------地域----");
         if (res && res.code && res.code === "00000") {
           this.regionData = res.data.records;
         }
       });
     },
-    // 客户列表
-    queryUserList () {
-      queryUser({
-        current: 1,
-        size: 1000000,
-      }).then((res) => {
+    // 全部用户/负责人列表
+    queryUserList() {
+      let data = { records: [{ ...this.userformOptions }] };
+      data.current = 1;
+      data.size = 9999;
+      queryUser(data).then((res) => {
+        console.log(res.data, "------------用户-----");
         if (res && res.code && res.code === "00000") {
           this.UserList = res.data.records;
         }
       });
-      // this.$refs["userQueryRef"].validate((valid) => {
-      //   if (valid) {
-      //     let data = { records: [{ ...this.formOptions }] };
-      //     data.current = this.paginationOptions.pageNo;
-      //     data.size = this.paginationOptions.pageSize;
-      //     queryCustomer(data).then((res) => {
-      //       data.current = 1;
-      //       data.size = 999;
-      // 地域数据
-      // queryRegion(data).then((res2) => {
-      //   // 用户列表
-      //   queryUser(data).then((res3) => {
-      //     this.tableData = res.data.records; // 客户表格数据赋值
-      //     this.regionData = res2.data.records; // 地域表格数据赋值
-      //     console.log(this.regionData, "*--地域表--");
-      //     this.UserList = res3.data.records; // 用户表格数据赋值
-      //     console.log(this.UserList, "=========用户表格数据赋值");
-      //     // --- 过滤掉管理员admin
-      //     // this.UserList.forEach((item, index) => {
-      //     //   if (item.id == "e943a05d2204c5dfc244ef2ba21d9170") {
-      //     //     this.UserList.splice(index, 1);
-      //     //   }
-      //     // });
-      //     this.tableData.forEach((item) => {
-      //       this.regionData.forEach((items) => {
-      //         if (item.regionId == items.id) {
-      //           item.regionName = items.name;
-      //           // this.$set(item, item.regionName, items.regionName);
-      //         }
-      //       });
-      //     });
-      //     console.log(this.tableData, "客户数据");
-      //     this.paginationOptions.total = res.data.total; // 分页器赋值
-      //   });
-      // });
-      //     });
-      //   } else {
-      //     return false;
-      //   }
-      // });
     },
-    //  全部项目数据
-    // queryProject() {
-    //   this.$refs["userQueryRef"].validate((valid) => {
-    //     if (valid) {
-    //       let data = { records: [{ ...this.formOptions }] };
-    //       data.current = 1;
-    //       data.size = 999;
-    //       // 项目表格数据
-    //       queryProject(data).then((res) => {
-    //         // //  数据接口人查询方法
-    //         queryInterface(data).then((res1) => {
-    //           // 部门表格数据
-    //           queryDepartments(data).then((res2) => {
-    //             // 地域表格数据
-    //             queryRegion(data).then((res3) => {
-    //               // 客户表格数据
-    //               queryCustomer(data).then((res4) => {
-    //                 this.tableDataProject = res.data.records; // 项目表格数据赋值
-    //                 this.InterfaceProject = res1.data.records; // 接口人表格数据赋值
-    //                 this.UsersProject = res2.data.records; // 部门表格数据赋值
-    //                 this.MockUserProject = res3.data.records; // 地域表格数据赋值
-    //                 this.tableCustomerProject = res4.data.records; // 客户表格数据赋值
-    //                 // console.log(this.Users, "部门表格数据");
-    //                 // console.log(this.Interface, "接口人表格数据");
-    //                 console.log(
-    //                   this.tableDataProject,
-    //                   "------全部项目表格数据"
-    //                 );
-    //                 this.tableDataProject.forEach((item) => {
-    //                   if (item.status == 1) {
-    //                     item.status = "开发中";
-    //                   }
-    //                   if (item.status == 2) {
-    //                     item.status = "前期投入";
-    //                   }
-    //                   if (item.status == 3) {
-    //                     item.status = "交付阶段";
-    //                   }
-    //                   // 接口人表格
-    //                   this.InterfaceProject.forEach((sitem) => {
-    //                     if (item.interfaceId == sitem.interfaceId) {
-    //                       item.interfaceName = sitem.interfaceName;
-    //                       item.cellPhone = sitem.cellPhone;
-    //                       item.email = sitem.email;
-    //                       // 客户
-    //                       this.tableCustomerProject.forEach((items) => {
-    //                         if (sitem.id == items.id) {
-    //                           item.name = items.name;
-    //                           item.id = items.id;
-    //                         }
-    //                       });
-    //                     }
-    //                     // 部门表格
-    //                     this.UsersProject.forEach((itemis) => {
-    //                       if (item.departmentId == itemis.departmentId) {
-    //                         item.department = itemis.department;
-    //                       }
-    //                       if (sitem.id == itemis.id) {
-    //                         item.name = itemis.name;
-    //                       }
-    //                     });
-    //                   });
-    //                 });
-    //                 // this.paginationOptions.total = res.data.total; // 分页器赋值
-    //               });
-    //             });
-    //           });
-    //         });
-    //       });
-    //     } else {
-    //       return false;
-    //     }
-    //   });
-    // },
     // 删除弹框
-    deleteMenu (row, index) {
+    deleteMenu(row, index) {
       this.$confirm("此操作将永久删除该客户, 是否继续?", "删除客户", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -432,14 +297,18 @@ export default {
         modal: false,
       })
         .then(() => {
-          console.log(row.id, '111111111111111111111111');
           deletesCustomer(row.id).then((res) => {
             console.log(res, "点击确认，发起后台请求，删除");
             if (res.code == "00000") {
-              this.queryUserListclick();
+              this.queryCustomer();
               return this.$message({
                 type: "success",
                 message: "删除成功!",
+              });
+            } else {
+              this.$message({
+                type: "success",
+                message: "删除失败!",
               });
             }
           });
@@ -453,44 +322,44 @@ export default {
         });
     },
     // 添加
-    addClick () {
+    addClick() {
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加客户";
       console.log("我要添加");
+      this.queryUserList();
+      this.queryRegion();
     },
     // 编辑
-    handleClick (row) {
+    handleClick(row) {
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑客户信息";
       console.log("编辑", row);
+      this.queryUserList();
+      this.queryRegion();
     },
     // 详情
-    detailsClick (row) {
+    detailsClick(row) {
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看客户详情";
       console.log("详情", row);
     },
     // 重置表单
-    resetForm (formName) {
+    resetForm(formName) {
       console.log("重置-------", formName);
       this.$refs[formName].resetFields();
-      // this.queryUserList();
-    },
-    // 表格复选动作
-    handleSelectionChange (val) {
-      this.multipleSelection = val;
+      this.queryCustomer();
     },
     // 分页器 页容量变更行为
-    handleSizeChange (val) {
+    handleSizeChange(val) {
       this.paginationOptions.pageSize = val;
-      this.queryUserListclick();
+      this.queryCustomer();
     },
     // 分页器 页码变更行为
-    handleCurrentChange (val) {
+    handleCurrentChange(val) {
       this.paginationOptions.pageNo = val;
-      this.queryUserListclick();
+      this.queryCustomer();
     },
-    indexMethod (index) {
+    indexMethod(index) {
       return (
         (this.paginationOptions.pageNo - 1) * this.paginationOptions.pageSize +
         index +

@@ -12,44 +12,44 @@
         <el-row style="height: 100%">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form :model="userEditForm" ref="userEditRef" size="mini">
+              <el-form :model="clientEditForm" ref="userEditRef" size="mini">
                 <div class="userbox">
                   <ul class="lis">
                     <li>
                       <span>客户名:</span
-                      ><span :title="userEditForm.name">{{
-                        userEditForm.name
+                      ><span :title="clientEditForm.name">{{
+                        clientEditForm.name
                       }}</span>
                     </li>
                     <li>
                       <span>地域:</span
-                      ><span>{{ userEditForm.regionName }}</span>
+                      ><span>{{ clientEditForm.regionName }}</span>
                     </li>
                     <li>
                       <span>办公地点:</span
-                      ><span :title="userEditForm.address">{{
-                        userEditForm.address
+                      ><span :title="clientEditForm.address">{{
+                        clientEditForm.address
                       }}</span>
                     </li>
                     <li>
-                      <span>负责人:</span><span>{{ userEditForm.userName }}</span>
+                      <span>负责人:</span><span>{{ clientEditForm.userName }}</span>
                     </li>
                     <li>
                       <span>手机号:</span
-                      ><span :title="userEditForm.cellPhone">{{
-                        userEditForm.cellPhone
+                      ><span :title="clientEditForm.cellPhone">{{
+                        clientEditForm.cellPhone
                       }}</span>
                     </li>
                     <li>
                       <span>邮箱:</span
-                      ><span :title="userEditForm.email">{{
-                        userEditForm.email
+                      ><span :title="clientEditForm.email">{{
+                        clientEditForm.email
                       }}</span>
                     </li>
                     <li class="new">
                       <span>介绍:</span
-                      ><span :title="userEditForm.introduce">{{
-                        userEditForm.introduce
+                      ><span :title="clientEditForm.introduce">{{
+                        clientEditForm.introduce
                       }}</span>
                     </li>
                   </ul>
@@ -57,7 +57,7 @@
                     <el-tabs v-model="activeName" >
                       <el-tab-pane label="客户项目" name="first">
                         <el-table
-                          :data="tableData1"
+                          :data="customerProjectData"
                           height="311"
                           style="width: 100%"
                         >
@@ -109,18 +109,16 @@ import { queryProject } from "@/api/project";
 export default {
   props: {
     toChild: String,
-    // 全部项目
-    tableDataProject: "",
   },
   data() {
     return {
       // 假数据
-      tableData1: [],
+      customerProjectData: [],
 
       // 假数据
       activeName: "first",
       dialogFormVisible: false,
-      userEditForm: {
+      clientEditForm: {
         address: "",
         cellPhone: "",
         customerId: "",
@@ -138,9 +136,10 @@ export default {
     openDialog(row) {
       console.log(row, "001001");
       this.dialogFormVisible = true; // 让弹窗显示
-      
-      this.tableData1 = [];
+      // customerProjectData
+      this.customerProjectData = [];
       if (row) {
+        console.log(row.id,'----------------------id====');
         this.initFormData = row;
         this.projectList()
         this.$nextTick(() => {
@@ -151,39 +150,35 @@ export default {
       
     },
     initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
+      Object.keys(this.clientEditForm).forEach((item) => {
+        this.clientEditForm[item] = data[item] ? data[item] : null;
       });
     },
     projectList(){
       queryProject({
         current: 1,
-        size: 1000000,
+        size: 999999,
         records:[{}]
       }).then((res) => {
         if (res && res.code && res.code === "00000") {
           res.data.records.forEach((item) => {
           if (this.initFormData.id == item.customerId) {
-            this.tableData1.push(item);
-            console.log(this.tableData1,'11111111');
+            this.customerProjectData.push(item);
+            console.log(this.customerProjectData,'11111111');
           }
         });
         }
       });
     },
-    // closeDialog() {
-    //   this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-    //   this.resetForm("userEditRef"); // 重置表单
-    // },
     // 确定
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "确定231确定3131");
+      console.log(this.clientEditForm, "确定231确定3131");
     },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
+      this.initForm(this.clientEditForm);
       this.resetFormData();
     },
 
@@ -191,13 +186,9 @@ export default {
     resetFormData() {
       this.ifLogin = true;
     },
-    // indexMethod(index) {
-    //   return index + 1;
-    // },
   },
 };
 </script>
-
 <style lang="less" scoped>
 * {
   list-style: none;

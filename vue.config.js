@@ -18,6 +18,7 @@ module.exports = {
     proxy: {
       "/api": {
         // target: "http://10.20.24.40:8084/",
+        // target: "http://192.168.1.107:8084/",
         target: "http://10.20.24.32:8084/",
         changeOrigin: true, // 是否允许跨域
         ws: true, // webSocket全双工通信
