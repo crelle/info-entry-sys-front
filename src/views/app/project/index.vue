@@ -81,17 +81,17 @@
                   class="header-btn"
                   type="primary"
                   @click="resetForm('userQueryRef')"
-                >重置</el-button>
+                ><img src="../../../assets/img/globalTable/icon2-reset.png" alt="">重置</el-button>
                 <el-button
                   class="header-btn"
                   type="primary"
                   @click="queryUserListclick"
-                >查询</el-button>
+                ><img src="../../../assets/img/globalTable/icon1-search.png" alt="">查询</el-button>
                 <el-button
                   class="header-btn"
                   type="primary"
                   @click="addClick"
-                >新增</el-button>
+                ><img src="../../../assets/img/globalTable/icon3-add.png" alt="">新增</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -480,6 +480,10 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.header-btn img {
+  width: 10px;
+  margin-right: 2px;
+}
 .btn {
   ::v-deep .el-form-item__content {
     margin-left: 40px !important;
