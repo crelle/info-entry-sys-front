@@ -3,7 +3,7 @@
     <div class="subjectContent">
       <div class="large_left">
         <div class=" bg-purple gender">
-            <gender-com class="ageCount"></gender-com>
+            <gender-com class="ageCount" v-if="resizeFlag"></gender-com>
           </div>
           
           <div class=" ageCom bg-purple">
@@ -12,6 +12,7 @@
               :aName="ageName"
               :aValue="ageValue"
               ref="age"
+              v-if="resizeFlag"
             ></age-com>
           </div>
           
@@ -19,6 +20,7 @@
             <marriage-com
               class="ageCount"
               :dataArr="marriageArr"
+              v-if="resizeFlag"
             ></marriage-com>
           </div>
      
@@ -26,11 +28,11 @@
         <!-- 中间地图 -->
         <div class="large_middle">
           <div class=" bg-purple" style="flex:2;">
-            <china></china>
+            <china v-if="resizeFlag"></china>
           </div>
           <div class="bg-purple region">
             <geographical-distribution
-              class="ageCount" style="margin-top:6%;"
+              class="ageCount" style="margin-top:6%;" v-if="resizeFlag"
             ></geographical-distribution>
           </div>
         </div>
@@ -45,15 +47,16 @@
               :aName="workName"
               :aValue="workValue"
               ref="work"
+              v-if="resizeFlag"
             ></age-com>
           </div>
          
           <div class="bg-purple client" >
-            <radarchart class="ageCount"></radarchart>
+            <radarchart class="ageCount" v-if="resizeFlag"></radarchart>
           </div>
      
           <div class="bg-purple deliver">
-            <delivery-manager class="ageCount"></delivery-manager>
+            <delivery-manager class="ageCount" v-if="resizeFlag"></delivery-manager>
           </div>
         </div>
         
@@ -96,6 +99,7 @@ export default {
         departmentName: "",
         regionName: "",
       },
+      resizeFlag:true,
       ageName: [],
       ageValue: [],
       workName: [],
@@ -113,9 +117,18 @@ export default {
     this.workAge(this.workAgeData);
     this.marriageDeal();
     this.queryDictionary();
+    window.addEventListener("resize", () => this.Refresh())
   },
-
+  destroyed() {
+    window.removeEventListener("resize", this.Refresh());
+  },
   methods: {
+    Refresh(){
+      this.resizeFlag=false
+      this.$nextTick(() => {
+        this.resizeFlag=true; 
+      });
+    },
     ageDeal(age) {
       this.ageName = ["50后", "60后", "70后", "80后", "90后", "00后"];
       this.ageValue = [20, 35, 50, 30, 60, 15];

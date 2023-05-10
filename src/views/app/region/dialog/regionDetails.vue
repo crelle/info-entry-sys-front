@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      :modal="false"
       width="20%"
       lock-scroll
       top="25vh"
@@ -120,6 +120,7 @@ li {
 }
 ::v-deep .el-dialog__body {
   padding: 20px;
+  color: white;
 }
 ::v-deep .el-dialog {
   min-width: 300px;

@@ -124,6 +124,7 @@
           @click="submitForm('dynamicValidateForm')"
           >提交</el-button
         >
+         
         <el-button type="info" size="mini" @click="dialogClose"
           >取 消</el-button
         >

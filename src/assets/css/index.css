@@ -52,6 +52,10 @@
 .el-pagination__total {
   color: #dbdcde;
 }
+.el-input__inner,
+.el-textarea__inner{
+  border:1px solid #1d3550
+}
 .el-pager {
   margin: 0 6px;
 }
@@ -114,7 +118,7 @@
   background-size: 100% 100%;
   background-repeat: no-repeat;
   background-position: center center;
-  color: #797d85;
+  color: #fff;
 }
 
 .el-input {
@@ -144,6 +148,7 @@
 .el-message-box,
 .el-tree {
   background-color: rgba(12, 21, 37, 0.9);
+  border: 0px;
   /* color: #939dbd; */
 }
 .el-dialog .el-col-11 {

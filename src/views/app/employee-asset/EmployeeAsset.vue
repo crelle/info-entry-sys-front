@@ -49,7 +49,7 @@
       </el-form>
     </el-card>
 
-    <el-card :body-style="{paddingBottom: '60px'}">
+    <el-card >
       <el-table :data="assets" stripe style="width: 100%" :height="tableHight">
         <el-table-column prop="employeeName" label="使用人" width="180">
         </el-table-column>

@@ -1,12 +1,12 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
       width="50%"
       lock-scroll
+      :modal="false"
       @close="closeDialog"
       class="showAll_dialog"
     >

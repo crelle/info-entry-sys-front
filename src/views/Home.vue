@@ -420,13 +420,7 @@ export default {
   border: 1px solid #05080e !important;
 }
 // 左上下拉选中颜色
-.el-select-dropdown__item {
-  color: #fff !important;
-}
-.el-select-dropdown__item.hover,
-.el-select-dropdown__item:hover {
-  background-color: #283555 !important;
-}
+
 // 左上小三角
 .el-popper[x-placement^="bottom"] .popper__arrow::after {
   top: 1px;
@@ -504,7 +498,6 @@ body .el-main {
 // 背景
 .box {
   width: 100%;
-  min-width: 1200px;
   height: 100vh;
   display: flex;
   flex-direction: column;

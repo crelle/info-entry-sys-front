@@ -6,7 +6,7 @@
       <el-breadcrumb-item>员工信息</el-breadcrumb-item>
     </el-breadcrumb>
     <div class="card-container">
-      <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
+      <el-card :body-style="{paddingBottom: '0px'}">
         <el-form
           :inline="true"
           :model="formOptions"
@@ -242,7 +242,7 @@
           </el-row>
         </el-form>
       </el-card>
-      <el-card :body-style="{paddingBottom: '60px'}">
+      <el-card >
         <el-table
           ref="multipleTable"
           :data="tableData"

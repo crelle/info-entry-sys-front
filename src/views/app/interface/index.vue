@@ -9,6 +9,7 @@
         <el-form
           :inline="true"
           :model="formOptions"
+          :rules="queryRules"
           class="demo-form-inline"
           size="mini"
           ref="userQueryRef"
@@ -49,13 +50,6 @@
             </el-col>
             <el-col
               :span="14"
-              :class="
-              Object.keys(formOptions).length % 3 === 0
-                ? 'nextline_action_button_content'
-                : Object.keys(formOptions).length % 3 === 1
-                ? 'inline2_action_button_content'
-                : 'inline1_action_button_content'
-            "
             >
               <el-form-item>
                 <el-button class="header-btn"
@@ -82,7 +76,7 @@
         </el-form>
       </el-card>
 
-      <el-card :body-style="{paddingBottom: '60px'}">
+      <el-card >
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -163,7 +157,6 @@
           </el-table-column>
         </el-table>
         <div class="block">
-          <!-- <span class="demonstration">完整功能</span> -->
           <el-pagination
             @size-change="handleSizeChange"
             @current-change="handleCurrentChange"
@@ -178,17 +171,17 @@
         </div>
       </el-card>
     </div>
-    <user-edit-dialog
+    <interface-edit
       :toChild="list"
       :tableData="tableData"
       :tableCustomer="tableCustomer"
       ref="userEditDialogRef"
-    ></user-edit-dialog>
-    <user-dait-dialog
+    ></interface-edit>
+    <interface-details
       :toChild="list"
       :tableDataProject="tableDataProject"
       ref="userDaitDialogRef"
-    ></user-dait-dialog>
+    ></interface-details>
   </div>
 </template>
 
@@ -197,12 +190,12 @@
 import { queryCustomer } from "@/api/customer";
 // 接口人表/删除
 import { queryInterface, deletesInterface } from "@/api/interface";
-import UserEditDialog from "@/views/app/interface/dialog/userEdit.vue";
-import UserDaitDialog from "@/views/app/interface/dialog/userDetails.vue";
+import interfaceEdit from "@/views/app/interface/dialog/interfaceEdit.vue";
+import interfaceDetails from "@/views/app/interface/dialog/interfaceDetails.vue";
 export default {
   components: {
-    UserEditDialog,
-    UserDaitDialog,
+    interfaceEdit,
+    interfaceDetails,
   },
   data () {
     return {
@@ -211,6 +204,15 @@ export default {
       formOptions: {
         customerId: "",
         name: "",
+      },
+      queryRules:{
+        name:[
+          {
+            pattern: /^[\u4e00-\u9fa5a-zA-Z0-9]+$/,
+            message: "包含空格或者非法字符",
+            trigger: ["blur", "change"],
+          }
+        ]
       },
       paginationOptions: {
         pageNo: 1,
@@ -340,12 +342,7 @@ export default {
   },
 };
 </script>
-<style lang='less'>
-// .btn-custom-cancel {
-//   float: right;
-//   margin-left: 10px;
-// }
-</style>
+
 <style lang="less" scoped>
 ::v-deep .cell {
   text-align: center;
@@ -357,39 +354,25 @@ export default {
 ::v-deep .el-col-5 {
   min-width: 253px;
 }
-.el-form--inline .el-form-item {
-  margin-right: 0;
-}
-::v-deep .el-card__body {
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
+// .el-form--inline .el-form-item {
+//   margin-right: 0;
+// }
+// ::v-deep .el-card__body {
+//   .el-form-item--mini.el-form-item {
+//     margin-bottom: 0;
+//   }
+// }
 .el-breadcrumb {
   margin-bottom: 25px;
 }
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
-::v-deep .el-form-item__label {
-  margin-right: 5px;
-}
-.el-form-item {
-  width: 253px;
-}
-.demo-form-inline {
-  // min-width: 1300px;
-}
-@media screen and (min-width: 1600px) {
-  ::v-deep .el-card__body::-webkit-scrollbar {
-    display: none;
-  }
-}
-::v-deep .el-card__body {
-  // overflow-x: scroll;
+// ::v-deep .el-pagination {
+//   margin: 10px 0;
+// }
+// ::v-deep .el-form-item__label {
+//   margin-right: 5px;
+// }
+// .el-form-item {
+//   width: 253px;
+// }
 
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
 </style>

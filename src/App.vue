@@ -7,16 +7,16 @@
 export default {
   mounted() {
     //窗口尺寸改变
-    window.addEventListener("resize", () => this.Refresh());
+    // window.addEventListener("resize", () => this.Refresh());
   },
   methods: {
-	Refresh() {
-      this.$router.go(0);
-    },
+	// Refresh() {
+  //     this.$router.go(0);
+  //   },
   },
   destroyed() {
     // 销毁
-    window.removeEventListener("resize", this.Refresh());
+    // window.removeEventListener("resize", this.Refresh());
   },
 }
 </script>

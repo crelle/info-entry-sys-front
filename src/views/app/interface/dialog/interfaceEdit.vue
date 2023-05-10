@@ -1,10 +1,10 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
       :title="toChild"
       :visible.sync="dialogFormVisible"
       :close-on-click-modal="false"
+      :modal="false"
       width="30%"
       lock-scroll
       @close="closeDialog"
@@ -28,7 +28,7 @@
                 </el-form-item>
                 <el-form-item label="性别" prop="gender">
                   <el-select v-model="userEditForm.gender" placeholder="请选择">
-                    <el-option  v-for="(item,i) in $dictionaryList('性别')" :key="i" :label="item.name" :value="item.id"></el-option>
+                    <el-option  v-for="(item,i) in $dictionaryList('性别')" :key="i" :label="item.name" :value="item.name"></el-option>
                   </el-select>
                 </el-form-item>
                 <!-- <el-form-item label="接口人办公地址" prop="address">
@@ -60,7 +60,7 @@
                   <el-input
                     type="email"
                     v-model="userEditForm.email"
-                    placeholder="邮箱"
+                    placeholder="请输入邮箱"
                     clearable
                   ></el-input>
                 </el-form-item>
@@ -117,26 +117,15 @@
 <script>
 //创建接口人/编辑接口人
 import { establishInterface, editInterface } from "@/api/interface";
-
-// import { regionData, CodeToText, TextToCode } from "element-china-area-data";
 export default {
   props: {
-    toChild: String,
+    toChild: '',
     tableData: "",
     tableCustomer: "",
   },
   data() {
     return {
-      // options: regionData,
-      xingbie: "",
-      textarea: "",
       dialogFormVisible: false,
-      fileType: {
-        fileType: 0,
-      },
-      imageUrl: "",
-      nowIndex: -1,
-      // baseURL: BaseURL,
       userEditForm: {
         address: "",
         cellPhone: "",
@@ -147,7 +136,6 @@ export default {
         name: "",
         introduce: "",
       },
-      initFormData: {},
       userEditFormRules: {
         name: [
           {
@@ -273,78 +261,35 @@ export default {
     };
   },
   methods: {
-
-    //
-    // 弹窗
     openDialog(row) {
       console.log(row, "表单的数据");
       this.dialogFormVisible = true; // 让弹窗显示
-      this.userEditForm.id = "";
-      this.initFormData = {};
       if (row) {
-        // let editRow = JSON.parse(JSON.stringify(row));
-        // editRow.address = this.getCityCode(editRow.address);
-        this.initFormData = row;
-        this.$nextTick(() => {
-          // 这个要加上
-          this.initForm(row); // 为表单赋值
-        });
-      } else {
-        console.log("我是新增");
-        // this.initForm("");
+        this.userEditForm = JSON.parse(JSON.stringify( row));
       }
     },
-    initForm(data) {
-      Object.keys(this.userEditForm).forEach((item) => {
-        this.userEditForm[item] = data[item] ? data[item] : null;
-      });
-    },
     closeDialog() {
-      this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
-      this.resetForm("userEditRef"); // 重置表单
+      this.$refs["userEditRef"].resetFields();
+      this.userEditForm={}
     },
     // 取消
     dialogClose() {
       this.dialogFormVisible = false;
-      console.log(this.userEditForm, "取消231取消3131");
     },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.initForm(this.userEditForm);
-      this.resetFormData();
-    },
-    // 初始化页面数据 重置
-    resetFormData() {
-      this.ifLogin = true;
-    },
-
     /* 保存  */
     onCertain() {
-      // // ---
-      // if (this.userEditForm.address) {
-      //   var loc = "";
-      //   for (let i = 0; i < this.userEditForm.address.length; i++) {
-      //     loc = loc + CodeToText[this.userEditForm.address[i]] + "/";
-      //   }
-      //   loc = loc.slice(0, loc.length - 1);
-      //   this.userEditForm.address = loc;
-      // }
-      if (this.initFormData.id) {
-        this.userEditForm.id = this.initFormData.id;
-        this.initFormData = this.userEditForm;
+      if (this.userEditForm.id) {
         // 修改
         this.$refs["userEditRef"].validate((valid) => {
           console.log(valid, "修改的valid-----");
           if (valid) {
             editInterface(
-              this.userEditForm,
-              this.userEditForm.id
+              this.userEditForm
             ).then((res) => {
               if (res && res.code && res.code === "00000") {
                 this.$message.success("修改成功！");
+                this.dialogClose();
                 this.$parent.queryUserList();
-                this.dialogFormVisible = false; // 让弹窗显
               }
             });
           } else {
@@ -355,7 +300,6 @@ export default {
         console.log("增加了...");
         this.$refs["userEditRef"].validate((valid) => {
           if (valid) {
-            console.log(this.userEditForm, "新增的内容字段------------");
             establishInterface(this.userEditForm).then((res) => {
               console.log(res, "增加了........");
               if (res && res.code && res.code === "00000") {
@@ -370,25 +314,6 @@ export default {
         });
       }
     },
-    // getCityCode(cityText) {
-    //   var codeArray = [];
-    //   if (cityText != "") {
-    //     var cityArray = cityText.trim().split(" ");
-    //     if (cityArray.length == 1) {
-    //       codeArray.push(TextToCode[cityArray[0]].code);
-    //     } else if (cityArray.length == 2) {
-    //       codeArray.push(TextToCode[cityArray[0]].code);
-    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-    //     } else if (cityArray.length == 3) {
-    //       codeArray.push(TextToCode[cityArray[0]].code);
-    //       codeArray.push(TextToCode[cityArray[0]][cityArray[1]].code);
-    //       codeArray.push(
-    //         TextToCode[cityArray[0]][cityArray[1]][cityArray[2]].code
-    //       );
-    //     }
-    //   }
-    //   return codeArray;
-    // },
   },
 };
 </script>
@@ -489,17 +414,16 @@ export default {
 ::v-deep .el-input__inner {
   width: 250px;
 }
-::v-deep .el-textarea__inner {
-  min-height: 120px !important;
-  width: 250px;
-  color: #606266;
-  font-size: 12px;
-  font-family: "微软雅黑";
-}
+
 ::v-deep .el-dialog {
   width: 30%;
 }
-
+::v-deep .el-textarea__inner {
+  min-height: 120px !important;
+  width: 250px;
+  font-size: 12px;
+  font-family: "微软雅黑";
+}
 ::v-deep .el-dialog__body {
   padding: 0px 20px;
 }

@@ -29,19 +29,25 @@
           >
             <el-form-item>
               <el-button class="header-btn" type="primary" @click="resetForm('queryRoleRef')"
-                >重置</el-button
+                >
+                <img src="../../../assets/img/globalTable/icon2-reset.png" alt="">
+                重置</el-button
               >
               <el-button class="header-btn" type="primary" @click="queryRolesclick"
-                >查询</el-button
+                >
+                <img src="../../../assets/img/globalTable/icon1-search.png" alt="">
+                查询</el-button
               >
-              <el-button class="header-btn" type="primary" @click="addClick">新增</el-button>
+              <el-button class="header-btn" type="primary" @click="addClick">
+                <img src="../../../assets/img/globalTable/icon3-add.png" alt="">
+                新增</el-button>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
     </el-card>
 
-    <el-card :body-style="{paddingBottom: '60px'}">
+    <el-card >
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -98,14 +104,14 @@
       </div>
     </el-card>
     </div>
-    <role-edit-dialog
+    <region-edit-dialog
       :toChild="list"
       ref="roleEditDialogRef"
-    ></role-edit-dialog>
-    <role-data-dialog
+    ></region-edit-dialog>
+    <region-data-dialog
       :toChild="list"
       ref="roleDataDialogRef"
-    ></role-data-dialog>
+    ></region-data-dialog>
   </div>
 </template>
 
@@ -113,12 +119,12 @@
 // 真的地域接口
 import { queryRegion, deletesRegion } from "@/api/region";
 
-import RoleEditDialog from "@/views/app/region/dialog/regionEdit.vue";
-import RoleDataDialog from "@/views/app/region/dialog/regionDetails.vue";
+import regionEditDialog from "@/views/app/region/dialog/regionEdit.vue";
+import regionDataDialog from "@/views/app/region/dialog/regionDetails.vue";
 export default {
   components: {
-    RoleEditDialog,
-    RoleDataDialog,
+    regionEditDialog,
+    regionDataDialog,
   },
   data() {
     return {
@@ -287,11 +293,11 @@ export default {
 .el-form--inline .el-form-item {
   margin-right: 0;
 }
-::v-deep .el-card__body {
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
+// ::v-deep .el-card__body {
+//   .el-form-item--mini.el-form-item {
+//     margin-bottom: 0;
+//   }
+// }
 .el-breadcrumb {
   margin-bottom: 25px;
 }
@@ -312,11 +318,11 @@ export default {
     display: none;
   }
 }
-::v-deep .el-card__body {
-  // overflow-x: scroll;
+// ::v-deep .el-card__body {
+//   // overflow-x: scroll;
 
-  .el-form-item--mini.el-form-item {
-    margin-bottom: 0;
-  }
-}
+//   .el-form-item--mini.el-form-item {
+//     margin-bottom: 0;
+//   }
+// }
 </style>
