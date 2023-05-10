@@ -1,105 +1,130 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
+      :modal="false"
       :title="status ? '新增字典' : '编辑字典'"
       :visible.sync="dialogVisible"
-      width="500px"
+      width="40%"
       @closed="resetForm('dynamicValidateForm')"
     >
-      <el-form
-        label-width="100px"
-        class="demo-dynamic"
-        :model="dynamicValidateForm"
-        ref="dynamicValidateForm"
-      >
-        <el-card>
-          <el-form-item
-            class="fathecss"
-            prop="name"
-            label="父级名称"
-            :rules="[
-              { required: true, message: '请输入父级名称', trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              placeholder="请输入父级名称"
-              v-model="dynamicValidateForm.name"
-              class="dictionary"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            prop="code"
-            label="父级编码"
-            :rules="[
-              { required: true, message: '请输入父级编码', trigger: 'blur' },
-            ]"
-          >
-            <el-input
-              placeholder="请输入父级编码"
-              v-model="dynamicValidateForm.code"
-              class="dictionary"
-            ></el-input>
-          </el-form-item>
-        </el-card>
+      <div class="register_form_main">
+        <el-row style="height: 100%; padding: 0px 28px">
+          <el-col :span="24">
+            <el-form
+              class="demo-dynamic"
+              :model="dynamicValidateForm"
+              ref="dynamicValidateForm"
+              size="small"
+              label-position="left"
+              label-width="80px"
+            >
+              <el-card>
+                <el-form-item
+                  class="fathecss"
+                  prop="name"
+                  label="父级名称"
+                  :rules="[
+                    {
+                      required: true,
+                      message: '请输入父级名称',
+                      trigger: 'blur',
+                    },
+                  ]"
+                >
+                  <el-input
+                    placeholder="请输入父级名称"
+                    v-model="dynamicValidateForm.name"
+                    class="dictionary"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item
+                  prop="code"
+                  label="父级编码"
+                  :rules="[
+                    {
+                      required: true,
+                      message: '请输入父级编码',
+                      trigger: 'blur',
+                    },
+                  ]"
+                >
+                  <el-input
+                    placeholder="请输入父级编码"
+                    v-model="dynamicValidateForm.code"
+                    class="dictionary"
+                  ></el-input>
+                </el-form-item>
+              </el-card>
 
-        <el-card class="childCard">
-          <div
-            v-for="(item, index) in dynamicValidateForm.children"
-            :key="index"
-            :class="status ? 'add' : 'edit'"
-          >
-            <el-form-item
-              class="fathecss"
-              label="子级名称"
-              :prop="'children.' + index + '.name'"
-              :rules="{
-                required: true,
-                message: '子级名称不能为空',
-                trigger: 'blur',
-              }"
-            >
-              <el-input
-                placeholder="请输入子级名称"
-                v-model="item.name"
-                class="dictionary"
-              ></el-input>
-            </el-form-item>
-            <el-form-item
-              label="子级编码"
-              :prop="'children.' + index + '.code'"
-              :rules="{
-                required: true,
-                message: '子级编码不能为空',
-                trigger: 'blur',
-              }"
-            >
-              <el-input
-                placeholder="请输入子级编码"
-                v-model="item.code"
-                class="dictionary"
-              ></el-input>
-            </el-form-item>
-            <div class="delbtn">
-              <el-button
-                @click.prevent="removeDomain(index)"
-                size="small"
-                type="danger"
-                >删除</el-button
-              >
-            </div>
-          </div>
-          <el-form-item style="margin-top: 10px" class="operate">
-            <el-button @click="resetForm('dynamicValidateForm')" v-if="status"
-              >重置</el-button
-            >
-            <el-button @click="addDomain">新增域名</el-button>
-            <el-button type="primary" @click="submitForm('dynamicValidateForm')"
-              >提交</el-button
-            >
-          </el-form-item>
-        </el-card>
-      </el-form>
+              <el-card class="childCard">
+                <div
+                  v-for="(item, index) in dynamicValidateForm.children"
+                  :key="index"
+                  :class="status ? 'add' : 'edit'"
+                >
+                  <el-form-item
+                    class="fathecss"
+                    label="子级名称"
+                    :prop="'children.' + index + '.name'"
+                    :rules="{
+                      required: true,
+                      message: '子级名称不能为空',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <el-input
+                      placeholder="请输入子级名称"
+                      v-model="item.name"
+                      class="dictionary"
+                    ></el-input>
+                  </el-form-item>
+                  <el-form-item
+                    label="子级编码"
+                    :prop="'children.' + index + '.code'"
+                    :rules="{
+                      required: true,
+                      message: '子级编码不能为空',
+                      trigger: 'blur',
+                    }"
+                  >
+                    <el-input
+                      placeholder="请输入子级编码"
+                      v-model="item.code"
+                      class="dictionary"
+                    ></el-input>
+                  </el-form-item>
+                  <div slot="footer" class="delbtn dialog-footer">
+                    <el-button
+                      @click.prevent="removeDomain(index)"
+                      size="mini"
+                      type="primary"
+                      >删除</el-button
+                    >
+                  </div>
+                </div>
+              </el-card>
+            </el-form>
+          </el-col>
+        </el-row>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button
+          size="mini"
+          type="primary"
+          @click="resetForm('dynamicValidateForm')"
+          v-if="status"
+          >重置</el-button
+        >
+        <el-button @click="addDomain" type="primary" size="mini"
+          >新增域名</el-button
+        >
+        <el-button
+          type="primary"
+          size="mini"
+          @click="submitForm('dynamicValidateForm')"
+          >提交</el-button
+        >
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -198,7 +223,6 @@ export default {
 .delbtn {
   display: flex;
   justify-content: right;
-  padding-right: 50px;
 }
 .el-form-item {
   margin-bottom: 5px;
@@ -216,7 +240,7 @@ export default {
 .fathecss {
   margin-bottom: 20px;
 }
-.operate{
+.operate {
   display: flex;
   justify-content: end;
   align-items: center;
