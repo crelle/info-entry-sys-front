@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog
-    :modal="false"
+      :modal="false"
       :data="tableDatasan"
       :title="toChild"
       :visible.sync="dialogFormVisible"
@@ -24,7 +24,6 @@
                   <el-input
                     v-model="departmentEditForm.name"
                     placeholder="部门名"
-                    @change="queryson"
                     clearable
                   ></el-input>
                 </el-form-item>
@@ -236,13 +235,18 @@ export default {
     //自动选择
     queryson(e) {
       if (this.UserData) {
-        console.log(this.UserData, "--------this.UserData[e]", e);
+        console.log(
+          this.UserData,
+          "---自动选择自动选择-----this.UserData[e]",
+          e
+        );
         this.UserData.forEach((item) => {
           if (e) {
-            console.log(item, "--------xxxx");
-            this.departmentEditForm.cellPhone = item.userPhone;
-            this.departmentEditForm.email = item.userEmail;
-            this.departmentEditForm.jobNo = item.jobNo;
+            if (e == item.id) {
+              this.departmentEditForm.cellPhone = item.userPhone;
+              this.departmentEditForm.email = item.userEmail;
+              this.departmentEditForm.jobNo = item.jobNo;
+            }
           } else {
             this.departmentEditForm.cellPhone = "";
             this.departmentEditForm.email = "";
