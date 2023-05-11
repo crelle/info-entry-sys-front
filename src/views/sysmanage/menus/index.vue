@@ -64,7 +64,7 @@
         </el-row>
       </el-form>
     </el-card>
-    <el-card >
+    <el-card :body-style="{paddingTop: '0px'}" >
       <el-table
         ref="multipleTable"
         :data="tableData"
@@ -329,7 +329,7 @@ export default {
 // }
 </style>
 <style lang="less" scoped>
-.el-breadcrumb {
-  margin-bottom: 25px;
-}
+// .el-breadcrumb {
+//   margin-bottom: 25px;
+// }
 </style>
