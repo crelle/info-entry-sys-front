@@ -5,6 +5,7 @@
       <el-breadcrumb-item>需求管理</el-breadcrumb-item>
       <el-breadcrumb-item>项目管理</el-breadcrumb-item>
     </el-breadcrumb>
+    <div class="header-title">项目管理</div>
     <div class="card-container">
       <el-card :body-style="{paddingTop: '60px',paddingBottom: '0px'}">
         <el-form
@@ -81,17 +82,26 @@
                   class="header-btn"
                   type="primary"
                   @click="resetForm('userQueryRef')"
-                ><img src="../../../assets/img/globalTable/icon2-reset.png" alt="">重置</el-button>
+                ><img
+                    src="../../../assets/img/globalTable/icon2-reset.png"
+                    alt=""
+                  >重置</el-button>
                 <el-button
                   class="header-btn"
                   type="primary"
                   @click="queryUserListclick"
-                ><img src="../../../assets/img/globalTable/icon1-search.png" alt="">查询</el-button>
+                ><img
+                    src="../../../assets/img/globalTable/icon1-search.png"
+                    alt=""
+                  >查询</el-button>
                 <el-button
                   class="header-btn"
                   type="primary"
                   @click="addClick"
-                ><img src="../../../assets/img/globalTable/icon3-add.png" alt="">新增</el-button>
+                ><img
+                    src="../../../assets/img/globalTable/icon3-add.png"
+                    alt=""
+                  >新增</el-button>
               </el-form-item>
             </el-col>
           </el-row>
@@ -142,7 +152,7 @@
         </el-form>
       </el-card>
 
-      <el-card >
+      <el-card>
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -251,7 +261,7 @@
     ></project-edit-dialog>
     <project-dait-dialog
       :toChild="list"
-      :tableDatastaff="tableDatastaff"
+      :tableDatastaff="tableData"
       ref="userDaitDialogRef"
     ></project-dait-dialog>
   </div>
@@ -372,7 +382,7 @@ export default {
       });
     },
     // 查询全部接口人
-    queryInterfaceList () { 
+    queryInterfaceList () {
       let data = { records: [{ code: '', name: '' }] };
       data.current = 1;
       data.size = 999;
@@ -383,7 +393,6 @@ export default {
         }
       })
     },
-
     deleteMenu (row, index) {
       this.$confirm("此操作将永久删除该项目, 是否继续?", "删除项目", {
         confirmButtonText: "确定",
@@ -443,6 +452,7 @@ export default {
     // 详情
     detailsClick (row) {
       console.log(row, "------查看");
+      // this.queryProjectPerson(row.id)
       this.$refs.userDaitDialogRef.openDialog(row);
       this.list = "查看项目详情";
       // console.log("详情", row);
@@ -480,6 +490,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.header-title{
+  color: #fff;
+  text-align: center;
+  // font-weight: 700;
+  font-size: 18px;
+  width: 220px;
+  margin: 10px auto;
+  background: url(../../../assets/img/globalTable/headerTitle_bg.png);
+  background-repeat: no-repeat;
+  background-size: 100% 62%;
+  background-position: center;
+  // text-shadow:0px 0px 2px #fff;
+}
 .header-btn img {
   width: 10px;
   margin-right: 2px;
@@ -490,16 +513,9 @@ export default {
     min-width: 131px;
   }
 }
-.el-breadcrumb {
-  margin-bottom: 25px;
-}
-::v-deep .cell {
-  text-align: center;
-  line-height: 36.9px;
-}
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
+// .el-breadcrumb {
+//   margin-bottom: 25px;
+// }
 ::v-deep .el-form-item {
   margin-bottom: 0;
 }

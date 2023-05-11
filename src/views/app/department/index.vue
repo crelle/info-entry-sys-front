@@ -377,10 +377,6 @@ export default {
 };
 </script>
 <style lang="less" scoped>
-::v-deep .cell {
-  text-align: center;
-  line-height: 36.9px;
-}
 ::v-deep .el-col-19 {
   text-align: right;
 }
@@ -392,12 +388,9 @@ export default {
     margin-bottom: 0;
   }
 }
-.el-breadcrumb {
-  margin-bottom: 25px;
-}
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
+// .el-breadcrumb {
+//   margin-bottom: 25px;
+// }
 ::v-deep .el-form-item__label {
   margin-right: 5px;
 }

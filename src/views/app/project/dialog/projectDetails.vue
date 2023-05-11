@@ -14,28 +14,28 @@
         <el-row style="height: 100%">
           <el-col :span="24">
             <div class="grid-content-right">
-              <el-form :model="userEditForm" ref="userEditRef" size="mini">
+              <el-form
+                :model="userEditForm"
+                ref="userEditRef"
+                size="mini"
+              >
                 <div class="userbox">
                   <ul class="lis">
                     <li>
-                      <span>项目名称:</span
-                      ><span :title="initFormData.name">{{
+                      <span>项目名称:</span><span :title="initFormData.name">{{
                         initFormData.name
                       }}</span>
                     </li>
                     <li>
-                      <span>项目人数:</span
-                      ><span>{{ initFormData.number }} 人</span>
+                      <span>项目人数:</span><span>{{ initFormData.number }} 人</span>
                     </li>
                     <li>
-                      <span>所属部门:</span
-                      ><span :title="initFormData.departmentName">{{
+                      <span>所属部门:</span><span :title="initFormData.departmentName">{{
                         initFormData.departmentName
                       }}</span>
                     </li>
                     <li>
-                      <span>客户:</span
-                      ><span>{{ initFormData.customerName }}</span>
+                      <span>客户:</span><span>{{ initFormData.customerName }}</span>
                     </li>
                     <li>
                       <span>接口人:</span>
@@ -43,37 +43,37 @@
                       <span
                         v-for="item in initFormData.contactPeoples"
                         :key="item.id"
-                        >{{ item.name }}</span
-                      >
+                      >{{ item.name }}</span>
                     </li>
                     <li>
-                      <span>地域:</span
-                      ><span>{{ initFormData.regionName }}</span>
+                      <span>地域:</span><span>{{ initFormData.regionName }}</span>
                     </li>
                     <li>
-                      <span>立项时间:</span
-                      ><span :title="initFormData.time">{{
+                      <span>立项时间:</span><span :title="initFormData.time">{{
                         initFormData.time
                       }}</span>
                     </li>
                     <li>
-                      <span>合作模式:</span
-                      ><span>{{ initFormData.cooperation }}</span>
+                      <span>合作模式:</span><span>{{ initFormData.cooperation }}</span>
                     </li>
                     <li>
-                      <span>当前状态:</span
-                      ><span>{{ initFormData.status }}</span>
+                      <span>当前状态:</span><span>{{ initFormData.status }}</span>
                     </li>
                     <li class="new">
-                      <span>介绍:</span
-                      ><span :title="initFormData.introduce">{{
+                      <span>介绍:</span><span :title="initFormData.introduce">{{
                         initFormData.introduce
                       }}</span>
                     </li>
                   </ul>
                   <div>
-                    <el-tabs v-model="activeName" @tab-click="handleClick">
-                      <el-tab-pane label="项目人员" name="first">
+                    <el-tabs
+                      v-model="activeName"
+                      @tab-click="handleClick"
+                    >
+                      <el-tab-pane
+                        label="项目人员"
+                        name="first"
+                      >
                         <el-table
                           :data="tableData1"
                           height="311"
@@ -104,11 +104,20 @@
                             width="120"
                           >
                           </el-table-column>
-                          <el-table-column prop="regionName" label="地域">
+                          <el-table-column
+                            prop="regionName"
+                            label="地域"
+                          >
                           </el-table-column>
-                          <el-table-column prop="postName" label="岗位">
+                          <el-table-column
+                            prop="postName"
+                            label="岗位"
+                          >
                           </el-table-column>
-                          <el-table-column prop="status" label="状态">
+                          <el-table-column
+                            prop="status"
+                            label="状态"
+                          >
                           </el-table-column>
                         </el-table>
                       </el-tab-pane>
@@ -120,16 +129,23 @@
           </el-col>
         </el-row>
       </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogClose" size="mini"
-          >取 消</el-button
-        >
+      <div
+        slot="footer"
+        class="dialog-footer"
+      >
+        <el-button
+          type="primary"
+          @click="dialogClose"
+          size="mini"
+        >取 消</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
+// 项目人员
+import { queryEmployeeManual } from "@/api/employee";
 export default {
   props: {
     toChild: String,
@@ -137,7 +153,7 @@ export default {
     //地域
     MockUser: "",
   },
-  data() {
+  data () {
     return {
       // 项目对应的员工数据
       tableData1: [],
@@ -175,11 +191,11 @@ export default {
   },
   methods: {
     // 表格
-    handleClick(tab, event) {
+    handleClick (tab, event) {
       console.log(tab, event);
     },
 
-    openDialog(row) {
+    openDialog (row) {
       // 修改时间格式
       console.log(row, "001001");
       row.updateTime = row.updateTime?.split("T")[0];
@@ -189,54 +205,61 @@ export default {
 
       if (row) {
         this.initFormData = row;
+        let data = { records: [{ projectId: row.id }] };
+        data.current = 1;
+        queryEmployeeManual(data).then(res => {
+          if (res && res.code && res.code === "00000") {
+            this.tableData1 = res.data.records; // 项目人员赋值
+          }
+        })
         // console.log(this.tableDatastaff, "-----------员工全部");
         // 根据项目 id  查找 员工 赋值给 tableData1
-        this.tableDatastaff.forEach((item) => {
+        // this.tableDatastaff.forEach((item) => {
           // console.log(item.projectId, item.name, "----员工----");
-          if (this.initFormData.projectId == item.projectId) {
-            // console.log(item.projectId, item.name, "同项目的id---");
-            this.tableData1.push(item);
-          }
-        });
-        // 根据传来的地域  id  查找 地域 赋值给
-        this.MockUser.forEach((item) => {
-          console.log(item, "----地域----");
-          if (this.initFormData.regionId == item.regionId) {
-            // console.log(item.regionId, item.regionId, "同地域的id---");
-            this.initFormData.regionName = item.regionName;
-          }
-        });
+          // if (this.initFormData.projectId == item.projectId) {
+          //   // console.log(item.projectId, item.name, "同项目的id---");
+          //   this.tableData1.push(item);
+          // }
+        // });
+        // // 根据传来的地域  id  查找 地域 赋值给
+        // this.MockUser.forEach((item) => {
+        //   console.log(item, "----地域----");
+        //   if (this.initFormData.regionId == item.regionId) {
+        //     // console.log(item.regionId, item.regionId, "同地域的id---");
+        //     this.initFormData.regionName = item.regionName;
+        //   }
+        // });
 
-        console.log(this.tableData1, "--对应的--员工表--");
-        this.initFormData.number = this.tableData1.length;
+        // console.log(this.tableData1, "--对应的--员工表--");
+        // this.initFormData.number = this.tableData1.length;
       }
     },
-    initForm(data) {
+    initForm (data) {
       Object.keys(this.userEditForm).forEach((item) => {
         this.userEditForm[item] = data[item] ? data[item] : null;
       });
     },
-    closeDialog() {
+    closeDialog () {
       this.resetFormData(); // 初始化弹窗数据 重置 包含头像信息等
       this.resetForm("userEditRef"); // 重置表单
     },
     // 确定
-    dialogClose() {
+    dialogClose () {
       this.dialogFormVisible = false;
       console.log(this.userEditForm, "确定 ");
     },
     // 重置表单
-    resetForm(formName) {
+    resetForm (formName) {
       this.$refs[formName].resetFields();
       this.initForm(this.userEditForm);
       this.resetFormData();
     },
 
     // 初始化页面数据 重置
-    resetFormData() {
+    resetFormData () {
       this.ifLogin = true;
     },
-    indexMethod(index) {
+    indexMethod (index) {
       return index + 1;
     },
   },
@@ -248,7 +271,7 @@ export default {
 * {
   list-style: none;
 }
-@deep: ~">>>";
+@deep: ~'>>>';
 @{deep} .register_form_main {
   position: relative;
   min-width: 40%;
@@ -328,7 +351,7 @@ export default {
   margin: 15px 0;
   // color: #606266;
   font-size: 14px;
-  font-family: "微软雅黑";
+  font-family: '微软雅黑';
 }
 ::v-deep .el-dialog {
   min-width: 450px;

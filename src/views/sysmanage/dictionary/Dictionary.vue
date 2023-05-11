@@ -339,10 +339,10 @@ export default {
 ::v-deep .el-col-9 {
   text-align: right;
 }
-.el-breadcrumb {
-  margin-bottom: 25px;
-}
-::v-deep .el-pagination {
-  margin: 10px 0;
-}
+// .el-breadcrumb {
+//   margin-bottom: 25px;
+// }
+// ::v-deep .el-pagination {
+//   margin: 10px 0;
+// }
 </style>
