@@ -40,7 +40,10 @@
                   type="primary"
                   @click="resetForm('departmentQueryRef')"
                 >
-                <img src="../../../assets/img/globalTable/icon2-reset.png" alt="">
+                  <img
+                    src="../../../assets/img/globalTable/icon2-reset.png"
+                    alt=""
+                  />
                   重置</el-button
                 >
                 <el-button
@@ -48,11 +51,17 @@
                   type="primary"
                   @click="queryDepartmentListclick"
                 >
-                <img src="../../../assets/img/globalTable/icon1-search.png" alt="">
+                  <img
+                    src="../../../assets/img/globalTable/icon1-search.png"
+                    alt=""
+                  />
                   查询
                 </el-button>
                 <el-button class="header-btn" type="primary" @click="addClick">
-                  <img src="../../../assets/img/globalTable/icon3-add.png" alt="">
+                  <img
+                    src="../../../assets/img/globalTable/icon3-add.png"
+                    alt=""
+                  />
                   新增</el-button
                 >
               </el-form-item>
@@ -60,7 +69,7 @@
           </el-row>
         </el-form>
       </el-card>
-      <el-card >
+      <el-card>
         <el-table
           ref="multipleTable"
           :data="tableData"
@@ -138,6 +147,7 @@
                 >查看</span
               >
               <span
+                v-loading.fullscreen.lock="fullscreenLoading"
                 class="operate-btn"
                 @click="handleClick(row)"
                 type="primary"
@@ -197,6 +207,8 @@ export default {
   },
   data() {
     return {
+      // 懒加载
+      fullscreenLoading: false,
       tableHeight: window.innerHeight >= 908 ? 550 : window.innerHeight - 418,
       list: "",
       formOptions: {
@@ -252,40 +264,33 @@ export default {
     },
     //
     // 查询全部部门列表
-    queryDepartmentListUp() {
-      this.$refs["departmentQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 99999;
-          queryDepartments(data).then((res) => {
-            if (res && res.code && res.code === "00000") {
-              console.log(res.data.records, "--------------上级查询部门");
-              this.tableDataUp = res.data.records;
-            }
-          });
-        } else {
-          return false;
-        }
-      });
+    async queryDepartmentListUp() {
+      // this.$refs["departmentQueryRef"].validate(async(valid) => {
+      //   if (valid) {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 99999;
+      console.log("qqqqqqqqqqqqq");
+      let res = await queryDepartments(data);
+      console.log(res.data.records, "--------------上级查询部门");
+      if (res && res.code && res.code === "00000") {
+        this.tableDataUp = res.data.records;
+      }
+      //   } else {
+      //     return false;
+      //   }
+      // });
     },
     // 查询全部用户列表
-    queryUser() {
-      this.$refs["departmentQueryRef"].validate((valid) => {
-        if (valid) {
-          let data = { records: [{ ...this.formOptions }] };
-          data.current = 1;
-          data.size = 99999;
-          queryUser(data).then((res) => {
-            if (res && res.code && res.code === "00000") {
-              this.UserData = res.data.records; // 表格数据赋值
-              console.log(this.UserData, " // 真的查询用户列表");
-            }
-          });
-        } else {
-          return false;
-        }
-      });
+    async queryUser() {
+      let data = { records: [{ ...this.formOptions }] };
+      data.current = 1;
+      data.size = 99999;
+      let res = await queryUser(data);
+      if (res && res.code && res.code === "00000") {
+        this.UserData = res.data.records; // 表格数据赋值
+        console.log(this.UserData, " // 真的查询用户列表");
+      }
     },
     // 删除弹框
     deleteMenu(row, index) {
@@ -317,19 +322,26 @@ export default {
     },
     // 添加
     addClick() {
+      this.queryUser();
+      this.queryDepartmentListUp();
       this.$refs.userEditDialogRef.openDialog();
       this.list = "添加部门";
       console.log("我要添加");
-      this.queryUser();
-      this.queryDepartmentListUp();
     },
     // 编辑
-    handleClick(row) {
+    async handleClick(row) {
+      const loading = this.$loading({
+          lock: true,
+          text: '拼命加载中',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
+      await this.queryUser();
+      await this.queryDepartmentListUp();
+      console.log("编辑1111", row, row.departmentId);
       this.$refs.userEditDialogRef.openDialog(row);
       this.list = "编辑部门信息";
-      console.log("编辑", row, row.departmentId);
-      this.queryUser();
-      this.queryDepartmentListUp();
+      loading.close();
     },
     // 详情
     detailsClick(row) {
@@ -360,6 +372,7 @@ export default {
         1
       );
     },
+    // 懒加载
   },
 };
 </script>
